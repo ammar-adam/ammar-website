@@ -1,16 +1,13 @@
 /**
- * Lounge = Personality. Placeholder interests and hobbies.
- * Keep it relaxed, specific, not tryhard.
+ * Lounge = Personality. Relaxed, atmospheric.
  */
 
 export const loungeContent = {
-  headline: "[A relaxed intro to who you are]",
-  blurb: "[A few sentences about your personality, interests, what you do when you're not shipping. Keep it human and specific.]",
-
+  headline: "[A relaxed intro]",
+  blurb: "[Personality, interests, what you do when not shipping.]",
   interests: [
-    "[Interest or hobby 1]",
-    "[Interest or hobby 2]",
-    "[Interest or hobby 3]",
-    "[Interest or hobby 4]",
+    "[Interest 1]",
+    "[Interest 2]",
+    "[Interest 3]",
   ],
 } as const;

@@ -1,7 +1,10 @@
 /**
- * Departures = Projects. Add your projects here.
- * Each project appears as a route you can board.
+ * Departures = Projects as flights.
+ * Each project appears as a flight preparing to depart.
+ * Seatmap sections: A1=Overview, A2=Problem, B1=Tech, B2=Architecture, C1=Demo, C2=Links
  */
+
+export type FlightStatus = "Boarding" | "Ready" | "Scheduled";
 
 export interface ProjectLink {
   label: string;
@@ -10,40 +13,53 @@ export interface ProjectLink {
 
 export interface Project {
   slug: string;
-  city: string;
+  destination: string;
+  flightCode: string;
   routeName: string;
+  gate: string;
+  status: FlightStatus;
   shortDesc: string;
-  screenshot: string; // URL or path to image
+  screenshot: string;
   links: ProjectLink[];
   overview: string;
   build: string;
+  problem?: string;
+  architecture?: string;
 }
 
 export const projects: Project[] = [
   {
     slug: "project-alpha",
-    city: "[Destination City A]",
+    destination: "[Destination City A]",
+    flightCode: "AF 571",
     routeName: "[Project Name / Route]",
-    shortDesc: "[One-line description of what this project does]",
+    gate: "A12",
+    status: "Boarding",
+    shortDesc: "[One-line description]",
     screenshot: "/placeholders/screenshot.svg",
     links: [
       { label: "Live demo", url: "https://example.com" },
       { label: "Repository", url: "https://github.com/example/repo" },
     ],
-    overview: "[Brief overview of the project, problem solved, outcome]",
-    build: "[Tech stack, approach, notable decisions]",
+    overview: "[Brief overview]",
+    build: "[Tech stack, approach]",
+    problem: "[Problem or context]",
+    architecture: "[Architecture notes]",
   },
   {
     slug: "project-beta",
-    city: "[Destination City B]",
+    destination: "[Destination City B]",
+    flightCode: "AF 241",
     routeName: "[Another Project]",
+    gate: "B7",
+    status: "Scheduled",
     shortDesc: "[Short description]",
     screenshot: "/placeholders/screenshot.svg",
-    links: [
-      { label: "Live demo", url: "https://example.com" },
-    ],
+    links: [{ label: "Live demo", url: "https://example.com" }],
     overview: "[Overview placeholder]",
     build: "[Build details placeholder]",
+    problem: "[Problem placeholder]",
+    architecture: "[Architecture placeholder]",
   },
 ];
 

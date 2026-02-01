@@ -1,13 +1,13 @@
-# Airport Portfolio
+# AFA INTERNATIONAL AIRPORT
 
-A premium, clean portfolio with an airport theme — Check-in, Terminal, Departures, Arrivals, Lounge, and Boarding Pass.
+A personal website styled as a fictional airport terminal — Check-in Hall, Terminal, Departures, Arrivals, Lounge, Boarding Pass Office.
 
 ## Tech Stack
 
 - **Next.js** (App Router)
 - **React** + **TypeScript**
 - **Tailwind CSS**
-- **Framer Motion** (subtle animations)
+- **Framer Motion**
 
 ## Getting Started
 
@@ -18,85 +18,36 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Where to Fill Content
+## Routes (Locations)
 
-All content is centralized in `src/data/`. Replace placeholders with your real content.
+| Route | Location |
+|-------|----------|
+| `/` | Check-in Hall |
+| `/terminal` | Main Terminal / Concourse |
+| `/departures` | Departures Hall |
+| `/departures/[slug]` | Gate / Aircraft View |
+| `/arrivals` | Arrivals Hall |
+| `/arrivals/[slug]` | Baggage Claim |
+| `/lounge` | Airport Lounge |
+| `/boarding-pass` | Boarding Pass Office |
 
-### 1. Site config — `src/data/site.ts`
-- `siteName` — Your name
-- `tagline` — Check-in welcome message
-- `socialLinks` — GitHub, Twitter, LinkedIn URLs
+## Content Configuration
 
-### 2. Departures (Projects) — `src/data/departures.ts`
-- Add projects to the `projects` array
-- Each project: `slug`, `city`, `routeName`, `shortDesc`, `screenshot`, `links`, `overview`, `build`
-- Screenshots: place images in `public/` and reference as `/your-image.jpg`
+All content lives in `src/data/`:
 
-### 3. Arrivals (Experiences) — `src/data/arrivals.ts`
-- Add experiences to the `arrivals` array
-- Each: `slug`, `from`, `title`, `shortDesc`, `details`
+### `site.ts`
+- `airportName`, `checkIn` (headline, subtext, CTAs), `socialLinks`, `navLabels`
 
-### 4. Lounge — `src/data/lounge.ts`
-- `headline`, `blurb`, `interests` — personality and hobbies
+### `departures.ts`
+- `projects[]`: `slug`, `destination`, `flightCode`, `routeName`, `gate`, `status` (Boarding | Ready | Scheduled), `screenshot`, `links`, `overview`, `build`
 
-### 5. Boarding Pass (Resume) — `src/data/boardingPass.ts`
-- `displayName`, `resumeFileUrl`, `sections`
-- Add your PDF to `public/resume.pdf` (or update `resumeFileUrl`)
+### `arrivals.ts`
+- `arrivals[]`: `slug`, `from`, `title`, `shortDesc`, `details`
 
-## Adding a New Project
+### `lounge.ts`
+- `headline`, `blurb`, `interests[]`
 
-1. Open `src/data/departures.ts`
-2. Add an object to `projects`:
+### `boardingPass.ts`
+- `displayName`, `resumeFileUrl`, `sections[]`
 
-```ts
-{
-  slug: "my-project",
-  city: "San Francisco",
-  routeName: "Project Name",
-  shortDesc: "One-line description",
-  screenshot: "/placeholders/screenshot.svg",
-  links: [
-    { label: "Live demo", url: "https://..." },
-    { label: "Repository", url: "https://..." },
-  ],
-  overview: "Brief overview...",
-  build: "Tech stack and approach...",
-}
-```
-
-3. Add a screenshot to `public/` and set `screenshot` to its path.
-
-## Adding a New Arrival
-
-1. Open `src/data/arrivals.ts`
-2. Add an object to `arrivals`:
-
-```ts
-{
-  slug: "my-experience",
-  from: "Origin context",
-  title: "Experience Title",
-  shortDesc: "One-line summary",
-  details: "Longer description...",
-}
-```
-
-## Routes
-
-| Route | Purpose |
-|-------|---------|
-| `/` | Check-in (landing) |
-| `/terminal` | Hub navigation |
-| `/departures` | Projects list |
-| `/departures/[slug]` | Project detail |
-| `/arrivals` | Experiences list |
-| `/arrivals/[slug]` | Experience detail |
-| `/lounge` | Personality |
-| `/boarding-pass` | Resume view/download |
-
-## Design Notes
-
-- Typography-first, high whitespace
-- Airport motif: route lines, plane accent, boarding pass perforation (used sparingly)
-- Boarding modal: optional step before viewing project details
-- Respects `prefers-reduced-motion` for accessibility
+Add `resume.pdf` to `public/` for the Boarding Pass download.

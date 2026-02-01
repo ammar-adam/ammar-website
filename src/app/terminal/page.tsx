@@ -1,5 +1,5 @@
-import { TerminalHubCards } from "@/components/TerminalHubCards";
+import { redirect } from "next/navigation";
 
-export default function TerminalPage() {
-  return <TerminalHubCards />;
+export default function TerminalRedirect() {
+  redirect("/#terminal");
 }

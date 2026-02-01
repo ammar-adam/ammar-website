@@ -3,58 +3,61 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { arrivals } from "@/data/arrivals";
-import { PlaneIcon } from "@/components/ui/PlaneIcon";
+import { DiagonalRouteLine } from "@/components/ui/DiagonalRouteLine";
 
 export function ArrivalsBoard() {
   return (
-    <section className="py-12 sm:py-16 px-4">
+    <section className="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+      <div className="absolute top-1/4 left-0 w-40 h-20 opacity-20 pointer-events-none">
+        <DiagonalRouteLine direction="ltr" />
+      </div>
+
       <div className="mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
+          className="mb-10 ml-0 sm:ml-6"
         >
-          <span className="inline-flex items-center gap-1.5 text-sm text-neutral-500 mb-4">
-            <PlaneIcon className="w-3.5 h-3.5" />
+          <h1 className="text-2xl sm:text-3xl font-light text-[var(--text-primary)]">
             Arrivals
-          </span>
-          <h1 className="text-2xl sm:text-3xl font-light text-neutral-900">
-            Pick up an arrival
           </h1>
+          <p className="text-sm text-[var(--text-secondary)] mt-1">
+            Pick up what landed. Experiences, lessons, things that made it here.
+          </p>
         </motion.div>
 
-        <ul className="space-y-2">
+        <div className="space-y-4">
           {arrivals.map((a, i) => (
-            <motion.li
+            <motion.div
               key={a.slug}
-              initial={{ opacity: 0, y: 8 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -12 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.05 * i }}
+              style={{ marginLeft: i % 2 === 0 ? 0 : "1rem" }}
             >
               <Link
                 href={`/arrivals/${a.slug}`}
-                className="block group p-4 sm:p-5 rounded-xl border border-neutral-200/80 bg-white hover:border-neutral-300 hover:shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2"
+                className="group block p-6 sm:p-8 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-elevated)]/40 hover:bg-[var(--bg-elevated)]/70 hover:border-[var(--accent-amber)]/30 transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]"
               >
-                <div className="flex items-start sm:items-center justify-between gap-4">
-                  <div className="min-w-0 flex-1">
-                    <p className="text-xs text-neutral-500 uppercase tracking-wider">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <span className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-mono">
                       From {a.from}
-                    </p>
-                    <p className="text-base font-medium text-neutral-900 mt-0.5">
+                    </span>
+                    <h2 className="text-lg font-medium text-[var(--text-primary)] mt-1 group-hover:text-[var(--accent-amber)] transition-colors">
                       {a.title}
-                    </p>
-                    <p className="text-sm text-neutral-600 mt-1 line-clamp-1">
-                      {a.shortDesc}
-                    </p>
+                    </h2>
+                    <p className="text-sm text-[var(--text-secondary)] mt-2">{a.shortDesc}</p>
                   </div>
-                  <span className="flex-shrink-0 text-sm text-neutral-400 group-hover:text-neutral-600 transition-colors">
-                    Pick up arrival →
+                  <span className="text-sm text-[var(--text-muted)] group-hover:text-[var(--accent-amber)] flex items-center gap-1 transition-colors">
+                    Pick up
+                    <span aria-hidden>→</span>
                   </span>
                 </div>
               </Link>
-            </motion.li>
+            </motion.div>
           ))}
-        </ul>
+        </div>
       </div>
     </section>
   );

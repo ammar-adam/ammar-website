@@ -1,21 +1,21 @@
 /**
- * Boarding Pass = Resume. Replace with your resume file and display name.
+ * Boarding Pass Office = Resume.
  */
 
 export const boardingPassConfig = {
   displayName: "[Your Name]",
-  resumeFileUrl: "/resume.pdf", // Place your resume PDF in /public
+  resumeFileUrl: "/resume.pdf",
   sections: [
     {
-      title: "[Section Title, e.g. Experience]",
+      title: "[Experience]",
       items: [
-        { role: "[Role]", org: "[Organization]", period: "[Period]", desc: "[Brief description]" },
+        { role: "[Role]", org: "[Org]", period: "[Period]", desc: "[Brief]" },
       ],
     },
     {
-      title: "[Section Title, e.g. Education]",
+      title: "[Education]",
       items: [
-        { role: "[Degree]", org: "[Institution]", period: "[Period]", desc: "[Optional]" },
+        { role: "[Degree]", org: "[Institution]", period: "[Period]", desc: "" },
       ],
     },
   ],

@@ -1,5 +1,5 @@
-import { DeparturesBoard } from "@/components/DeparturesBoard";
+import { redirect } from "next/navigation";
 
-export default function DeparturesPage() {
-  return <DeparturesBoard />;
+export default function DeparturesRedirect() {
+  redirect("/#departures");
 }

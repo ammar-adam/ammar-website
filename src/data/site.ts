@@ -1,10 +1,12 @@
 /**
- * Central site configuration. Replace placeholders with your content.
+ * AFA INTERNATIONAL AIRPORT — Central configuration.
+ * Replace placeholders with your content.
+ * Tone: calm, human announcements — not corporate signage.
  */
 
 export const siteConfig = {
-  siteName: "[Your Name]",
-  tagline: "Welcome, I'll be your tour guide.",
+  airportName: "AFA INTERNATIONAL AIRPORT",
+  siteName: "AFA INTERNATIONAL AIRPORT",
 
   navLabels: {
     terminal: "Terminal",
@@ -20,9 +22,10 @@ export const siteConfig = {
     linkedin: "https://linkedin.com/in/yourusername",
   },
 
-  themeOptions: {
-    primaryText: "neutral-900",
-    secondaryText: "neutral-600",
-    accent: "neutral-800",
+  checkIn: {
+    headline: "[Welcome — I'll be your guide]",
+    subtext: "[Calm arrival message. Where would you like to go?]",
+    ctaTerminal: "Head to Terminal",
+    ctaDepartures: "View Departures",
   },
 } as const;

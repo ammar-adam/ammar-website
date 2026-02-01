@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useCallback } from "react";
-import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface BoardingModalProps {
   isOpen: boolean;
   onClose: () => void;
+  onBoard: (slug: string) => void;
   city: string;
   slug: string;
 }
@@ -14,22 +14,21 @@ interface BoardingModalProps {
 export function BoardingModal({
   isOpen,
   onClose,
+  onBoard,
   city,
   slug,
 }: BoardingModalProps) {
-  const router = useRouter();
-  const overlayRef = useRef<HTMLDivElement>(null);
   const focusTrapRef = useRef<HTMLDivElement>(null);
 
   const handleContinue = useCallback(() => {
     onClose();
-    router.push(`/departures/${slug}`);
-  }, [onClose, router, slug]);
+    onBoard(slug);
+  }, [onClose, onBoard, slug]);
 
   const handleSkip = useCallback(() => {
     onClose();
-    router.push(`/departures/${slug}`);
-  }, [onClose, router, slug]);
+    onBoard(slug);
+  }, [onClose, onBoard, slug]);
 
   useEffect(() => {
     if (!isOpen) return;
@@ -78,7 +77,6 @@ export function BoardingModal({
     <AnimatePresence>
       {isOpen && (
         <div
-          ref={overlayRef}
           className="fixed inset-0 z-[100] flex items-center justify-center p-4"
           role="dialog"
           aria-modal="true"
@@ -89,9 +87,8 @@ export function BoardingModal({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="absolute inset-0 bg-neutral-900/20 backdrop-blur-[1px]"
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
             onClick={onClose}
-            onKeyDown={(e) => e.key === "Enter" && onClose()}
           />
 
           <motion.div
@@ -100,29 +97,29 @@ export function BoardingModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.98 }}
             transition={{ duration: 0.2, ease: "easeOut" }}
-            className="relative bg-white rounded-xl shadow-xl p-6 sm:p-8 max-w-md w-full border border-neutral-200/80"
+            className="relative bg-[var(--bg-elevated)] rounded-xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-[var(--border-subtle)]"
             onClick={(e) => e.stopPropagation()}
           >
             <h2
               id="boarding-modal-title"
-              className="text-lg font-medium text-neutral-900 mb-2"
+              className="text-lg font-medium text-[var(--text-primary)] mb-2"
             >
               You&apos;re boarding a flight to {city}.
             </h2>
-            <p className="text-neutral-600 text-sm mb-6">
+            <p className="text-[var(--text-secondary)] text-sm mb-6">
               Ready to take off?
             </p>
 
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleContinue}
-                className="px-4 py-2.5 text-sm font-medium text-white bg-neutral-900 hover:bg-neutral-800 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2"
+                className="px-4 py-2.5 text-sm font-medium text-[var(--bg-dark)] bg-[var(--accent-amber)] hover:bg-[#fbbf24] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]"
               >
                 Continue
               </button>
               <button
                 onClick={handleSkip}
-                className="px-4 py-2.5 text-sm font-medium text-neutral-600 hover:text-neutral-900 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2"
+                className="px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]"
               >
                 Skip
               </button>

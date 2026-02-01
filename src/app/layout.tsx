@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.siteName} | Terminal`,
-  description: "A portfolio experience — projects, experiences, and personality.",
+  title: `${siteConfig.airportName}`,
+  description: "AFA International Airport — Terminal experience.",
 };
 
 export default function RootLayout({

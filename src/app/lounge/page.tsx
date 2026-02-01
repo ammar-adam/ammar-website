@@ -1,5 +1,5 @@
-import { LoungePanel } from "@/components/LoungePanel";
+import { redirect } from "next/navigation";
 
-export default function LoungePage() {
-  return <LoungePanel />;
+export default function LoungeRedirect() {
+  redirect("/#lounge");
 }

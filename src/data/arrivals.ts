@@ -1,6 +1,5 @@
 /**
- * Arrivals = Experiences. Add your experiences here.
- * Each arrival is something that "landed" — something you did or learned.
+ * Arrivals = Experiences. What has landed.
  */
 
 export interface Arrival {
@@ -16,8 +15,8 @@ export const arrivals: Arrival[] = [
     slug: "experience-one",
     from: "[Origin / Context]",
     title: "[Experience Title]",
-    shortDesc: "[One-line summary of what was done or learned]",
-    details: "[Longer description, lessons, outcomes. Can be multiple paragraphs.]",
+    shortDesc: "[One-line summary]",
+    details: "[Longer description, lessons, outcomes.]",
   },
   {
     slug: "experience-two",

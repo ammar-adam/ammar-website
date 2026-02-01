@@ -2,87 +2,199 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
 import { siteConfig } from "@/data/site";
+import { PlaneIcon } from "@/components/ui/PlaneIcon";
+import { TerminalClock } from "@/components/ui/TerminalClock";
+import { InfoDesk } from "@/components/InfoDesk";
 
-function getNavIndicator(pathname: string): string | null {
-  if (pathname.startsWith("/departures")) return "Now Boarding: Departures";
-  if (pathname.startsWith("/arrivals")) return "Now Arriving: Arrivals";
-  return null;
+const SECTION_IDS = ["check-in", "terminal", "departures", "arrivals", "lounge", "boarding-pass"] as const;
+
+function getTerminalStatus(activeSection: string | null): string {
+  if (!activeSection || activeSection === "check-in") return "Arriving";
+  if (activeSection === "terminal") return "In Transit";
+  if (activeSection === "departures") return "Now Boarding";
+  if (activeSection === "arrivals") return "Baggage Claim Active";
+  return "In Transit";
 }
+
+const SECTION_LABELS: Record<string, string> = {
+  "check-in": "Check-in",
+  terminal: "Terminal",
+  departures: "Departures",
+  arrivals: "Arrivals",
+  lounge: "Lounge",
+  "boarding-pass": "Boarding",
+};
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const navIndicator = getNavIndicator(pathname);
+  const [activeSection, setActiveSection] = useState<string | null>("check-in");
+  const isHomePage = pathname === "/";
 
   const navItems = [
-    { href: "/terminal", label: siteConfig.navLabels.terminal },
-    { href: "/departures", label: siteConfig.navLabels.departures },
-    { href: "/arrivals", label: siteConfig.navLabels.arrivals },
-    { href: "/lounge", label: siteConfig.navLabels.lounge },
-    { href: "/boarding-pass", label: siteConfig.navLabels.boardingPass },
+    { id: "check-in", label: "Check-in", href: "/" },
+    { id: "terminal", label: siteConfig.navLabels.terminal, href: "/#terminal" },
+    { id: "departures", label: siteConfig.navLabels.departures, href: "/#departures" },
+    { id: "arrivals", label: siteConfig.navLabels.arrivals, href: "/#arrivals" },
+    { id: "lounge", label: siteConfig.navLabels.lounge, href: "/#lounge" },
+    { id: "boarding-pass", label: siteConfig.navLabels.boardingPass, href: "/#boarding-pass" },
   ] as const;
 
+  const scrollToSection = useCallback((id: string) => {
+    if (id === "check-in") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.history.replaceState(null, "", "/");
+    } else {
+      const el = document.getElementById(id);
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.replaceState(null, "", `/#${id}`);
+      }
+    }
+  }, []);
+
+  const handleNavClick = useCallback(
+    (e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string) => {
+      if (isHomePage) {
+        e.preventDefault();
+        scrollToSection(id);
+      }
+    },
+    [isHomePage, scrollToSection]
+  );
+
+  useEffect(() => {
+    const hash = typeof window !== "undefined" ? window.location.hash.slice(1) : "";
+    if (hash && SECTION_IDS.includes(hash as (typeof SECTION_IDS)[number])) {
+      requestAnimationFrame(() => {
+        const el = document.getElementById(hash);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!isHomePage) return;
+
+    const visibility: Record<string, number> = {};
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          visibility[entry.target.id] = entry.intersectionRatio;
+        }
+        const mostVisible = Object.entries(visibility).reduce<[string, number]>(
+          (best, curr) => ((curr[1] ?? 0) > (best[1] ?? 0) ? curr : best),
+          ["check-in", 0]
+        );
+        if (mostVisible[1] > 0) {
+          setActiveSection(mostVisible[0]);
+          const newHash = mostVisible[0] === "check-in" ? "" : mostVisible[0];
+          const expectedHash = newHash ? `#${newHash}` : "";
+          if (window.location.hash !== expectedHash) {
+            window.history.replaceState(null, "", newHash ? `/#${newHash}` : "/");
+          }
+        }
+      },
+      { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: "-80px 0px -50% 0px" }
+    );
+
+    for (const id of SECTION_IDS) {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    }
+
+    return () => observer.disconnect();
+  }, [isHomePage, pathname]);
+
+  const terminalStatus = getTerminalStatus(isHomePage ? activeSection : null);
+  const displayActive = isHomePage ? activeSection : (pathname.startsWith("/departures") ? "departures" : pathname.startsWith("/arrivals") ? "arrivals" : null);
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-neutral-200/60">
-        <nav className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-          <div className="flex h-14 items-center justify-between gap-2 sm:gap-4">
+    <div className="min-h-screen flex flex-col bg-[var(--bg-dark)]">
+      <header className="sticky top-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--bg-charcoal)]/95 backdrop-blur-md">
+        <nav
+          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+          aria-label="Terminal wayfinding"
+        >
+          <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
             <Link
-              href="/terminal"
-              className="flex-shrink-0 text-sm font-medium text-neutral-900 hover:text-neutral-600 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded"
+              href="/"
+              className="flex items-center gap-2 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)] rounded pl-1"
             >
-              {siteConfig.siteName}
+              <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-amber)]" animate />
+              <span className="text-xs sm:text-sm font-medium tracking-wide text-[var(--text-primary)] uppercase hidden sm:inline">
+                {siteConfig.airportName}
+              </span>
             </Link>
 
-            <div className="flex items-center gap-3 sm:gap-6 overflow-x-auto scrollbar-hide min-w-0">
-              {navItems.map(({ href, label }) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className={`flex-shrink-0 text-sm transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded ${
-                    pathname === href || pathname.startsWith(href + "/")
-                      ? "text-neutral-900 font-medium"
-                      : "text-neutral-600 hover:text-neutral-900"
-                  }`}
-                >
-                  {label}
-                </Link>
-              ))}
+            <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto scrollbar-hide min-w-0 py-2 -ml-2">
+              {navItems.map(({ id, label, href }) => {
+                const isActive = displayActive === id;
+                return (
+                  <a
+                    key={id}
+                    href={href}
+                    onClick={(e) => handleNavClick(e, id, href)}
+                    className={`flex-shrink-0 px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)] rounded ${
+                      isActive
+                        ? "text-[var(--accent-amber)]"
+                        : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
+                    }`}
+                  >
+                    {label}
+                  </a>
+                );
+              })}
             </div>
 
-            <div className="flex items-center gap-3">
-              {navIndicator && (
-                <span className="text-xs text-neutral-500 hidden sm:inline">
-                  {navIndicator}
+            <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
+              {displayActive && (
+                <span
+                  className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)]/80 uppercase tracking-wider"
+                  aria-label="Current section"
+                >
+                  {SECTION_LABELS[displayActive] ?? displayActive}
                 </span>
               )}
-              <div className="flex gap-3" aria-label="Social links">
+              <motion.span
+                key={terminalStatus}
+                initial={{ opacity: 0, y: -2 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-[10px] sm:text-xs font-medium text-[var(--text-muted)]"
+              >
+                {terminalStatus}
+              </motion.span>
+              <TerminalClock className="hidden sm:block text-[var(--accent-amber)] font-mono" />
+              <div className="hidden sm:flex gap-1 border-l border-[var(--border-subtle)] pl-3" aria-label="Social links">
                 <a
                   href={siteConfig.socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-neutral-500 hover:text-neutral-900 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] rounded"
                   aria-label="GitHub"
                 >
-                  <GitHubIcon className="w-4 h-4" />
+                  <GitHubIcon className="w-3.5 h-3.5" />
                 </a>
                 <a
                   href={siteConfig.socialLinks.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-neutral-500 hover:text-neutral-900 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] rounded"
                   aria-label="Twitter"
                 >
-                  <TwitterIcon className="w-4 h-4" />
+                  <TwitterIcon className="w-3.5 h-3.5" />
                 </a>
                 <a
                   href={siteConfig.socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-neutral-500 hover:text-neutral-900 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-400 focus:ring-offset-2 rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] rounded"
                   aria-label="LinkedIn"
                 >
-                  <LinkedInIcon className="w-4 h-4" />
+                  <LinkedInIcon className="w-3.5 h-3.5" />
                 </a>
               </div>
             </div>
@@ -92,9 +204,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <main className="flex-1">{children}</main>
 
-      <footer className="border-t border-neutral-200/60 py-6">
-        <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center text-sm text-neutral-500">
-          {siteConfig.siteName} · Terminal
+      <InfoDesk />
+
+      <footer className="border-t border-[var(--border-subtle)] py-3 sm:py-4 bg-[var(--bg-charcoal)]/50">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+          <span className="text-[10px] sm:text-xs text-[var(--text-muted)] font-mono uppercase tracking-wider">
+            {siteConfig.airportName}
+          </span>
+          <span className="text-[10px] text-[var(--text-muted)]/70 uppercase tracking-widest hidden sm:inline">
+            You are here
+          </span>
         </div>
       </footer>
     </div>
