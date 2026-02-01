@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { BoardingModal } from "@/components/BoardingModal";
 import { BoardingTransition } from "@/components/BoardingTransition";
 import { DeparturesBoardDisplay } from "@/components/DeparturesBoardDisplay";
+import { AirportIcon } from "@/components/AirportIcon";
 import { projects } from "@/data/departures";
 
 export function DeparturesBoard() {
@@ -16,12 +17,9 @@ export function DeparturesBoard() {
     ? projects.find((p) => p.slug === boardingSlug)
     : null;
 
-  const handleBoard = useCallback(
-    (slug: string) => {
-      setTransitionSlug(slug);
-    },
-    []
-  );
+  const handleBoard = useCallback((slug: string) => {
+    setTransitionSlug(slug);
+  }, []);
 
   const handleTransitionComplete = useCallback(() => {
     if (transitionSlug) {
@@ -33,19 +31,22 @@ export function DeparturesBoard() {
 
   return (
     <>
-      <section className="relative py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
+      <section className="relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 z-10">
+        <div className="mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-8 ml-0 sm:ml-4"
+            className="mb-10 flex items-start gap-2"
           >
-            <h1 className="text-2xl sm:text-3xl font-light text-[var(--text-primary)]">
-              Departures
-            </h1>
-            <p className="text-sm text-[var(--text-secondary)] mt-1">
-              A few things I'm getting ready to ship.
-            </p>
+            <AirportIcon src="/airport-icons/gate-sign.svg" className="w-5 h-5 opacity-[0.12] flex-shrink-0 mt-0.5" />
+            <div>
+              <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2" style={{ fontFamily: "var(--font-display)" }}>
+                Departures
+              </h1>
+              <p className="font-body text-base text-[var(--text-secondary)]">
+                A few things I&apos;m getting ready to ship.
+              </p>
+            </div>
           </motion.div>
 
           <motion.div

@@ -6,24 +6,38 @@ export interface Arrival {
   slug: string;
   from: string;
   title: string;
-  shortDesc: string;
+  impact: string;
   details: string;
 }
 
 export const arrivals: Arrival[] = [
   {
-    slug: "experience-one",
-    from: "[Origin / Context]",
-    title: "[Experience Title]",
-    shortDesc: "[One-line summary]",
-    details: "[Longer description, lessons, outcomes.]",
+    slug: "datastealth",
+    from: "DataStealth / Cybersecurity Startup",
+    title: "Product Engineering",
+    impact: "Built AEO tooling and automation systems that compressed demo cycles by 60%. Worked on ROI dashboards and risk posture visualization.",
+    details: "Longer description, lessons, outcomes.",
   },
   {
-    slug: "experience-two",
-    from: "[Another Origin]",
-    title: "[Another Experience]",
-    shortDesc: "[Short summary]",
-    details: "[Details placeholder]",
+    slug: "alpen-capital",
+    from: "Alpen Capital / M&A",
+    title: "Investment Analysis",
+    impact: "Supported $50M+ in deal flow. Built financial models and conducted due diligence across healthcare and tech sectors.",
+    details: "Details placeholder.",
+  },
+  {
+    slug: "ace-consulting",
+    from: "ACE Consulting Group",
+    title: "Consulting",
+    impact: "Consulting and analysis work.",
+    details: "Details placeholder.",
+  },
+  {
+    slug: "waterloo-venture",
+    from: "Waterloo Venture Group",
+    title: "Venture",
+    impact: "Venture and investment work.",
+    details: "Details placeholder.",
   },
 ];
 

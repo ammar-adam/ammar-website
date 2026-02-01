@@ -5,37 +5,64 @@ import { boardingPassConfig } from "@/data/boardingPass";
 
 export function BoardingPassViewer() {
   return (
-    <section className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-2xl ml-0 sm:ml-4">
+    <section className="py-14 sm:py-20 px-4 sm:px-6 lg:px-12 z-10">
+      <div className="mx-auto max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <p className="text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] mb-4">
+          <p className="font-mono text-xs uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-3">
             Boarding Pass Office
           </p>
-          <h1 className="text-2xl sm:text-3xl font-light text-[var(--text-primary)] mb-2">
+          <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2 font-display">
             Boarding Pass
           </h1>
-          <p className="text-sm text-[var(--text-secondary)] mb-8">
+          <p className="text-lg text-[var(--text-secondary)] mb-8">
             {boardingPassConfig.displayName}
           </p>
 
-          <div className="mb-8">
+          <div
+            className="boarding-pass rounded-xl overflow-hidden"
+            style={{
+              background: "var(--bg-elevated)",
+              border: "1px solid var(--border-medium)",
+              boxShadow: "var(--shadow-md)",
+              padding: "32px",
+            }}
+          >
             <a
               href={boardingPassConfig.resumeFileUrl}
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-2.5 text-sm font-medium text-[var(--bg-dark)] bg-[var(--accent-amber)] hover:bg-[#fbbf24] rounded-lg border border-[var(--accent-amber)]/30 transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]"
+              className="text-sm text-[var(--text-tertiary)] hover:text-[var(--accent-warm)] transition-colors mb-6 inline-block"
             >
-              Download PDF
-              <span aria-hidden>→</span>
+              {boardingPassConfig.ctaLabel}
             </a>
-          </div>
 
-          <div className="rounded-xl border-2 border-[var(--border-subtle)] bg-[var(--bg-elevated)]/40 p-6 sm:p-8">
-            <div className="space-y-8">
+            <div
+              className="h-24 w-full rounded mb-4 opacity-70"
+              style={{
+                background: `repeating-linear-gradient(
+                  90deg,
+                  var(--text-primary) 0px,
+                  var(--text-primary) 2px,
+                  transparent 2px,
+                  transparent 4px,
+                  var(--text-primary) 4px,
+                  var(--text-primary) 5px,
+                  transparent 5px,
+                  transparent 8px
+                )`,
+              }}
+              aria-hidden
+            />
+
+            <p className="text-[10px] text-[var(--text-muted)] mb-6">
+              Generated from terminal record.
+            </p>
+
+            <div className="space-y-6">
               {boardingPassConfig.sections.map((section, i) => (
                 <motion.section
                   key={section.title}
@@ -43,27 +70,27 @@ export function BoardingPassViewer() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.1 * i }}
                 >
-                  <h2 className="text-xs font-semibold text-[var(--text-muted)] uppercase tracking-widest mb-4">
+                  <h2 className="font-mono text-xs uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-3">
                     {section.title}
                   </h2>
-                  <ul className="space-y-4">
+                  <ul className="space-y-3">
                     {section.items.map((item, j) => (
                       <li
                         key={j}
-                        className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-4 border-l-2 border-[var(--accent-amber)]/40 pl-4"
+                        className="boarding-pass__entry pl-4 border-l-2 border-[var(--accent-warm)]"
                       >
                         <div className="flex flex-wrap items-baseline gap-2">
-                          <span className="font-semibold text-[var(--text-primary)]">
+                          <span className="text-base font-bold text-[var(--text-primary)] font-display">
                             {item.role}
                           </span>
                           <span className="text-[var(--text-muted)] hidden sm:inline">·</span>
                           <span className="text-[var(--text-secondary)]">{item.org}</span>
-                          <span className="text-[var(--text-muted)] text-sm font-mono">
+                          <span className="font-mono text-sm text-[var(--text-tertiary)]">
                             {item.period}
                           </span>
                         </div>
                         {item.desc && (
-                          <p className="text-sm text-[var(--text-secondary)] mt-1 sm:mt-0">
+                          <p className="text-sm text-[var(--text-secondary)] leading-relaxed mt-2">
                             {item.desc}
                           </p>
                         )}

@@ -113,13 +113,13 @@ export function BoardingModal({
             <div className="flex flex-col sm:flex-row gap-3">
               <button
                 onClick={handleContinue}
-                className="px-4 py-2.5 text-sm font-medium text-[var(--bg-dark)] bg-[var(--accent-amber)] hover:bg-[#fbbf24] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]"
+                className="cta-primary px-4 py-2.5"
               >
                 Continue
               </button>
               <button
                 onClick={handleSkip}
-                className="px-4 py-2.5 text-sm font-medium text-[var(--text-secondary)] hover:text-[var(--text-primary)] rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]"
+                className="cta-secondary px-4 py-2.5"
               >
                 Skip
               </button>

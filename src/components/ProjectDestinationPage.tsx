@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Project } from "@/data/departures";
+import { AirportIcon } from "@/components/AirportIcon";
 
 const SEAT_MAP = [
   { id: "A1", label: "Overview", key: "overview" as const },
@@ -12,7 +13,7 @@ const SEAT_MAP = [
   { id: "B1", label: "Tech Stack", key: "build" as const },
   { id: "B2", label: "Architecture", key: "architecture" as const },
   { id: "C1", label: "Demo", key: "demo" as const },
-  { id: "C2", label: "Links", key: "links" as const },
+  { id: "C2", label: "Reflection", key: "links" as const },
 ] as const;
 
 type SeatId = (typeof SEAT_MAP)[number]["id"];
@@ -33,7 +34,7 @@ function SeatmapGrid({
 }) {
   return (
     <div
-      className="grid grid-cols-2 gap-3 sm:gap-4 font-mono text-xs tracking-wide"
+      className="grid grid-cols-2 gap-4 font-mono text-sm font-semibold"
       role="listbox"
       aria-label="Seatmap sections"
     >
@@ -46,13 +47,12 @@ function SeatmapGrid({
           onClick={() => onSelect(seat.id)}
           title={seat.label}
           className={`
-            flex items-center justify-center rounded border transition-colors
-            w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16
-            focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)]
+            aspect-square flex items-center justify-center rounded-lg border transition-all duration-200
+            focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)]
             ${
               activeSeat === seat.id
-                ? "border-2 border-[var(--accent-amber)] bg-[var(--accent-amber-dim)] text-[var(--accent-amber)]"
-                : "border border-[var(--border-subtle)] text-[var(--text-muted)] hover:border-[var(--text-muted)]/70 hover:text-[var(--text-secondary)]"
+                ? "seat--selected"
+                : "bg-[var(--bg-surface)] border-[var(--border-subtle)] text-[var(--text-secondary)] hover:border-[var(--border-medium)] hover:bg-[var(--bg-elevated)]"
             }
           `}
         >
@@ -84,27 +84,28 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
   const activeSection = SEAT_MAP.find((s) => s.id === activeSeat)!;
 
   const getContent = () => {
+    const textClass = "text-[var(--text-secondary)] text-sm leading-[1.6]";
     switch (activeSection.key) {
       case "overview":
-        return <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{project.overview}</p>;
+        return <p className={textClass}>{project.overview}</p>;
       case "problem":
         return (
-          <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+          <p className={textClass}>
             {project.problem || project.overview}
           </p>
         );
       case "build":
-        return <p className="text-[var(--text-secondary)] text-sm leading-relaxed">{project.build}</p>;
+        return <p className={textClass}>{project.build}</p>;
       case "architecture":
         return (
-          <p className="text-[var(--text-secondary)] text-sm leading-relaxed">
+          <p className={textClass}>
             {project.architecture || project.build}
           </p>
         );
       case "demo":
         return (
-          <div className="space-y-4">
-            <div className="relative aspect-video w-full overflow-hidden rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-subtle)]">
+          <div className="space-y-3">
+            <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-compact)] elevated">
               <Image
                 src={project.screenshot}
                 alt={`${project.routeName}`}
@@ -118,7 +119,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
                 href={project.links.find((l) => l.label.toLowerCase().includes("demo"))!.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-[var(--accent-amber)] hover:underline"
+                className="text-sm text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
               >
                 View demo →
               </a>
@@ -134,7 +135,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[var(--accent-amber)] hover:underline"
+                  className="text-sm text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
                 >
                   {link.label} →
                 </a>
@@ -148,68 +149,67 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
   };
 
   return (
-    <article className="py-12 sm:py-16 px-4 sm:px-6 lg:px-8">
+    <article className="page-level-gate density-compact py-10 sm:py-14 px-4 sm:px-6 lg:px-12 z-10">
       <div className="mx-auto max-w-5xl">
         <motion.div
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-6"
         >
           <Link
             href="/#departures"
-            className="text-sm text-[var(--text-muted)] hover:text-[var(--accent-amber)] transition-colors"
+            className="text-xs text-[var(--text-tertiary)] hover:text-[var(--accent-warm)] transition-colors"
           >
             ← Departures
           </Link>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row gap-10 lg:gap-16">
-          {/* Seatmap */}
+        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.1 }}
-            className="flex-shrink-0 w-full lg:w-[400px]"
+            transition={{ delay: 0.05 }}
+            className="elevated rounded-[var(--radius-card)] p-5"
           >
-            <p className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-mono">
+            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-4">
               Cabin
             </p>
-            <div className="relative w-full max-w-[400px] p-6 sm:p-8 rounded-xl border border-[var(--border-subtle)]">
-              <SeatmapGrid activeSeat={activeSeat} onSelect={handleSeatSelect} />
-            </div>
-            <p className="text-[10px] text-[var(--text-muted)] mt-3">
+            <SeatmapGrid activeSeat={activeSeat} onSelect={handleSeatSelect} />
+            <p className="font-mono text-[10px] text-[var(--text-tertiary)] mt-4 text-center">
               {activeSection.label}
             </p>
           </motion.div>
 
-          {/* Content panel */}
           <motion.div
             key={activeSeat}
             initial={{ opacity: 0.7 }}
             animate={{ opacity: 1 }}
-            transition={{ duration: 0.2 }}
-            className="flex-1 min-w-0"
+            transition={{ duration: 0.15 }}
+            className="elevated rounded-[var(--radius-card)] p-6"
           >
-            <header className="mb-6">
-              <span className="font-mono text-sm text-[var(--accent-amber)]">
+            <header className="mb-5 relative">
+              <div className="absolute -top-0.5 right-0 opacity-[0.08]">
+                <AirportIcon src="/airport-icons/boarding-pass.svg" className="w-4 h-4" />
+              </div>
+              <span className="font-mono text-xs text-[var(--accent-warm)]">
                 {project.flightCode}
               </span>
-              <h1 className="text-2xl font-light text-[var(--text-primary)] mt-1">
-                {project.routeName}
+              <h1 className="page-level-gate__title text-xl font-semibold text-[var(--text-primary)] mt-1 font-display">
+                {project.destination}
               </h1>
-              <p className="text-sm text-[var(--text-secondary)] mt-1">
+              <p className="page-level-gate__body text-sm text-[var(--text-secondary)] mt-1.5">
                 {project.shortDesc}
               </p>
-              <span className="text-[10px] text-[var(--text-muted)] mt-2 block">
-                Gate {project.gate} · {project.destination}
+              <span className="text-[10px] text-[var(--text-tertiary)] mt-2 block">
+                Gate {project.gate} · {project.routeName}
               </span>
             </header>
 
-            <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] mb-4 font-mono">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] mb-4">
               {activeSection.label}
-            </div>
+            </p>
 
-            {getContent()}
+            <div className="page-level-gate__body leading-relaxed">{getContent()}</div>
           </motion.div>
         </div>
       </div>

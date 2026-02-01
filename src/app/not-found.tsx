@@ -9,7 +9,7 @@ export default function NotFound() {
       </p>
       <Link
         href="/terminal"
-        className="mt-6 text-sm text-[var(--accent-amber)] hover:underline underline-offset-4"
+        className="mt-6 text-sm text-[var(--accent-warm)] hover:underline underline-offset-4"
       >
         → Terminal
       </Link>

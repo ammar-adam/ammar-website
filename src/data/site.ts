@@ -23,9 +23,9 @@ export const siteConfig = {
   },
 
   checkIn: {
-    headline: "[Welcome — I'll be your guide]",
-    subtext: "[Calm arrival message. Where would you like to go?]",
-    ctaTerminal: "Head to Terminal",
+    headline: "Welcome. Where to?",
+    subtext: "Choose a section. Take your time.",
+    ctaTerminal: "Proceed to Terminal",
     ctaDepartures: "View Departures",
   },
 } as const;

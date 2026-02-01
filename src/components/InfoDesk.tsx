@@ -67,7 +67,7 @@ export function InfoDesk() {
                   key={s}
                   type="button"
                   onClick={() => send(s)}
-                  className="block w-full text-left text-sm text-[var(--accent-amber)] hover:underline"
+                  className="block w-full text-left text-sm text-[var(--accent-warm)] hover:underline"
                 >
                   {s}
                 </button>
@@ -97,7 +97,7 @@ export function InfoDesk() {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder="Ask something..."
-              className="w-full bg-transparent border border-[var(--border-subtle)] rounded px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--accent-amber)]"
+              className="w-full bg-transparent border border-[var(--border-subtle)] rounded px-3 py-2 text-sm text-[var(--text-primary)] placeholder:text-[var(--text-muted)] focus:outline-none focus:ring-1 focus:ring-[var(--accent-warm)]"
               aria-label="Question"
             />
           </form>
@@ -106,7 +106,7 @@ export function InfoDesk() {
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="px-4 py-2 text-sm font-medium text-[var(--text-primary)] border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated)]/80 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)]"
+        className="px-4 py-2 text-sm font-medium text-[var(--text-primary)] border border-[var(--border-subtle)] rounded-lg bg-[var(--bg-elevated)] hover:bg-[var(--bg-elevated)]/80 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)]"
         aria-label={isOpen ? "Close Info Desk" : "Open Info Desk"}
       >
         Info Desk

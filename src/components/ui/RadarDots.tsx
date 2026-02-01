@@ -13,7 +13,7 @@ export function RadarDots({ className = "" }: { className?: string }) {
       {Array.from({ length: DOT_COUNT }).map((_, i) => (
         <motion.div
           key={i}
-          className="absolute w-1 h-1 rounded-full bg-[var(--accent-amber)]/25"
+          className="absolute w-1 h-1 rounded-full bg-[var(--accent-warm)]/25"
           style={{
             left: `${15 + (i * 7) % 70}%`,
             top: `${10 + (i * 11) % 80}%`,

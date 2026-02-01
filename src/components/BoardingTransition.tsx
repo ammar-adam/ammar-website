@@ -24,7 +24,7 @@ export function BoardingTransition({
     <AnimatePresence>
       {isActive && (
         <motion.div
-          className="fixed inset-0 z-[110] flex items-center justify-center bg-[var(--bg-dark)]/95 pointer-events-none"
+          className="fixed inset-0 z-[110] flex items-center justify-center bg-[var(--bg-deep)]/95 pointer-events-none"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

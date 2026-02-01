@@ -113,8 +113,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const displayActive = isHomePage ? activeSection : (pathname.startsWith("/departures") ? "departures" : pathname.startsWith("/arrivals") ? "arrivals" : null);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-dark)]">
-      <header className="sticky top-0 z-50 border-b border-[var(--border-subtle)] bg-[var(--bg-charcoal)]/95 backdrop-blur-md">
+    <div className="min-h-screen flex flex-col bg-transparent relative z-10">
+      <header className="sticky top-0 z-50 border-b border-[var(--border-subtle)] glass-surface">
         <nav
           className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
           aria-label="Terminal wayfinding"
@@ -122,9 +122,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
             <Link
               href="/"
-              className="flex items-center gap-2 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)] rounded pl-1"
+              className="flex items-center gap-2 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded pl-1"
             >
-              <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-amber)]" animate />
+              <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-warm)]" animate />
               <span className="text-xs sm:text-sm font-medium tracking-wide text-[var(--text-primary)] uppercase hidden sm:inline">
                 {siteConfig.airportName}
               </span>
@@ -138,9 +138,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     key={id}
                     href={href}
                     onClick={(e) => handleNavClick(e, id, href)}
-                    className={`flex-shrink-0 px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] focus:ring-offset-2 focus:ring-offset-[var(--bg-dark)] rounded ${
+                    className={`flex-shrink-0 px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded ${
                       isActive
-                        ? "text-[var(--accent-amber)]"
+                        ? "text-[var(--accent-warm)]"
                         : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
                     }`}
                   >
@@ -167,13 +167,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               >
                 {terminalStatus}
               </motion.span>
-              <TerminalClock className="hidden sm:block text-[var(--accent-amber)] font-mono" />
+              <TerminalClock className="hidden sm:block text-[var(--accent-warm)] font-mono" />
               <div className="hidden sm:flex gap-1 border-l border-[var(--border-subtle)] pl-3" aria-label="Social links">
                 <a
                   href={siteConfig.socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="GitHub"
                 >
                   <GitHubIcon className="w-3.5 h-3.5" />
@@ -182,7 +182,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   href={siteConfig.socialLinks.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="Twitter"
                 >
                   <TwitterIcon className="w-3.5 h-3.5" />
@@ -191,7 +191,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   href={siteConfig.socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-amber)] rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="LinkedIn"
                 >
                   <LinkedInIcon className="w-3.5 h-3.5" />
@@ -206,7 +206,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
       <InfoDesk />
 
-      <footer className="border-t border-[var(--border-subtle)] py-3 sm:py-4 bg-[var(--bg-charcoal)]/50">
+      <footer className="border-t border-[var(--border-subtle)] py-3 sm:py-4 bg-[var(--bg-surface)]/80">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex items-center justify-between">
           <span className="text-[10px] sm:text-xs text-[var(--text-muted)] font-mono uppercase tracking-wider">
             {siteConfig.airportName}
