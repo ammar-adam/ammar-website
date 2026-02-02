@@ -1,13 +1,15 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from "framer-motion";
 import { loungeContent, cafeContent } from "@/data/lounge";
+import { siteConfig } from "@/data/site";
 import { AirportIcon } from "@/components/AirportIcon";
 
 export function LoungePanel() {
   return (
-    <section className="relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 z-10">
-      <div className="mx-auto max-w-3xl">
+    <section className="lounge-page relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 z-10">
+      <div className="mx-auto max-w-[75rem]">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
@@ -16,30 +18,65 @@ export function LoungePanel() {
             background: "linear-gradient(180deg, var(--bg-surface) 0%, #2a3038 100%)",
           }}
         >
-          <div className="absolute top-6 right-6 opacity-[0.06] pointer-events-none">
-            <AirportIcon src="/airport-icons/window.svg" className="w-14 h-14" />
+          <div className="lounge-window absolute right-0 top-[10%] w-64 sm:w-80 h-72 sm:h-96 opacity-40 pointer-events-none">
+            <div className="window-frame w-full h-full border-2 border-[rgba(232,166,100,0.15)] rounded-lg" style={{
+              background: "linear-gradient(180deg, rgba(135,180,200,0.05) 0%, rgba(232,166,100,0.05) 100%)",
+              boxShadow: "inset 0 0 60px rgba(232,166,100,0.1)",
+            }} />
           </div>
 
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--text-tertiary)] mb-4">
-            Lounge
-          </p>
-          <h1 className="text-xl font-bold text-[var(--text-primary)] mb-2 font-display">
-            {loungeContent.headline}
-          </h1>
-          <p className="text-base text-[var(--text-secondary)] leading-relaxed mb-8">
-            {loungeContent.blurb}
-          </p>
+          <div className="lounge-intro flex flex-col sm:flex-row items-start sm:items-center gap-6 mb-10">
+            {siteConfig.photoUrl ? (
+              <div className="lounge-photo-container flex flex-col items-center gap-3 flex-shrink-0">
+                <div className="relative w-28 h-28 sm:w-32 sm:h-32 rounded-full overflow-hidden border-[3px] border-[var(--accent-warm)] lounge-photo-frame">
+                  <Image
+                  src={siteConfig.photoUrl}
+                  alt=""
+                  fill
+                  className="object-cover"
+                  sizes="128px"
+                />
+                </div>
+                {(siteConfig.photoCaption.name || siteConfig.photoCaption.subtitle) && (
+                  <div className="photo-caption flex flex-col items-center gap-1">
+                    {siteConfig.photoCaption.name && (
+                      <span className="photo-name font-display text-sm font-semibold text-[var(--text-primary)]">
+                        {siteConfig.photoCaption.name}
+                      </span>
+                    )}
+                    {siteConfig.photoCaption.subtitle && (
+                      <span className="photo-subtitle font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">
+                        {siteConfig.photoCaption.subtitle}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            ) : null}
+            <div>
+              <p className="font-mono text-xs uppercase tracking-[0.2em] text-[var(--text-tertiary)] mb-2">
+                Lounge
+              </p>
+              <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1 font-display">
+                {loungeContent.headline}
+              </h1>
+              <p className="text-base text-[var(--text-secondary)] leading-relaxed">
+                {loungeContent.blurb}
+              </p>
+            </div>
+          </div>
 
           <p className="font-mono text-xs uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-5">
             Interests
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 mb-16">
+          <div className="flex flex-wrap gap-3 mb-12">
             {loungeContent.interests.map((interest, i) => (
               <motion.div
                 key={interest}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 0.08 * i }}
+                transition={{ delay: 0.05 * i }}
+                className="flex-shrink-0"
               >
                 <div className="interest-pill">
                   {interest}

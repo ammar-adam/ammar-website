@@ -76,6 +76,81 @@
   font-size: var(--text-xs);
 }
 
+/* Background people silhouettes */
+.background-people {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.person-silhouette {
+  position: absolute;
+  width: 100px;
+  height: 180px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  opacity: 0.05;
+  filter: grayscale(100%) blur(2px);
+}
+
+.checkin-people .checkin-people-person-1 {
+  left: 8%;
+  bottom: 15%;
+}
+
+.checkin-people .checkin-people-person-2 {
+  right: 12%;
+  bottom: 22%;
+}
+
+.terminal-people .terminal-people-person-1 {
+  left: 5%;
+  bottom: 18%;
+}
+
+.terminal-people .terminal-people-person-2 {
+  right: 8%;
+  bottom: 12%;
+}
+
+.departures-people .departures-people-person-1 {
+  left: 10%;
+  bottom: 20%;
+}
+
+.departures-people .departures-people-person-2 {
+  right: 10%;
+  bottom: 15%;
+}
+
+.arrivals-people .arrivals-people-person-1 {
+  left: 6%;
+  bottom: 18%;
+}
+
+.arrivals-people .arrivals-people-person-2 {
+  right: 6%;
+  bottom: 22%;
+}
+
+.lounge-people .lounge-people-person-1 {
+  left: 12%;
+  bottom: 15%;
+}
+
+.lounge-people .lounge-people-person-2 {
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 12%;
+}
+
+.lounge-people .lounge-people-person-3 {
+  right: 14%;
+  bottom: 18%;
+}
+
 @theme inline {
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
@@ -243,6 +318,78 @@ a:hover {
   box-shadow: var(--glow-subtle);
 }
 
+/* Baggage carousel */
+.conveyor-belt {
+  background: linear-gradient(180deg, rgba(37, 43, 54, 0.55) 0%, rgba(47, 55, 66, 0.75) 50%, rgba(37, 43, 54, 0.55) 100%);
+  border: 1px solid var(--border-medium);
+  border-radius: 12px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: inset 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.conveyor-belt::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  height: 3px;
+  background: repeating-linear-gradient(90deg, rgba(232, 166, 100, 0.25) 0px, rgba(232, 166, 100, 0.25) 10px, transparent 10px, transparent 20px);
+  animation: beltRollers 2s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes beltRollers {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(20px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .conveyor-belt::before {
+    animation: none;
+  }
+}
+
+.belt-track {
+  animation: beltMove 40s linear infinite;
+  will-change: transform;
+}
+
+.belt-track.belt-paused {
+  animation-play-state: paused;
+}
+
+@keyframes beltMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.baggage-card {
+  width: 200px;
+  background: var(--bg-elevated);
+  border: 2px solid var(--border-medium);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .belt-track {
+    animation: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -251,6 +398,443 @@ a:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+}
+
+/* Globe network flight path animation */
+@keyframes flightPathDraw {
+  0% {
+    stroke-dashoffset: 200;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Terminal transition / moving walkway */
+.terminal-transition-wrap {
+  background: linear-gradient(
+    180deg,
+    var(--bg-deep) 0%,
+    rgba(47, 55, 66, 0.4) 50%,
+    var(--bg-deep) 100%
+  );
+}
+
+.label-icon {
+  animation: arrowMove 2.5s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .label-icon {
+    animation: none;
+  }
+}
+
+@keyframes arrowMove {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(6px);
+  }
+}
+
+/* Departures board mounting brackets */
+.departures-board-mounted {
+  position: relative;
+}
+
+.mount-bracket {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  border: 2px solid rgba(232, 166, 100, 0.35);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.mount-bracket::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: rgba(232, 166, 100, 0.5);
+  border-radius: 50%;
+}
+
+.mount-tl {
+  top: -8px;
+  left: 12px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 6px;
+}
+
+.mount-tl::before {
+  top: 6px;
+  left: 6px;
+}
+
+.mount-tr {
+  top: -8px;
+  right: 12px;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 6px;
+}
+
+.mount-tr::before {
+  top: 6px;
+  right: 6px;
+}
+
+.mount-bl {
+  bottom: -8px;
+  left: 12px;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 6px;
+}
+
+.mount-bl::before {
+  bottom: 6px;
+  left: 6px;
+}
+
+.mount-br {
+  bottom: -8px;
+  right: 12px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 6px;
+}
+
+.mount-br::before {
+  bottom: 6px;
+  right: 6px;
+}
+
+
+/* Boarding pass: paper texture + kiosk shadow */
+.boarding-pass.boarding-pass-kiosk {
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.01), rgba(255, 255, 255, 0.01) 1px, transparent 1px, transparent 2px),
+    var(--bg-elevated);
+  border: 1px solid var(--border-medium);
+  box-shadow:
+    var(--shadow-lg),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 24px 48px rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+
+.boarding-pass.boarding-pass-kiosk::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.018'/%3E%3C/svg%3E");
+  pointer-events: none;
+  border-radius: inherit;
+  z-index: 1;
+}
+
+.boarding-pass.boarding-pass-kiosk > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Page transition */
+.page-enter {
+  animation: pageSlideIn 0.5s ease-out;
+}
+
+@keyframes pageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Lounge photo frame */
+.lounge-photo-frame {
+  box-shadow: 0 0 20px rgba(232, 166, 100, 0.2), 0 6px 24px rgba(0, 0, 0, 0.35);
+}
+
+/* Check-in: ceiling structure */
+.checkin-page {
+  position: relative;
+}
+
+.checkin-page .checkin-ceiling {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 150px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(232, 166, 100, 0.03) 80px,
+      rgba(232, 166, 100, 0.03) 82px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 40px,
+      rgba(232, 166, 100, 0.02) 40px,
+      rgba(232, 166, 100, 0.02) 42px
+    );
+  pointer-events: none;
+  opacity: 0.35;
+  z-index: 0;
+}
+
+/* Check-in: floor reflection */
+.checkin-page .checkin-floor-reflection {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 200px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(232, 166, 100, 0.02) 50%,
+    rgba(232, 166, 100, 0.04) 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Gate lights */
+.gate-lights {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.light-beam {
+  position: absolute;
+  top: -10%;
+  width: 300px;
+  height: 500px;
+  background: radial-gradient(
+    ellipse at top,
+    rgba(232, 166, 100, 0.08) 0%,
+    transparent 70%
+  );
+  filter: blur(40px);
+}
+
+.light-beam.light-1 {
+  left: 20%;
+  animation: subtlePulse 8s ease-in-out infinite;
+}
+
+.light-beam.light-2 {
+  left: 50%;
+  transform: translateX(-50%);
+  animation: subtlePulse 10s ease-in-out infinite 2s;
+}
+
+.light-beam.light-3 {
+  left: 80%;
+  animation: subtlePulse 12s ease-in-out infinite 4s;
+}
+
+@keyframes subtlePulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .light-beam {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+/* Check-in hero background */
+.checkin-hero-bg {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+}
+
+.checkin-hero-bg::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(26, 30, 38, 0.85) 0%,
+    rgba(26, 30, 38, 0.95) 100%
+  );
+}
+
+/* Terminal: floor perspective */
+.terminal-floor-perspective {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 1400px;
+  height: 280px;
+  background-image:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 80px,
+      rgba(232, 166, 100, 0.04) 80px,
+      rgba(232, 166, 100, 0.04) 81px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 80px,
+      rgba(232, 166, 100, 0.04) 80px,
+      rgba(232, 166, 100, 0.04) 81px
+    );
+  opacity: 0.25;
+  pointer-events: none;
+  transform: translateX(-50%) perspective(1200px) rotateX(55deg) scaleY(1.8);
+  transform-origin: bottom center;
+}
+
+/* Terminal: glass windows */
+.terminal-windows {
+  position: absolute;
+  right: 0;
+  top: 10%;
+  width: 260px;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+  opacity: 0.12;
+  pointer-events: none;
+}
+
+.terminal-windows .window-pane {
+  width: 100%;
+  height: 160px;
+  border: 2px solid rgba(232, 166, 100, 0.2);
+  border-right: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(135, 180, 200, 0.05) 50%,
+    rgba(232, 166, 100, 0.03) 100%
+  );
+  position: relative;
+}
+
+.terminal-windows .window-pane::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(232, 166, 100, 0.15);
+}
+
+.terminal-windows .window-pane::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(232, 166, 100, 0.15);
+}
+
+/* Terminal: overhead signage */
+.overhead-signage {
+  position: absolute;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 100px;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.overhead-signage .sign-holder {
+  background: rgba(26, 30, 38, 0.9);
+  border: 1px solid rgba(232, 166, 100, 0.3);
+  border-radius: 4px;
+  padding: 6px 16px;
+  position: relative;
+}
+
+.overhead-signage .sign-holder::before {
+  content: "";
+  position: absolute;
+  top: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 24px;
+  background: rgba(232, 166, 100, 0.2);
+}
+
+.overhead-signage .sign-text {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.7rem;
+  color: var(--accent-warm);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+}
+
+/* Terminal page: floor grid + window frame */
+.terminal-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 120px 120px;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.terminal-page::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 200px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(232, 166, 100, 0.03) 100%
+  );
+  border-left: 2px solid rgba(232, 166, 100, 0.1);
+  pointer-events: none;
 }
 
 /* Section styles */
@@ -342,11 +926,54 @@ a:hover {
 }
 
 .departures-board {
-  background: var(--bg-elevated);
+  background: linear-gradient(
+    135deg,
+    rgba(47, 55, 66, 0.95) 0%,
+    rgba(37, 43, 54, 1) 50%,
+    rgba(47, 55, 66, 0.95) 100%
+  );
   border: 1px solid var(--border-medium);
   border-radius: var(--radius-card);
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  box-shadow:
+    var(--shadow-md),
+    inset 0 0 60px rgba(0, 0, 0, 0.25),
+    0 0 50px rgba(232, 166, 100, 0.06);
+  position: relative;
+}
+
+.departures-board-mounted .departures-board::before,
+.departures-board-mounted .elevated.departures-board::before {
+  content: "";
+  position: absolute;
+  inset: -16px;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(232, 166, 100, 0.1) 0%,
+    transparent 55%
+  );
+  z-index: -1;
+  filter: blur(24px);
+  pointer-events: none;
+}
+
+.departures-table {
+  position: relative;
+}
+
+.departures-table::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.025) 2px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+  pointer-events: none;
+  opacity: 0.25;
 }
 
 .departures-table thead th {
@@ -368,7 +995,26 @@ a:hover {
 .departure-status--boarding {
   background: var(--status-boarding);
   color: white;
-  box-shadow: 0 0 10px rgba(255, 112, 67, 0.2);
+  box-shadow: 0 0 12px rgba(255, 112, 67, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  animation: statusFlicker 5s ease-in-out infinite;
+}
+
+@keyframes statusFlicker {
+  0%,
+  88%,
+  100% {
+    opacity: 1;
+  }
+  92%,
+  96% {
+    opacity: 0.92;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .departure-status--boarding {
+    animation: none;
+  }
 }
 
 .departure-status--scheduled {
@@ -396,15 +1042,109 @@ a:hover {
   border: 1px solid var(--border-medium);
   border-left: 4px solid var(--accent-warm);
   border-radius: var(--radius-panel);
-  padding: 24px;
+  padding: 16px 18px;
   transition: all 0.2s ease;
-  box-shadow: var(--shadow-tight);
+  box-shadow: var(--shadow-tight), -4px 0 0 rgba(232, 166, 100, 0.08);
+  position: relative;
+}
+
+.arrival-card::before {
+  content: "";
+  position: absolute;
+  left: -4px;
+  top: 25%;
+  bottom: 25%;
+  width: 4px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(232, 166, 100, 0.5) 50%,
+    transparent 100%
+  );
+  filter: blur(4px);
+  pointer-events: none;
 }
 
 .arrival-card:hover {
   transform: translateY(-2px);
   border-left-color: var(--accent-glow);
   box-shadow: var(--shadow-md);
+}
+
+/* Arrivals floor markings */
+.arrivals-floor-markings {
+  position: absolute;
+  left: 4%;
+  top: 28%;
+  height: 45%;
+  width: 80px;
+  opacity: 0.12;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  justify-content: flex-start;
+}
+
+.arrivals-floor-markings .floor-arrow {
+  width: 50px;
+  height: 70px;
+  position: relative;
+}
+
+.arrivals-floor-markings .floor-arrow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 2px;
+  height: 42px;
+  background: var(--accent-warm);
+}
+
+.arrivals-floor-markings .floor-arrow::after {
+  content: "";
+  position: absolute;
+  top: 38px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-top: 18px solid var(--accent-warm);
+}
+
+/* Baggage claim zone marker */
+.carousel-zone-marker {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: rgba(26, 30, 38, 0.9);
+  border: 2px solid var(--accent-warm);
+  border-radius: 8px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.carousel-zone-marker .zone-number {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--accent-warm);
+  line-height: 1;
+}
+
+.carousel-zone-marker .zone-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .interest-pill {
@@ -478,9 +1218,298 @@ a:hover {
   box-shadow: var(--glow-subtle), inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 
+/* Cabin: aisle indicator + lighting */
+.cabin-container {
+  position: relative;
+}
+
+.cabin-container-lit {
+  background:
+    radial-gradient(
+      ellipse at top,
+      rgba(232, 166, 100, 0.04) 0%,
+      transparent 55%
+    ),
+    var(--bg-elevated);
+}
+
+.cabin-aisle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;
+  height: 60%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(
+    90deg,
+    rgba(26, 30, 38, 0.5) 0%,
+    rgba(26, 30, 38, 0.75) 50%,
+    rgba(26, 30, 38, 0.5) 100%
+  );
+  border-left: 1px solid rgba(232, 166, 100, 0.1);
+  border-right: 1px solid rgba(232, 166, 100, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.cabin-aisle .aisle-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.6rem;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  transform: rotate(-90deg);
+  white-space: nowrap;
+  opacity: 0.7;
+}
+
+/* Lounge door section */
+.lounge-door-section-link .door-svg {
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+/* Lounge room page */
+.lounge-room-page {
+  background:
+    radial-gradient(ellipse 800px 600px at 50% 0%, rgba(232, 166, 100, 0.08) 0%, transparent 50%),
+    radial-gradient(circle 400px at 85% 80%, rgba(232, 166, 100, 0.1) 0%, rgba(232, 166, 100, 0.05) 30%, transparent 60%),
+    radial-gradient(ellipse 300px 500px at 100% 35%, rgba(135, 180, 200, 0.06) 0%, rgba(232, 166, 100, 0.03) 40%, transparent 70%),
+    linear-gradient(135deg, #1a1e26 0%, #1f2430 50%, #252b36 100%);
+  padding: 24px 16px;
+  position: relative;
+}
+
+/* Lounge floor perspective */
+.lounge-floor-perspective {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 100%;
+  max-width: 1400px;
+  height: 380px;
+  background-image:
+    repeating-linear-gradient(0deg, transparent, transparent 60px, rgba(232, 166, 100, 0.04) 60px, rgba(232, 166, 100, 0.04) 61px),
+    repeating-linear-gradient(90deg, transparent, transparent 60px, rgba(232, 166, 100, 0.04) 60px, rgba(232, 166, 100, 0.04) 61px);
+  opacity: 0.18;
+  pointer-events: none;
+  transform: translateX(-50%) perspective(1000px) rotateX(62deg) scaleY(2.5);
+  transform-origin: bottom center;
+  z-index: 0;
+}
+
+/* Lounge ambient particles */
+.ambient-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(232, 166, 100, 0.25);
+  border-radius: 50%;
+  opacity: 0;
+  animation: particleFloat 18s linear infinite;
+}
+
+@keyframes particleFloat {
+  0% {
+    transform: translateY(100vh) translateX(0);
+    opacity: 0;
+  }
+  8% {
+    opacity: 0.35;
+  }
+  92% {
+    opacity: 0.35;
+  }
+  100% {
+    transform: translateY(-20px) translateX(25px);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .particle {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+/* Lounge hotspot hover glow */
+.lounge-room-page .hotspot:hover {
+  filter: url(#objectGlow) url(#objectShadow);
+}
+
+/* Lounge lamp animations */
+.lamp-bulb {
+  animation: lampPulse 4s ease-in-out infinite;
+}
+
+@keyframes lampPulse {
+  0%,
+  100% {
+    opacity: 0.8;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.glow-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: glowExpand 3s ease-out infinite;
+}
+
+.glow-ring-1 {
+  animation-delay: 0s;
+}
+
+.glow-ring-2 {
+  animation-delay: 0.5s;
+}
+
+.glow-ring-3 {
+  animation-delay: 1s;
+}
+
+@keyframes glowExpand {
+  0% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.25);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lamp-bulb,
+  .glow-ring {
+    animation: none;
+  }
+}
+
+/* Lounge floor lamp glow */
+.floor-lamp-glow {
+  position: absolute;
+  bottom: 12%;
+  right: 8%;
+  width: 180px;
+  height: 180px;
+  background: radial-gradient(
+    circle,
+    rgba(232, 166, 100, 0.12) 0%,
+    rgba(232, 166, 100, 0.04) 30%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  filter: blur(35px);
+  pointer-events: none;
+  animation: lampFlicker 8s ease-in-out infinite;
+}
+
+@keyframes lampFlicker {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .floor-lamp-glow {
+    animation: none;
+    opacity: 0.85;
+  }
+}
+
+/* Room hotspots */
+.lounge-room-page .hotspot .interactive-object {
+  transition: stroke 0.3s ease, filter 0.3s ease;
+}
+
+.lounge-room-page .hotspot:hover .interactive-object {
+  stroke: var(--accent-warm);
+  filter: brightness(1.15);
+}
+
+.lounge-room-page .hotspot:focus-visible {
+  outline: 2px solid var(--accent-warm);
+  outline-offset: 4px;
+}
+
+/* Room instruction animation */
+@keyframes fadePulse {
+  0%,
+  100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+.animate-fade-pulse {
+  animation: fadePulse 3s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-pulse {
+    animation: none;
+    opacity: 0.7;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slideUp 0.3s ease;
+}
+
+/* Lounge + global responsive */
 @media (max-width: 768px) {
   :root {
     --text-3xl: 2.25rem;
     --text-4xl: 2.5rem;
+  }
+
+  .photo-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cafe-actions {
+    flex-direction: column;
   }
 }

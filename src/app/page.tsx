@@ -1,8 +1,9 @@
 import { CheckInHero } from "@/components/CheckInHero";
+import { LoungeDoorSection } from "@/components/LoungeDoorSection";
 import { TerminalHubCards } from "@/components/TerminalHubCards";
+import { MovingWalkway } from "@/components/ambient/MovingWalkway";
 import { DeparturesBoard } from "@/components/DeparturesBoard";
 import { ArrivalsBoard } from "@/components/ArrivalsBoard";
-import { LoungePanel } from "@/components/LoungePanel";
 import { BoardingPassViewer } from "@/components/BoardingPassViewer";
 
 export default function HomePage() {
@@ -21,7 +22,7 @@ export default function HomePage() {
         <ArrivalsBoard />
       </section>
       <section id="lounge">
-        <LoungePanel />
+        <LoungeDoorSection />
       </section>
       <section id="boarding-pass">
         <BoardingPassViewer />

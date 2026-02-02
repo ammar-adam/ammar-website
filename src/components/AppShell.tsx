@@ -11,14 +11,6 @@ import { InfoDesk } from "@/components/InfoDesk";
 
 const SECTION_IDS = ["check-in", "terminal", "departures", "arrivals", "lounge", "boarding-pass"] as const;
 
-function getTerminalStatus(activeSection: string | null): string {
-  if (!activeSection || activeSection === "check-in") return "Arriving";
-  if (activeSection === "terminal") return "In Transit";
-  if (activeSection === "departures") return "Now Boarding";
-  if (activeSection === "arrivals") return "Baggage Claim Active";
-  return "In Transit";
-}
-
 const SECTION_LABELS: Record<string, string> = {
   "check-in": "Check-in",
   terminal: "Terminal",
@@ -34,7 +26,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const isHomePage = pathname === "/";
 
   const navItems = [
-    { id: "check-in", label: "Check-in", href: "/" },
     { id: "terminal", label: siteConfig.navLabels.terminal, href: "/#terminal" },
     { id: "departures", label: siteConfig.navLabels.departures, href: "/#departures" },
     { id: "arrivals", label: siteConfig.navLabels.arrivals, href: "/#arrivals" },
@@ -43,9 +34,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   ] as const;
 
   const scrollToSection = useCallback((id: string) => {
-    if (id === "check-in") {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-      window.history.replaceState(null, "", "/");
+    if (id === "terminal" || id === "check-in") {
+      const el = document.getElementById(id === "check-in" ? "check-in" : "terminal");
+      if (el) {
+        el.scrollIntoView({ behavior: "smooth" });
+        window.history.replaceState(null, "", id === "check-in" ? "/" : `/#${id}`);
+      } else if (id === "check-in") {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.history.replaceState(null, "", "/");
+      }
     } else {
       const el = document.getElementById(id);
       if (el) {
@@ -56,7 +53,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, []);
 
   const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string) => {
+    (e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string, isPage?: boolean) => {
+      if (isPage) return;
       if (isHomePage) {
         e.preventDefault();
         scrollToSection(id);
@@ -109,19 +107,25 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return () => observer.disconnect();
   }, [isHomePage, pathname]);
 
-  const terminalStatus = getTerminalStatus(isHomePage ? activeSection : null);
-  const displayActive = isHomePage ? activeSection : (pathname.startsWith("/departures") ? "departures" : pathname.startsWith("/arrivals") ? "arrivals" : null);
+  const displayActive = isHomePage ? activeSection : (pathname.startsWith("/departures") ? "departures" : pathname.startsWith("/arrivals") ? "arrivals" : pathname.startsWith("/lounge") ? "lounge" : pathname.startsWith("/boarding-pass") ? "boarding-pass" : "terminal");
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent relative z-10">
       <header className="sticky top-0 z-50 border-b border-[var(--border-subtle)] glass-surface">
         <nav
-          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"
+          className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-12"
           aria-label="Terminal wayfinding"
         >
-          <div className="flex h-14 sm:h-16 items-center justify-between gap-4">
+          <div className="flex h-14 sm:h-16 items-center justify-between gap-6 sm:gap-8 flex-nowrap">
             <Link
               href="/"
+              onClick={(e) => {
+                if (pathname === "/") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  window.history.replaceState(null, "", "/");
+                }
+              }}
               className="flex items-center gap-2 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded pl-1"
             >
               <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-warm)]" animate />
@@ -130,7 +134,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               </span>
             </Link>
 
-            <div className="flex items-center gap-2 sm:gap-4 overflow-x-auto scrollbar-hide min-w-0 py-2 -ml-2">
+            <div className="flex items-center gap-4 sm:gap-6 overflow-x-auto scrollbar-hide min-w-0 py-2 flex-nowrap">
               {navItems.map(({ id, label, href }) => {
                 const isActive = displayActive === id;
                 return (
@@ -138,7 +142,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     key={id}
                     href={href}
                     onClick={(e) => handleNavClick(e, id, href)}
-                    className={`flex-shrink-0 px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded ${
+                    className={`flex-shrink-0 px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded whitespace-nowrap ${
                       isActive
                         ? "text-[var(--accent-warm)]"
                         : "text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
@@ -150,25 +154,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               })}
             </div>
 
-            <div className="flex items-center gap-3 sm:gap-5 flex-shrink-0">
-              {displayActive && (
-                <span
-                  className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)]/80 uppercase tracking-wider"
-                  aria-label="Current section"
-                >
-                  {SECTION_LABELS[displayActive] ?? displayActive}
-                </span>
-              )}
-              <motion.span
-                key={terminalStatus}
-                initial={{ opacity: 0, y: -2 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="text-[10px] sm:text-xs font-medium text-[var(--text-muted)]"
-              >
-                {terminalStatus}
-              </motion.span>
-              <TerminalClock className="hidden sm:block text-[var(--accent-warm)] font-mono" />
-              <div className="hidden sm:flex gap-1 border-l border-[var(--border-subtle)] pl-3" aria-label="Social links">
+            <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0 flex-nowrap border-l border-[var(--border-subtle)] pl-4">
+              <span className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">
+                {SECTION_LABELS[displayActive ?? "terminal"] ?? "Terminal"}
+              </span>
+              <TerminalClock className="hidden sm:block text-[var(--accent-warm)] font-mono text-sm" />
+              <div className="hidden sm:flex gap-2" aria-label="Social links">
                 <a
                   href={siteConfig.socialLinks.github}
                   target="_blank"
@@ -176,7 +167,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="GitHub"
                 >
-                  <GitHubIcon className="w-3.5 h-3.5" />
+                  <GitHubIcon className="w-4 h-4" />
                 </a>
                 <a
                   href={siteConfig.socialLinks.twitter}
@@ -185,7 +176,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="Twitter"
                 >
-                  <TwitterIcon className="w-3.5 h-3.5" />
+                  <TwitterIcon className="w-4 h-4" />
                 </a>
                 <a
                   href={siteConfig.socialLinks.linkedin}
@@ -194,7 +185,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="LinkedIn"
                 >
-                  <LinkedInIcon className="w-3.5 h-3.5" />
+                  <LinkedInIcon className="w-4 h-4" />
                 </a>
               </div>
             </div>
@@ -202,7 +193,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </nav>
       </header>
 
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 page-enter">{children}</main>
 
       <InfoDesk />
 

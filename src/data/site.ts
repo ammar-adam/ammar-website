@@ -28,4 +28,26 @@ export const siteConfig = {
     ctaTerminal: "Proceed to Terminal",
     ctaDepartures: "View Departures",
   },
+
+  /** Top ticker: personal identifiers (cities, school, etc.) */
+  tickerIdentifiers: [
+    "CS + Finance",
+    "UW 1B",
+    "Toronto",
+    "Dubai",
+    "Karachi",
+    "CFM",
+  ],
+
+  /** Hero background image (optional). Add /hero-airport.jpg to public. */
+  heroImageUrl: "/hero-airport.jpg",
+
+  /** Lounge photo (optional). Add /photo.jpg to public and set to "/photo.jpg". */
+  photoUrl: "" as string,
+
+  /** Caption shown below lounge photo when photoUrl is set. */
+  photoCaption: {
+    name: "",
+    subtitle: "CS + Finance · UW 1B",
+  },
 } as const;

@@ -5,6 +5,9 @@ import { motion } from "framer-motion";
 import { PlaneIcon } from "@/components/ui/PlaneIcon";
 import { DeparturesBoardDisplay } from "@/components/DeparturesBoardDisplay";
 import { RouteOverlay } from "@/components/ui/RouteOverlay";
+import { CheckInDeskIllustration } from "@/components/ambient/CheckInDeskIllustration";
+import { BackgroundPeople } from "@/components/BackgroundPeople";
+import { silhouetteImages } from "@/data/silhouettes";
 
 const pathways = [
   { href: "/#departures", title: "Departures", desc: "Things I'm getting ready to ship.", gate: "GATES A" },
@@ -14,14 +17,29 @@ const pathways = [
 
 export function TerminalHubCards() {
   return (
-    <section className="relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 overflow-hidden z-10 flex flex-col lg:flex-row gap-10 lg:gap-12">
+    <section className="terminal-page relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 overflow-hidden z-10 flex flex-col lg:flex-row gap-10 lg:gap-12">
+      <BackgroundPeople section="terminal" images={silhouetteImages.terminal} />
+      <div className="terminal-floor-perspective" aria-hidden />
+      <div className="terminal-windows" aria-hidden>
+        <div className="window-pane" />
+        <div className="window-pane" />
+        <div className="window-pane" />
+      </div>
+      <div className="overhead-signage" aria-hidden>
+        <div className="sign-holder">
+          <span className="sign-text">← GATES A-C</span>
+        </div>
+        <div className="sign-holder">
+          <span className="sign-text">BAGGAGE →</span>
+        </div>
+      </div>
       <RouteOverlay />
 
       <div className="flex-1 lg:max-w-3xl">
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
+          className="mb-6"
         >
           <p className="terminal-card__label mb-3">Terminal</p>
           <h1 className="terminal-card__title" style={{ fontSize: "var(--text-2xl)" }}>
@@ -29,6 +47,8 @@ export function TerminalHubCards() {
           </h1>
           <p className="text-[var(--text-secondary)] mt-2">Select a concourse.</p>
         </motion.div>
+
+        <CheckInDeskIllustration />
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {pathways.map((path, i) => (
@@ -66,7 +86,7 @@ export function TerminalHubCards() {
         </motion.div>
       </div>
 
-      <div className="lg:w-80 flex-shrink-0">
+      <div className="lg:w-80 flex-shrink-0 hidden">
         <p className="font-mono text-xs uppercase tracking-widest text-[var(--text-tertiary)] mb-3">
           Now boarding
         </p>

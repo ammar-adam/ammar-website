@@ -4,16 +4,38 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { siteConfig } from "@/data/site";
 import { PlaneIcon } from "@/components/ui/PlaneIcon";
-import { DeparturesBoardDisplay } from "@/components/DeparturesBoardDisplay";
+import { PersonalTicker } from "@/components/PersonalTicker";
+import { GlobeNetwork } from "@/components/ambient/GlobeNetwork";
+import { BackgroundPeople } from "@/components/BackgroundPeople";
+import { silhouetteImages } from "@/data/silhouettes";
 
 export function CheckInHero() {
   return (
-    <section className="relative min-h-[95vh] flex flex-col overflow-hidden">
+    <section className="checkin-page relative min-h-[95vh] flex flex-col overflow-hidden">
+      <BackgroundPeople section="checkin" images={silhouetteImages.checkin} />
+      <div className="checkin-ceiling" aria-hidden />
+      <div className="checkin-floor-reflection" aria-hidden />
+      {/* Gate lighting beams */}
+      <div className="gate-lights" aria-hidden>
+        <div className="light-beam light-1" />
+        <div className="light-beam light-2" />
+        <div className="light-beam light-3" />
+      </div>
+      {/* Globe network background */}
+      <GlobeNetwork />
+      {/* Hero background - add /hero-airport.jpg to public for plane/terminal image */}
+      <div
+        className="checkin-hero-bg"
+        style={{
+          backgroundImage: `url(${siteConfig.heroImageUrl})`,
+        }}
+        aria-hidden
+      />
       {/* Animated grid background */}
       <div className="checkin-background motion-reduce:opacity-20" aria-hidden />
 
       {/* Ticker strip */}
-      <DeparturesBoardDisplay variant="ticker" />
+      <PersonalTicker />
 
       {/* Main content */}
       <div className="relative flex-1 flex flex-col justify-center px-4 sm:px-8 lg:px-12 xl:px-20 py-24 z-10">

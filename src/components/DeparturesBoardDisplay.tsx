@@ -49,13 +49,13 @@ function DepartureRowHero({
       animate={{ opacity: 1 }}
       transition={{ delay: 0.08 * index, duration: 0.3 }}
     >
-      <td className="font-mono text-sm text-[var(--text-tertiary)] tabular-nums py-4 px-4 md:px-5">
+      <td className="font-mono text-sm text-[var(--text-tertiary)] tabular-nums py-3 px-3 md:px-4">
         {project.year}
       </td>
-      <td className="font-mono text-base font-bold text-[var(--text-primary)] py-4 px-4 md:px-5">
+      <td className="font-mono text-base font-bold text-[var(--text-primary)] py-3 px-3 md:px-4">
         {project.flightCode}
       </td>
-      <td className="py-4 px-4 md:px-5 min-w-[180px]">
+      <td className="py-3 px-3 md:px-4 min-w-[180px]">
         <div>
           <div className="font-semibold text-[var(--text-primary)]">{project.destination}</div>
           <div className="text-sm text-[var(--text-tertiary)] mt-0.5">
@@ -63,12 +63,12 @@ function DepartureRowHero({
           </div>
         </div>
       </td>
-      <td className="py-4 px-4 md:px-5">
+      <td className="py-3 px-3 md:px-4">
         <motion.span key={isHovered ? "h" : "n"} initial={{ opacity: 0.7 }} animate={{ opacity: 1 }}>
           <StatusBadge status={isHovered ? hoverStatus : project.status} />
         </motion.span>
       </td>
-      <td className="font-mono text-sm font-semibold text-[var(--accent-warm)] text-right py-4 px-4 md:px-5">
+      <td className="font-mono text-sm font-semibold text-[var(--accent-warm)] text-right py-3 px-3 md:px-4">
         {project.gate}
       </td>
     </motion.tr>
@@ -130,11 +130,11 @@ export function DeparturesBoardDisplay({
       <table className="departures-table w-full">
         <thead>
           <tr>
-            <th className="text-left py-4 px-4 md:px-5 font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)]">Year</th>
-            <th className="departure-flight text-left py-4 px-4 md:px-5">Flight</th>
-            <th className="departure-destination text-left py-4 px-4 md:px-5">To</th>
-            <th className="text-left py-4 px-4 md:px-5">Status</th>
-            <th className="departure-gate text-right py-4 px-4 md:px-5">Gate</th>
+            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)]">Year</th>
+            <th className="departure-flight text-left py-3 px-3 md:px-4">Flight</th>
+            <th className="departure-destination text-left py-3 px-3 md:px-4">To</th>
+            <th className="text-left py-3 px-3 md:px-4">Status</th>
+            <th className="departure-gate text-right py-3 px-3 md:px-4">Gate</th>
           </tr>
         </thead>
         <tbody>

@@ -7,6 +7,8 @@ import { BoardingModal } from "@/components/BoardingModal";
 import { BoardingTransition } from "@/components/BoardingTransition";
 import { DeparturesBoardDisplay } from "@/components/DeparturesBoardDisplay";
 import { AirportIcon } from "@/components/AirportIcon";
+import { BackgroundPeople } from "@/components/BackgroundPeople";
+import { silhouetteImages } from "@/data/silhouettes";
 import { projects } from "@/data/departures";
 
 export function DeparturesBoard() {
@@ -31,12 +33,13 @@ export function DeparturesBoard() {
 
   return (
     <>
-      <section className="relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 z-10">
+      <section className="relative py-14 sm:py-20 px-4 sm:px-6 lg:px-12 z-10 overflow-hidden">
+        <BackgroundPeople section="departures" images={silhouetteImages.departures} />
         <div className="mx-auto max-w-5xl">
           <motion.div
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="mb-10 flex items-start gap-2"
+            className="mb-8 flex items-start gap-2"
           >
             <AirportIcon src="/airport-icons/gate-sign.svg" className="w-5 h-5 opacity-[0.12] flex-shrink-0 mt-0.5" />
             <div>
@@ -53,8 +56,12 @@ export function DeparturesBoard() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
-            className="relative"
+            className="departures-board-mounted relative mt-6"
           >
+            <div className="mount-bracket mount-tl" aria-hidden />
+            <div className="mount-bracket mount-tr" aria-hidden />
+            <div className="mount-bracket mount-bl" aria-hidden />
+            <div className="mount-bracket mount-br" aria-hidden />
             <DeparturesBoardDisplay
               variant="hero"
               onSelectFlight={setBoardingSlug}

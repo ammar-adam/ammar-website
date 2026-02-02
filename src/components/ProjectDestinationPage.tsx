@@ -34,7 +34,7 @@ function SeatmapGrid({
 }) {
   return (
     <div
-      className="grid grid-cols-2 gap-4 font-mono text-sm font-semibold"
+      className="grid grid-cols-2 gap-3 font-mono text-xs font-semibold"
       role="listbox"
       aria-label="Seatmap sections"
     >
@@ -105,7 +105,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
       case "demo":
         return (
           <div className="space-y-3">
-            <div className="relative aspect-video w-full overflow-hidden rounded-[var(--radius-compact)] elevated">
+            <div className="relative h-28 w-full overflow-hidden rounded-[var(--radius-compact)] elevated">
               <Image
                 src={project.screenshot}
                 alt={`${project.routeName}`}
@@ -119,7 +119,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
                 href={project.links.find((l) => l.label.toLowerCase().includes("demo"))!.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
+                className="text-xs text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
               >
                 View demo →
               </a>
@@ -135,7 +135,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
                   href={link.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-sm text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
+                  className="text-xs text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
                 >
                   {link.label} →
                 </a>
@@ -149,33 +149,44 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
   };
 
   return (
-    <article className="page-level-gate density-compact py-10 sm:py-14 px-4 sm:px-6 lg:px-12 z-10">
-      <div className="mx-auto max-w-5xl">
+    <article className="page-level-gate density-compact py-6 sm:py-8 px-4 sm:px-6 lg:px-12 z-10">
+      <div className="mx-auto max-w-4xl">
         <motion.div
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-6"
+          className="mb-4"
         >
           <Link
             href="/#departures"
-            className="text-xs text-[var(--text-tertiary)] hover:text-[var(--accent-warm)] transition-colors"
+            className="text-[10px] text-[var(--text-tertiary)] hover:text-[var(--accent-warm)] transition-colors"
           >
             ← Departures
           </Link>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-4 lg:gap-6">
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.05 }}
-            className="elevated rounded-[var(--radius-card)] p-5"
+            className="elevated rounded-[var(--radius-card)] p-4 cabin-container cabin-container-lit"
           >
-            <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-4">
-              Cabin
-            </p>
+            <div className="cabin-aisle" aria-hidden>
+              <span className="aisle-label">AISLE</span>
+            </div>
+            <div className="cabin-header mb-3">
+              <p className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--text-tertiary)]">
+                Cabin
+              </p>
+              <h3 className="text-sm font-semibold text-[var(--text-primary)] mt-0.5 font-display">
+                Select your seat
+              </h3>
+              <p className="text-[10px] text-[var(--text-tertiary)] mt-0.5">
+                Each seat contains a different aspect of the project.
+              </p>
+            </div>
             <SeatmapGrid activeSeat={activeSeat} onSelect={handleSeatSelect} />
-            <p className="font-mono text-[10px] text-[var(--text-tertiary)] mt-4 text-center">
+            <p className="font-mono text-[10px] text-[var(--text-tertiary)] mt-3 text-center">
               {activeSection.label}
             </p>
           </motion.div>
@@ -185,31 +196,31 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
             initial={{ opacity: 0.7 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.15 }}
-            className="elevated rounded-[var(--radius-card)] p-6"
+            className="elevated rounded-[var(--radius-card)] p-4"
           >
-            <header className="mb-5 relative">
+            <header className="mb-3 relative">
               <div className="absolute -top-0.5 right-0 opacity-[0.08]">
-                <AirportIcon src="/airport-icons/boarding-pass.svg" className="w-4 h-4" />
+                <AirportIcon src="/airport-icons/boarding-pass.svg" className="w-3.5 h-3.5" />
               </div>
-              <span className="font-mono text-xs text-[var(--accent-warm)]">
+              <span className="font-mono text-[10px] text-[var(--accent-warm)]">
                 {project.flightCode}
               </span>
-              <h1 className="page-level-gate__title text-xl font-semibold text-[var(--text-primary)] mt-1 font-display">
+              <h1 className="page-level-gate__title text-lg font-semibold text-[var(--text-primary)] mt-0.5 font-display">
                 {project.destination}
               </h1>
-              <p className="page-level-gate__body text-sm text-[var(--text-secondary)] mt-1.5">
+              <p className="page-level-gate__body text-xs text-[var(--text-secondary)] mt-1">
                 {project.shortDesc}
               </p>
-              <span className="text-[10px] text-[var(--text-tertiary)] mt-2 block">
+              <span className="text-[10px] text-[var(--text-tertiary)] mt-1.5 block">
                 Gate {project.gate} · {project.routeName}
               </span>
             </header>
 
-            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] mb-4">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-[var(--text-tertiary)] mb-3">
               {activeSection.label}
             </p>
 
-            <div className="page-level-gate__body leading-relaxed">{getContent()}</div>
+            <div className="page-level-gate__body text-sm leading-relaxed">{getContent()}</div>
           </motion.div>
         </div>
       </div>
