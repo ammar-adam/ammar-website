@@ -46,8 +46,11 @@ export function DeparturesBoard() {
               <h1 className="text-2xl font-bold text-[var(--text-primary)] mb-2" style={{ fontFamily: "var(--font-display)" }}>
                 Departures
               </h1>
-              <p className="font-body text-base text-[var(--text-secondary)]">
-                A few things I&apos;m getting ready to ship.
+              <p className="font-body text-base font-semibold text-[var(--accent-warm)] mb-1">
+                Don&apos;t miss your flight.
+              </p>
+              <p className="font-body text-sm text-[var(--text-secondary)]">
+                Everything here started with a problem I wanted to understand better. I try to build things end to end, even if the first version is rough. Some of these projects are still boarding. Some have already departed. Descriptions are intentionally high level.
               </p>
             </div>
           </motion.div>

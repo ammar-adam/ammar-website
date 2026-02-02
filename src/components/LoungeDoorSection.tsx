@@ -21,7 +21,7 @@ export function LoungeDoorSection() {
             Behind the Scenes
           </h2>
           <p className="text-sm text-[var(--text-secondary)] mb-6">
-            It&apos;s quieter in here. Enter if you want.
+            A little peek behind the scenes.
           </p>
 
           <Link href="/lounge" className="lounge-door-section-link block group">

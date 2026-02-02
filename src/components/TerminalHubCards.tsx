@@ -3,16 +3,15 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { PlaneIcon } from "@/components/ui/PlaneIcon";
-import { DeparturesBoardDisplay } from "@/components/DeparturesBoardDisplay";
 import { RouteOverlay } from "@/components/ui/RouteOverlay";
 import { CheckInDeskIllustration } from "@/components/ambient/CheckInDeskIllustration";
 import { BackgroundPeople } from "@/components/BackgroundPeople";
 import { silhouetteImages } from "@/data/silhouettes";
 
 const pathways = [
-  { href: "/#departures", title: "Departures", desc: "Things I'm getting ready to ship.", gate: "GATES A" },
-  { href: "/#arrivals", title: "Arrivals", desc: "What's landed — experiences, lessons.", gate: "BAGGAGE" },
-  { href: "/#lounge", title: "Lounge", desc: "Relaxed. Human. Optional.", gate: "LEVEL 2" },
+  { href: "/#departures", title: "Departures", desc: "Things I have built or am currently building. Some are active. Some are done. Some are still figuring themselves out.", gate: "GATES A" },
+  { href: "/#arrivals", title: "Arrivals", desc: "Experiences that have landed so far. Places I worked, things I learned, and environments that shaped how I think.", gate: "BAGGAGE" },
+  { href: "/#lounge", title: "Lounge", desc: "A quieter space. Less structured. More personal.", gate: "LEVEL 2" },
 ] as const;
 
 export function TerminalHubCards() {
@@ -84,13 +83,6 @@ export function TerminalHubCards() {
             Boarding Pass Office →
           </Link>
         </motion.div>
-      </div>
-
-      <div className="lg:w-80 flex-shrink-0 hidden">
-        <p className="font-mono text-xs uppercase tracking-widest text-[var(--text-tertiary)] mb-3">
-          Now boarding
-        </p>
-        <DeparturesBoardDisplay variant="mini" />
       </div>
     </section>
   );

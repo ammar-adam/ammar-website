@@ -18,7 +18,7 @@ export function BoardingPassViewer() {
             Boarding Pass
           </h1>
           <p className="text-base text-[var(--text-secondary)] mb-6">
-            {boardingPassConfig.displayName}
+            Passenger: {boardingPassConfig.displayName}
           </p>
 
           <div
@@ -36,10 +36,10 @@ export function BoardingPassViewer() {
               download
               target="_blank"
               rel="noopener noreferrer"
-              className="barcode-button block w-full bg-[var(--bg-surface)] border-2 border-[var(--border-medium)] rounded-lg p-4 cursor-pointer transition-all duration-200 hover:border-[var(--accent-warm)] hover:bg-[rgba(232,166,100,0.05)] hover:shadow-[var(--glow-subtle)] hover:-translate-y-0.5 no-underline"
+              className="barcode-button block w-full bg-[var(--bg-surface)] border-2 border-[var(--border-medium)] rounded-lg p-6 cursor-pointer transition-all duration-200 hover:border-[var(--accent-warm)] hover:bg-[rgba(232,166,100,0.05)] hover:shadow-[var(--glow-subtle)] hover:-translate-y-0.5 no-underline"
             >
               <div
-                className="h-16 w-full rounded mb-3 opacity-70 min-h-[4rem]"
+                className="h-24 w-full rounded mb-4 opacity-80 min-h-[6rem]"
                 style={{
                   background: `repeating-linear-gradient(
                     90deg,
@@ -55,14 +55,19 @@ export function BoardingPassViewer() {
                 }}
                 aria-hidden
               />
-              <span className="block text-center text-xs font-semibold text-[var(--accent-warm)]">
-                Click to {boardingPassConfig.ctaLabel.toLowerCase()}
+              <span className="block text-center text-sm font-semibold text-[var(--accent-warm)]">
+                Click to {boardingPassConfig.ctaLabel}
               </span>
             </a>
 
-            <p className="text-[10px] text-[var(--text-muted)] text-center mb-4 mt-1">
+            <p className="text-[10px] text-[var(--text-muted)] text-center mb-2">
               Generated from terminal record.
             </p>
+            {boardingPassConfig.tagline && (
+              <p className="text-xs text-[var(--text-secondary)] text-center mb-6">
+                {boardingPassConfig.tagline}
+              </p>
+            )}
 
             <div className="space-y-4">
               {boardingPassConfig.sections.map((section, i) => (

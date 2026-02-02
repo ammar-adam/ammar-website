@@ -68,7 +68,11 @@ export function BaggageCard({ artifact }: { artifact: ArrivalArtifact }) {
       </div>
       <div className="card-label px-4 py-4 flex flex-col gap-1.5 bg-[var(--bg-surface)]">
         <span className="card-title font-display text-sm font-semibold text-[var(--text-primary)]">{artifact.label}</span>
-        <span className="card-type font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">{typeLabel}</span>
+        {artifact.sublabel ? (
+          <span className="card-sublabel text-xs text-[var(--text-secondary)]">{artifact.sublabel}</span>
+        ) : (
+          <span className="card-type font-mono text-[10px] text-[var(--text-tertiary)] uppercase tracking-wider">{typeLabel}</span>
+        )}
       </div>
     </div>
   );

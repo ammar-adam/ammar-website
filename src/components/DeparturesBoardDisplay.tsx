@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import { projects } from "@/data/departures";
 import type { FlightStatus } from "@/data/departures";
@@ -13,14 +12,13 @@ interface DeparturesBoardDisplayProps {
 function StatusBadge({ status }: { status: FlightStatus }) {
   const statusMap: Record<FlightStatus, string> = {
     Boarding: "departure-status--boarding",
-    Scheduled: "departure-status--scheduled",
+    "Boarding Closed": "departure-status--scheduled",
     Departed: "departure-status--departed",
     Delayed: "departure-status--delayed",
-    Taxiing: "departure-status--taxiing",
   };
   return (
     <span className={`departure-status text-[10px] font-bold uppercase tracking-[0.05em] px-3 py-1.5 rounded-md ${statusMap[status]}`}>
-      {status}
+      {status.replace(" ", "\u00A0")}
     </span>
   );
 }
@@ -34,41 +32,32 @@ function DepartureRowHero({
   index: number;
   onSelect: () => void;
 }) {
-  const [isHovered, setIsHovered] = useState(false);
-  const hoverStatus: FlightStatus = project.status === "Scheduled" ? "Boarding" : project.status;
-
   return (
     <motion.tr
       onClick={onSelect}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      className={`group relative cursor-pointer border-b border-[var(--border-subtle)] last:border-0 transition-all duration-200 hover:bg-[var(--accent-warm-dim)] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[var(--accent-warm)] ${
-        isHovered ? "bg-[var(--accent-warm-dim)]" : ""
-      }`}
+      className="group relative cursor-pointer border-b border-[var(--border-subtle)] last:border-0 transition-all duration-200 hover:bg-[var(--accent-warm-dim)] focus-within:ring-2 focus-within:ring-inset focus-within:ring-[var(--accent-warm)]"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ delay: 0.08 * index, duration: 0.3 }}
     >
-      <td className="font-mono text-sm text-[var(--text-tertiary)] tabular-nums py-3 px-3 md:px-4">
+      <td className="font-mono text-sm text-[var(--text-tertiary)] tabular-nums py-3 px-3 md:px-4 align-top">
         {project.year}
       </td>
-      <td className="font-mono text-base font-bold text-[var(--text-primary)] py-3 px-3 md:px-4">
+      <td className="font-mono text-base font-bold text-[var(--text-primary)] py-3 px-3 md:px-4 align-top">
         {project.flightCode}
       </td>
-      <td className="py-3 px-3 md:px-4 min-w-[180px]">
+      <td className="py-3 px-3 md:px-4 min-w-[180px] align-top">
         <div>
           <div className="font-semibold text-[var(--text-primary)]">{project.destination}</div>
-          <div className="text-sm text-[var(--text-tertiary)] mt-0.5">
-            {project.routeName} · {project.stackTag}
+          <div className="text-sm text-[var(--text-tertiary)] mt-0.5 leading-snug">
+            {project.routeName}
           </div>
         </div>
       </td>
-      <td className="py-3 px-3 md:px-4">
-        <motion.span key={isHovered ? "h" : "n"} initial={{ opacity: 0.7 }} animate={{ opacity: 1 }}>
-          <StatusBadge status={isHovered ? hoverStatus : project.status} />
-        </motion.span>
+      <td className="py-3 px-3 md:px-4 align-top">
+        <StatusBadge status={project.status} />
       </td>
-      <td className="font-mono text-sm font-semibold text-[var(--accent-warm)] text-right py-3 px-3 md:px-4">
+      <td className="font-mono text-sm font-semibold text-[var(--accent-warm)] text-right py-3 px-3 md:px-4 align-top">
         {project.gate}
       </td>
     </motion.tr>

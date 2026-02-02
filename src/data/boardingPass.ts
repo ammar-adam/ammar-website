@@ -3,7 +3,7 @@
  */
 
 export const boardingPassConfig = {
-  displayName: "Your Name",
+  displayName: "Ammar Adam",
   resumeFileUrl: "/resume.pdf",
   ctaLabel: "Export pass (PDF)",
   sections: [
@@ -22,4 +22,5 @@ export const boardingPassConfig = {
       ],
     },
   ],
+  tagline: "Builder · Creative · Innovator · CFM at the University of Waterloo",
 } as const;

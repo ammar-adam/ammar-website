@@ -1,34 +1,26 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import type { Project } from "@/data/departures";
 import { AirportIcon } from "@/components/AirportIcon";
 
-const SEAT_MAP = [
-  { id: "A1", label: "Overview", key: "overview" as const },
-  { id: "A2", label: "Problem", key: "problem" as const },
-  { id: "B1", label: "Tech Stack", key: "build" as const },
-  { id: "B2", label: "Architecture", key: "architecture" as const },
-  { id: "C1", label: "Demo", key: "demo" as const },
-  { id: "C2", label: "Reflection", key: "links" as const },
-] as const;
+type SeatId = string;
 
-type SeatId = (typeof SEAT_MAP)[number]["id"];
-
-function getSeatFromHash(): SeatId {
-  if (typeof window === "undefined") return "A1";
+function getSeatFromHash(seats: { id: string }[]): SeatId {
+  if (typeof window === "undefined") return seats[0]?.id ?? "A1";
   const hash = window.location.hash.slice(1).toUpperCase();
-  const valid = SEAT_MAP.find((s) => s.id === hash);
-  return valid ? valid.id : "A1";
+  const valid = seats.find((s) => s.id === hash);
+  return valid ? valid.id : seats[0]?.id ?? "A1";
 }
 
 function SeatmapGrid({
+  seats,
   activeSeat,
   onSelect,
 }: {
+  seats: { id: string; label: string }[];
   activeSeat: SeatId;
   onSelect: (id: SeatId) => void;
 }) {
@@ -38,7 +30,7 @@ function SeatmapGrid({
       role="listbox"
       aria-label="Seatmap sections"
     >
-      {SEAT_MAP.map((seat) => (
+      {seats.map((seat) => (
         <button
           key={seat.id}
           type="button"
@@ -64,88 +56,48 @@ function SeatmapGrid({
 }
 
 export function ProjectDestinationPage({ project }: { project: Project }) {
-  const [activeSeat, setActiveSeat] = useState<SeatId>("A1");
+  const seats = project.seats;
+  const [activeSeat, setActiveSeat] = useState<SeatId>(seats[0]?.id ?? "A1");
 
   useEffect(() => {
-    setActiveSeat(getSeatFromHash());
-  }, []);
+    setActiveSeat(getSeatFromHash(seats));
+  }, [seats]);
 
   useEffect(() => {
-    const handler = () => setActiveSeat(getSeatFromHash());
+    const handler = () => setActiveSeat(getSeatFromHash(seats));
     window.addEventListener("hashchange", handler);
     return () => window.removeEventListener("hashchange", handler);
-  }, []);
+  }, [seats]);
 
   const handleSeatSelect = (id: SeatId) => {
     setActiveSeat(id);
     window.history.replaceState(null, "", `#${id}`);
   };
 
-  const activeSection = SEAT_MAP.find((s) => s.id === activeSeat)!;
+  const activeSection = seats.find((s) => s.id === activeSeat);
+  if (!activeSection) return null;
 
-  const getContent = () => {
-    const textClass = "text-[var(--text-secondary)] text-sm leading-[1.6]";
-    switch (activeSection.key) {
-      case "overview":
-        return <p className={textClass}>{project.overview}</p>;
-      case "problem":
-        return (
-          <p className={textClass}>
-            {project.problem || project.overview}
-          </p>
-        );
-      case "build":
-        return <p className={textClass}>{project.build}</p>;
-      case "architecture":
-        return (
-          <p className={textClass}>
-            {project.architecture || project.build}
-          </p>
-        );
-      case "demo":
-        return (
-          <div className="space-y-3">
-            <div className="relative h-28 w-full overflow-hidden rounded-[var(--radius-compact)] elevated">
-              <Image
-                src={project.screenshot}
-                alt={`${project.routeName}`}
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 400px"
-              />
-            </div>
-            {project.links.find((l) => l.label.toLowerCase().includes("demo")) && (
+  const renderContent = () => {
+    const textClass = "text-[var(--text-secondary)] text-sm leading-[1.6] whitespace-pre-wrap";
+    if (activeSection.links && activeSection.links.length > 0) {
+      return (
+        <ul className="space-y-2">
+          {activeSection.links.map((link) => (
+            <li key={link.url}>
               <a
-                href={project.links.find((l) => l.label.toLowerCase().includes("demo"))!.url}
+                href={link.url}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-xs text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
               >
-                View demo →
+                {link.label} →
               </a>
-            )}
-          </div>
-        );
-      case "links":
-        return (
-          <ul className="space-y-2">
-            {project.links.map((link) => (
-              <li key={link.url}>
-                <a
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-xs text-[var(--accent-warm)] hover:text-[var(--accent-glow)]"
-                >
-                  {link.label} →
-                </a>
-              </li>
-            ))}
-          </ul>
-        );
-      default:
-        return null;
+            </li>
+          ))}
+        </ul>
+      );
     }
+    return <p className={textClass}>{activeSection.content}</p>;
   };
 
   return (
@@ -185,7 +137,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
                 Each seat contains a different aspect of the project.
               </p>
             </div>
-            <SeatmapGrid activeSeat={activeSeat} onSelect={handleSeatSelect} />
+            <SeatmapGrid seats={seats} activeSeat={activeSeat} onSelect={handleSeatSelect} />
             <p className="font-mono text-[10px] text-[var(--text-tertiary)] mt-3 text-center">
               {activeSection.label}
             </p>
@@ -220,7 +172,7 @@ export function ProjectDestinationPage({ project }: { project: Project }) {
               {activeSection.label}
             </p>
 
-            <div className="page-level-gate__body text-sm leading-relaxed">{getContent()}</div>
+            <div className="page-level-gate__body text-sm leading-relaxed">{renderContent()}</div>
           </motion.div>
         </div>
       </div>

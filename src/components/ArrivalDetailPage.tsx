@@ -79,9 +79,9 @@ export function ArrivalDetailPage({ arrival }: ArrivalDetailPageProps) {
               FROM {arrival.from.toUpperCase()}
             </span>
             <h1 className="text-xl font-semibold text-[var(--text-primary)] mt-1 font-display">
-              {arrival.title}
+              {arrival.detailTitle ?? arrival.title}
             </h1>
-            <p className="text-sm text-[var(--text-secondary)] mt-1.5">{arrival.impact}</p>
+            <p className="text-sm text-[var(--text-secondary)] mt-1.5">{arrival.details}</p>
           </motion.div>
 
           <motion.div

@@ -13,7 +13,7 @@ export const siteConfig = {
     departures: "Departures",
     arrivals: "Arrivals",
     lounge: "Lounge",
-    boardingPass: "Boarding Pass",
+    boardingPass: "Pass",
   },
 
   socialLinks: {
@@ -23,24 +23,42 @@ export const siteConfig = {
   },
 
   checkIn: {
-    headline: "Welcome. Where to?",
-    subtext: "Choose a section. Take your time.",
-    ctaTerminal: "Proceed to Terminal",
+    ctaTerminal: "Enter Terminal",
     ctaDepartures: "View Departures",
   },
 
-  /** Top ticker: personal identifiers (cities, school, etc.) */
+  /** Top ticker: floating taglines */
   tickerIdentifiers: [
-    "CS + Finance",
-    "UW 1B",
-    "Toronto",
-    "Dubai",
-    "Karachi",
-    "CFM",
+    "Computer Science and Finance at the University of Waterloo",
+    "Toronto, Dubai, Karachi",
+    "Building systems and startups",
+    "Food, travel, learning as I go",
   ],
 
   /** Hero background image (optional). Add /hero-airport.jpg to public. */
   heroImageUrl: "/hero-airport.jpg",
+
+  /** Intro boarding pass (beside headshot on check-in) */
+  introBoardingPass: {
+    passenger: "Ammar Adam",
+    program: "Computer Science and Finance",
+    institution: "University of Waterloo",
+    focus: "Systems, startups, fintech",
+    currentStatus: "In progress",
+  },
+
+  /** Check-in main intro paragraphs */
+  checkInIntro: [
+    "Hi, I'm Ammar Adam.",
+    "Welcome to AFA International Airport.",
+    "I structured this site like a terminal because most of my life feels like movement. Between cities, ideas, projects, and different phases of learning.",
+    "There is no fixed path here.",
+    "Some sections show what I am building.",
+    "Some show what I have already done.",
+    "Some are just there if you want to look around.",
+    "If you want the short version, it is on the boarding pass next to this page.",
+    "Everything else is optional.",
+  ],
 
   /** Lounge photo (optional). Add /photo.jpg to public and set to "/photo.jpg". */
   photoUrl: "" as string,

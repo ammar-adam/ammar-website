@@ -27,22 +27,23 @@ export function ArrivalsBoard() {
               Arrivals
             </h1>
             <p className="text-sm text-[var(--text-secondary)]">
-              What landed. Experiences, lessons, things that made it here.
+              The arrivals board reflects where I have been and what has landed so far.
             </p>
           </div>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 grid-rows-[auto] arrivals-grid-strict">
           {arrivals.map((a, i) => (
             <motion.div
               key={a.slug}
               initial={{ opacity: 0, x: -12 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.05 * i }}
+              className="min-h-0"
             >
               <Link
                 href={`/arrivals/${a.slug}`}
-                className="arrival-card block group"
+                className="arrival-card block group h-full flex flex-col"
               >
                 <span className="font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--text-tertiary)] mb-1 block">
                   FROM {a.from.toUpperCase()}
@@ -50,10 +51,15 @@ export function ArrivalsBoard() {
                 <h2 className="text-lg font-bold text-[var(--text-primary)] mb-1 font-display">
                   {a.title}
                 </h2>
-                <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-3">
+                <p className="text-sm text-[var(--text-secondary)] leading-relaxed mb-2 flex-1">
                   {a.impact}
                 </p>
-                <span className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--accent-warm)] group-hover:gap-3 transition-[gap]">
+                {a.status && (
+                  <span className="font-mono text-[10px] text-[var(--text-tertiary)] mb-2 block">
+                    Status: {a.status}
+                  </span>
+                )}
+                <span className="inline-flex items-center gap-2 text-xs font-semibold text-[var(--accent-warm)] group-hover:gap-3 transition-[gap] mt-auto">
                   Details
                   <span aria-hidden>→</span>
                 </span>

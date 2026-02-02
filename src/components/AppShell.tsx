@@ -17,7 +17,7 @@ const SECTION_LABELS: Record<string, string> = {
   departures: "Departures",
   arrivals: "Arrivals",
   lounge: "Lounge",
-  "boarding-pass": "Boarding",
+  "boarding-pass": "Pass",
 };
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -164,28 +164,28 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   href={siteConfig.socialLinks.github}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1.5 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="GitHub"
                 >
-                  <GitHubIcon className="w-4 h-4" />
+                  <GitHubIcon className="w-6 h-6" />
                 </a>
                 <a
                   href={siteConfig.socialLinks.twitter}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1.5 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="Twitter"
                 >
-                  <TwitterIcon className="w-4 h-4" />
+                  <TwitterIcon className="w-6 h-6" />
                 </a>
                 <a
                   href={siteConfig.socialLinks.linkedin}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
+                  className="text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors p-1.5 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
                   aria-label="LinkedIn"
                 >
-                  <LinkedInIcon className="w-4 h-4" />
+                  <LinkedInIcon className="w-6 h-6" />
                 </a>
               </div>
             </div>

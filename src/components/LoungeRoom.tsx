@@ -53,7 +53,7 @@ export function LoungeRoom() {
         Back to Terminal
       </Link>
 
-      <div className="room-container max-w-[1000px] mx-auto relative">
+      <div className="room-container max-w-[1200px] min-w-0 w-full mx-auto relative px-4">
         <div className="lounge-floor-perspective" aria-hidden />
         <svg viewBox="0 0 1400 900" className="room-svg w-full h-auto block relative z-[1]" aria-label="Lounge room">
           <defs>
@@ -223,14 +223,19 @@ export function LoungeRoom() {
       </LoungeModal>
 
       <LoungeModal isOpen={activeModal === "bookshelf"} onClose={closeModal} title={b.title}>
-        <div className="space-y-8">
+        <ul className="space-y-4">
           {b.items.map((item, i) => (
-            <div key={i} className="reading-item pb-8 border-b border-[var(--border-subtle)] last:border-0 last:pb-0">
-              <h3 className="font-display text-sm font-semibold text-[var(--accent-warm)] uppercase tracking-wider mb-2">{item.label}</h3>
-              <p>{item.text}</p>
-            </div>
+            <li key={i} className="flex items-center gap-2">
+              {item.label ? (
+                <>
+                  <h3 className="font-display text-sm font-semibold text-[var(--accent-warm)] uppercase tracking-wider">{item.label}</h3>
+                  <span>—</span>
+                </>
+              ) : null}
+              <span>{item.text}</span>
+            </li>
           ))}
-        </div>
+        </ul>
       </LoungeModal>
 
       <LoungeModal isOpen={activeModal === "photos"} onClose={closeModal} title={p.title} wide>
@@ -272,22 +277,19 @@ export function LoungeRoom() {
       </LoungeModal>
 
       <LoungeModal isOpen={activeModal === "cafe"} onClose={closeModal} title={c.title}>
-        <p className="mb-8">{c.intro}</p>
-        <div className="cafe-actions flex flex-wrap gap-4">
-          <a href={emailUrl} className="cafe-button inline-flex items-center gap-3 font-display font-semibold px-6 py-3.5 rounded-lg border border-[var(--accent-warm)] bg-[var(--accent-warm)] text-[var(--bg-deep)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(232,166,100,0.3)]">
-            <svg viewBox="0 0 24 24" width="20" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-            </svg>
-            Email me
-          </a>
-          <a href={linkedinUrl} target="_blank" rel="noopener noreferrer" className="cafe-button cafe-button--secondary inline-flex items-center gap-3 font-display font-semibold px-6 py-3.5 rounded-lg border border-[var(--accent-warm)] bg-transparent text-[var(--accent-warm)] transition-all hover:bg-[rgba(232,166,100,0.1)]">
-            <svg viewBox="0 0 24 24" width="20" fill="currentColor">
-              <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-              <circle cx="4" cy="4" r="2" />
-            </svg>
-            LinkedIn
-          </a>
-        </div>
+        <p className="mb-4 font-semibold text-[var(--text-primary)]">{c.intro}</p>
+        <ul className="space-y-2 mb-8">
+          {c.items.map((item, i) => (
+            <li key={i} className="flex items-center gap-2">
+              <span className="text-[var(--accent-warm)]">·</span>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+        <a href={emailUrl} className="cafe-button inline-flex items-center gap-3 font-display font-semibold px-6 py-3.5 rounded-lg border border-[var(--accent-warm)] bg-[var(--accent-warm)] text-[var(--bg-deep)] transition-all hover:-translate-y-0.5 hover:shadow-[0_4px_16px_rgba(232,166,100,0.3)]">
+          {c.cta}
+          <span aria-hidden>→</span>
+        </a>
       </LoungeModal>
     </div>
   );

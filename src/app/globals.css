@@ -1273,10 +1273,10 @@ a:hover {
 /* Lounge room page */
 .lounge-room-page {
   background:
-    radial-gradient(ellipse 800px 600px at 50% 0%, rgba(232, 166, 100, 0.08) 0%, transparent 50%),
-    radial-gradient(circle 400px at 85% 80%, rgba(232, 166, 100, 0.1) 0%, rgba(232, 166, 100, 0.05) 30%, transparent 60%),
-    radial-gradient(ellipse 300px 500px at 100% 35%, rgba(135, 180, 200, 0.06) 0%, rgba(232, 166, 100, 0.03) 40%, transparent 70%),
-    linear-gradient(135deg, #1a1e26 0%, #1f2430 50%, #252b36 100%);
+    radial-gradient(ellipse 800px 600px at 50% 0%, rgba(232, 166, 100, 0.1) 0%, transparent 50%),
+    radial-gradient(circle 400px at 85% 80%, rgba(232, 166, 100, 0.12) 0%, rgba(232, 166, 100, 0.06) 30%, transparent 60%),
+    radial-gradient(ellipse 300px 500px at 100% 35%, rgba(135, 180, 200, 0.06) 0%, rgba(232, 166, 100, 0.04) 40%, transparent 70%),
+    linear-gradient(135deg, #1a1e26 0%, #201f28 40%, #252b36 100%);
   padding: 24px 16px;
   position: relative;
 }

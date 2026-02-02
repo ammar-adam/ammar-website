@@ -1,12 +1,11 @@
 /**
  * Arrivals = Experiences. What has landed.
- * artifacts: optional baggage carousel items (label + image path)
+ * status: Bags ready | Bags loading
  */
 
 export interface ArrivalArtifact {
   label: string;
-  image?: string;
-  /** Visual type for gradient card: analytics | automation | presentation | finance | default */
+  sublabel?: string;
   type?: "analytics" | "automation" | "presentation" | "finance" | "default";
 }
 
@@ -14,8 +13,11 @@ export interface Arrival {
   slug: string;
   from: string;
   title: string;
+  /** Used on detail page (e.g. "Product Engineering Intern") */
+  detailTitle?: string;
   impact: string;
   details: string;
+  status?: "Bags ready" | "Bags loading";
   artifacts?: ArrivalArtifact[];
 }
 
@@ -24,46 +26,49 @@ export const arrivals: Arrival[] = [
     slug: "datastealth",
     from: "DataStealth / Cybersecurity Startup",
     title: "Product Engineering",
-    impact: "Built AEO tooling and automation systems that compressed demo cycles by 60%. Worked on ROI dashboards and risk posture visualization.",
-    details: "Longer description, lessons, outcomes.",
+    detailTitle: "Product Engineering Intern",
+    impact: "Built tools to discover, classify, protect, and manage sensitive data.",
+    details: "Built AEO tooling and automation systems that compressed demo cycles by 60%. Worked on ROI dashboards and risk posture visualization.",
+    status: "Bags ready",
     artifacts: [
-      { label: "ROI Dashboard", type: "analytics" },
-      { label: "AEO Tooling", type: "automation" },
-      { label: "Demo System", type: "presentation" },
+      { label: "GEO tooling", type: "automation" },
+      { label: "Demo systems", sublabel: "Reducing demo time using real datasets", type: "presentation" },
+      { label: "ROI dashboard", sublabel: "Prescriptive analytics for clients", type: "analytics" },
     ],
   },
   {
     slug: "alpen-capital",
     from: "Alpen Capital / M&A",
     title: "Investment Analysis",
-    impact: "Supported $50M+ in deal flow. Built financial models and conducted due diligence across healthcare and tech sectors.",
-    details: "Details placeholder.",
+    detailTitle: "Investment Banking Summer Analyst",
+    impact: "Supported over $50M in financial modeling, valuations, and M&A advisory.",
+    details: "Supported $50M+ in deal flow. Built financial models and conducted due diligence across healthcare and tech sectors.",
+    status: "Bags ready",
     artifacts: [
-      { label: "Financial Models", type: "finance" },
-      { label: "Due Diligence", type: "finance" },
+      { label: "Financial models", type: "finance" },
+      { label: "Pitch materials", type: "finance" },
+      { label: "Transaction support", type: "finance" },
     ],
   },
   {
     slug: "ace-consulting",
     from: "ACE Consulting Group",
     title: "Consulting",
-    impact: "Consulting and analysis work.",
-    details: "Details placeholder.",
-    artifacts: [
-      { label: "Analysis", type: "default" },
-      { label: "Reports", type: "default" },
-    ],
+    detailTitle: "Consulting Associate",
+    impact: "Pro-bono advisory and market research for startups across Ontario.",
+    details: "Consulting and analysis work.",
+    status: "Bags loading",
+    artifacts: [{ label: "Bags still loading. New work arriving soon.", type: "default" }],
   },
   {
     slug: "waterloo-venture",
     from: "Waterloo Venture Group",
     title: "Venture",
-    impact: "Venture and investment work.",
-    details: "Details placeholder.",
-    artifacts: [
-      { label: "Deal Flow", type: "default" },
-      { label: "Research", type: "default" },
-    ],
+    detailTitle: "Ecosystems Partnerships",
+    impact: "Helping strengthen the builder ecosystem in Waterloo.",
+    details: "Venture and investment work.",
+    status: "Bags loading",
+    artifacts: [{ label: "Bags still loading. New work arriving soon.", type: "default" }],
   },
 ];
 
