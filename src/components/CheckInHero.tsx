@@ -112,30 +112,37 @@ export function CheckInHero() {
                 </div>
               )}
             </div>
-            <div className="intro-boarding-pass flex-1 min-w-0 max-w-xs rounded-xl border border-[var(--border-medium)] bg-[var(--bg-surface)]/90 p-4 backdrop-blur-sm">
-              <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] space-y-2">
-                <div className="flex justify-between gap-4">
-                  <span>Passenger</span>
-                  <span className="text-[var(--text-primary)] font-semibold">{pass.passenger}</span>
+            <Link href="/#boarding-pass" className="intro-boarding-pass block group">
+              <div className="intro-boarding-pass-card w-64 sm:w-72">
+                <div className="pass-header">
+                  <span className="pass-airline">AFA INTERNATIONAL</span>
+                  <span className="pass-type">BOARDING PASS</span>
                 </div>
-                <div className="flex justify-between gap-4">
-                  <span>Program</span>
-                  <span className="text-[var(--text-secondary)]">{pass.program}</span>
+                <div className="pass-perf" aria-hidden />
+                <div className="pass-body">
+                  <div className="pass-passenger">{pass.passenger}</div>
+                  <div className="pass-grid">
+                    <div className="pass-row">
+                      <span className="pass-label">Program</span>
+                      <span className="pass-value">{pass.program}</span>
+                    </div>
+                    <div className="pass-row">
+                      <span className="pass-label">Institution</span>
+                      <span className="pass-value">{pass.institution}</span>
+                    </div>
+                    <div className="pass-row">
+                      <span className="pass-label">Focus</span>
+                      <span className="pass-value">{pass.focus}</span>
+                    </div>
+                    <div className="pass-row">
+                      <span className="pass-label">Status</span>
+                      <span className="pass-value pass-value--status">{pass.currentStatus}</span>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex justify-between gap-4">
-                  <span>Institution</span>
-                  <span className="text-[var(--text-secondary)]">{pass.institution}</span>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span>Focus</span>
-                  <span className="text-[var(--text-secondary)]">{pass.focus}</span>
-                </div>
-                <div className="flex justify-between gap-4">
-                  <span>Current Status</span>
-                  <span className="text-[var(--accent-warm)]">{pass.currentStatus}</span>
-                </div>
+                <div className="pass-barcode-strip" aria-hidden />
               </div>
-            </div>
+            </Link>
           </motion.div>
         </motion.div>
       </div>
