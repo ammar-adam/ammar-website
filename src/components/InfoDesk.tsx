@@ -4,21 +4,23 @@ import { useState, useCallback } from "react";
 
 const RESPONSES: Record<string, string> = {
   "what should i look at first":
-    "Start at Departures — a few things I'm getting ready to ship. Or head to Terminal and choose where to go.",
+    "Use the nav: Projects, Arrivals, About Me, or Resume. Or go to the home page and use the navigation board.",
   "show me your projects":
-    "Scroll to Departures, or use the nav. Each project is a flight you can board.",
+    "Click Projects in the nav, or go to /departures. Each card opens a project.",
   "what is this place":
-    "This is a terminal. Departures are projects, Arrivals are experiences. The Lounge is for personality, Boarding Pass is the resume.",
+    "This is my personal site. Projects = things I build. Arrivals = experiences. About Me = who I am. Resume = download my CV.",
   "projects":
-    "See Departures. Click a row to board.",
+    "Click Projects in the nav or go to /departures.",
+  "resume":
+    "Click Resume in the nav or go to /boarding-pass. Use 'Export boarding pass' to download the PDF.",
   "help":
-    "Use the nav to move around. Terminal shows the main areas. Departures and Arrivals have the content.",
+    "Use the top nav: Projects, Arrivals, About Me, Resume. Each goes to a dedicated page.",
 };
 
 const SUGGESTIONS = [
   "What should I look at first?",
   "Show me your projects",
-  "What is this place?",
+  "Where is your resume?",
 ];
 
 function getResponse(input: string): string {

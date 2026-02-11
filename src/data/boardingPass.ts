@@ -5,7 +5,7 @@
 export const boardingPassConfig = {
   displayName: "Ammar Adam",
   resumeFileUrl: "/resume.pdf",
-  ctaLabel: "Export pass (PDF)",
+  ctaLabel: "Export boarding pass (PDF)",
   sections: [
     {
       title: "Experience",

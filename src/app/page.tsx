@@ -1,32 +1,15 @@
-import { CheckInHero } from "@/components/CheckInHero";
-import { LoungeDoorSection } from "@/components/LoungeDoorSection";
-import { TerminalHubCards } from "@/components/TerminalHubCards";
-import { MovingWalkway } from "@/components/ambient/MovingWalkway";
-import { DeparturesBoard } from "@/components/DeparturesBoard";
-import { ArrivalsBoard } from "@/components/ArrivalsBoard";
-import { BoardingPassViewer } from "@/components/BoardingPassViewer";
+import { siteConfig } from "@/data/site";
+import { NavBoard } from "@/components/NavBoard";
 
 export default function HomePage() {
   return (
-    <>
-      <section id="check-in">
-        <CheckInHero />
-      </section>
-      <section id="terminal">
-        <TerminalHubCards />
-      </section>
-      <section id="departures">
-        <DeparturesBoard />
-      </section>
-      <section id="arrivals">
-        <ArrivalsBoard />
-      </section>
-      <section id="lounge">
-        <LoungeDoorSection />
-      </section>
-      <section id="boarding-pass">
-        <BoardingPassViewer />
-      </section>
-    </>
+    <section className="min-h-[80vh] flex flex-col justify-center px-4 sm:px-6 lg:px-12 py-16 sm:py-24">
+      <div className="mx-auto max-w-2xl w-full">
+        <p className="text-xl sm:text-2xl font-semibold text-[var(--text-primary)] mb-10" style={{ fontFamily: "var(--font-display)" }}>
+          {siteConfig.heroOneLiner}
+        </p>
+        <NavBoard />
+      </div>
+    </section>
   );
 }

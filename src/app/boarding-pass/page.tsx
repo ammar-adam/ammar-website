@@ -1,5 +1,5 @@
-import { redirect } from "next/navigation";
+import { BoardingPassViewer } from "@/components/BoardingPassViewer";
 
-export default function BoardingPassRedirect() {
-  redirect("/#boarding-pass");
+export default function BoardingPassPage() {
+  return <BoardingPassViewer />;
 }

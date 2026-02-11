@@ -2,112 +2,30 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { useCallback, useEffect, useState } from "react";
 import { siteConfig } from "@/data/site";
 import { PlaneIcon } from "@/components/ui/PlaneIcon";
 import { TerminalClock } from "@/components/ui/TerminalClock";
 import { InfoDesk } from "@/components/InfoDesk";
 
-const SECTION_IDS = ["check-in", "terminal", "departures", "arrivals", "lounge", "boarding-pass"] as const;
+const navItems = [
+  { id: "projects", label: siteConfig.navLabels.projects, href: "/departures" },
+  { id: "arrivals", label: siteConfig.navLabels.arrivals, href: "/arrivals" },
+  { id: "about", label: siteConfig.navLabels.about, href: "/about" },
+  { id: "resume", label: siteConfig.navLabels.resume, href: "/boarding-pass" },
+] as const;
 
-const SECTION_LABELS: Record<string, string> = {
-  "check-in": "Check-in",
-  terminal: "Terminal",
-  departures: "Departures",
-  arrivals: "Arrivals",
-  lounge: "Lounge",
-  "boarding-pass": "Pass",
-};
+function getActiveId(pathname: string): string {
+  if (pathname === "/") return "home";
+  if (pathname.startsWith("/departures")) return "projects";
+  if (pathname.startsWith("/arrivals")) return "arrivals";
+  if (pathname.startsWith("/about")) return "about";
+  if (pathname.startsWith("/boarding-pass")) return "resume";
+  return "home";
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [activeSection, setActiveSection] = useState<string | null>("check-in");
-  const isHomePage = pathname === "/";
-
-  const navItems = [
-    { id: "terminal", label: siteConfig.navLabels.terminal, href: "/#terminal" },
-    { id: "departures", label: siteConfig.navLabels.departures, href: "/#departures" },
-    { id: "arrivals", label: siteConfig.navLabels.arrivals, href: "/#arrivals" },
-    { id: "lounge", label: siteConfig.navLabels.lounge, href: "/#lounge" },
-    { id: "boarding-pass", label: siteConfig.navLabels.boardingPass, href: "/#boarding-pass" },
-  ] as const;
-
-  const scrollToSection = useCallback((id: string) => {
-    if (id === "terminal" || id === "check-in") {
-      const el = document.getElementById(id === "check-in" ? "check-in" : "terminal");
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        window.history.replaceState(null, "", id === "check-in" ? "/" : `/#${id}`);
-      } else if (id === "check-in") {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-        window.history.replaceState(null, "", "/");
-      }
-    } else {
-      const el = document.getElementById(id);
-      if (el) {
-        el.scrollIntoView({ behavior: "smooth" });
-        window.history.replaceState(null, "", `/#${id}`);
-      }
-    }
-  }, []);
-
-  const handleNavClick = useCallback(
-    (e: React.MouseEvent<HTMLAnchorElement>, id: string, href: string, isPage?: boolean) => {
-      if (isPage) return;
-      if (isHomePage) {
-        e.preventDefault();
-        scrollToSection(id);
-      }
-    },
-    [isHomePage, scrollToSection]
-  );
-
-  useEffect(() => {
-    const hash = typeof window !== "undefined" ? window.location.hash.slice(1) : "";
-    if (hash && SECTION_IDS.includes(hash as (typeof SECTION_IDS)[number])) {
-      requestAnimationFrame(() => {
-        const el = document.getElementById(hash);
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!isHomePage) return;
-
-    const visibility: Record<string, number> = {};
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          visibility[entry.target.id] = entry.intersectionRatio;
-        }
-        const mostVisible = Object.entries(visibility).reduce<[string, number]>(
-          (best, curr) => ((curr[1] ?? 0) > (best[1] ?? 0) ? curr : best),
-          ["check-in", 0]
-        );
-        if (mostVisible[1] > 0) {
-          setActiveSection(mostVisible[0]);
-          const newHash = mostVisible[0] === "check-in" ? "" : mostVisible[0];
-          const expectedHash = newHash ? `#${newHash}` : "";
-          if (window.location.hash !== expectedHash) {
-            window.history.replaceState(null, "", newHash ? `/#${newHash}` : "/");
-          }
-        }
-      },
-      { threshold: [0, 0.25, 0.5, 0.75, 1], rootMargin: "-80px 0px -50% 0px" }
-    );
-
-    for (const id of SECTION_IDS) {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    }
-
-    return () => observer.disconnect();
-  }, [isHomePage, pathname]);
-
-  const displayActive = isHomePage ? activeSection : (pathname.startsWith("/departures") ? "departures" : pathname.startsWith("/arrivals") ? "arrivals" : pathname.startsWith("/lounge") ? "lounge" : pathname.startsWith("/boarding-pass") ? "boarding-pass" : "terminal");
+  const displayActive = getActiveId(pathname);
 
   return (
     <div className="min-h-screen flex flex-col bg-transparent relative z-10">
@@ -128,7 +46,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               }}
               className="flex items-center gap-2 flex-shrink-0 focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded pl-1"
             >
-              <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-warm)]" animate />
+              <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 text-[var(--accent-warm)]" />
               <span className="text-xs sm:text-sm font-medium tracking-wide text-[var(--text-primary)] uppercase hidden sm:inline">
                 {siteConfig.airportName}
               </span>
@@ -138,10 +56,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               {navItems.map(({ id, label, href }) => {
                 const isActive = displayActive === id;
                 return (
-                  <a
+                  <Link
                     key={id}
                     href={href}
-                    onClick={(e) => handleNavClick(e, id, href)}
                     className={`flex-shrink-0 px-2 sm:px-3 py-1.5 sm:py-2 text-[11px] sm:text-xs font-medium uppercase tracking-wider transition-colors focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] rounded whitespace-nowrap ${
                       isActive
                         ? "text-[var(--accent-warm)]"
@@ -149,14 +66,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     }`}
                   >
                     {label}
-                  </a>
+                  </Link>
                 );
               })}
             </div>
 
             <div className="flex items-center gap-4 sm:gap-6 flex-shrink-0 flex-nowrap border-l border-[var(--border-subtle)] pl-4">
               <span className="text-[10px] sm:text-xs font-mono text-[var(--text-muted)] uppercase tracking-wider">
-                {SECTION_LABELS[displayActive ?? "terminal"] ?? "Terminal"}
+                {displayActive === "home" ? "Home" : navItems.find((n) => n.id === displayActive)?.label ?? ""}
               </span>
               <TerminalClock className="hidden sm:block text-[var(--accent-warm)] font-mono text-sm" />
               <div className="hidden sm:flex gap-2" aria-label="Social links">

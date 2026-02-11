@@ -9,12 +9,14 @@ export const siteConfig = {
   siteName: "AFA INTERNATIONAL AIRPORT",
 
   navLabels: {
-    terminal: "Terminal",
-    departures: "Departures",
+    projects: "Projects",
     arrivals: "Arrivals",
-    lounge: "Lounge",
-    boardingPass: "Pass",
+    about: "About Me",
+    resume: "Resume",
   },
+
+  /** Landing hero: one clear sentence. */
+  heroOneLiner: "Hi, I'm Ammar. Welcome to AFA International.",
 
   socialLinks: {
     github: "https://github.com/yourusername",
