@@ -23,11 +23,8 @@ function LuggageBag({
       type="button"
       onClick={onSelect}
       aria-pressed={isSelected}
-      className={`baggage-card flex-shrink-0 w-[200px] text-left overflow-visible transition-all focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] focus:ring-offset-2 focus:ring-offset-[var(--terminal-navy)] rounded-lg ${
-        isSelected
-          ? "border-[3px] border-[var(--departure-amber)] bg-[var(--terminal-glow)] shadow-[0_0_20px_var(--terminal-glow)]"
-          : "border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] hover:border-[var(--departure-amber)]/60"
-      }`}
+      data-selected={isSelected ? "true" : "false"}
+      className="baggage-card flex-shrink-0 w-[200px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]"
     >
       <div className="baggage-card-handle" aria-hidden />
       <span className="baggage-tag-badge" aria-hidden>BAG</span>
@@ -71,7 +68,7 @@ export function BaggageCarousel() {
           </div>
         </div>
 
-        <h1 className="text-xl font-signage font-bold text-[var(--window-white)] mb-1 uppercase tracking-wide">Arrivals</h1>
+        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Arrivals</h1>
         <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a bag to view experience details.</p>
 
         <div className="conveyor-belt conveyor-belt-tall rounded-xl overflow-hidden relative mb-4">

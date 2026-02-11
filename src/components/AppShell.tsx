@@ -30,7 +30,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-transparent relative z-10">
       <header className="departure-board-nav" role="banner">
-        <div className="nav-header">
+        <div className="nav-container">
           <Link
             href="/"
             onClick={(e) => {
@@ -40,62 +40,63 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 window.history.replaceState(null, "", "/");
               }
             }}
-            className="airport-code flex items-center gap-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--terminal-navy)] rounded"
+            className="airport-identity airport-code focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--terminal-navy)] rounded"
           >
-            <PlaneIcon className="w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
-            <span className="uppercase tracking-wider">{siteConfig.airportName}</span>
+            <span className="airport-icon" aria-hidden>
+              <PlaneIcon className="w-5 h-5 flex-shrink-0" />
+            </span>
+            <span>{siteConfig.airportName}</span>
           </Link>
-          <TerminalClock className="current-time" />
+
+          <div className="nav-utilities">
+            <TerminalClock className="terminal-time current-time" />
+            <div className="external-links flex items-center gap-2 border-l border-[var(--floor-line)] pl-4">
+              <a
+                href={siteConfig.socialLinks.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--metal-gray)] hover:text-[var(--departure-amber)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
+                aria-label="GitHub"
+              >
+                <GitHubIcon className="w-5 h-5" />
+              </a>
+              <a
+                href={siteConfig.socialLinks.twitter}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--metal-gray)] hover:text-[var(--departure-amber)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
+                aria-label="Twitter"
+              >
+                <TwitterIcon className="w-5 h-5" />
+              </a>
+              <a
+                href={siteConfig.socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--metal-gray)] hover:text-[var(--departure-amber)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
+                aria-label="LinkedIn"
+              >
+                <LinkedInIcon className="w-5 h-5" />
+              </a>
+            </div>
+          </div>
         </div>
 
-        <nav className="nav-links" aria-label="Terminal wayfinding">
+        <nav className="gate-navigation nav-links" aria-label="Terminal wayfinding">
           {GATES.map(({ id, gate, destination, href }) => (
             <Link
               key={id}
               href={href}
               data-active={activeId === id}
-              className="nav-link"
+              className="nav-link gate-link"
             >
-              <span className="gate" aria-hidden>{gate}</span>
+              <span className="gate gate-letter" aria-hidden>
+                {gate}
+              </span>
               <span className="destination">{destination}</span>
             </Link>
           ))}
         </nav>
-
-        <div className="hidden sm:flex items-center gap-4 flex-shrink-0 border-l border-[var(--floor-line)] pl-4">
-          <span className="text-[10px] font-mono text-[var(--metal-gray)] uppercase tracking-wider">
-            {activeId === "home" ? "HOME" : GATES.find((g) => g.id === activeId)?.destination ?? ""}
-          </span>
-          <div className="flex gap-2" aria-label="Social links">
-            <a
-              href={siteConfig.socialLinks.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--metal-gray)] hover:text-[var(--window-white)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
-              aria-label="GitHub"
-            >
-              <GitHubIcon className="w-5 h-5" />
-            </a>
-            <a
-              href={siteConfig.socialLinks.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--metal-gray)] hover:text-[var(--window-white)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
-              aria-label="Twitter"
-            >
-              <TwitterIcon className="w-5 h-5" />
-            </a>
-            <a
-              href={siteConfig.socialLinks.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[var(--metal-gray)] hover:text-[var(--window-white)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
-              aria-label="LinkedIn"
-            >
-              <LinkedInIcon className="w-5 h-5" />
-            </a>
-          </div>
-        </div>
       </header>
 
       <main className="flex-1 page-enter relative z-10">{children}</main>

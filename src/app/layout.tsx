@@ -38,6 +38,13 @@ export default function RootLayout({
       <body
         className={`${bebasNeue.variable} ${jetbrainsMono.variable} ${inter.variable} font-sans antialiased terminal-bg`}
       >
+        <div className="terminal-bg-ambient" aria-hidden />
+        <div className="terminal-windows" aria-hidden />
+        <div className="terminal-floor" aria-hidden />
+        <div className="terminal-signage terminal-signage-left" aria-hidden>GATES A–D →</div>
+        <div className="terminal-signage terminal-signage-right" aria-hidden>← BAGGAGE CLAIM</div>
+        <div className="terminal-signage terminal-signage-bottom" aria-hidden>DEPARTURES →</div>
+        <div className="scan-lines" aria-hidden />
         <MotionProvider>
           <AppShell>{children}</AppShell>
         </MotionProvider>

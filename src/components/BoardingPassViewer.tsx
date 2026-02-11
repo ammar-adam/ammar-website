@@ -9,7 +9,7 @@ export function BoardingPassViewer() {
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--metal-gray)] mb-2">
           Gate D · Boarding pass
         </p>
-        <h1 className="text-xl font-signage font-bold text-[var(--window-white)] mb-1 uppercase tracking-wide">
+        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">
           Resume
         </h1>
         <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">

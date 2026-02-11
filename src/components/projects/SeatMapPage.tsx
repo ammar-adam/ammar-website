@@ -26,7 +26,7 @@ export function ProjectsSeatMapPage() {
           <span className="font-mono text-sm text-[var(--metal-gray)] uppercase tracking-wider">Projects</span>
         </div>
 
-        <h1 className="text-xl font-signage font-bold text-[var(--window-white)] mb-1 uppercase tracking-wide">Projects</h1>
+        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Projects</h1>
         <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a seat to view details.</p>
 
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">

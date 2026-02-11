@@ -41,89 +41,81 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
 
   return (
     <div className="seat-map-section">
-      <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--metal-gray)] mb-3">
+      <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--metal-gray)] mb-3 terminal-code">
         Gate A · Seat map
       </p>
-      <div className="flex items-center gap-2 mb-2 pl-6">
-        <span className="w-[140px] text-center font-mono text-[10px] font-bold text-[var(--departure-amber)]">A</span>
-        <span className="w-[140px] text-center font-mono text-[10px] font-bold text-[var(--departure-amber)]">B</span>
-        <span className="w-6" aria-hidden />
-        <span className="w-[140px] text-center font-mono text-[10px] font-bold text-[var(--departure-amber)]">C</span>
-        <span className="w-[140px] text-center font-mono text-[10px] font-bold text-[var(--departure-amber)]">D</span>
-      </div>
-      <div className="plane-cabin seat-map-layout">
-        <div className="seat-map-left flex flex-col gap-3">
-          {ROWS.map((row) => (
-            <div key={row} className="seat-map-row flex gap-2 items-center">
-              <span className="w-6 flex-shrink-0 font-mono text-xs font-bold text-[var(--metal-gray)]" aria-hidden>
-                {row}
-              </span>
-              {SEATS_LEFT.map((seat) => {
-                const id = seatId(row, seat);
-                const project = bySeat[id];
-                if (!project) return null;
-                const isSelected = selectedSlug === project.slug;
-                return (
-                  <button
-                    key={id}
-                    type="button"
-                    onClick={() => onSelect(isSelected ? null : project.slug)}
-                    className={`plane-seat flex flex-col justify-end pb-3 pt-10 px-2 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] focus:ring-offset-2 focus:ring-offset-[var(--terminal-navy)] ${isSelected ? "seat--selected" : ""}`}
-                  >
-                    <span className="font-mono text-[10px] text-[var(--metal-gray)]">
-                      {row}{seat}
-                    </span>
-                    <span className="text-xs font-semibold text-[var(--window-white)] truncate mt-0.5 leading-tight">
-                      {project.destination}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          ))}
+
+      <div className="plane-cabin-wrap">
+        <div className="plane-nose" aria-hidden>
+          <div className="cockpit-window" />
         </div>
 
-        <div className="seat-map-aisle flex flex-col justify-center items-center" aria-hidden>
-          <div className="aisle-line" />
-          <span className="font-mono text-[9px] text-[var(--metal-gray)] uppercase tracking-widest mt-1">Aisle</span>
+        <div className="seat-columns">
+          <span className="w-10" aria-hidden />
+          <span className="column-label">A</span>
+          <span className="column-label">B</span>
+          <span className="aisle-label">Aisle</span>
+          <span className="column-label">C</span>
+          <span className="column-label">D</span>
         </div>
 
-        <div className="seat-map-right flex flex-col gap-3">
-          {ROWS.map((row) => (
-            <div key={row} className="seat-map-row flex gap-2 items-center">
-              <span className="w-6 flex-shrink-0" aria-hidden />
-              {SEATS_RIGHT.map((seat) => {
-                const id = seatId(row, seat);
-                const project = bySeat[id];
-                if (!project)
-                  return (
-                    <div
-                      key={id}
-                      className="plane-seat opacity-0 pointer-events-none flex-shrink-0"
-                      style={{ minWidth: 140 }}
-                      aria-hidden
-                    />
-                  );
-                const isSelected = selectedSlug === project.slug;
+        {ROWS.map((row) => (
+          <div key={row} className="seat-row">
+            <span className="row-number" aria-hidden>
+              {row}
+            </span>
+            {SEATS_LEFT.map((seat) => {
+              const id = seatId(row, seat);
+              const project = bySeat[id];
+              if (!project) return <div key={id} className="plane-seat empty opacity-50 cursor-not-allowed" style={{ width: 120, minHeight: 140 }} aria-hidden />;
+              const isSelected = selectedSlug === project.slug;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => onSelect(isSelected ? null : project.slug)}
+                  className="plane-seat flex flex-col justify-end pb-3 pt-10 px-2 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] focus:ring-offset-2 focus:ring-offset-[var(--terminal-navy)]"
+                  data-selected={isSelected ? "true" : "false"}
+                >
+                  <span className="seat-label">{row}{seat}</span>
+                  <span className="seat-project">{project.destination}</span>
+                </button>
+              );
+            })}
+            <div className="aisle-space" aria-hidden />
+            {SEATS_RIGHT.map((seat) => {
+              const id = seatId(row, seat);
+              const project = bySeat[id];
+              if (!project)
                 return (
-                  <button
+                  <div
                     key={id}
-                    type="button"
-                    onClick={() => onSelect(isSelected ? null : project.slug)}
-                    className={`plane-seat flex flex-col justify-end pb-3 pt-10 px-2 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] focus:ring-offset-2 focus:ring-offset-[var(--terminal-navy)] ${isSelected ? "seat--selected" : ""}`}
+                    className="plane-seat empty opacity-50 cursor-not-allowed flex flex-col justify-end pb-3 pt-10 px-2"
+                    style={{ width: 120, minHeight: 140 }}
+                    aria-hidden
                   >
-                    <span className="font-mono text-[10px] text-[var(--metal-gray)]">
-                      {row}{seat}
-                    </span>
-                    <span className="text-xs font-semibold text-[var(--window-white)] truncate mt-0.5 leading-tight">
-                      {project.destination}
-                    </span>
-                  </button>
+                    <span className="seat-label text-[var(--metal-gray)]">{row}{seat}</span>
+                    <span className="seat-project text-[var(--metal-gray)] text-xs">Available</span>
+                  </div>
                 );
-              })}
-            </div>
-          ))}
-        </div>
+              const isSelected = selectedSlug === project.slug;
+              return (
+                <button
+                  key={id}
+                  type="button"
+                  onClick={() => onSelect(isSelected ? null : project.slug)}
+                  className="plane-seat flex flex-col justify-end pb-3 pt-10 px-2 text-left transition-all focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] focus:ring-offset-2 focus:ring-offset-[var(--terminal-navy)]"
+                  data-selected={isSelected ? "true" : "false"}
+                >
+                  <span className="seat-label">{row}{seat}</span>
+                  <span className="seat-project">{project.destination}</span>
+                </button>
+              );
+            })}
+          </div>
+        ))}
+
+        <div className="plane-tail" aria-hidden />
       </div>
     </div>
   );
