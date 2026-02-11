@@ -8,18 +8,18 @@ import { TerminalClock } from "@/components/ui/TerminalClock";
 import { InfoDesk } from "@/components/InfoDesk";
 
 const navItems = [
-  { id: "projects", label: siteConfig.navLabels.projects, href: "/departures" },
+  { id: "projects", label: siteConfig.navLabels.projects, href: "/projects" },
   { id: "arrivals", label: siteConfig.navLabels.arrivals, href: "/arrivals" },
   { id: "about", label: siteConfig.navLabels.about, href: "/about" },
-  { id: "resume", label: siteConfig.navLabels.resume, href: "/boarding-pass" },
+  { id: "resume", label: siteConfig.navLabels.resume, href: "/resume" },
 ] as const;
 
 function getActiveId(pathname: string): string {
   if (pathname === "/") return "home";
-  if (pathname.startsWith("/departures")) return "projects";
+  if (pathname.startsWith("/projects") || pathname.startsWith("/departures")) return "projects";
   if (pathname.startsWith("/arrivals")) return "arrivals";
   if (pathname.startsWith("/about")) return "about";
-  if (pathname.startsWith("/boarding-pass")) return "resume";
+  if (pathname.startsWith("/resume") || pathname.startsWith("/boarding-pass")) return "resume";
   return "home";
 }
 

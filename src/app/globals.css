@@ -20,16 +20,16 @@
   --status-delayed: #ffa726;
   --status-scheduled: #78909c;
 
-  /* Text hierarchy */
+  /* Text hierarchy — improved contrast */
   --text-primary: #f5f5f7;
-  --text-secondary: #b8bcc5;
-  --text-tertiary: #6b7280;
-  --text-muted: #4b5563;
+  --text-secondary: #c4c8d0;
+  --text-tertiary: #7a8190;
+  --text-muted: #5c6370;
 
   /* Borders */
-  --border-subtle: rgba(184, 188, 197, 0.08);
-  --border-medium: rgba(184, 188, 197, 0.15);
-  --border-accent: rgba(232, 166, 100, 0.3);
+  --border-subtle: rgba(184, 188, 197, 0.12);
+  --border-medium: rgba(184, 188, 197, 0.22);
+  --border-accent: rgba(232, 166, 100, 0.4);
 
   /* Shadows & depth — terminal glass, bolted placards */
   --shadow-tight: 0 2px 6px rgba(0, 0, 0, 0.35);
@@ -268,6 +268,11 @@
   font-weight: 600;
 }
 
+.boarding-pass-barcode-wrapper {
+  overflow: visible;
+  min-height: 32px;
+}
+
 .pass-barcode-strip {
   height: 28px;
   margin: 0 8px 8px;
@@ -309,9 +314,9 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.02'/%3E%3C/svg%3E");
   pointer-events: none;
-  z-index: 9999;
+  z-index: 0;
 }
 
 body::after {
@@ -357,10 +362,20 @@ a:hover {
 
 /* Utility classes */
 .glass-surface {
-  background: var(--bg-glass);
-  backdrop-filter: blur(12px);
-  border: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border-medium);
   box-shadow: var(--shadow-sm);
+}
+
+.airport-surface {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 8px), var(--bg-surface);
+}
+
+.airport-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-medium) 20%, var(--border-medium) 80%, transparent);
+  opacity: 0.8;
 }
 
 .elevated {
@@ -387,6 +402,34 @@ a:hover {
 
 .font-display {
   font-family: var(--font-display), system-ui, sans-serif;
+}
+
+/* Airport wayfinding / signage */
+.airport-signage-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.gate-signage-plaque {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+}
+
+.directory-row-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.seat-map-seat {
+  font-family: var(--font-body), system-ui, sans-serif;
 }
 
 /* Animations */
@@ -517,6 +560,35 @@ a:hover {
   display: flex;
   flex-direction: column;
   box-shadow: var(--shadow-sm);
+}
+
+.conveyor-belt-tall {
+  min-height: 300px;
+}
+
+.conveyor-belt-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 8px;
+  background: linear-gradient(180deg, rgba(232, 166, 100, 0.12) 0%, rgba(232, 166, 100, 0.04) 100%);
+  border-top: 1px solid var(--border-medium);
+  border-bottom: 1px solid var(--border-medium);
+  pointer-events: none;
+}
+
+.conveyor-belt-edge-top {
+  top: 0;
+}
+
+.conveyor-belt-edge-bottom {
+  bottom: 0;
+  top: auto;
+}
+
+.conveyor-belt-inner {
+  position: relative;
+  z-index: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -943,6 +1015,77 @@ a:hover {
   white-space: nowrap;
 }
 
+.overhead-signage .sign-holder {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35), 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+
+.departures-signage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0.9;
+}
+
+.plane-cabin .aisle {
+  min-width: 24px;
+  border-left: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.seat-map-layout {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+}
+
+.seat-map-left,
+.seat-map-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.seat-map-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.seat-map-row:last-child {
+  margin-bottom: 0;
+}
+
+.seat-map-aisle {
+  position: relative;
+  width: 24px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+  border-left: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.seat-map-aisle .aisle-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, transparent, var(--border-medium) 10%, var(--border-medium) 90%, transparent);
+  transform: translateX(-50%);
+}
+
+.seat-uniform {
+  min-width: 0;
+}
+
+.seat-map-section {
+  margin-bottom: 0;
+}
+
 /* Terminal page: floor grid + window frame */
 .terminal-page::before {
   content: "";
@@ -1328,6 +1471,22 @@ a:hover {
   box-shadow: var(--glow-subtle);
 }
 
+.boarding-pass-barcode {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--text-primary) 0,
+    var(--text-primary) 2px,
+    transparent 2px,
+    transparent 4px,
+    var(--text-primary) 4px,
+    var(--text-primary) 6px,
+    transparent 6px,
+    transparent 12px
+  );
+  opacity: 0.7;
+  border-radius: 2px;
+}
+
 .boarding-pass__download {
   display: inline-block;
   font-family: var(--font-display), system-ui, sans-serif;
@@ -1646,5 +1805,15 @@ a:hover {
 
   .cafe-actions {
     flex-direction: column;
+  }
+}
+
+/* Print: ensure boarding pass barcode is visible */
+@media print {
+  .pass-barcode-strip,
+  .boarding-pass-barcode-wrapper .pass-barcode-strip {
+    opacity: 1;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
   }
 }
