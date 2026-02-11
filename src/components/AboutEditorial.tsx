@@ -1,16 +1,12 @@
 "use client";
 
-import {
-  aboutIntro,
-  aboutPhotos,
-  aboutHighlights,
-  aboutFieldnotes,
-} from "@/data/about";
+import { siteConfig } from "@/data/site";
+import { aboutIntro, aboutPhotos, aboutHighlights } from "@/data/about";
 
 const SECTIONS = [
   { id: "about", label: "About" },
   { id: "highlights", label: "Highlights" },
-  { id: "fieldnotes", label: "Fieldnotes" },
+  { id: "interests", label: "Interests" },
   { id: "photos", label: "Photos" },
 ] as const;
 
@@ -19,83 +15,85 @@ export function AboutEditorial() {
     <article className="py-12 sm:py-16 px-4 sm:px-6 lg:px-12">
       <div className="mx-auto max-w-4xl flex flex-col lg:flex-row gap-10 lg:gap-14">
         <nav
-          className="flex lg:flex-col gap-1 lg:w-44 flex-shrink-0 order-2 lg:order-1 border-l-2 border-[var(--border-medium)] lg:border-l-0 lg:border-r-2 lg:pr-4 pl-4 lg:pl-0"
+          className="flex lg:flex-col gap-1 lg:w-44 flex-shrink-0 order-2 lg:order-1 border-l-2 border-[var(--floor-line)] lg:border-l-0 lg:border-r-2 lg:pr-4 pl-4 lg:pl-0"
           aria-label="About sections"
         >
-          <span className="font-mono text-[10px] text-[var(--text-muted)] uppercase tracking-widest mb-2 hidden lg:block">
+          <span className="font-mono text-[10px] text-[var(--metal-gray)] uppercase tracking-widest mb-2 hidden lg:block">
             Terminal directory
           </span>
           {SECTIONS.map(({ id, label }) => (
             <a
               key={id}
               href={`#${id}`}
-              className="font-mono text-sm text-[var(--text-tertiary)] hover:text-[var(--accent-warm)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded px-2 py-1.5"
+              className="font-mono text-sm text-[var(--metal-gray)] hover:text-[var(--departure-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] rounded px-2 py-1.5"
             >
               {label}
             </a>
           ))}
         </nav>
 
-        <div className="flex-1 min-w-0 order-1 lg:order-2">
-          <section id="about" className="mb-14 scroll-mt-24">
-            <p className="gate-signage-plaque inline-block text-xs font-mono uppercase tracking-widest text-[var(--text-tertiary)] mb-3">
-              Gate A
+        <div className="flex-1 min-w-0 order-1 lg:order-2 passport-profile">
+          <section id="about" className="mb-12 scroll-mt-24">
+            <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--departure-amber)] mb-3">
+              Gate C · Passenger profile
             </p>
-            <h1 className="text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mb-5 font-display">
-              About
-            </h1>
-            <p className="text-[var(--text-secondary)] leading-relaxed text-base sm:text-lg max-w-prose">
-              {aboutIntro}
-            </p>
+            <div className="flex flex-col sm:flex-row gap-6 mb-6">
+              <div className="passport-photo-frame flex-shrink-0 w-28 h-32 sm:w-32 sm:h-40 rounded border-2 border-[var(--departure-amber)] bg-[var(--terminal-dark)] flex items-center justify-center overflow-hidden">
+                {siteConfig.photoUrl ? (
+                  <img src={siteConfig.photoUrl} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="font-signage text-2xl font-bold text-[var(--metal-gray)]">AA</span>
+                )}
+              </div>
+              <div className="flex-1 min-w-0">
+                <h1 className="text-2xl font-signage font-bold text-[var(--window-white)] uppercase tracking-wide mb-1">
+                  Ammar Adam
+                </h1>
+                <p className="font-mono text-[10px] text-[var(--metal-gray)] uppercase tracking-wider border-b border-[var(--floor-line)] pb-2 mb-2">
+                  Builder · Creative · Innovator · CFM @ Waterloo
+                </p>
+                <p className="text-[var(--metal-gray)] leading-relaxed text-base max-w-prose">
+                  {aboutIntro}
+                </p>
+              </div>
+            </div>
           </section>
 
-          <section id="highlights" className="mb-14 scroll-mt-24">
-            <h2 className="gate-signage-plaque text-xs font-mono uppercase tracking-widest text-[var(--text-tertiary)] mb-3">
+          <section id="highlights" className="mb-12 scroll-mt-24">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--metal-gray)] mb-3">
               Highlights
             </h2>
-            <ul className="space-y-3 text-[var(--text-secondary)] text-base sm:text-[1rem] leading-relaxed">
-              {aboutHighlights.map((item, i) => (
-                <li key={i} className="flex gap-2.5">
-                  <span className="text-[var(--accent-warm)] mt-0.5">·</span>
+            <ul className="space-y-2 text-[var(--metal-gray)] text-sm leading-relaxed">
+              {aboutHighlights.slice(0, 6).map((item, i) => (
+                <li key={i} className="flex gap-2">
+                  <span className="text-[var(--departure-amber)]">·</span>
                   <span>{item}</span>
                 </li>
               ))}
             </ul>
+            <p className="font-mono text-[10px] text-[var(--metal-gray)] uppercase tracking-wider mt-4">
+              YYZ · DXB · KHI
+            </p>
           </section>
 
-          {aboutFieldnotes.length > 0 && (
-            <section id="fieldnotes" className="mb-14 scroll-mt-24">
-              <h2 className="gate-signage-plaque text-xs font-mono uppercase tracking-widest text-[var(--text-tertiary)] mb-4">
-                Fieldnotes
-              </h2>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {aboutFieldnotes.map((fn, i) => (
-                  <div
-                    key={i}
-                    className="rounded-xl border border-[var(--border-medium)] bg-[var(--bg-surface)] p-4 sm:p-5"
-                  >
-                    <div className="font-mono text-[11px] text-[var(--text-tertiary)] uppercase tracking-wider mb-1.5">
-                      {fn.date}
-                    </div>
-                    <h3 className="font-semibold text-[var(--text-primary)] text-base font-display mb-2">
-                      {fn.title}
-                    </h3>
-                    <p className="text-sm sm:text-base text-[var(--text-secondary)] leading-relaxed">{fn.line}</p>
-                  </div>
-                ))}
-              </div>
-            </section>
-          )}
+          <section id="interests" className="mb-12 scroll-mt-24">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--metal-gray)] mb-2">
+              Interests
+            </h2>
+            <p className="text-sm text-[var(--metal-gray)]">
+              Liverpool FC · Aviation · Theme parks · Cooking · Coffee · Social impact
+            </p>
+          </section>
 
           <section id="photos" className="scroll-mt-24">
-            <h2 className="gate-signage-plaque text-xs font-mono uppercase tracking-widest text-[var(--text-tertiary)] mb-4">
+            <h2 className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--metal-gray)] mb-4">
               Photos
             </h2>
             {aboutPhotos.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {aboutPhotos.map((photo, i) => (
-                  <figure key={i} className="rounded-xl overflow-hidden border border-[var(--border-medium)]">
-                    <div className="aspect-square relative bg-[var(--bg-surface)]">
+                  <figure key={i} className="rounded-lg overflow-hidden border-2 border-[var(--floor-line)]">
+                    <div className="aspect-square relative bg-[var(--terminal-dark)]">
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img
                         src={photo.src}
@@ -103,14 +101,14 @@ export function AboutEditorial() {
                         className="w-full h-full object-cover"
                       />
                     </div>
-                    <figcaption className="p-2.5 text-xs text-[var(--text-tertiary)]">
+                    <figcaption className="p-2 text-[10px] font-mono text-[var(--metal-gray)]">
                       {photo.caption}
                     </figcaption>
                   </figure>
                 ))}
               </div>
             ) : (
-              <p className="text-sm text-[var(--text-tertiary)]">Photo grid placeholder.</p>
+              <p className="text-sm font-mono text-[var(--metal-gray)]">Photo grid placeholder.</p>
             )}
           </section>
         </div>

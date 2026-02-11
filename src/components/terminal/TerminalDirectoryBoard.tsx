@@ -3,16 +3,16 @@
 import Link from "next/link";
 
 const ROWS = [
-  { gate: "A", destination: "Projects", info: "Things I'm building / built", cta: "View seat map", href: "/projects" },
-  { gate: "B", destination: "Arrivals", info: "Experiences that have landed", cta: "Go to baggage claim", href: "/arrivals" },
-  { gate: "C", destination: "About", info: "Who I am / what I'm optimizing for", cta: "Open profile", href: "/about" },
-  { gate: "D", destination: "Resume", info: "Boarding pass (PDF)", cta: "Export", href: "/resume" },
+  { gate: "A", destination: "Projects", info: "Things I built", cta: "→", href: "/projects" },
+  { gate: "B", destination: "Arrivals", info: "Experience landed", cta: "→", href: "/arrivals" },
+  { gate: "C", destination: "About", info: "Who I am", cta: "→", href: "/about" },
+  { gate: "D", destination: "Resume", info: "Boarding pass PDF", cta: "↓", href: "/resume" },
 ] as const;
 
 export function TerminalDirectoryBoard() {
   return (
     <div
-      className="departures-board elevated overflow-hidden w-full max-w-3xl departures-board-mounted"
+      className="departures-board elevated overflow-hidden w-full max-w-3xl departures-board-mounted border-2 border-[var(--floor-line)] rounded-lg"
       role="navigation"
       aria-label="Terminal Directory"
     >
@@ -23,38 +23,38 @@ export function TerminalDirectoryBoard() {
       <table className="departures-table w-full border-collapse">
         <thead>
           <tr>
-            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] w-[3rem] border-b border-r border-[var(--border-medium)]">
+            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--metal-gray)] w-[3.5rem] border-b border-r border-[var(--floor-line)]">
               Gate
             </th>
-            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] border-b border-r border-[var(--border-medium)]">
+            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--metal-gray)] border-b border-r border-[var(--floor-line)]">
               Destination
             </th>
-            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] min-w-[140px] border-b border-r border-[var(--border-medium)]">
+            <th className="text-left py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--metal-gray)] min-w-[120px] border-b border-r border-[var(--floor-line)]">
               Info
             </th>
-            <th className="text-right py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)] w-[7rem] border-b border-[var(--border-medium)]">
+            <th className="text-center py-3 px-3 md:px-4 font-mono text-[10px] uppercase tracking-[0.1em] text-[var(--metal-gray)] w-[3rem] border-b border-[var(--floor-line)]">
               CTA
             </th>
           </tr>
         </thead>
         <tbody>
           {ROWS.map(({ gate, destination, info, cta, href }) => (
-            <tr key={gate} className="border-b border-[var(--border-subtle)] last:border-0 group">
-              <td className="py-0 align-middle border-r border-[var(--border-subtle)]" colSpan={4}>
+            <tr key={gate} className="directory-row border-b border-[var(--floor-line)] last:border-0 group transition-colors">
+              <td className="py-0 align-middle border-r border-[var(--floor-line)]" colSpan={4}>
                 <Link
                   href={href}
-                  className="directory-row-link flex w-full items-center py-3 px-3 md:px-4 gap-0 cursor-pointer transition-colors hover:bg-[var(--accent-warm-dim)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[var(--accent-warm)] focus:bg-[var(--accent-warm-dim)]"
+                  className="directory-row-link flex w-full items-center py-3 px-3 md:px-4 gap-0 cursor-pointer transition-colors hover:bg-[var(--terminal-glow)] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[var(--departure-amber)] focus:bg-[var(--terminal-glow)]"
                 >
-                  <span className="font-mono text-sm font-semibold text-[var(--accent-warm)] tabular-nums w-[3rem] flex-shrink-0">
+                  <span className="font-signage font-bold text-lg text-[var(--departure-amber)] w-[3.5rem] flex-shrink-0">
                     {gate}
                   </span>
-                  <span className="font-semibold text-[var(--text-primary)] flex-1 min-w-0 px-3 md:px-4 text-left">
+                  <span className="font-semibold text-[var(--window-white)] flex-1 min-w-0 px-3 md:px-4 text-left font-mono text-sm uppercase tracking-wider">
                     {destination}
                   </span>
-                  <span className="text-sm text-[var(--text-secondary)] min-w-[140px] text-left hidden sm:block">
+                  <span className="text-sm text-[var(--metal-gray)] min-w-[120px] text-left hidden sm:block font-mono text-xs">
                     {info}
                   </span>
-                  <span className="font-mono text-xs font-semibold text-[var(--accent-warm)] w-[7rem] flex-shrink-0 text-right group-hover:text-[var(--accent-glow)]">
+                  <span className="font-mono text-lg font-bold text-[var(--departure-amber)] w-[3rem] flex-shrink-0 text-center group-hover:text-[var(--window-white)]" aria-hidden>
                     {cta}
                   </span>
                 </Link>

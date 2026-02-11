@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
-import { Space_Grotesk, JetBrains_Mono, Inter } from "next/font/google";
+import { Bebas_Neue, JetBrains_Mono, Inter } from "next/font/google";
 import { AppShell } from "@/components/AppShell";
 import { MotionProvider } from "@/components/MotionProvider";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-display",
+const bebasNeue = Bebas_Neue({
+  variable: "--font-signage",
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
+  weight: "400",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
+  weight: ["400", "500", "700"],
 });
 
 const inter = Inter({
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="scroll-smooth">
       <body
-        className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} ${inter.variable} font-sans antialiased`}
+        className={`${bebasNeue.variable} ${jetbrainsMono.variable} ${inter.variable} font-sans antialiased terminal-bg`}
       >
         <MotionProvider>
           <AppShell>{children}</AppShell>

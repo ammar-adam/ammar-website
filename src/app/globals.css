@@ -1,43 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  /* Base colors — dusky blue-gray */
-  --bg-deep: #1a1e26;
-  --bg-surface: #252b36;
-  --bg-elevated: #2f3742;
-  --bg-glass: rgba(47, 55, 66, 0.7);
+  /* Terminal design system — AFA International */
+  --terminal-navy: #0a1628;
+  --terminal-dark: #1a2332;
+  --terminal-blue: #1e3a5f;
+  --departure-amber: #f59e0b;
+  --arrival-green: #10b981;
+  --alert-red: #ef4444;
+  --gate-cyan: #06b6d4;
+  --window-white: #f8fafc;
+  --metal-gray: #94a3b8;
+  --floor-line: #334155;
+  --glass-overlay: rgba(255, 255, 255, 0.05);
+  --terminal-glow: rgba(245, 158, 11, 0.2);
 
-  /* Warm accents — golden hour */
-  --accent-warm: #e8a664;
-  --accent-gold: #d4a574;
-  --accent-glow: #ff9f5a;
-  --accent-deep: #8b6b47;
-  --accent-warm-dim: rgba(232, 166, 100, 0.25);
-
-  /* Status colors */
-  --status-boarding: #ff7043;
-  --status-ontime: #66bb6a;
-  --status-delayed: #ffa726;
-  --status-scheduled: #78909c;
-
-  /* Text hierarchy — improved contrast */
-  --text-primary: #f5f5f7;
-  --text-secondary: #c4c8d0;
-  --text-tertiary: #7a8190;
-  --text-muted: #5c6370;
-
-  /* Borders */
-  --border-subtle: rgba(184, 188, 197, 0.12);
-  --border-medium: rgba(184, 188, 197, 0.22);
-  --border-accent: rgba(232, 166, 100, 0.4);
-
-  /* Shadows & depth — terminal glass, bolted placards */
-  --shadow-tight: 0 2px 6px rgba(0, 0, 0, 0.35);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 3px 12px rgba(0, 0, 0, 0.4);
-  --shadow-lg: 0 6px 24px rgba(0, 0, 0, 0.45);
-  --glow-subtle: 0 0 8px rgba(232, 166, 100, 0.06);
-  --glow-warm: 0 0 10px rgba(232, 166, 100, 0.08);
+  /* Legacy mapping — same terminal feel */
+  --bg-deep: var(--terminal-navy);
+  --bg-surface: var(--terminal-dark);
+  --bg-elevated: #243044;
+  --bg-glass: rgba(26, 35, 50, 0.85);
+  --accent-warm: var(--departure-amber);
+  --accent-gold: #d97706;
+  --accent-glow: #fbbf24;
+  --accent-deep: #b45309;
+  --accent-warm-dim: var(--terminal-glow);
+  --status-boarding: #f59e0b;
+  --status-ontime: var(--arrival-green);
+  --status-delayed: #f97316;
+  --status-scheduled: var(--metal-gray);
+  --text-primary: var(--window-white);
+  --text-secondary: var(--metal-gray);
+  --text-tertiary: #64748b;
+  --text-muted: #475569;
+  --border-subtle: rgba(148, 163, 184, 0.15);
+  --border-medium: var(--floor-line);
+  --border-accent: rgba(245, 158, 11, 0.4);
+  --shadow-tight: 0 2px 6px rgba(10, 22, 40, 0.5);
+  --shadow-sm: 0 2px 8px rgba(10, 22, 40, 0.4);
+  --shadow-md: 0 4px 16px rgba(10, 22, 40, 0.5);
+  --shadow-lg: 0 6px 24px rgba(10, 22, 40, 0.5);
+  --glow-subtle: 0 0 12px var(--terminal-glow);
+  --glow-warm: 0 0 16px var(--terminal-glow);
 
   /* Type scale */
   --text-xs: 0.75rem;
@@ -48,11 +52,14 @@
   --text-2xl: 2rem;
   --text-3xl: 3rem;
   --text-4xl: 4rem;
-
-  /* Radius — schematic, not soft */
   --radius-card: 12px;
   --radius-panel: 10px;
   --radius-compact: 8px;
+
+  /* Spacing — terminal grid (8px base) */
+  --space-aisle: 24px;
+  --space-corridor: 48px;
+  --runway-max: 1280px;
 }
 
 /* Density + scale ladder (Level 0–4) */
@@ -368,6 +375,210 @@ a:hover {
   box-shadow: var(--shadow-sm);
 }
 
+/* Terminal background — night terminal atmosphere */
+.terminal-bg {
+  background: var(--terminal-navy);
+  position: relative;
+}
+
+.terminal-bg::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255, 255, 255, 0.02) 2px,
+      rgba(255, 255, 255, 0.02) 4px
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.terminal-bg::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40%;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 49px,
+      var(--floor-line) 49px,
+      var(--floor-line) 50px
+    );
+  opacity: 0.08;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Departure board navbar */
+.departure-board-nav {
+  background: linear-gradient(180deg, var(--terminal-dark) 0%, var(--terminal-navy) 100%);
+  border-bottom: 3px solid var(--departure-amber);
+  padding: 12px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-mono), monospace;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 20px var(--terminal-glow);
+}
+
+.departure-board-nav .nav-header {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+
+.departure-board-nav .airport-code {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--departure-amber);
+  letter-spacing: 0.1em;
+}
+
+.departure-board-nav .current-time {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--window-white);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+.departure-board-nav .nav-links {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.departure-board-nav .nav-link {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.departure-board-nav .nav-link::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--terminal-glow);
+  transform: translateY(100%);
+  transition: transform 0.25s ease;
+}
+
+.departure-board-nav .nav-link:hover::before,
+.departure-board-nav .nav-link:focus-visible::before {
+  transform: translateY(0);
+}
+
+.departure-board-nav .nav-link .gate {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--departure-amber);
+  font-family: var(--font-signage), "Oswald", sans-serif;
+  position: relative;
+  z-index: 1;
+}
+
+.departure-board-nav .nav-link .destination {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--metal-gray);
+  letter-spacing: 0.12em;
+  position: relative;
+  z-index: 1;
+  transition: color 0.25s ease;
+}
+
+.departure-board-nav .nav-link:hover .destination,
+.departure-board-nav .nav-link:focus-visible .destination,
+.departure-board-nav .nav-link[data-active="true"] .destination {
+  color: var(--window-white);
+}
+
+.departure-board-nav .nav-link[data-active="true"] .gate {
+  color: var(--window-white);
+}
+
+.departure-board-nav .nav-link:focus-visible {
+  outline: 3px solid var(--departure-amber);
+  outline-offset: 4px;
+}
+
+@media (max-width: 768px) {
+  .departure-board-nav {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 10px 16px;
+  }
+
+  .departure-board-nav .nav-header {
+    justify-content: space-between;
+  }
+
+  .departure-board-nav .nav-links {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .departure-board-nav .nav-link .gate {
+    font-size: 18px;
+  }
+
+  .plane-seat {
+    width: 120px;
+    min-height: 140px;
+  }
+
+  .plane-seat::before {
+    height: 22px;
+    left: 8px;
+    right: 8px;
+  }
+}
+
+/* Departure board table — scan lines overlay */
+.departure-board-mounted {
+  position: relative;
+}
+
+.departure-board-mounted::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.02) 2px,
+    rgba(255, 255, 255, 0.02) 4px
+  );
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+.directory-row:hover {
+  background: var(--terminal-glow);
+}
+
 .airport-surface {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 8px), var(--bg-surface);
 }
@@ -400,8 +611,9 @@ a:hover {
   font-variant-numeric: tabular-nums;
 }
 
-.font-display {
-  font-family: var(--font-display), system-ui, sans-serif;
+.font-display,
+.font-signage {
+  font-family: var(--font-signage), var(--font-mono), system-ui, sans-serif;
 }
 
 /* Airport wayfinding / signage */
@@ -430,6 +642,125 @@ a:hover {
 
 .seat-map-seat {
   font-family: var(--font-body), system-ui, sans-serif;
+}
+
+/* Airline seat shape — seat back + base */
+.plane-seat {
+  width: 140px;
+  min-height: 160px;
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-radius: 12px 12px 4px 4px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.plane-seat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.plane-seat::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: 10px;
+  right: 10px;
+  height: 28px;
+  background: var(--terminal-blue);
+  border: 2px solid var(--floor-line);
+  border-radius: 8px 8px 0 0;
+}
+
+.plane-seat.seat--selected {
+  border-color: var(--departure-amber);
+  background: var(--terminal-glow);
+  box-shadow: 0 0 16px var(--terminal-glow);
+}
+
+.plane-seat.seat--selected::before {
+  border-color: var(--departure-amber);
+}
+
+/* Boarding pass detail panel */
+.boarding-pass-panel {
+  background: linear-gradient(180deg, var(--terminal-dark) 0%, var(--terminal-navy) 100%);
+  border: 2px solid var(--floor-line);
+  border-radius: 8px;
+  font-family: var(--font-mono), monospace;
+}
+
+.boarding-pass-panel .bp-header {
+  border-bottom: 2px solid var(--departure-amber);
+  padding: 12px 16px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--departure-amber);
+}
+
+.boarding-pass-panel .bp-barcode {
+  height: 48px;
+  background: repeating-linear-gradient(
+    90deg,
+    #000 0px,
+    #000 2px,
+    transparent 2px,
+    transparent 4px
+  );
+  margin-top: 16px;
+  border-radius: 2px;
+}
+
+/* Baggage claim — luggage card with handle and tag */
+.baggage-card {
+  position: relative;
+}
+
+.baggage-card-handle {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 8px;
+  background: var(--metal-gray);
+  border-radius: 4px 4px 0 0;
+  border: 2px solid var(--floor-line);
+}
+
+.baggage-tag-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--departure-amber);
+  color: var(--terminal-navy);
+  padding: 3px 8px;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--font-mono), monospace;
+  transform: rotate(12deg);
+  border-radius: 2px;
+}
+
+.barcode-stripe {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--terminal-navy) 0px,
+    var(--terminal-navy) 1px,
+    var(--metal-gray) 1px,
+    var(--metal-gray) 2px
+  );
+  border-radius: 1px;
+}
+
+.baggage-claim-led {
+  padding: 12px 16px;
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-left: 4px solid var(--departure-amber);
+  border-radius: 4px;
 }
 
 /* Animations */

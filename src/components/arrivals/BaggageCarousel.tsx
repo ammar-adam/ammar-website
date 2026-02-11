@@ -23,21 +23,21 @@ function LuggageBag({
       type="button"
       onClick={onSelect}
       aria-pressed={isSelected}
-      className={`luggage-tag flex-shrink-0 w-[200px] text-left overflow-hidden transition-all focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] focus:ring-offset-2 focus:ring-offset-[var(--bg-deep)] baggage-tag-aesthetic rounded ${
+      className={`baggage-card flex-shrink-0 w-[200px] text-left overflow-visible transition-all focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] focus:ring-offset-2 focus:ring-offset-[var(--terminal-navy)] rounded-lg ${
         isSelected
-          ? "border-2 border-[var(--accent-warm)] bg-[var(--accent-warm-dim)] shadow-[0_0_0_1px_var(--accent-warm)]"
-          : "border border-[var(--border-medium)] bg-[var(--bg-elevated)] hover:border-[var(--border-accent)]"
+          ? "border-[3px] border-[var(--departure-amber)] bg-[var(--terminal-glow)] shadow-[0_0_20px_var(--terminal-glow)]"
+          : "border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] hover:border-[var(--departure-amber)]/60"
       }`}
     >
-      <div className="luggage-tag-strap h-2 bg-[var(--accent-warm)]/40 flex items-center justify-center">
-        <span className="font-mono text-[8px] text-[var(--bg-deep)]/80 uppercase tracking-widest">Bag</span>
-      </div>
-      <div className="baggage-tag-body p-2.5 border-l-2 border-r-2 border-b-2 border-[var(--border-medium)] bg-[var(--bg-surface)]">
-        <div className="aspect-[4/3] w-full rounded bg-[var(--bg-elevated)] border border-[var(--border-subtle)] flex items-center justify-center mb-2">
-          <span className="font-mono text-[9px] text-[var(--text-muted)]">Image</span>
+      <div className="baggage-card-handle" aria-hidden />
+      <span className="baggage-tag-badge" aria-hidden>BAG</span>
+      <div className="p-3 pt-4 border-2 border-t-0 border-[var(--floor-line)] rounded-b-lg bg-[var(--terminal-dark)]">
+        <div className="aspect-[4/3] w-full rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] flex items-center justify-center mb-2">
+          <span className="font-mono text-[9px] text-[var(--metal-gray)]">Image</span>
         </div>
-        <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--text-tertiary)] block truncate">{from}</span>
-        <span className="font-display text-xs font-semibold text-[var(--text-primary)] block mt-0.5 truncate">{title}</span>
+        <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--metal-gray)] block truncate">From: {from}</span>
+        <span className="font-signage text-xs font-bold text-[var(--window-white)] block mt-0.5 truncate uppercase">{title}</span>
+        <div className="barcode-stripe mt-2" aria-hidden />
       </div>
     </button>
   );
@@ -52,23 +52,27 @@ export function BaggageCarousel() {
 
   return (
     <section className="py-10 sm:py-14 px-4 sm:px-6 lg:px-12">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-[var(--runway-max)]">
         <div className="flex items-center gap-3 mb-4">
           <Link
             href="/"
-            className="text-sm font-medium text-[var(--accent-warm)] hover:text-[var(--accent-glow)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)] rounded"
+            className="text-sm font-mono text-[var(--metal-gray)] hover:text-[var(--departure-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] rounded"
           >
-            ← Back to Directory
+            ← Directory
           </Link>
         </div>
-        <p className="font-mono text-[10px] text-[var(--text-tertiary)] mb-1">
-          Terminal Directory / Arrivals / Carousel 1
-        </p>
 
-        <h1 className="text-xl font-bold text-[var(--text-primary)] mb-2 font-display">Arrivals</h1>
-        <p className="text-sm text-[var(--text-secondary)] mb-6">Select a bag to view experience details.</p>
+        <div className="baggage-claim-led mb-6">
+          <div className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-[var(--departure-amber)]">
+            Baggage claim area
+          </div>
+          <div className="font-mono text-[10px] text-[var(--metal-gray)] uppercase tracking-wider mt-1">
+            Carousel 1 · All arrivals
+          </div>
+        </div>
 
-        <p className="airport-signage-label mb-2">Baggage Claim</p>
+        <h1 className="text-xl font-signage font-bold text-[var(--window-white)] mb-1 uppercase tracking-wide">Arrivals</h1>
+        <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a bag to view experience details.</p>
 
         <div className="conveyor-belt conveyor-belt-tall rounded-xl overflow-hidden relative mb-4">
           <div className="conveyor-belt-edge conveyor-belt-edge-top" aria-hidden />
@@ -96,24 +100,26 @@ export function BaggageCarousel() {
           <button
             type="button"
             onClick={() => setPaused((p) => !p)}
-            className="font-mono text-sm px-4 py-2 rounded-lg border border-[var(--border-medium)] bg-[var(--bg-surface)] text-[var(--text-secondary)] hover:border-[var(--accent-warm)] hover:text-[var(--accent-warm)] focus:outline-none focus:ring-2 focus:ring-[var(--accent-warm)]"
+            className="font-mono text-sm px-4 py-2 rounded border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] text-[var(--metal-gray)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)]"
           >
             {paused ? "Play" : "Pause"}
           </button>
           <button
             type="button"
             onClick={() => setSpeed((s) => (s === "normal" ? "slow" : "normal"))}
-            className={`font-mono text-xs px-3 py-1.5 rounded border ${speed === "slow" ? "border-[var(--accent-warm)] text-[var(--accent-warm)] bg-[var(--accent-warm-dim)]" : "border-[var(--border-medium)] text-[var(--text-secondary)]"}`}
+            className={`font-mono text-xs px-3 py-1.5 rounded border-2 ${speed === "slow" ? "border-[var(--departure-amber)] text-[var(--departure-amber)] bg-[var(--terminal-glow)]" : "border-[var(--floor-line)] text-[var(--metal-gray)]"}`}
           >
             Speed: {speed === "slow" ? "Slow" : "Normal"}
           </button>
         </div>
 
-        <div className="elevated rounded-xl border border-[var(--border-medium)] p-5 min-h-[200px]">
+        <p className="font-mono text-[9px] text-[var(--metal-gray)] uppercase tracking-widest mb-2">Stand behind yellow line</p>
+
+        <div className="rounded-xl border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] p-5 min-h-[200px]">
           {selected ? (
             <DetailsPanel variant="experience" data={selected} />
           ) : (
-            <p className="text-sm text-[var(--text-tertiary)]">Select a bag above to view details.</p>
+            <p className="text-sm font-mono text-[var(--metal-gray)]">Select a bag above to view details.</p>
           )}
         </div>
       </div>
