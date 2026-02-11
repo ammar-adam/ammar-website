@@ -27,7 +27,7 @@ export function BoardingPassViewer() {
           </div>
 
           <div className="pass-body px-4 py-4">
-            <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-wider text-[var(--metal-gray)] mb-3">
+            <div className="pass-info-grid grid grid-cols-2 gap-x-8 gap-y-2 font-mono text-[10px] uppercase tracking-wider text-[var(--metal-gray)] mb-3">
               <span>Passenger name</span>
               <span className="text-[var(--window-white)] font-semibold normal-case">{boardingPassConfig.displayName}</span>
               <span>From</span>
@@ -68,29 +68,30 @@ export function BoardingPassViewer() {
               </div>
             ))}
 
-            <div
-              className="pass-barcode-strip h-12 w-full mt-4 rounded bg-[var(--terminal-navy)]"
-              style={{
-                backgroundImage: `repeating-linear-gradient(90deg, var(--window-white) 0px, var(--window-white) 2px, transparent 2px, transparent 4px)`,
-              }}
-              aria-hidden
-              role="img"
-              aria-label="Barcode"
-            />
-            <p className="font-mono text-[9px] text-[var(--metal-gray)] text-center mt-1">Sequence · Priority boarding</p>
+            <button
+              type="button"
+              onClick={() => window.open(boardingPassConfig.resumeFileUrl, "_blank", "noopener,noreferrer")}
+              className="barcode-download-section group w-full mt-8 mb-6 py-6 px-6 rounded-lg border-2 border-dashed border-[var(--floor-line)] bg-transparent cursor-pointer transition-all duration-300 hover:border-[var(--departure-amber)] hover:bg-[var(--terminal-glow)] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)]"
+              aria-label="Download resume PDF"
+            >
+              <div
+                className="barcode-lines w-full h-20 rounded bg-[var(--terminal-navy)] mb-4 opacity-70 transition-opacity duration-300 group-hover:opacity-100"
+                style={{
+                  backgroundImage: `repeating-linear-gradient(90deg, var(--window-white) 0px, var(--window-white) 2px, transparent 2px, transparent 5px)`,
+                }}
+                aria-hidden
+              />
+              <p className="barcode-instruction font-mono text-[11px] text-[var(--metal-gray)] tracking-[0.15em] mb-2 uppercase transition-colors duration-300 group-hover:text-[var(--departure-amber)]">
+                Click barcode to download PDF
+              </p>
+              <p className="barcode-label font-mono text-[9px] text-[var(--metal-gray)] tracking-[0.1em] uppercase">
+                Sequence · Priority boarding
+              </p>
+            </button>
           </div>
 
-          <div className="px-4 pb-4 pt-2 border-t border-[var(--floor-line)]">
-            <a
-              href={boardingPassConfig.resumeFileUrl}
-              download
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full text-center py-3 rounded border-2 border-[var(--departure-amber)] text-[var(--departure-amber)] font-mono text-sm font-semibold hover:bg-[var(--terminal-glow)] transition-colors"
-            >
-              Download PDF
-            </a>
-            <p className="text-center font-mono text-[9px] text-[var(--metal-gray)] mt-2 uppercase tracking-widest">
+          <div className="boarding-footer text-center pt-4 border-t-2 border-[var(--floor-line)]">
+            <p className="group-label font-mono text-[11px] text-[var(--departure-amber)] tracking-[0.15em] uppercase m-0">
               Group: Priority
             </p>
           </div>

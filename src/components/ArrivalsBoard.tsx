@@ -24,10 +24,10 @@ export function ArrivalsBoard() {
           <AirportIcon src="/airport-icons/suitcase-2.svg" className="w-8 h-8 opacity-[0.10] flex-shrink-0 mt-0.5" />
           <div>
             <h1 className="text-xl font-bold text-[var(--text-primary)] mb-1 font-display">
-              Arrivals
+              Experiences
             </h1>
             <p className="text-sm text-[var(--text-secondary)]">
-              The arrivals board reflects where I have been and what has landed so far.
+              Where I have been and what has landed so far.
             </p>
           </div>
         </motion.div>

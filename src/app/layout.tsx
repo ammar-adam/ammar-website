@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, JetBrains_Mono, Inter } from "next/font/google";
 import { AppShell } from "@/components/AppShell";
+import { AirportSignage } from "@/components/AirportSignage";
 import { MotionProvider } from "@/components/MotionProvider";
 import { siteConfig } from "@/data/site";
 import "./globals.css";
@@ -41,9 +42,7 @@ export default function RootLayout({
         <div className="terminal-bg-ambient" aria-hidden />
         <div className="terminal-windows" aria-hidden />
         <div className="terminal-floor" aria-hidden />
-        <div className="terminal-signage terminal-signage-left" aria-hidden>GATES A–D →</div>
-        <div className="terminal-signage terminal-signage-right" aria-hidden>← BAGGAGE CLAIM</div>
-        <div className="terminal-signage terminal-signage-bottom" aria-hidden>DEPARTURES →</div>
+        <AirportSignage />
         <div className="scan-lines" aria-hidden />
         <MotionProvider>
           <AppShell>{children}</AppShell>

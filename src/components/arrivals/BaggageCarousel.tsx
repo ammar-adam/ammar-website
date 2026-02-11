@@ -24,7 +24,7 @@ function LuggageBag({
       onClick={onSelect}
       aria-pressed={isSelected}
       data-selected={isSelected ? "true" : "false"}
-      className="baggage-card flex-shrink-0 w-[200px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]"
+      className="baggage-card flex-shrink-0 w-[240px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]"
     >
       <div className="baggage-card-handle" aria-hidden />
       <span className="baggage-tag-badge" aria-hidden>BAG</span>
@@ -32,8 +32,8 @@ function LuggageBag({
         <div className="aspect-[4/3] w-full rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] flex items-center justify-center mb-2">
           <span className="font-mono text-[9px] text-[var(--metal-gray)]">Image</span>
         </div>
-        <span className="font-mono text-[9px] uppercase tracking-wider text-[var(--metal-gray)] block truncate">From: {from}</span>
-        <span className="font-signage text-xs font-bold text-[var(--window-white)] block mt-0.5 truncate uppercase">{title}</span>
+        <span className="baggage-origin block truncate">From: {from}</span>
+        <span className="baggage-role block mt-0.5 truncate">{title}</span>
         <div className="barcode-stripe mt-2" aria-hidden />
       </div>
     </button>
@@ -43,7 +43,6 @@ function LuggageBag({
 export function BaggageCarousel() {
   const [selectedSlug, setSelectedSlug] = useState<string | null>(null);
   const [paused, setPaused] = useState(false);
-  const [speed, setSpeed] = useState<"slow" | "normal">("normal");
   const selected = selectedSlug ? arrivals.find((a) => a.slug === selectedSlug) : null;
   const trackItems = [...arrivals, ...arrivals];
 
@@ -64,7 +63,7 @@ export function BaggageCarousel() {
             Baggage claim area
           </div>
           <div className="font-mono text-[10px] text-[var(--metal-gray)] uppercase tracking-wider mt-1">
-            Carousel 1 · All arrivals
+            Carousel 1 · All experiences
           </div>
         </div>
 
@@ -76,8 +75,8 @@ export function BaggageCarousel() {
           <div className="conveyor-belt-edge conveyor-belt-edge-bottom" aria-hidden />
           <div className="conveyor-belt-inner overflow-hidden py-6">
             <div
-              className={`belt-track flex gap-8 items-stretch w-max ${paused ? "belt-paused" : ""} ${speed === "slow" ? "belt-slow" : ""}`}
-              style={{ animationDuration: speed === "slow" ? "55s" : "40s" }}
+              className={`belt-track flex gap-8 items-stretch w-max ${paused ? "belt-paused" : ""}`}
+              style={{ animationDuration: "40s" }}
             >
               {trackItems.map((a, i) => (
                 <LuggageBag
@@ -100,13 +99,6 @@ export function BaggageCarousel() {
             className="font-mono text-sm px-4 py-2 rounded border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] text-[var(--metal-gray)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)]"
           >
             {paused ? "Play" : "Pause"}
-          </button>
-          <button
-            type="button"
-            onClick={() => setSpeed((s) => (s === "normal" ? "slow" : "normal"))}
-            className={`font-mono text-xs px-3 py-1.5 rounded border-2 ${speed === "slow" ? "border-[var(--departure-amber)] text-[var(--departure-amber)] bg-[var(--terminal-glow)]" : "border-[var(--floor-line)] text-[var(--metal-gray)]"}`}
-          >
-            Speed: {speed === "slow" ? "Slow" : "Normal"}
           </button>
         </div>
 

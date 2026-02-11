@@ -9,7 +9,7 @@ import { InfoDesk } from "@/components/InfoDesk";
 
 const GATES = [
   { id: "projects", gate: "A", destination: "PROJECTS", href: "/projects" },
-  { id: "arrivals", gate: "B", destination: "ARRIVALS", href: "/arrivals" },
+  { id: "arrivals", gate: "B", destination: "EXPERIENCES", href: "/arrivals" },
   { id: "about", gate: "C", destination: "ABOUT", href: "/about" },
   { id: "resume", gate: "D", destination: "RESUME", href: "/resume" },
 ] as const;
@@ -97,6 +97,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             </Link>
           ))}
         </nav>
+
+        {pathname === "/" && (
+          <div className="terminal-directory-nav-header" aria-hidden>
+            <span className="terminal-directory-nav-label">Terminal Directory</span>
+          </div>
+        )}
       </header>
 
       <main className="flex-1 page-enter relative z-10">{children}</main>

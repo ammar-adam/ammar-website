@@ -26,70 +26,86 @@ export function DetailsPanel(props: DetailsPanelProps) {
     const tags = p.stackTag ? [p.stackTag] : [];
 
     return (
-      <div className="boarding-pass-panel details-panel h-full flex flex-col overflow-hidden">
-        <div className="bp-header">Boarding pass</div>
-        <div className="p-4 flex flex-col gap-3">
-          <div className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 font-mono text-[10px] uppercase tracking-wider text-[var(--metal-gray)]">
-            <span>Project</span>
-            <span className="text-[var(--window-white)] font-semibold normal-case">{p.destination}</span>
-            {seatLabel && (
-              <>
-                <span>Seat</span>
-                <span className="text-[var(--window-white)]">{seatLabel}</span>
-              </>
-            )}
-            <span>Gate</span>
-            <span className="text-[var(--window-white)]">{p.gate}</span>
+      <div className="gate-display flex flex-col gap-4">
+        <div className="gate-header">
+          <span className="gate-icon text-2xl" aria-hidden>🛫</span>
+          <div className="gate-info">
+            <h2 className="gate-number">Gate {p.gate}</h2>
+            <p className="gate-status">Now boarding</p>
           </div>
-          <p className="text-sm text-[var(--metal-gray)] leading-relaxed mt-1">{p.shortDesc}</p>
-          {tags.length > 0 && (
-            <>
-              <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--metal-gray)]">Tech stack</span>
-              <div className="flex flex-wrap gap-2">
-                {tags.map((t) => (
-                  <span
-                    key={t}
-                    className="inline-block px-2 py-0.5 rounded font-mono text-[10px] uppercase tracking-wider bg-[var(--terminal-blue)] text-[var(--metal-gray)] border border-[var(--floor-line)]"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </>
+        </div>
+
+        <div className="flight-info">
+          <div className="info-row">
+            <span className="info-label">Destination</span>
+            <span className="info-value">{p.destination}</span>
+          </div>
+          {seatLabel && (
+            <div className="info-row">
+              <span className="info-label">Seat</span>
+              <span className="info-value">{seatLabel}</span>
+            </div>
           )}
-          <div className="flex flex-wrap gap-2 mt-2">
-            {demoLink && (
-              <a
-                href={demoLink.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[var(--departure-amber)] text-[var(--departure-amber)] font-mono text-xs hover:bg-[var(--terminal-glow)] transition-colors"
-              >
-                View project
-              </a>
-            )}
-            {githubLink && (
-              <a
-                href={githubLink.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[var(--floor-line)] text-[var(--metal-gray)] font-mono text-xs hover:text-[var(--window-white)] transition-colors"
-              >
-                GitHub
-              </a>
-            )}
-            {writeupLink && (
-              <a
-                href={writeupLink.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1 px-3 py-1.5 rounded border border-[var(--floor-line)] text-[var(--metal-gray)] font-mono text-xs hover:text-[var(--window-white)] transition-colors"
-              >
-                Writeup
-              </a>
-            )}
+          <div className="info-row">
+            <span className="info-label">Flight type</span>
+            <span className="info-value">{p.routeName || "Project"}</span>
           </div>
-          <div className="bp-barcode" aria-hidden />
+        </div>
+
+        <div className="project-description">
+          <p>{p.shortDesc}</p>
+        </div>
+
+        {tags.length > 0 && (
+          <div className="tech-stack">
+            <h3 className="tech-stack-title">Tech stack</h3>
+            <div className="tech-tags flex flex-wrap gap-2">
+              {tags.map((t) => (
+                <span key={t} className="tech-tag">
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {p.screenshot && (
+          <div className="project-image aspect-video w-full rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-blue)]">
+            <img src={p.screenshot} alt="" className="w-full h-full object-cover" />
+          </div>
+        )}
+
+        <div className="gate-actions flex flex-wrap gap-3">
+          {demoLink && (
+            <a
+              href={demoLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gate-btn primary gate-btn-view flex-1 min-w-[120px] text-center py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider bg-[var(--departure-amber)] text-[var(--terminal-navy)] border-2 border-[var(--departure-amber)] hover:bg-[var(--window-white)] hover:border-[var(--window-white)] transition-colors"
+            >
+              View project
+            </a>
+          )}
+          {githubLink && (
+            <a
+              href={githubLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gate-btn secondary flex-1 min-w-[100px] text-center py-3 px-4 rounded-lg font-mono text-xs font-bold uppercase tracking-wider border-2 border-[var(--floor-line)] text-[var(--window-white)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] transition-colors"
+            >
+              GitHub
+            </a>
+          )}
+          {writeupLink && (
+            <a
+              href={writeupLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gate-btn secondary flex-1 min-w-[100px] text-center py-3 px-4 rounded-lg font-mono text-xs font-bold uppercase tracking-wider border-2 border-[var(--floor-line)] text-[var(--window-white)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] transition-colors"
+            >
+              Writeup
+            </a>
+          )}
         </div>
       </div>
     );
@@ -99,20 +115,35 @@ export function DetailsPanel(props: DetailsPanelProps) {
   const bullets = e.details.split(". ").filter(Boolean).slice(0, 4);
 
   return (
-    <div className="details-panel h-full flex flex-col">
-      <div className="aspect-video w-full max-w-[280px] rounded-lg border border-[var(--border-medium)] bg-[var(--bg-elevated)] flex items-center justify-center mb-3 flex-shrink-0">
-        <span className="font-mono text-xs text-[var(--text-muted)]">Image</span>
+    <div className="baggage-claim-details details-panel h-full flex flex-col baggage-details-two-col">
+      <div className="baggage-details-content">
+        <div className="aspect-video w-full max-w-[220px] rounded-lg border border-[var(--floor-line)] bg-[var(--terminal-blue)] flex items-center justify-center mb-3 flex-shrink-0">
+          <span className="font-mono text-xs text-[var(--metal-gray)]">Image</span>
+        </div>
+        <span className="baggage-origin">From: {e.from}</span>
+        <h2 className="baggage-role mt-1">{e.detailTitle ?? e.title}</h2>
+        <p className="text-sm text-[var(--metal-gray)] mt-1">{e.impact}</p>
+        {bullets.length > 0 && (
+          <ul className="mt-3 space-y-1 list-disc list-inside text-sm text-[var(--metal-gray)]">
+            {bullets.map((b, i) => (
+              <li key={i}>{b.trim()}</li>
+            ))}
+          </ul>
+        )}
       </div>
-      <span className="font-mono text-[10px] uppercase tracking-wider text-[var(--text-tertiary)]">{e.from}</span>
-      <h2 className="text-lg font-bold text-[var(--text-primary)] font-display mt-1">{e.detailTitle ?? e.title}</h2>
-      <p className="text-sm text-[var(--text-secondary)] mt-1">{e.impact}</p>
-      {bullets.length > 0 && (
-        <ul className="mt-3 space-y-1 list-disc list-inside text-sm text-[var(--text-secondary)]">
-          {bullets.map((b, i) => (
-            <li key={i}>{b.trim()}</li>
-          ))}
-        </ul>
-      )}
+      <div className="trolley-illustration trolley-right flex-shrink-0 opacity-60">
+        <svg viewBox="0 0 200 150" className="luggage-trolley w-[160px] h-[120px]" aria-hidden>
+          <rect x="30" y="40" width="140" height="80" fill="var(--terminal-blue)" stroke="var(--floor-line)" strokeWidth="2" rx="4" />
+          <rect x="50" y="50" width="40" height="50" fill="var(--terminal-dark)" stroke="var(--departure-amber)" strokeWidth="2" rx="2" />
+          <rect x="110" y="50" width="40" height="50" fill="var(--terminal-dark)" stroke="var(--departure-amber)" strokeWidth="2" rx="2" />
+          <line x1="30" y1="120" x2="30" y2="135" stroke="var(--metal-gray)" strokeWidth="3" />
+          <line x1="170" y1="120" x2="170" y2="135" stroke="var(--metal-gray)" strokeWidth="3" />
+          <circle cx="30" cy="140" r="8" fill="var(--floor-line)" />
+          <circle cx="170" cy="140" r="8" fill="var(--floor-line)" />
+          <text x="100" y="80" textAnchor="middle" fill="var(--metal-gray)" fontSize="12" fontFamily="JetBrains Mono, monospace">LUGGAGE</text>
+        </svg>
+        <p className="trolley-caption font-mono text-[9px] text-[var(--metal-gray)] tracking-[0.15em] mt-2 uppercase">Baggage trolley available</p>
+      </div>
     </div>
   );
 }

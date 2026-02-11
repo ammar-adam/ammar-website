@@ -518,6 +518,94 @@ a:hover {
   transform-origin: left top;
 }
 
+/* Airport signage component — directional markers + gate letters */
+.signage-marker {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--metal-gray);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  z-index: 5;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.signage-marker-top-right {
+  top: 100px;
+  right: 32px;
+}
+
+.signage-marker-left {
+  top: 40%;
+  left: 16px;
+  flex-direction: column;
+  transform: rotate(-90deg);
+  transform-origin: left center;
+}
+
+.signage-marker-bottom-left {
+  bottom: 80px;
+  left: 32px;
+}
+
+.signage-arrow {
+  font-size: 16px;
+  color: var(--departure-amber);
+}
+
+.signage-text {
+  font-size: 10px;
+}
+
+.gate-marker {
+  position: fixed;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-signage), "Bebas Neue", sans-serif;
+  font-size: 24px;
+  color: var(--departure-amber);
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-radius: 4px;
+  z-index: 5;
+  opacity: 0.2;
+  pointer-events: none;
+}
+
+.gate-marker-a {
+  top: 160px;
+  right: 80px;
+}
+
+.gate-marker-b {
+  top: 280px;
+  right: 120px;
+}
+
+.gate-marker-c {
+  top: 400px;
+  right: 80px;
+}
+
+.gate-marker-d {
+  top: 520px;
+  right: 120px;
+}
+
+@media (max-width: 768px) {
+  .signage-marker,
+  .gate-marker {
+    display: none;
+  }
+}
+
 /* Layer 5: Scan line overlay */
 .scan-lines {
   position: fixed;
@@ -588,7 +676,7 @@ a:hover {
 
 .departure-board-nav .terminal-time,
 .departure-board-nav .current-time {
-  font-size: 1.75rem;
+  font-size: 13px;
   font-weight: 700;
   color: var(--window-white);
   font-variant-numeric: tabular-nums;
@@ -679,6 +767,21 @@ a:hover {
   color: var(--departure-amber);
 }
 
+.terminal-directory-nav-header {
+  padding: 10px 24px 12px;
+  border-top: 1px solid var(--floor-line);
+  background: rgba(26, 35, 50, 0.5);
+}
+
+.terminal-directory-nav-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: var(--metal-gray);
+  text-transform: uppercase;
+}
+
 .departure-board-nav .nav-link:focus-visible {
   outline: 3px solid var(--departure-amber);
   outline-offset: 4px;
@@ -697,7 +800,7 @@ a:hover {
 
   .departure-board-nav .terminal-time,
   .departure-board-nav .current-time {
-    font-size: 1.5rem;
+    font-size: 12px;
   }
 
   .departure-board-nav .gate-navigation {
@@ -787,6 +890,15 @@ a:hover {
     margin-right: -16px;
     width: calc(100% + 32px);
   }
+
+  .seat-map-container {
+    grid-template-columns: 1fr;
+  }
+
+  .plane-cabin-narrow {
+    max-width: 320px;
+    margin: 0 auto;
+  }
 }
 
 /* Departure board table — scan lines overlay */
@@ -811,6 +923,187 @@ a:hover {
 
 .directory-row:hover {
   background: var(--terminal-glow);
+}
+
+/* Directory board — 3D signpost (mount brackets + depth) */
+.directory-board-wrap.directory-sign-3d {
+  position: relative;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.45),
+    0 16px 48px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.directory-board-wrap .mount-bracket {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border: 2px solid rgba(232, 166, 100, 0.4);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.directory-board-wrap .mount-tl {
+  top: -6px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+  border-top-left-radius: 6px;
+}
+
+.directory-board-wrap .mount-tr {
+  top: -6px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+  border-top-right-radius: 6px;
+}
+
+.directory-board-wrap .mount-bl {
+  bottom: -6px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+  border-bottom-left-radius: 6px;
+}
+
+.directory-board-wrap .mount-br {
+  bottom: -6px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+  border-bottom-right-radius: 6px;
+}
+
+/* Directory table — grid lines + hierarchy */
+.directory-table {
+  width: 100%;
+  max-width: 900px;
+  margin: 48px auto;
+  border: 2px solid var(--floor-line);
+  border-radius: 8px;
+  background: var(--terminal-dark);
+  border-collapse: collapse;
+}
+
+.directory-table th {
+  padding: 16px 24px;
+  text-align: left;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--metal-gray);
+  border-bottom: 2px solid var(--floor-line);
+  border-right: 1px solid var(--floor-line);
+  text-transform: uppercase;
+}
+
+.directory-table th:last-of-type {
+  border-right: none;
+}
+
+.directory-table .gate-col {
+  width: 100px;
+}
+
+.directory-table .destination-col {
+  width: 250px;
+}
+
+.directory-table .info-col {
+  width: 300px;
+}
+
+.directory-table .cta-col {
+  width: 150px;
+  text-align: right;
+}
+
+.directory-table .cta-col th {
+  text-align: right;
+}
+
+.directory-table td {
+  border-bottom: 1px solid var(--floor-line);
+  padding: 0;
+}
+
+.directory-table tr:last-child td {
+  border-bottom: none;
+}
+
+.directory-row-grid {
+  display: grid;
+  grid-template-columns: 100px 250px 1fr 150px;
+  gap: 0;
+  padding: 20px 24px;
+  text-decoration: none;
+  color: inherit;
+  transition: background 0.2s ease;
+}
+
+.directory-row-grid .gate-col-cell {
+  border-right: 1px solid var(--floor-line);
+}
+
+.directory-row-grid .destination-col-cell {
+  border-right: 1px solid var(--floor-line);
+}
+
+.directory-row-grid .info-col-cell {
+  border-right: 1px solid var(--floor-line);
+}
+
+.directory-row-grid:hover {
+  background: var(--terminal-glow);
+}
+
+.directory-row-grid:focus-visible {
+  outline: 2px solid var(--departure-amber);
+  outline-offset: 2px;
+}
+
+.directory-table .gate-letter {
+  font-family: var(--font-signage), sans-serif;
+  font-size: 32px;
+  color: var(--departure-amber);
+  line-height: 1;
+}
+
+.destination-name {
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--window-white);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.info-text {
+  font-family: var(--font-mono), monospace;
+  font-size: 13px;
+  color: var(--metal-gray);
+}
+
+.status-arrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 20px;
+  color: var(--departure-amber);
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cta-col-cell {
+  justify-content: flex-end;
+}
+
+.directory-instruction {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--metal-gray);
+  letter-spacing: 0.15em;
+  margin-bottom: 24px;
+  text-transform: uppercase;
 }
 
 .airport-surface {
@@ -1050,6 +1343,295 @@ body, p, .description {
   border-top: 2px solid var(--floor-line);
 }
 
+/* Narrow plane cabin — 1-aisle-1 (regional jet) */
+.seat-map-container {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 32px;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.plane-cabin-narrow {
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-radius: 48px 48px 12px 12px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  position: relative;
+  height: fit-content;
+}
+
+.plane-nose-narrow {
+  width: calc(100% + 24px);
+  height: 56px;
+  margin: -16px -12px 0;
+  background: linear-gradient(180deg, var(--terminal-blue) 0%, var(--terminal-dark) 100%);
+  border-radius: 60px 60px 0 0;
+  border-bottom: 2px solid var(--floor-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.cockpit-windows {
+  display: flex;
+  gap: 24px;
+}
+
+.cockpit-window-left,
+.cockpit-window-right {
+  width: 50px;
+  height: 28px;
+  background: rgba(6, 182, 212, 0.3);
+  border: 2px solid var(--gate-cyan);
+  border-radius: 50% 50% 0 0;
+  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.4);
+}
+
+.seat-columns-narrow {
+  display: grid;
+  grid-template-columns: 30px 110px 50px 110px;
+  gap: 8px;
+  padding: 0 8px;
+  margin-bottom: 8px;
+}
+
+.seat-columns-narrow .column-label {
+  font-family: var(--font-signage), sans-serif;
+  font-size: 20px;
+  color: var(--departure-amber);
+  text-align: center;
+}
+
+.aisle-label-narrow {
+  font-family: var(--font-mono), monospace;
+  font-size: 8px;
+  color: var(--metal-gray);
+  text-align: center;
+  letter-spacing: 0.1em;
+  align-self: end;
+  margin-bottom: 4px;
+}
+
+.seat-row-narrow {
+  display: grid;
+  grid-template-columns: 26px 92px 40px 92px;
+  gap: 6px;
+  align-items: center;
+}
+
+.plane-seat-narrow {
+  width: 92px;
+  height: 100px;
+  background: var(--terminal-blue);
+  border: 2px solid var(--floor-line);
+  border-radius: 8px 8px 4px 4px;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 8px 4px;
+}
+
+.plane-seat-narrow::before {
+  content: "";
+  position: absolute;
+  top: -4px;
+  left: 10px;
+  right: 10px;
+  height: 24px;
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-radius: 6px 6px 0 0;
+  z-index: -1;
+}
+
+.plane-seat-narrow .seat-code {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--metal-gray);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.plane-seat-narrow .seat-project-name {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 10px;
+  color: var(--window-white);
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.plane-seat-narrow:hover {
+  border-color: var(--departure-amber);
+  transform: translateY(-3px);
+  box-shadow: 0 4px 16px var(--terminal-glow);
+}
+
+.plane-seat-narrow[data-selected="true"] {
+  border-color: var(--departure-amber);
+  border-width: 3px;
+  background: var(--terminal-glow);
+  box-shadow: 0 0 24px var(--terminal-glow);
+}
+
+.plane-seat-narrow[data-selected="true"] .seat-code {
+  color: var(--departure-amber);
+  font-weight: 700;
+}
+
+.plane-seat-narrow.empty {
+  pointer-events: none;
+  background: var(--terminal-navy);
+  opacity: 0.6;
+}
+
+.aisle-gap-narrow {
+  width: 50px;
+  height: 100%;
+  min-height: 100px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--terminal-navy),
+    var(--terminal-navy) 8px,
+    var(--floor-line) 8px,
+    var(--floor-line) 9px
+  );
+  opacity: 0.3;
+  border-radius: 3px;
+}
+
+.plane-tail-narrow {
+  width: calc(100% + 24px);
+  height: 40px;
+  background: linear-gradient(0deg, var(--terminal-dark) 0%, var(--terminal-blue) 100%);
+  border-radius: 0 0 12px 12px;
+  margin: 6px -12px -16px;
+  border-top: 2px solid var(--floor-line);
+}
+
+/* Gate display panel (replaces boarding pass on projects) */
+.gate-display-panel {
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-left: 4px solid var(--departure-amber);
+  border-radius: 10px;
+  padding: 24px;
+  min-height: 380px;
+}
+
+.gate-display-panel .gate-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--floor-line);
+  margin-bottom: 16px;
+}
+
+.gate-display-panel .gate-number {
+  font-family: var(--font-mono), monospace;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--departure-amber);
+  margin: 0;
+  line-height: 1;
+  letter-spacing: 0.05em;
+}
+
+.gate-display-panel .gate-status {
+  font-family: var(--font-mono), monospace;
+  font-size: 12px;
+  color: var(--arrival-green);
+  margin: 4px 0 0;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.gate-display-panel .flight-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.gate-display-panel .info-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--floor-line);
+}
+
+.gate-display-panel .info-label {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--metal-gray);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.gate-display-panel .info-value {
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--window-white);
+}
+
+.gate-display-panel .project-description {
+  padding: 16px;
+  background: rgba(26, 35, 50, 0.5);
+  border-radius: 8px;
+  border-left: 3px solid var(--gate-cyan);
+}
+
+.gate-display-panel .project-description p {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--metal-gray);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.gate-display-panel .tech-stack-title {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--departure-amber);
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+
+.gate-display-panel .tech-tag {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--window-white);
+  background: var(--terminal-blue);
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--floor-line);
+}
+
+.gate-btn-view {
+  font-family: var(--font-body), system-ui, sans-serif;
+}
+
 .plane-seat .seat-label {
   font-family: var(--font-mono), monospace;
   font-size: 11px;
@@ -1126,37 +1708,133 @@ body, p, .description {
   color: var(--floor-line);
 }
 
-.about-page .profile-photo-frame::before,
-.about-page .profile-photo-frame::after {
-  content: "";
+/* Passport profile — grid layout and corner stamps */
+.about-page .passport-profile {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 40px;
+  align-items: start;
+  padding: 40px;
+  background: var(--terminal-dark);
+  border: 2px solid var(--floor-line);
+  border-left: 4px solid var(--departure-amber);
+  border-radius: 8px;
+}
+
+.about-page .profile-photo-section {
+  position: relative;
+}
+
+.about-page .profile-photo-frame {
+  width: 150px;
+  height: 190px;
+  border: 3px solid var(--departure-amber);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--terminal-blue);
+  overflow: hidden;
+  position: relative;
+}
+
+.about-page .photo-placeholder {
+  font-family: var(--font-signage), "Bebas Neue", sans-serif;
+  font-size: 56px;
+  color: var(--metal-gray);
+  opacity: 0.5;
+}
+
+.about-page .photo-stamps {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--departure-amber);
+  inset: 0;
   pointer-events: none;
 }
 
-.about-page .profile-photo-frame::before {
+.about-page .photo-stamps .stamp-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--departure-amber);
+}
+
+.about-page .photo-stamps .stamp-corner.top-left {
   top: -2px;
   left: -2px;
   border-right: none;
   border-bottom: none;
-  border-radius: 4px 0 0 0;
 }
 
-.about-page .profile-photo-frame::after {
+.about-page .photo-stamps .stamp-corner.top-right {
+  top: -2px;
+  right: -2px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.about-page .photo-stamps .stamp-corner.bottom-left {
+  bottom: -2px;
+  left: -2px;
+  border-right: none;
+  border-top: none;
+}
+
+.about-page .photo-stamps .stamp-corner.bottom-right {
   bottom: -2px;
   right: -2px;
   border-left: none;
   border-top: none;
-  border-radius: 0 0 4px 0;
+}
+
+.about-page .profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.about-page .passenger-name {
+  font-family: var(--font-mono), monospace;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--window-white);
+  margin: 0;
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.about-page .passenger-role {
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--departure-amber);
+  letter-spacing: 0.2em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.about-page .profile-divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--departure-amber) 0%, transparent 100%);
+  margin: 8px 0;
+}
+
+.about-page .passenger-bio {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 15px;
+  color: var(--metal-gray);
+  line-height: 1.7;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
   .about-page .passport-profile {
-    flex-direction: column;
-    align-items: center;
+    grid-template-columns: 1fr;
     text-align: center;
+    gap: 24px;
+  }
+
+  .about-page .profile-photo-section {
+    margin: 0 auto;
   }
 
   .about-page .photos-grid {
@@ -1268,6 +1946,56 @@ body, p, .description {
   border: 2px solid var(--floor-line);
   border-left: 4px solid var(--departure-amber);
   border-radius: 4px;
+}
+
+.baggage-origin {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--metal-gray);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.baggage-role {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--window-white);
+  line-height: 1.3;
+}
+
+.trolley-illustration .luggage-trolley {
+  display: block;
+}
+
+.trolley-caption {
+  font-family: var(--font-mono), "JetBrains Mono", monospace;
+  font-size: 9px;
+  color: var(--metal-gray);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.baggage-details-two-col {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: start;
+}
+
+.baggage-details-two-col .baggage-details-content {
+  min-width: 0;
+}
+
+.baggage-details-two-col .trolley-right {
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .baggage-details-two-col {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Animations */

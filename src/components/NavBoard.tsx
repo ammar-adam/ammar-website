@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 
 export const NAV_DESTINATIONS = [
   { href: "/departures", label: "Projects", subLabel: "Things I'm building or have built.", gate: "A" },
-  { href: "/arrivals", label: "Arrivals", subLabel: "Experiences that have landed.", gate: "B" },
+  { href: "/arrivals", label: "Experiences", subLabel: "Experiences that have landed.", gate: "B" },
   { href: "/about", label: "About Me", subLabel: "Who I am and what I'm up to.", gate: "C" },
   { href: "/boarding-pass", label: "Resume", subLabel: "Download boarding pass (PDF).", gate: "D" },
 ] as const;

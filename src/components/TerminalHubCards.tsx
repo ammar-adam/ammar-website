@@ -10,7 +10,7 @@ import { silhouetteImages } from "@/data/silhouettes";
 
 const pathways = [
   { href: "/#departures", title: "Departures", desc: "Things I have built or am currently building. Some are active. Some are done. Some are still figuring themselves out.", gate: "GATES A" },
-  { href: "/#arrivals", title: "Arrivals", desc: "Experiences that have landed so far. Places I worked, things I learned, and environments that shaped how I think.", gate: "BAGGAGE" },
+  { href: "/#arrivals", title: "Experiences", desc: "Experiences that have landed so far. Places I worked, things I learned, and environments that shaped how I think.", gate: "BAGGAGE" },
   { href: "/#lounge", title: "Lounge", desc: "A quieter space. Less structured. More personal.", gate: "LEVEL 2" },
 ] as const;
 

@@ -4,17 +4,17 @@ import { useState, useCallback } from "react";
 
 const RESPONSES: Record<string, string> = {
   "what should i look at first":
-    "Use the nav: Projects, Arrivals, About Me, or Resume. Or go to the home page and use the navigation board.",
+    "Use the nav: Projects, Experiences, About Me, or Resume. Or go to the home page and use the navigation board.",
   "show me your projects":
     "Click Projects in the nav, or go to /departures. Each card opens a project.",
   "what is this place":
-    "This is my personal site. Projects = things I build. Arrivals = experiences. About Me = who I am. Resume = download my CV.",
+    "This is my personal site. Projects = things I build. Experiences = what has landed. About Me = who I am. Resume = download my CV.",
   "projects":
     "Click Projects in the nav or go to /departures.",
   "resume":
     "Click Resume in the nav or go to /boarding-pass. Use 'Export boarding pass' to download the PDF.",
   "help":
-    "Use the top nav: Projects, Arrivals, About Me, Resume. Each goes to a dedicated page.",
+    "Use the top nav: Projects, Experiences, About Me, Resume. Each goes to a dedicated page.",
 };
 
 const SUGGESTIONS = [

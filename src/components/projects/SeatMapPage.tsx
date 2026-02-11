@@ -29,8 +29,8 @@ export function ProjectsSeatMapPage() {
         <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Projects</h1>
         <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a seat to view details.</p>
 
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px] gap-6">
-          <div className="airport-surface rounded-xl border-2 border-[var(--floor-line)] p-6 overflow-hidden min-h-[280px]">
+        <div className="seat-map-container">
+          <div className="airport-surface rounded-xl border-2 border-[var(--floor-line)] p-4 overflow-hidden min-h-[280px] flex justify-center">
             <SeatMap
               projects={projects}
               selectedSlug={selectedSlug}
@@ -38,12 +38,12 @@ export function ProjectsSeatMapPage() {
             />
           </div>
 
-          <div className="min-h-[280px] lg:min-h-0">
+          <div className="gate-display-panel min-h-[280px] lg:min-h-0">
             {selectedProject ? (
               <DetailsPanel variant="project" data={selectedProject} seatLabel={seatLabel} />
             ) : (
-              <div className="flex flex-col items-center justify-center min-h-[280px] text-center font-mono text-sm text-[var(--metal-gray)] border-2 border-dashed border-[var(--floor-line)] rounded-lg p-8">
-                <p>Select a seat to view boarding pass.</p>
+              <div className="gate-display-empty flex flex-col items-center justify-center min-h-[400px] text-center">
+                <p className="font-mono text-sm text-[var(--metal-gray)]">Select a seat to view flight details.</p>
               </div>
             )}
           </div>

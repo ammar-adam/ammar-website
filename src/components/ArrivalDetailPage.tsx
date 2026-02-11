@@ -26,7 +26,7 @@ export function ArrivalDetailPage({ arrival }: ArrivalDetailPageProps) {
             href="/#arrivals"
             className="text-xs text-[var(--text-muted)] hover:text-[var(--accent-warm)] transition-colors"
           >
-            ← Arrivals
+            ← Experiences
           </Link>
         </motion.div>
 

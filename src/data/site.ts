@@ -10,7 +10,7 @@ export const siteConfig = {
 
   navLabels: {
     projects: "Projects",
-    arrivals: "Arrivals",
+    arrivals: "Experiences",
     about: "About Me",
     resume: "Resume",
   },
