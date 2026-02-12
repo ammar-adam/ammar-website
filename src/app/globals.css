@@ -954,9 +954,22 @@ a:hover {
   font-family: var(--font-mono), monospace;
   font-size: 14px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   color: var(--departure-amber);
   text-transform: uppercase;
+  margin-bottom: 16px;
+  padding-left: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.terminal-directory-nav-label::before {
+  content: "";
+  width: 4px;
+  height: 20px;
+  background: var(--departure-amber);
+  border-radius: 2px;
 }
 
 .departure-board-nav .nav-link:focus-visible {
@@ -1205,6 +1218,21 @@ a:hover {
     max-width: 100%;
   }
 
+  .directory-table-container::before,
+  .directory-table-container::after {
+    width: 40px;
+    left: 20px;
+  }
+  .directory-table-container::after {
+    left: auto;
+    right: 20px;
+  }
+
+  .directory-table::before,
+  .directory-table::after {
+    display: none;
+  }
+
   .directory-table {
     min-width: 560px;
     margin: 24px 16px 24px 0;
@@ -1298,18 +1326,82 @@ a:hover {
   text-align: left;
 }
 
+.directory-table-container {
+  position: relative;
+  max-width: 900px;
+  margin: 48px auto;
+}
+
+.directory-table-container::before,
+.directory-table-container::after {
+  content: "";
+  position: absolute;
+  top: -8px;
+  width: 60px;
+  height: 8px;
+  background: linear-gradient(
+    180deg,
+    rgba(51, 65, 85, 0.8) 0%,
+    rgba(51, 65, 85, 0.4) 100%
+  );
+  border-radius: 4px 4px 0 0;
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.directory-table-container::before {
+  left: 40px;
+}
+
+.directory-table-container::after {
+  right: 40px;
+}
+
 .directory-table {
   width: 100%;
   max-width: 900px;
-  margin: 48px auto 48px 0;
+  margin: 0;
   border: 2px solid var(--floor-line);
   border-radius: 8px;
   background: var(--terminal-dark);
   border-collapse: collapse;
   text-align: left;
+  position: relative;
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.directory-table::before,
+.directory-table::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  background: linear-gradient(
+    90deg,
+    rgba(51, 65, 85, 0.6) 0%,
+    rgba(51, 65, 85, 0.2) 100%
+  );
+  box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.directory-table::before {
+  left: -6px;
+  border-radius: 8px 0 0 8px;
+}
+
+.directory-table::after {
+  right: -6px;
+  border-radius: 0 8px 8px 0;
+  background: linear-gradient(
+    270deg,
+    rgba(51, 65, 85, 0.6) 0%,
+    rgba(51, 65, 85, 0.2) 100%
+  );
+  box-shadow: inset -2px 0 4px rgba(0, 0, 0, 0.3);
 }
 
 .directory-table th,
@@ -2323,6 +2415,35 @@ body, p, .description {
   border: 2px solid var(--departure-amber);
   border-radius: 4px;
   letter-spacing: 0.1em;
+}
+
+/* IN-FLIGHT ENTERTAINMENT — amenities with icons */
+.amenities-header {
+  font-family: var(--font-mono), monospace;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--departure-amber);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--floor-line);
+}
+
+.amenities-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.amenities-list li {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 15px;
+  color: var(--metal-gray);
+  line-height: 1.6;
 }
 
 /* Page signage — About & Resume */

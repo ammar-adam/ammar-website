@@ -12,6 +12,7 @@ const ROWS = [
 export function TerminalDirectoryBoard() {
   return (
     <div className="directory-board-wrap directory-board-led" role="navigation" aria-label="Terminal Directory">
+      <div className="directory-table-container">
       <table className="directory-table">
         <thead>
           <tr>
@@ -39,6 +40,7 @@ export function TerminalDirectoryBoard() {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 }

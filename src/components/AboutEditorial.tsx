@@ -1,6 +1,6 @@
 "use client";
 
-import { aboutIntro, aboutPhotos, aboutHighlights, aboutLocationStamps } from "@/data/about";
+import { aboutIntro, aboutPhotos, aboutAmenities, aboutLocationStamps } from "@/data/about";
 
 export function AboutEditorial() {
   return (
@@ -32,14 +32,14 @@ export function AboutEditorial() {
           </p>
         </div>
 
-        <h3 className="font-mono text-xs font-bold text-[var(--departure-amber)] uppercase tracking-[0.15em] mb-3 mt-10">
-          Some Cool Stuff
-        </h3>
-        <ul className="about-highlights about-bullet-list mb-8">
-          {aboutHighlights.map((item, i) => (
-            <li key={i}>{item}</li>
-          ))}
-        </ul>
+        <section className="passenger-amenities mt-10 mb-8">
+          <h2 className="amenities-header">IN-FLIGHT ENTERTAINMENT</h2>
+          <ul className="amenities-list">
+            {aboutAmenities.map((item, i) => (
+              <li key={i}>{item}</li>
+            ))}
+          </ul>
+        </section>
 
         <div className="about-location-stamps flex items-center justify-center gap-4 py-6 mb-10">
           {aboutLocationStamps.map((stamp, i) => (
