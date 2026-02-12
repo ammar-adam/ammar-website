@@ -4,9 +4,14 @@
  * Tone: calm, human announcements — not corporate signage.
  */
 
+/** Canonical site URL for webring. Set NEXT_PUBLIC_SITE_URL or replace this so prev/next point to your registered site. */
+export const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ammar.vercel.app";
+
 export const siteConfig = {
   airportName: "AFA INTERNATIONAL AIRPORT",
   siteName: "AFA INTERNATIONAL AIRPORT",
+  siteUrl,
 
   navLabels: {
     projects: "Projects",

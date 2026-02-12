@@ -18,6 +18,16 @@ export function AirportSignage() {
         <span className="signage-text">Baggage claim</span>
       </div>
 
+      <div className="signage-marker signage-marker-bottom-right" aria-hidden>
+        <span className="signage-text">Departures</span>
+        <span className="signage-arrow">→</span>
+      </div>
+
+      <div className="signage-marker signage-marker-top-left" aria-hidden>
+        <span className="signage-arrow">←</span>
+        <span className="signage-text">Experiences</span>
+      </div>
+
       <div className="gate-marker gate-marker-a" aria-hidden>A</div>
       <div className="gate-marker gate-marker-b" aria-hidden>B</div>
       <div className="gate-marker gate-marker-c" aria-hidden>C</div>

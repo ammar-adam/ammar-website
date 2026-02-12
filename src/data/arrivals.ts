@@ -12,6 +12,8 @@ export interface ArrivalArtifact {
 export interface Arrival {
   slug: string;
   from: string;
+  /** Airport/city code for baggage tag (e.g. YYZ, DXB) */
+  origin: string;
   title: string;
   /** Used on detail page (e.g. "Product Engineering Intern") */
   detailTitle?: string;
@@ -40,6 +42,8 @@ export const arrivals: Arrival[] = [
     slug: "alpen-capital",
     from: "Alpen Capital / M&A",
     title: "Investment Analysis",
+    origin: "DXB",
+    title: "Investment Analysis",
     detailTitle: "Investment Banking Summer Analyst",
     impact: "Supported over $50M in financial modeling, valuations, and M&A advisory.",
     details: "Supported $50M+ in deal flow. Built financial models and conducted due diligence across healthcare and tech sectors.",
@@ -53,6 +57,7 @@ export const arrivals: Arrival[] = [
   {
     slug: "ace-consulting",
     from: "ACE Consulting Group",
+    origin: "YYZ",
     title: "Consulting",
     detailTitle: "Consulting Associate",
     impact: "Pro-bono advisory and market research for startups across Ontario.",
@@ -63,7 +68,7 @@ export const arrivals: Arrival[] = [
   {
     slug: "waterloo-venture",
     from: "Waterloo Venture Group",
-    title: "Venture",
+    origin: "YKF",
     detailTitle: "Ecosystems Partnerships",
     impact: "Helping strengthen the builder ecosystem in Waterloo.",
     details: "Venture and investment work.",

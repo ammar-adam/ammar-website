@@ -7,12 +7,14 @@ import { DetailsPanel } from "@/components/shared/DetailsPanel";
 
 function LuggageBag({
   from,
+  origin,
   title,
   slug,
   isSelected,
   onSelect,
 }: {
   from: string;
+  origin: string;
   title: string;
   slug: string;
   isSelected: boolean;
@@ -27,7 +29,7 @@ function LuggageBag({
       className="baggage-card flex-shrink-0 w-[240px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]"
     >
       <div className="baggage-card-handle" aria-hidden />
-      <span className="baggage-tag-badge" aria-hidden>BAG</span>
+      <span className="bag-tag" aria-hidden>{origin}</span>
       <div className="p-3 pt-4 border-2 border-t-0 border-[var(--floor-line)] rounded-b-lg bg-[var(--terminal-dark)]">
         <div className="aspect-[4/3] w-full rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] flex items-center justify-center mb-2">
           <span className="font-mono text-[9px] text-[var(--metal-gray)]">Image</span>
@@ -67,7 +69,7 @@ export function BaggageCarousel() {
           </div>
         </div>
 
-        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Arrivals</h1>
+        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Experiences</h1>
         <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a bag to view experience details.</p>
 
         <div className="conveyor-belt conveyor-belt-tall rounded-xl overflow-hidden relative mb-4">
@@ -76,12 +78,13 @@ export function BaggageCarousel() {
           <div className="conveyor-belt-inner overflow-hidden py-6">
             <div
               className={`belt-track flex gap-8 items-stretch w-max ${paused ? "belt-paused" : ""}`}
-              style={{ animationDuration: "40s" }}
+              style={{ animationDuration: "70s" }}
             >
               {trackItems.map((a, i) => (
                 <LuggageBag
                   key={`${a.slug}-${i}`}
                   from={a.from}
+                  origin={a.origin}
                   title={a.title}
                   slug={a.slug}
                   isSelected={selectedSlug === a.slug}
@@ -96,9 +99,15 @@ export function BaggageCarousel() {
           <button
             type="button"
             onClick={() => setPaused((p) => !p)}
-            className="font-mono text-sm px-4 py-2 rounded border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] text-[var(--metal-gray)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)]"
+            className="belt-control-btn font-mono text-sm px-4 py-2.5 rounded border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] text-[var(--metal-gray)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] inline-flex items-center gap-2"
+            aria-label={paused ? "Resume carousel" : "Pause carousel"}
           >
-            {paused ? "Play" : "Pause"}
+            {paused ? (
+              <span className="belt-control-icon" aria-hidden>▶</span>
+            ) : (
+              <span className="belt-control-icon belt-control-icon-pause" aria-hidden>⏸</span>
+            )}
+            <span>{paused ? "Play" : "Pause"}</span>
           </button>
         </div>
 

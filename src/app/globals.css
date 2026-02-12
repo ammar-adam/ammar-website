@@ -193,6 +193,14 @@
   pointer-events: none;
 }
 
+.boarding-pass-paper {
+  background: linear-gradient(180deg, #2a2f38 0%, #1e232b 100%);
+}
+
+.boarding-pass-paper::before {
+  opacity: 0.06;
+}
+
 .pass-header {
   display: flex;
   flex-direction: column;
@@ -441,26 +449,26 @@ a:hover {
   position: fixed;
   top: 0;
   right: 0;
-  width: 35%;
+  width: 40%;
   height: 100%;
   background:
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 280px,
-      rgba(245, 158, 11, 0.04) 280px,
-      rgba(245, 158, 11, 0.04) 282px
+      rgba(245, 158, 11, 0.08) 280px,
+      rgba(245, 158, 11, 0.08) 282px
     ),
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 180px,
-      rgba(245, 158, 11, 0.04) 180px,
-      rgba(245, 158, 11, 0.04) 182px
+      rgba(245, 158, 11, 0.08) 180px,
+      rgba(245, 158, 11, 0.08) 182px
     );
   pointer-events: none;
   z-index: 1;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
 /* Layer 3: Floor grid lines (bottom) */
@@ -469,19 +477,30 @@ a:hover {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 150px;
+  height: 180px;
   background:
     repeating-linear-gradient(
       90deg,
       transparent,
       transparent 60px,
-      var(--floor-line) 60px,
-      var(--floor-line) 61px
+      rgba(148, 163, 184, 0.28) 60px,
+      rgba(148, 163, 184, 0.28) 62px
     );
   pointer-events: none;
   z-index: 1;
-  opacity: 0.2;
-  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.35), transparent);
+  opacity: 0.55;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.45), transparent);
+}
+
+/* Corner ambient glow */
+.terminal-bg-ambient::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse 80% 50% at 20% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse 60% 40% at 85% 15%, rgba(245, 158, 11, 0.05) 0%, transparent 45%);
 }
 
 /* Layer 4: Directional signage markers */
@@ -530,8 +549,13 @@ a:hover {
   letter-spacing: 0.15em;
   text-transform: uppercase;
   z-index: 5;
-  opacity: 0.3;
+  opacity: 0.5;
   pointer-events: none;
+  padding: 6px 10px;
+  background: rgba(26, 35, 50, 0.7);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .signage-marker-top-right {
@@ -552,13 +576,32 @@ a:hover {
   left: 32px;
 }
 
+.signage-marker-bottom-right {
+  bottom: 80px;
+  right: 32px;
+}
+
+.signage-marker-top-left {
+  top: 100px;
+  left: 32px;
+}
+
 .signage-arrow {
   font-size: 16px;
   color: var(--departure-amber);
 }
 
+.signage-marker .signage-arrow {
+  animation: arrowPulse 2.5s ease-in-out infinite;
+}
+
 .signage-text {
   font-size: 10px;
+}
+
+@keyframes arrowPulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.65; }
 }
 
 .gate-marker {
@@ -575,8 +618,17 @@ a:hover {
   border: 2px solid var(--floor-line);
   border-radius: 4px;
   z-index: 5;
-  opacity: 0.2;
+  opacity: 0.4;
   pointer-events: none;
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(245, 158, 11, 0.2);
+  animation: gateFloat 5s ease-in-out infinite;
+}
+
+@keyframes gateFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
 }
 
 .gate-marker-a {
@@ -614,32 +666,101 @@ a:hover {
     0deg,
     transparent,
     transparent 2px,
-    rgba(255, 255, 255, 0.015) 2px,
-    rgba(255, 255, 255, 0.015) 4px
+    rgba(255, 255, 255, 0.06) 2px,
+    rgba(255, 255, 255, 0.06) 4px
   );
   pointer-events: none;
   z-index: 2;
-  opacity: 0.5;
+  opacity: 1;
 }
 
-/* Departure board navbar — two-row structure */
+/* Departure board navbar — 3D with rounded edges */
 .departure-board-nav {
-  background: linear-gradient(180deg, var(--terminal-dark) 0%, var(--terminal-navy) 100%);
-  border-bottom: 2px solid var(--departure-amber);
+  background: linear-gradient(180deg, #1e2936 0%, #0f1821 100%);
+  border-bottom: 3px solid var(--departure-amber);
   font-family: var(--font-mono), monospace;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  border-radius: 0 0 16px 16px;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 255, 255, 0.08),
+    0 12px 48px rgba(0, 0, 0, 0.5),
+    0 0 60px rgba(245, 158, 11, 0.12);
+  transform-style: preserve-3d;
+  animation: navGlow 4s ease-in-out infinite;
+}
+
+@keyframes navGlow {
+  0%, 100% {
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.6),
+      inset 0 2px 0 rgba(255, 255, 255, 0.08),
+      0 12px 48px rgba(0, 0, 0, 0.5),
+      0 0 60px rgba(245, 158, 11, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.6),
+      inset 0 2px 0 rgba(255, 255, 255, 0.1),
+      0 12px 48px rgba(0, 0, 0, 0.5),
+      0 0 80px rgba(245, 158, 11, 0.18);
+  }
+}
+
+.departure-board-nav::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.3) 50%, transparent);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 1;
+  border-radius: 0 0 16px 16px;
+}
+
+.departure-board-nav::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  left: -12px;
+  width: 12px;
+  height: 80px;
+  background: linear-gradient(90deg, rgba(51, 65, 85, 0.8) 0%, rgba(51, 65, 85, 0.4) 50%, rgba(51, 65, 85, 0.2) 100%);
+  border-radius: 0 6px 6px 0;
+  box-shadow: inset -3px 0 6px rgba(0, 0, 0, 0.5), 2px 4px 8px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  z-index: 0;
 }
 
 .departure-board-nav .nav-container {
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 24px;
+  padding: 12px 48px;
   max-width: 1400px;
   margin: 0 auto;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, transparent 100%);
+}
+
+.departure-board-nav .nav-container::after {
+  content: "";
+  position: absolute;
+  top: 20px;
+  right: -12px;
+  width: 12px;
+  height: 80px;
+  background: linear-gradient(270deg, rgba(51, 65, 85, 0.8) 0%, rgba(51, 65, 85, 0.4) 50%, rgba(51, 65, 85, 0.2) 100%);
+  border-radius: 6px 0 0 6px;
+  box-shadow: inset 3px 0 6px rgba(0, 0, 0, 0.5), -2px 4px 8px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
 }
 
 .departure-board-nav .airport-identity {
@@ -683,14 +804,38 @@ a:hover {
   letter-spacing: 0.1em;
 }
 
-/* Gate navigation — second row */
+/* Gate navigation — second row, inset 3D + rounded bottom */
 .departure-board-nav .gate-navigation {
+  position: relative;
+  overflow: hidden;
   display: flex;
   justify-content: center;
   gap: 48px;
-  padding: 16px 24px 20px;
-  background: rgba(26, 35, 50, 0.6);
-  border-top: 1px solid var(--floor-line);
+  padding: 16px 48px 20px;
+  background: rgba(26, 35, 50, 0.7);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(148, 163, 184, 0.15);
+  border-radius: 0 0 16px 16px;
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.departure-board-nav .gate-navigation::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -200px;
+  width: 200px;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.06), transparent);
+  animation: lightStreak 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes lightStreak {
+  0% { left: -200px; }
+  100% { left: 100%; }
 }
 
 .departure-board-nav .nav-links {
@@ -714,6 +859,19 @@ a:hover {
   transition: all 0.25s ease;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(180deg, rgba(30, 58, 95, 0.4) 0%, rgba(30, 58, 95, 0.2) 100%);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+.departure-board-nav .nav-link:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 0 20px var(--terminal-glow);
+  transform: translateY(-1px);
+}
+
+.departure-board-nav .nav-link:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .departure-board-nav .nav-link::before {
@@ -767,18 +925,37 @@ a:hover {
   color: var(--departure-amber);
 }
 
+.departure-board-nav .nav-link[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 8px;
+  height: 8px;
+  background: var(--departure-amber);
+  border-radius: 50%;
+  box-shadow: 0 0 12px var(--departure-amber), 0 0 20px rgba(245, 158, 11, 0.5);
+  animation: activePulse 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+@keyframes activePulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(0.9); }
+}
+
 .terminal-directory-nav-header {
-  padding: 10px 24px 12px;
-  border-top: 1px solid var(--floor-line);
-  background: rgba(26, 35, 50, 0.5);
+  padding: 14px 24px 16px;
+  border-top: 2px solid var(--floor-line);
+  background: rgba(26, 35, 50, 0.7);
 }
 
 .terminal-directory-nav-label {
   font-family: var(--font-mono), monospace;
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.2em;
-  color: var(--metal-gray);
+  color: var(--departure-amber);
   text-transform: uppercase;
 }
 
@@ -794,6 +971,11 @@ a:hover {
     padding: 16px 24px;
   }
 
+  .departure-board-nav .gate-navigation {
+    gap: 24px;
+    padding: 12px 24px 16px;
+  }
+
   .departure-board-nav .airport-code {
     font-size: 11px;
   }
@@ -801,11 +983,6 @@ a:hover {
   .departure-board-nav .terminal-time,
   .departure-board-nav .current-time {
     font-size: 12px;
-  }
-
-  .departure-board-nav .gate-navigation {
-    gap: 24px;
-    padding: 12px 24px 16px;
   }
 
   .departure-board-nav .nav-links {
@@ -925,65 +1102,58 @@ a:hover {
   background: var(--terminal-glow);
 }
 
-/* Directory board — 3D signpost (mount brackets + depth) */
-.directory-board-wrap.directory-sign-3d {
+/* Directory board — 3D rounded LED departure board (hero) */
+.directory-board-wrap.directory-board-led {
   position: relative;
+  border-radius: 12px;
   box-shadow:
-    0 8px 32px rgba(0, 0, 0, 0.45),
-    0 16px 48px rgba(0, 0, 0, 0.25),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    0 4px 24px rgba(0, 0, 0, 0.35),
+    0 12px 40px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
-.directory-board-wrap .mount-bracket {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border: 2px solid rgba(232, 166, 100, 0.4);
-  pointer-events: none;
-  z-index: 5;
+/* Directory table — grid lines + hierarchy, left-aligned */
+.directory-board-wrap {
+  text-align: left;
 }
 
-.directory-board-wrap .mount-tl {
-  top: -6px;
-  left: 10px;
-  border-right: none;
-  border-bottom: none;
-  border-top-left-radius: 6px;
-}
-
-.directory-board-wrap .mount-tr {
-  top: -6px;
-  right: 10px;
-  border-left: none;
-  border-bottom: none;
-  border-top-right-radius: 6px;
-}
-
-.directory-board-wrap .mount-bl {
-  bottom: -6px;
-  left: 10px;
-  border-right: none;
-  border-top: none;
-  border-bottom-left-radius: 6px;
-}
-
-.directory-board-wrap .mount-br {
-  bottom: -6px;
-  right: 10px;
-  border-left: none;
-  border-top: none;
-  border-bottom-right-radius: 6px;
-}
-
-/* Directory table — grid lines + hierarchy */
 .directory-table {
   width: 100%;
   max-width: 900px;
-  margin: 48px auto;
+  margin: 48px auto 48px 0;
   border: 2px solid var(--floor-line);
   border-radius: 8px;
   background: var(--terminal-dark);
   border-collapse: collapse;
+  text-align: left;
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.directory-table th,
+.directory-table td {
+  text-align: left;
+}
+
+.directory-table .cta-col,
+.directory-table .status-col,
+.directory-table .cta-col th,
+.cta-col-cell {
+  text-align: right;
+}
+
+.directory-table .gate-letter {
+  display: inline-block;
+  text-align: center;
+}
+
+.directory-table tbody tr:nth-child(odd) td {
+  background: rgba(30, 58, 95, 0.15);
+}
+
+.directory-table tbody tr:hover td {
+  background: var(--terminal-glow);
 }
 
 .directory-table th {
@@ -1036,7 +1206,9 @@ a:hover {
   display: grid;
   grid-template-columns: 100px 250px 1fr 150px;
   gap: 0;
-  padding: 20px 24px;
+  padding: 24px 28px;
+  min-height: 56px;
+  align-items: center;
   text-decoration: none;
   color: inherit;
   transition: background 0.2s ease;
@@ -1087,10 +1259,13 @@ a:hover {
 
 .status-arrow {
   font-family: var(--font-mono), monospace;
-  font-size: 20px;
+  font-size: 28px;
+  font-weight: 700;
   color: var(--departure-amber);
   display: flex;
   justify-content: flex-end;
+  align-items: center;
+  letter-spacing: 0.05em;
 }
 
 .cta-col-cell {
@@ -1343,27 +1518,66 @@ body, p, .description {
   border-top: 2px solid var(--floor-line);
 }
 
+/* Seat map section header — prominent, prevent cutoff */
+.seat-map-header {
+  font-family: var(--font-mono), monospace;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--departure-amber);
+  text-transform: uppercase;
+  margin: 0 0 16px 0;
+  padding: 0 8px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
 /* Narrow plane cabin — 1-aisle-1 (regional jet) */
 .seat-map-container {
   display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 32px;
-  max-width: 1000px;
+  grid-template-columns: 380px 1fr;
+  gap: 48px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 32px 24px;
+  padding: 48px 24px;
 }
 
 .plane-cabin-narrow {
+  width: 100%;
   background: var(--terminal-dark);
-  border: 2px solid var(--floor-line);
+  border: 3px solid var(--floor-line);
   border-radius: 48px 48px 12px 12px;
   padding: 16px 12px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(148, 163, 184, 0.1);
   position: relative;
   height: fit-content;
+}
+
+.plane-cabin-with-wings::before,
+.plane-cabin-with-wings::after {
+  content: "";
+  position: absolute;
+  top: 45%;
+  width: 24px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--floor-line), transparent);
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.plane-cabin-with-wings::before {
+  left: -24px;
+  transform: translateY(-50%);
+}
+
+.plane-cabin-with-wings::after {
+  right: -24px;
+  width: 24px;
+  background: linear-gradient(270deg, var(--floor-line), transparent);
+  transform: translateY(-50%);
 }
 
 .plane-nose-narrow {
@@ -1388,16 +1602,41 @@ body, p, .description {
 .cockpit-window-right {
   width: 50px;
   height: 28px;
-  background: rgba(6, 182, 212, 0.3);
-  border: 2px solid var(--gate-cyan);
+  background: radial-gradient(ellipse 70% 70% at 50% 50%, rgba(6, 182, 212, 0.6) 0%, rgba(6, 182, 212, 0.35) 70%, rgba(6, 182, 212, 0.25) 100%);
+  border: 3px solid var(--gate-cyan);
   border-radius: 50% 50% 0 0;
-  box-shadow: inset 0 0 20px rgba(6, 182, 212, 0.4);
+  box-shadow: inset 0 0 24px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.35);
+  position: relative;
+  animation: windowGlow 4s ease-in-out infinite;
+}
+
+@keyframes windowGlow {
+  0%, 100% {
+    box-shadow: inset 0 0 24px rgba(6, 182, 212, 0.6), 0 0 16px rgba(6, 182, 212, 0.35);
+  }
+  50% {
+    box-shadow: inset 0 0 32px rgba(6, 182, 212, 0.75), 0 0 22px rgba(6, 182, 212, 0.45);
+  }
+}
+
+.cockpit-window-left::after,
+.cockpit-window-right::after {
+  content: "";
+  position: absolute;
+  top: 18%;
+  left: 22%;
+  width: 50%;
+  height: 45%;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  pointer-events: none;
 }
 
 .seat-columns-narrow {
   display: grid;
-  grid-template-columns: 30px 110px 50px 110px;
-  gap: 8px;
+  grid-template-columns: 26px 110px 40px 110px;
+  gap: 6px;
   padding: 0 8px;
   margin-bottom: 8px;
 }
@@ -1421,17 +1660,17 @@ body, p, .description {
 
 .seat-row-narrow {
   display: grid;
-  grid-template-columns: 26px 92px 40px 92px;
+  grid-template-columns: 26px 110px 40px 110px;
   gap: 6px;
   align-items: center;
 }
 
 .plane-seat-narrow {
-  width: 92px;
-  height: 100px;
+  width: 110px;
+  height: 120px;
   background: var(--terminal-blue);
-  border: 2px solid var(--floor-line);
-  border-radius: 8px 8px 4px 4px;
+  border: 3px solid var(--floor-line);
+  border-radius: 10px 10px 5px 5px;
   position: relative;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -1439,24 +1678,40 @@ body, p, .description {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 4px;
-  padding: 8px 4px;
+  gap: 6px;
+  padding: 10px 6px;
 }
 
 .plane-seat-narrow::before {
   content: "";
   position: absolute;
-  top: -4px;
+  top: -8px;
   left: 10px;
   right: 10px;
-  height: 24px;
-  background: var(--terminal-dark);
-  border: 2px solid var(--floor-line);
-  border-radius: 6px 6px 0 0;
-  z-index: -1;
+  height: 35px;
+  background: linear-gradient(180deg, var(--terminal-dark) 0%, var(--terminal-blue) 100%);
+  border: 3px solid rgba(6, 182, 212, 0.8);
+  border-radius: 8px 8px 0 0;
+  z-index: 1;
+  box-shadow:
+    0 3px 12px rgba(0, 0, 0, 0.6),
+    inset 0 1px 3px rgba(6, 182, 212, 0.3),
+    0 0 20px rgba(6, 182, 212, 0.2);
+}
+
+.plane-seat-narrow:hover::before {
+  border-color: var(--departure-amber);
+  background: linear-gradient(180deg, var(--terminal-blue) 0%, var(--terminal-dark) 100%);
+}
+
+.plane-seat-narrow[data-selected="true"]::before {
+  border-color: var(--departure-amber);
+  border-width: 3px;
 }
 
 .plane-seat-narrow .seat-code {
+  position: relative;
+  z-index: 3;
   font-family: var(--font-mono), monospace;
   font-size: 10px;
   color: var(--metal-gray);
@@ -1465,6 +1720,8 @@ body, p, .description {
 }
 
 .plane-seat-narrow .seat-project-name {
+  position: relative;
+  z-index: 3;
   font-family: var(--font-body), system-ui, sans-serif;
   font-size: 10px;
   color: var(--window-white);
@@ -1562,6 +1819,22 @@ body, p, .description {
   margin: 4px 0 0;
   letter-spacing: 0.15em;
   text-transform: uppercase;
+  animation: gate-status-pulse 2s ease-in-out infinite;
+}
+
+@keyframes gate-status-pulse {
+  0%, 100% { opacity: 1; text-shadow: 0 0 8px rgba(16, 185, 129, 0.4); }
+  50% { opacity: 0.85; text-shadow: 0 0 16px rgba(16, 185, 129, 0.6); }
+}
+
+.gate-display-panel .project-image-compact {
+  aspect-ratio: 16/9;
+}
+
+.gate-display-panel .project-image-compact img {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
 }
 
 .gate-display-panel .flight-info {
@@ -1706,6 +1979,218 @@ body, p, .description {
   position: absolute;
   left: 0;
   color: var(--floor-line);
+}
+
+/* About — passport block with photo frame and corner brackets */
+.about-page .about-passport-block {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 28px;
+  align-items: start;
+  margin-bottom: 24px;
+}
+
+.about-page .passport-photo-wrap {
+  position: relative;
+}
+
+.about-page .passport-photo-frame {
+  width: 130px;
+  height: 165px;
+  border: 3px solid var(--departure-amber);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--terminal-blue);
+  overflow: hidden;
+}
+
+.about-page .passport-photo-placeholder {
+  font-family: var(--font-signage), sans-serif;
+  font-size: 48px;
+  color: var(--metal-gray);
+  opacity: 0.5;
+}
+
+.about-page .passport-corner-stamps {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.about-page .passport-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--departure-amber);
+}
+
+.about-page .passport-corner.tl {
+  top: -2px;
+  left: -2px;
+  border-right: none;
+  border-bottom: none;
+}
+
+.about-page .passport-corner.tr {
+  top: -2px;
+  right: -2px;
+  border-left: none;
+  border-bottom: none;
+}
+
+.about-page .passport-corner.bl {
+  bottom: -2px;
+  left: -2px;
+  border-right: none;
+  border-top: none;
+}
+
+.about-page .passport-corner.br {
+  bottom: -2px;
+  right: -2px;
+  border-left: none;
+  border-top: none;
+}
+
+.about-page .about-bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.about-page .about-bullet-list li {
+  font-family: var(--font-body), system-ui, sans-serif;
+  font-size: 14px;
+  color: var(--metal-gray);
+  padding-left: 20px;
+  position: relative;
+}
+
+.about-page .about-bullet-list li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: var(--departure-amber);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.about-page .about-location-stamps {
+  border-top: 1px solid var(--floor-line);
+  border-bottom: 1px solid var(--floor-line);
+}
+
+.about-page .location-stamp {
+  font-family: var(--font-mono), monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--departure-amber);
+  padding: 6px 14px;
+  border: 2px solid var(--departure-amber);
+  border-radius: 4px;
+  letter-spacing: 0.1em;
+}
+
+/* Page signage — About & Resume */
+.page-signage {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.signage-element {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--metal-gray);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  opacity: 0.25;
+}
+
+.page-signage .signage-arrow {
+  font-size: 16px;
+  color: var(--departure-amber);
+}
+
+.page-signage-about .signage-top-right {
+  top: 80px;
+  right: 40px;
+}
+
+.page-signage-about .signage-left {
+  top: 200px;
+  left: 20px;
+  transform: rotate(-90deg);
+  transform-origin: left center;
+}
+
+.page-signage-about .signage-bottom {
+  bottom: 100px;
+  right: 60px;
+  flex-direction: column;
+}
+
+.page-signage-resume .signage-top-left {
+  top: 80px;
+  left: 40px;
+  flex-direction: column;
+}
+
+.page-signage-resume .signage-right {
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 768px) {
+  .page-signage .signage-element {
+    display: none;
+  }
+}
+
+/* Waterloo Web Ring — subtle, single-line, airport theme */
+.webring-minimal {
+  text-align: center;
+  margin: 32px auto 0;
+  max-width: 420px;
+  font-family: var(--font-mono), monospace;
+  font-size: 10px;
+  color: var(--metal-gray);
+  opacity: 0.45;
+  transition: opacity 0.3s ease;
+}
+
+.webring-minimal:hover {
+  opacity: 0.75;
+}
+
+.webring-text a {
+  color: var(--metal-gray);
+  text-decoration: none;
+  letter-spacing: 0.1em;
+  transition: color 0.3s ease;
+}
+
+.webring-text a:hover {
+  color: var(--departure-amber);
+}
+
+@media (max-width: 640px) {
+  .about-page .about-passport-block {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
 }
 
 /* Passport profile — grid layout and corner stamps */
@@ -1928,6 +2413,25 @@ body, p, .description {
   border-radius: 2px;
 }
 
+.bag-tag {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: var(--departure-amber);
+  color: var(--terminal-navy);
+  padding: 5px 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  transform: rotate(12deg);
+  box-shadow:
+    0 3px 8px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border: 2px solid rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+}
+
 .barcode-stripe {
   height: 4px;
   background: repeating-linear-gradient(
@@ -1959,10 +2463,13 @@ body, p, .description {
 
 .baggage-role {
   font-family: var(--font-body), system-ui, sans-serif;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 600;
   color: var(--window-white);
   line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .trolley-illustration .luggage-trolley {
@@ -1990,6 +2497,15 @@ body, p, .description {
 
 .baggage-details-two-col .trolley-right {
   text-align: center;
+  padding: 16px;
+  background: rgba(30, 58, 95, 0.3);
+  border: 2px solid var(--floor-line);
+  border-radius: 8px;
+}
+
+.baggage-details-two-col .trolley-right .luggage-trolley {
+  display: block;
+  margin: 0 auto;
 }
 
 @media (max-width: 640px) {
@@ -2155,6 +2671,18 @@ body, p, .description {
 .conveyor-belt-inner {
   position: relative;
   z-index: 1;
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent 0%, black 100px, black calc(100% - 100px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 100px, black calc(100% - 100px), transparent 100%);
+}
+
+.belt-control-icon {
+  font-size: 14px;
+  line-height: 1;
+}
+
+.belt-control-icon-pause {
+  letter-spacing: -2px;
 }
 
 @media (prefers-reduced-motion: reduce) {

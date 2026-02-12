@@ -70,7 +70,7 @@ export function DetailsPanel(props: DetailsPanelProps) {
         )}
 
         {p.screenshot && (
-          <div className="project-image aspect-video w-full rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-blue)]">
+          <div className="project-image project-image-compact w-full max-h-[180px] rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-blue)]">
             <img src={p.screenshot} alt="" className="w-full h-full object-cover" />
           </div>
         )}
@@ -81,7 +81,7 @@ export function DetailsPanel(props: DetailsPanelProps) {
               href={demoLink.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="gate-btn primary gate-btn-view flex-1 min-w-[120px] text-center py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider bg-[var(--departure-amber)] text-[var(--terminal-navy)] border-2 border-[var(--departure-amber)] hover:bg-[var(--window-white)] hover:border-[var(--window-white)] transition-colors"
+              className="gate-btn primary gate-btn-view flex-1 min-w-[120px] text-center py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider bg-[var(--departure-amber)] text-white border-2 border-[var(--departure-amber)] hover:bg-[var(--window-white)] hover:border-[var(--window-white)] hover:text-[var(--terminal-navy)] transition-colors"
             >
               View project
             </a>
@@ -131,8 +131,8 @@ export function DetailsPanel(props: DetailsPanelProps) {
           </ul>
         )}
       </div>
-      <div className="trolley-illustration trolley-right flex-shrink-0 opacity-60">
-        <svg viewBox="0 0 200 150" className="luggage-trolley w-[160px] h-[120px]" aria-hidden>
+      <div className="trolley-illustration trolley-right flex-shrink-0">
+        <svg viewBox="0 0 200 150" className="luggage-trolley w-[180px] h-[135px]" aria-hidden>
           <rect x="30" y="40" width="140" height="80" fill="var(--terminal-blue)" stroke="var(--floor-line)" strokeWidth="2" rx="4" />
           <rect x="50" y="50" width="40" height="50" fill="var(--terminal-dark)" stroke="var(--departure-amber)" strokeWidth="2" rx="2" />
           <rect x="110" y="50" width="40" height="50" fill="var(--terminal-dark)" stroke="var(--departure-amber)" strokeWidth="2" rx="2" />
@@ -140,7 +140,6 @@ export function DetailsPanel(props: DetailsPanelProps) {
           <line x1="170" y1="120" x2="170" y2="135" stroke="var(--metal-gray)" strokeWidth="3" />
           <circle cx="30" cy="140" r="8" fill="var(--floor-line)" />
           <circle cx="170" cy="140" r="8" fill="var(--floor-line)" />
-          <text x="100" y="80" textAnchor="middle" fill="var(--metal-gray)" fontSize="12" fontFamily="JetBrains Mono, monospace">LUGGAGE</text>
         </svg>
         <p className="trolley-caption font-mono text-[9px] text-[var(--metal-gray)] tracking-[0.15em] mt-2 uppercase">Baggage trolley available</p>
       </div>

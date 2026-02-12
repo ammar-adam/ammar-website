@@ -43,7 +43,7 @@ export function ProjectsSeatMapPage() {
               <DetailsPanel variant="project" data={selectedProject} seatLabel={seatLabel} />
             ) : (
               <div className="gate-display-empty flex flex-col items-center justify-center min-h-[400px] text-center">
-                <p className="font-mono text-sm text-[var(--metal-gray)]">Select a seat to view flight details.</p>
+                <p className="font-mono text-sm text-[var(--metal-gray)]">Select a seat to view gate details.</p>
               </div>
             )}
           </div>

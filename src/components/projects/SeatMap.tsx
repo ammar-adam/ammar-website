@@ -36,11 +36,11 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
 
   return (
     <div className="seat-map-section">
-      <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-[var(--metal-gray)] mb-3 terminal-code">
+      <h2 className="seat-map-header">
         Gate A · Seat map
-      </p>
+      </h2>
 
-      <div className="plane-cabin-narrow">
+      <div className="plane-cabin-narrow plane-cabin-with-wings">
         <div className="plane-nose plane-nose-narrow" aria-hidden>
           <div className="cockpit-windows">
             <div className="cockpit-window-left" />
@@ -60,7 +60,7 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
           const projB = bySeat[seatId(row, "B")];
           return (
             <div key={row} className="seat-row-narrow">
-              <span className="row-number" aria-hidden>{row}</span>
+              <span className="row-number">{row}</span>
               {projA ? (
                 <button
                   type="button"

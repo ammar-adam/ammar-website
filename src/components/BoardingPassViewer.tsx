@@ -4,7 +4,17 @@ import { boardingPassConfig } from "@/data/boardingPass";
 
 export function BoardingPassViewer() {
   return (
-    <section className="py-10 sm:py-14 px-4 sm:px-6 lg:px-12 z-10">
+    <section className="resume-page resume-page-with-signage py-10 sm:py-14 px-4 sm:px-6 lg:px-12 z-10 relative">
+      <div className="page-signage page-signage-resume" aria-hidden>
+        <div className="signage-element signage-top-left">
+          <span className="signage-text">Gate D</span>
+          <span className="signage-arrow">↓</span>
+        </div>
+        <div className="signage-element signage-right">
+          <span className="signage-arrow">→</span>
+          <span className="signage-text">Boarding</span>
+        </div>
+      </div>
       <div className="mx-auto max-w-xl w-full">
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--metal-gray)] mb-2">
           Gate D · Boarding pass
@@ -16,7 +26,7 @@ export function BoardingPassViewer() {
           {boardingPassConfig.displayName}
         </p>
 
-        <div className="intro-boarding-pass-card rounded overflow-visible border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]">
+        <div className="intro-boarding-pass-card boarding-pass-paper rounded overflow-visible border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]">
           <div className="pass-header flex flex-wrap justify-between items-center gap-2 px-4 py-3 border-b-2 border-[var(--departure-amber)] bg-[var(--terminal-glow)]/30">
             <span className="font-mono text-xs font-bold text-[var(--departure-amber)] tracking-[0.15em]">
               ✈ AFA INTERNATIONAL
@@ -91,7 +101,7 @@ export function BoardingPassViewer() {
           </div>
 
           <div className="boarding-footer text-center pt-4 border-t-2 border-[var(--floor-line)]">
-            <p className="group-label font-mono text-[11px] text-[var(--departure-amber)] tracking-[0.15em] uppercase m-0">
+            <p className="group-label font-mono text-[13px] font-bold text-[var(--departure-amber)] tracking-[0.15em] uppercase m-0">
               Group: Priority
             </p>
           </div>

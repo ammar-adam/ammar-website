@@ -6,6 +6,7 @@ import { siteConfig } from "@/data/site";
 import { PlaneIcon } from "@/components/ui/PlaneIcon";
 import { TerminalClock } from "@/components/ui/TerminalClock";
 import { InfoDesk } from "@/components/InfoDesk";
+import { WaterlooWebRing } from "@/components/WaterlooWebRing";
 
 const GATES = [
   { id: "projects", gate: "A", destination: "PROJECTS", href: "/projects" },
@@ -30,6 +31,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen flex flex-col bg-transparent relative z-10">
       <header className="departure-board-nav" role="banner">
+        <div className="nav-scan-line" aria-hidden />
         <div className="nav-container">
           <Link
             href="/"
@@ -100,7 +102,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         {pathname === "/" && (
           <div className="terminal-directory-nav-header" aria-hidden>
-            <span className="terminal-directory-nav-label">Terminal Directory</span>
+            <span className="terminal-directory-nav-label">TERMINAL DIRECTORY</span>
           </div>
         )}
       </header>
@@ -110,13 +112,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <InfoDesk />
 
       <footer className="border-t border-[var(--floor-line)] py-3 sm:py-4 bg-[var(--terminal-dark)]/90 relative z-10">
-        <div className="mx-auto max-w-[var(--runway-max)] px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-          <span className="text-[10px] font-mono text-[var(--metal-gray)] uppercase tracking-wider">
-            {siteConfig.airportName}
-          </span>
-          <span className="text-[10px] text-[var(--metal-gray)]/80 uppercase tracking-widest hidden sm:inline">
-            You are here
-          </span>
+        <div className="mx-auto max-w-[var(--runway-max)] px-4 sm:px-6 lg:px-8 flex flex-col gap-6">
+          <div className="flex items-center justify-between">
+            <span className="text-[10px] font-mono text-[var(--metal-gray)] uppercase tracking-wider">
+              {siteConfig.airportName}
+            </span>
+            <span className="text-[10px] text-[var(--metal-gray)]/80 uppercase tracking-widest hidden sm:inline">
+              You are here
+            </span>
+          </div>
+          <WaterlooWebRing />
         </div>
       </footer>
     </div>

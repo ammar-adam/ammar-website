@@ -11,18 +11,14 @@ const ROWS = [
 
 export function TerminalDirectoryBoard() {
   return (
-    <div className="directory-board-wrap departures-board departures-board-mounted directory-sign-3d" role="navigation" aria-label="Terminal Directory">
-      <div className="mount-bracket mount-tl" aria-hidden />
-      <div className="mount-bracket mount-tr" aria-hidden />
-      <div className="mount-bracket mount-bl" aria-hidden />
-      <div className="mount-bracket mount-br" aria-hidden />
+    <div className="directory-board-wrap directory-board-led" role="navigation" aria-label="Terminal Directory">
       <table className="directory-table">
         <thead>
           <tr>
             <th className="gate-col">Gate</th>
             <th className="destination-col">Destination</th>
             <th className="info-col">Info</th>
-            <th className="cta-col">Status</th>
+            <th className="cta-col status-col">Direction</th>
           </tr>
         </thead>
         <tbody>
