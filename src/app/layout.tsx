@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Bebas_Neue, JetBrains_Mono, Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import { AppShell } from "@/components/AppShell";
 import { AirportSignage } from "@/components/AirportSignage";
 import { MotionProvider } from "@/components/MotionProvider";
@@ -47,6 +48,7 @@ export default function RootLayout({
         <MotionProvider>
           <AppShell>{children}</AppShell>
         </MotionProvider>
+        <Analytics />
       </body>
     </html>
   );
