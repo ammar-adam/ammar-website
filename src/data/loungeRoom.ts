@@ -28,7 +28,7 @@ export const loungeRoomContent = {
     items: [
       { src: "/ABOUT1.jpg", caption: "core memory — playing soccer on jeju island" },
       { src: "/ABOUT2.jpg", caption: "first mun conference in montreal" },
-      { src: "/ABOUT3.jpg", caption: "last time running the mentor college culture show" },
+      { src: "/ABOUT3.jpg", caption: "last time running the culture show" },
       { src: "/ABOUT4.jpg", caption: "harry potter ride at universal" },
       { src: "/ABOUT5.jpg", caption: "met king julian and alex at deca icdc" },
       { src: "/ABOUT6.jpg", caption: "i love toronto sunsets" },

@@ -25,8 +25,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: `${siteConfig.airportName}`,
-  description: "AFA International Airport — Terminal experience.",
+  title: "Ammar Adam",
+  description: "Ammar Adam - Student at UWaterloo",
 };
 
 export default function RootLayout({

@@ -152,7 +152,7 @@ export const projects: Project[] = [
   },
   {
     slug: "mentor-college-deca",
-    name: "Mentor College DECA",
+    name: "DECA",
     year: "2021-25",
     destination: "Internationals!",
     flightCode: "MC07",
