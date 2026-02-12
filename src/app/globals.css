@@ -1073,22 +1073,29 @@ a:hover {
     width: calc(100% + 32px);
   }
 
-  /* Projects: stack seat map on top, details card underneath (mobile only) */
+  /* Projects: stack seat map on top, details card full width underneath; prevent squeeze */
   .seat-map-container {
     display: flex;
     flex-direction: column;
     gap: 24px;
     padding: 24px 16px;
     max-width: 100%;
+    min-width: 0;
   }
 
   .seat-map-container .seat-map-surface {
     width: 100%;
+    min-width: 0;
+    flex-shrink: 0;
   }
 
   .seat-map-container .gate-display-panel {
     width: 100%;
+    min-width: 0;
+    max-width: 100%;
     order: 2;
+    flex: 1 1 auto;
+    box-sizing: border-box;
   }
 
   /* Projects: allow touch to reach seat buttons (overflow visible so taps register); center seat map */
@@ -1119,6 +1126,38 @@ a:hover {
 
   .gate-display-empty {
     min-height: 200px;
+  }
+
+  /* Gate panel content: full width, no squeeze, text wraps properly */
+  .gate-display-panel .gate-display {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .gate-display-panel .info-row {
+    flex-wrap: wrap;
+    gap: 4px 0;
+  }
+
+  .gate-display-panel .info-value {
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    text-align: right;
+  }
+
+  .gate-display-panel .project-description {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .gate-display-panel .project-description p {
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .gate-display-panel .gate-actions {
+    min-width: 0;
   }
 
   /* Directory table — horizontal scroll so content isn't clumped */
@@ -1645,6 +1684,55 @@ body, p, .description {
   max-width: 1200px;
   margin: 0 auto;
   padding: 48px 24px;
+}
+
+/* Projects: stack seat map above card below 1024px (tablets + phones, no side-by-side squeeze) */
+@media (max-width: 1024px) {
+  .seat-map-container {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 100%;
+    min-width: 0;
+    padding: 24px 16px;
+  }
+
+  .seat-map-container .seat-map-surface {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .seat-map-container .gate-display-panel {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    order: 2;
+    box-sizing: border-box;
+  }
+
+  .gate-display-panel .gate-display {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .gate-display-panel .info-row {
+    flex-wrap: wrap;
+  }
+
+  .gate-display-panel .info-value {
+    min-width: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .gate-display-panel .project-description {
+    min-width: 0;
+    overflow-wrap: break-word;
+  }
+
+  .gate-display-panel .project-description p {
+    overflow-wrap: break-word;
+  }
 }
 
 .plane-cabin-narrow {
