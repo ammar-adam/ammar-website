@@ -19,12 +19,9 @@ export function BoardingPassViewer() {
         <p className="font-mono text-[10px] uppercase tracking-[0.2em] text-[var(--metal-gray)] mb-2">
           Gate D · Boarding pass
         </p>
-        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">
+        <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-6">
           Resume
         </h1>
-        <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">
-          {boardingPassConfig.displayName}
-        </p>
 
         <div className="intro-boarding-pass-card boarding-pass-paper rounded overflow-visible border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)]">
           <div className="pass-header flex flex-wrap justify-between items-center gap-2 px-4 py-3 border-b-2 border-[var(--departure-amber)] bg-[var(--terminal-glow)]/30">
@@ -41,47 +38,23 @@ export function BoardingPassViewer() {
               <span>Passenger name</span>
               <span className="text-[var(--window-white)] font-semibold normal-case">{boardingPassConfig.displayName}</span>
               <span>From</span>
-              <span className="text-[var(--window-white)]">YYZ</span>
+              <span className="text-[var(--window-white)]">{boardingPassConfig.from}</span>
               <span>To</span>
-              <span className="text-[var(--window-white)]">CAREER</span>
+              <span className="text-[var(--window-white)]">{boardingPassConfig.to}</span>
               <span>Flight</span>
-              <span className="text-[var(--window-white)]">CFM001</span>
-              <span>Date</span>
-              <span className="text-[var(--window-white)]">2026</span>
-              <span>Gate</span>
-              <span className="text-[var(--window-white)]">D</span>
-              <span>Seat</span>
-              <span className="text-[var(--window-white)]">1A</span>
+              <span className="text-[var(--window-white)]">{boardingPassConfig.flight}</span>
               <span>Status</span>
-              <span className="text-[var(--departure-amber)]">{boardingPassConfig.tagline ?? "—"}</span>
+              <span className="text-[var(--departure-amber)]">{boardingPassConfig.tagline}</span>
             </div>
 
             <div className="pass-perf border-t-2 border-dashed border-[var(--floor-line)] relative pt-4 mt-4">
               <span className="absolute -top-3 left-0 text-[var(--metal-gray)]" aria-hidden>✂</span>
             </div>
 
-            {boardingPassConfig.sections.map((section) => (
-              <div key={section.title} className="mb-4 mt-4">
-                <div className="font-mono text-[10px] uppercase tracking-wider text-[var(--metal-gray)] mb-2">
-                  {section.title.toUpperCase()}
-                </div>
-                <div className="space-y-1">
-                  {section.items.map((item, j) => (
-                    <div key={j} className="flex justify-between gap-4 font-mono text-xs">
-                      <span className="text-[var(--window-white)]">{item.role}</span>
-                      <span className="text-[var(--metal-gray)]">
-                        {item.org} · {item.period}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-
-            <button
-              type="button"
-              onClick={() => window.open(boardingPassConfig.resumeFileUrl, "_blank", "noopener,noreferrer")}
-              className="barcode-download-section group w-full mt-8 mb-6 py-6 px-6 rounded-lg border-2 border-dashed border-[var(--floor-line)] bg-transparent cursor-pointer transition-all duration-300 hover:border-[var(--departure-amber)] hover:bg-[var(--terminal-glow)] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)]"
+            <a
+              href={boardingPassConfig.resumeFileUrl}
+              download="Ammar_Adam.pdf"
+              className="barcode-download-section group block w-full mt-8 mb-6 py-6 px-6 rounded-lg border-2 border-dashed border-[var(--floor-line)] bg-transparent cursor-pointer transition-all duration-300 hover:border-[var(--departure-amber)] hover:bg-[var(--terminal-glow)] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] no-underline"
               aria-label="Download resume PDF"
             >
               <div
@@ -97,7 +70,7 @@ export function BoardingPassViewer() {
               <p className="barcode-label font-mono text-[9px] text-[var(--metal-gray)] tracking-[0.1em] uppercase">
                 Sequence · Priority boarding
               </p>
-            </button>
+            </a>
           </div>
 
           <div className="boarding-footer text-center pt-4 border-t-2 border-[var(--floor-line)]">

@@ -20,9 +20,11 @@ export function DetailsPanel(props: DetailsPanelProps) {
   if (props.variant === "project") {
     const p = props.data;
     const seatLabel = props.seatLabel ?? null;
-    const demoLink = p.seats.find((s) => s.links?.length)?.links?.find((l) => /demo|app|loom/i.test(l.label));
-    const githubLink = p.seats.find((s) => s.links?.length)?.links?.find((l) => /github/i.test(l.label));
-    const writeupLink = p.seats.find((s) => s.links?.length)?.links?.find((l) => /writeup|article|read/i.test(l.label));
+    const allLinks = p.seats.flatMap((s) => s.links ?? []);
+    const viewProjectLink = allLinks.find((l) => /view project/i.test(l.label));
+    const githubLink = allLinks.find((l) => /github/i.test(l.label));
+    const demoLink = allLinks.find((l) => /^demo$/i.test(l.label));
+    const moreLink = allLinks.find((l) => /^more$/i.test(l.label));
     const tags = p.stackTag ? [p.stackTag] : [];
 
     return (
@@ -76,14 +78,14 @@ export function DetailsPanel(props: DetailsPanelProps) {
         )}
 
         <div className="gate-actions flex flex-wrap gap-3">
-          {demoLink && (
+          {viewProjectLink && (
             <a
-              href={demoLink.url}
+              href={viewProjectLink.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="gate-btn primary gate-btn-view flex-1 min-w-[120px] text-center py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider bg-[var(--departure-amber)] text-white border-2 border-[var(--departure-amber)] hover:bg-[var(--window-white)] hover:border-[var(--window-white)] hover:text-[var(--terminal-navy)] transition-colors"
+              className="gate-btn primary gate-btn-view flex-1 min-w-[120px] text-center py-3 px-4 rounded-lg text-xs font-bold uppercase tracking-wider border-2 border-[var(--departure-amber)] text-[var(--departure-amber)] bg-transparent hover:bg-[var(--departure-amber)] hover:text-[var(--terminal-navy)] transition-colors"
             >
-              View project
+              View Project
             </a>
           )}
           {githubLink && (
@@ -96,14 +98,24 @@ export function DetailsPanel(props: DetailsPanelProps) {
               GitHub
             </a>
           )}
-          {writeupLink && (
+          {demoLink && (
             <a
-              href={writeupLink.url}
+              href={demoLink.url}
               target="_blank"
               rel="noopener noreferrer"
               className="gate-btn secondary flex-1 min-w-[100px] text-center py-3 px-4 rounded-lg font-mono text-xs font-bold uppercase tracking-wider border-2 border-[var(--floor-line)] text-[var(--window-white)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] transition-colors"
             >
-              Writeup
+              Demo
+            </a>
+          )}
+          {moreLink && (
+            <a
+              href={moreLink.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="gate-btn secondary flex-1 min-w-[100px] text-center py-3 px-4 rounded-lg font-mono text-xs font-bold uppercase tracking-wider border-2 border-[var(--floor-line)] text-[var(--window-white)] hover:border-[var(--departure-amber)] hover:text-[var(--departure-amber)] transition-colors"
+            >
+              More
             </a>
           )}
         </div>
@@ -112,7 +124,6 @@ export function DetailsPanel(props: DetailsPanelProps) {
   }
 
   const e = props.data;
-  const bullets = e.details.split(". ").filter(Boolean).slice(0, 4);
 
   return (
     <div className="baggage-claim-details details-panel h-full flex flex-col baggage-details-two-col">
@@ -120,16 +131,19 @@ export function DetailsPanel(props: DetailsPanelProps) {
         <div className="aspect-video w-full max-w-[220px] rounded-lg border border-[var(--floor-line)] bg-[var(--terminal-blue)] flex items-center justify-center mb-3 flex-shrink-0">
           <span className="font-mono text-xs text-[var(--metal-gray)]">Image</span>
         </div>
-        <span className="baggage-origin">From: {e.from}</span>
+        <span className="baggage-origin">
+          From:{" "}
+          {e.fromUrl ? (
+            <a href={e.fromUrl} target="_blank" rel="noopener noreferrer" className="text-[var(--departure-amber)] hover:underline">
+              {e.from}
+            </a>
+          ) : (
+            e.from
+          )}
+        </span>
         <h2 className="baggage-role mt-1">{e.detailTitle ?? e.title}</h2>
         <p className="text-sm text-[var(--metal-gray)] mt-1">{e.impact}</p>
-        {bullets.length > 0 && (
-          <ul className="mt-3 space-y-1 list-disc list-inside text-sm text-[var(--metal-gray)]">
-            {bullets.map((b, i) => (
-              <li key={i}>{b.trim()}</li>
-            ))}
-          </ul>
-        )}
+        {e.details && <p className="text-sm text-[var(--metal-gray)] mt-2">{e.details}</p>}
       </div>
       <div className="trolley-illustration trolley-right flex-shrink-0">
         <svg viewBox="0 0 200 150" className="luggage-trolley w-[180px] h-[135px]" aria-hidden>

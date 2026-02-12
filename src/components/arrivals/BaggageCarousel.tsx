@@ -65,12 +65,12 @@ export function BaggageCarousel() {
             Baggage claim area
           </div>
           <div className="font-mono text-[10px] text-[var(--metal-gray)] uppercase tracking-wider mt-1">
-            Carousel 1 · All experiences
+            Carousel 1 · Loading in progress
           </div>
         </div>
 
         <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Experiences</h1>
-        <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a bag to view experience details.</p>
+        <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Pick up a bag to view details.</p>
 
         <div className="conveyor-belt conveyor-belt-tall rounded-xl overflow-hidden relative mb-4">
           <div className="conveyor-belt-edge conveyor-belt-edge-top" aria-hidden />
@@ -117,7 +117,7 @@ export function BaggageCarousel() {
           {selected ? (
             <DetailsPanel variant="experience" data={selected} />
           ) : (
-            <p className="text-sm font-mono text-[var(--metal-gray)]">Select a bag above to view details.</p>
+            <p className="text-sm font-mono text-[var(--metal-gray)]">Pick up a bag above to view details.</p>
           )}
         </div>
       </div>

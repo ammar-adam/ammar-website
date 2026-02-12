@@ -1,6 +1,5 @@
 /**
  * Arrivals = Experiences. What has landed.
- * status: Bags ready | Bags loading
  */
 
 export interface ArrivalArtifact {
@@ -12,12 +11,14 @@ export interface ArrivalArtifact {
 export interface Arrival {
   slug: string;
   from: string;
-  /** Airport/city code for baggage tag (e.g. YYZ, DXB) */
+  /** Company/category URL for detail card */
+  fromUrl?: string;
+  /** Bag tag text (e.g. "Waterloo", "Mississauga", "Dubai") */
   origin: string;
   title: string;
-  /** Used on detail page (e.g. "Product Engineering Intern") */
   detailTitle?: string;
   impact: string;
+  /** Single line or short detail (no bullets) */
   details: string;
   status?: "Bags ready" | "Bags loading";
   artifacts?: ArrivalArtifact[];
@@ -25,55 +26,48 @@ export interface Arrival {
 
 export const arrivals: Arrival[] = [
   {
-    slug: "datastealth",
-    from: "DataStealth / Cybersecurity Startup",
-    title: "Product Engineering",
-    detailTitle: "Product Engineering Intern",
-    impact: "Built tools to discover, classify, protect, and manage sensitive data.",
-    details: "Built AEO tooling and automation systems that compressed demo cycles by 60%. Worked on ROI dashboards and risk posture visualization.",
-    status: "Bags ready",
-    artifacts: [
-      { label: "GEO tooling", type: "automation" },
-      { label: "Demo systems", sublabel: "Reducing demo time using real datasets", type: "presentation" },
-      { label: "ROI dashboard", sublabel: "Prescriptive analytics for clients", type: "analytics" },
-    ],
-  },
-  {
-    slug: "alpen-capital",
-    from: "Alpen Capital / M&A",
-    title: "Investment Analysis",
-    origin: "DXB",
-    title: "Investment Analysis",
-    detailTitle: "Investment Banking Summer Analyst",
-    impact: "Supported over $50M in financial modeling, valuations, and M&A advisory.",
-    details: "Supported $50M+ in deal flow. Built financial models and conducted due diligence across healthcare and tech sectors.",
-    status: "Bags ready",
-    artifacts: [
-      { label: "Financial models", type: "finance" },
-      { label: "Pitch materials", type: "finance" },
-      { label: "Transaction support", type: "finance" },
-    ],
+    slug: "waterloo-venture",
+    from: "Waterloo Venture Group",
+    fromUrl: "https://www.waterloovg.com/",
+    origin: "Waterloo",
+    title: "Ecosystems Partnerships",
+    detailTitle: "Ecosystems Partnerships Associate",
+    impact: "Turning the Maple Valley into North America's strongest tech hub.",
+    details: "Helping startups raise and connecting cracked builders.",
+    status: "Bags loading",
   },
   {
     slug: "ace-consulting",
     from: "ACE Consulting Group",
-    origin: "YYZ",
-    title: "Consulting",
+    fromUrl: "https://www.aceconsultinggroup.ca/",
+    origin: "Waterloo",
+    title: "Associate",
     detailTitle: "Consulting Associate",
     impact: "Pro-bono advisory and market research for startups across Ontario.",
-    details: "Consulting and analysis work.",
+    details: "We got really cool quarterzips!",
     status: "Bags loading",
-    artifacts: [{ label: "Bags still loading. New work arriving soon.", type: "default" }],
   },
   {
-    slug: "waterloo-venture",
-    from: "Waterloo Venture Group",
-    origin: "YKF",
-    detailTitle: "Ecosystems Partnerships",
-    impact: "Helping strengthen the builder ecosystem in Waterloo.",
-    details: "Venture and investment work.",
-    status: "Bags loading",
-    artifacts: [{ label: "Bags still loading. New work arriving soon.", type: "default" }],
+    slug: "datastealth",
+    from: "Datastealth",
+    fromUrl: "https://datastealth.io/",
+    origin: "Mississauga",
+    title: "Product Engineering",
+    detailTitle: "Product Engineering Intern",
+    impact: "Worked on GEO, dashboards and demos to optimize sales and customer experience.",
+    details: "Had the most fun ever building new things.",
+    status: "Bags ready",
+  },
+  {
+    slug: "alpen-capital",
+    from: "Alpen Capital",
+    fromUrl: "https://alpencapital.com/",
+    origin: "Dubai",
+    title: "M&A Analyst",
+    detailTitle: "Mergers & Acquisitions Summer Analyst",
+    impact: "Supported $50M+ in deal flow on buy and sell-side equity advisory.",
+    details: "Youngest intern @ 16. Learned financial modelling and investment research.",
+    status: "Bags ready",
   },
 ];
 

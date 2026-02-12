@@ -1,7 +1,7 @@
 "use client";
 
 import { siteConfig } from "@/data/site";
-import { aboutIntro, aboutPhotos, aboutHighlights } from "@/data/about";
+import { aboutIntro, aboutPhotos, aboutHighlights, aboutLocationStamps } from "@/data/about";
 
 export function AboutEditorial() {
   return (
@@ -42,7 +42,7 @@ export function AboutEditorial() {
           </div>
           <div className="about-intro-text">
             <h2 className="about-name font-mono text-2xl font-bold text-[var(--window-white)] mb-3">
-              I&apos;m Ammar Adam
+              Hi, I&apos;m Ammar.
             </h2>
             <p className="about-bio text-[var(--metal-gray)] leading-relaxed text-base">
               {aboutIntro}
@@ -51,20 +51,28 @@ export function AboutEditorial() {
         </div>
 
         <h3 className="font-mono text-xs font-bold text-[var(--departure-amber)] uppercase tracking-[0.15em] mb-3 mt-10">
-          Highlights
+          Some Cool Stuff
         </h3>
         <ul className="about-highlights about-bullet-list mb-8">
-          {aboutHighlights.slice(0, 6).map((item, i) => (
+          {aboutHighlights.map((item, i) => (
             <li key={i}>{item}</li>
           ))}
         </ul>
 
         <div className="about-location-stamps flex items-center justify-center gap-4 py-6 mb-10">
-          <span className="location-stamp">YYZ</span>
-          <span className="text-[var(--metal-gray)] font-mono text-sm">·</span>
-          <span className="location-stamp">DXB</span>
-          <span className="text-[var(--metal-gray)] font-mono text-sm">·</span>
-          <span className="location-stamp">KHI</span>
+          {aboutLocationStamps.map((stamp, i) => (
+            <span key={stamp.code}>
+              {i > 0 && <span className="text-[var(--metal-gray)] font-mono text-sm"> · </span>}
+              <a
+                href={stamp.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="location-stamp text-[var(--departure-amber)] hover:underline"
+              >
+                {stamp.code}
+              </a>
+            </span>
+          ))}
         </div>
 
         <h3 className="font-mono text-xs font-bold text-[var(--departure-amber)] uppercase tracking-[0.15em] mb-4">

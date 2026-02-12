@@ -69,7 +69,7 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
                   data-selected={selectedSlug === projA.slug ? "true" : "false"}
                 >
                   <span className="seat-code">{row}A</span>
-                  <span className="seat-project-name">{projA.destination}</span>
+                  <span className="seat-project-name">{projA.name}</span>
                 </button>
               ) : (
                 <div className="plane-seat-narrow empty" aria-hidden>
@@ -86,7 +86,7 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
                   data-selected={selectedSlug === projB.slug ? "true" : "false"}
                 >
                   <span className="seat-code">{row}B</span>
-                  <span className="seat-project-name">{projB.destination}</span>
+                  <span className="seat-project-name">{projB.name}</span>
                 </button>
               ) : (
                 <div className="plane-seat-narrow empty" aria-hidden>

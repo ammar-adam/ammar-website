@@ -27,7 +27,7 @@ export function ProjectsSeatMapPage() {
         </div>
 
         <h1 className="page-title text-xl font-bold text-[var(--window-white)] mb-1">Projects</h1>
-        <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select a seat to view details.</p>
+        <p className="text-sm font-mono text-[var(--metal-gray)] mb-6">Select your seat and view details.</p>
 
         <div className="seat-map-container">
           <div className="airport-surface rounded-xl border-2 border-[var(--floor-line)] p-4 overflow-hidden min-h-[280px] flex justify-center">

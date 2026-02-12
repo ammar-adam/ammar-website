@@ -3,10 +3,10 @@
 import Link from "next/link";
 
 const ROWS = [
-  { gate: "A", destination: "Projects", info: "Things I built", status: "→", href: "/projects" },
-  { gate: "B", destination: "Experiences", info: "Experience landed", status: "→", href: "/arrivals" },
-  { gate: "C", destination: "About", info: "Who I am", status: "→", href: "/about" },
-  { gate: "D", destination: "Resume", info: "Boarding pass PDF", status: "↓", href: "/resume" },
+  { gate: "A", destination: "Projects", info: "Things I've been building!", status: "→", href: "/projects" },
+  { gate: "B", destination: "Experiences", info: "Cool stuff I've done", status: "→", href: "/arrivals" },
+  { gate: "C", destination: "About", info: "Get to know the pilot", status: "→", href: "/about" },
+  { gate: "D", destination: "Resume", info: "Scan your boarding pass", status: "↓", href: "/resume" },
 ] as const;
 
 export function TerminalDirectoryBoard() {

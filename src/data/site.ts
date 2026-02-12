@@ -21,12 +21,13 @@ export const siteConfig = {
   },
 
   /** Landing hero: one clear sentence. */
-  heroOneLiner: "Hi, I'm Ammar. Welcome to AFA International.",
+  heroOneLiner: "Hi, I'm Ammar. I study CS & Finance at UWaterloo. Welcome to AFA International.",
 
   socialLinks: {
-    github: "https://github.com/yourusername",
-    twitter: "https://twitter.com/yourusername",
-    linkedin: "https://linkedin.com/in/yourusername",
+    email: "mailto:ammar.adam@uwaterloo.ca",
+    github: "https://github.com/ammar-adam",
+    linkedin: "https://www.linkedin.com/in/ammar-adam/",
+    x: "https://x.com/ammaradam_5807?s=11",
   },
 
   checkIn: {

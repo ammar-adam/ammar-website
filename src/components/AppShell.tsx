@@ -54,6 +54,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <TerminalClock className="terminal-time current-time" />
             <div className="external-links flex items-center gap-2 border-l border-[var(--floor-line)] pl-4">
               <a
+                href={siteConfig.socialLinks.email}
+                className="text-[var(--metal-gray)] hover:text-[var(--departure-amber)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
+                aria-label="Email"
+              >
+                <EmailIcon className="w-5 h-5" />
+              </a>
+              <a
                 href={siteConfig.socialLinks.github}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -63,15 +70,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <GitHubIcon className="w-5 h-5" />
               </a>
               <a
-                href={siteConfig.socialLinks.twitter}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[var(--metal-gray)] hover:text-[var(--departure-amber)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
-                aria-label="Twitter"
-              >
-                <TwitterIcon className="w-5 h-5" />
-              </a>
-              <a
                 href={siteConfig.socialLinks.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -79,6 +77,15 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 aria-label="LinkedIn"
               >
                 <LinkedInIcon className="w-5 h-5" />
+              </a>
+              <a
+                href={siteConfig.socialLinks.x}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[var(--metal-gray)] hover:text-[var(--departure-amber)] transition-colors p-1.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--departure-amber)]"
+                aria-label="X"
+              >
+                <XIcon className="w-5 h-5" />
               </a>
             </div>
           </div>
@@ -128,6 +135,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   );
 }
 
+function EmailIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+    </svg>
+  );
+}
+
 function GitHubIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="currentColor" viewBox="0 0 24 24">
@@ -136,7 +151,7 @@ function GitHubIcon({ className }: { className?: string }) {
   );
 }
 
-function TwitterIcon({ className }: { className?: string }) {
+function XIcon({ className }: { className?: string }) {
   return (
     <svg className={className} fill="currentColor" viewBox="0 0 24 24">
       <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
