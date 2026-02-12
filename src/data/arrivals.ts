@@ -53,7 +53,7 @@ export const arrivals: Arrival[] = [
   },
   {
     slug: "datastealth",
-    from: "Datastealth",
+    from: "DataStealth",
     fromUrl: "https://datastealth.io/",
     image: "/DATASTEALTH.jpg",
     origin: "Mississauga",

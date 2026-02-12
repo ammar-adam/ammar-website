@@ -6,7 +6,7 @@ import { loungeRoomContent } from "./loungeRoom";
 import { siteConfig } from "./site";
 
 export const aboutIntro =
-  "I'm a first year Computer Science & Finance student at the University of Waterloo. I love building and trying new things while figuring it all out in the process.";
+  "I'm a first-year Computer Science & Finance student at the University of Waterloo. I love building and trying new things while figuring it all out in the process.";
 
 export const aboutPhotos = loungeRoomContent.photos.items;
 
