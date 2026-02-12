@@ -27,7 +27,7 @@ export function TerminalDirectoryBoard() {
               <td colSpan={4} className="p-0">
                 <Link
                   href={href}
-                  className="directory-row-link directory-row-grid flex w-full items-center"
+                  className="directory-row-link directory-row-grid w-full"
                 >
                   <span className="gate-letter gate-col-cell">{gate}</span>
                   <span className="destination-name destination-col-cell">{destination}</span>

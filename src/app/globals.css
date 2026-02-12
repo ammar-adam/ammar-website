@@ -1105,8 +1105,13 @@ a:hover {
   .directory-row-grid .destination-col-cell,
   .directory-row-grid .info-col-cell {
     min-width: 0;
-    word-break: break-word;
+    word-break: normal;
     overflow-wrap: break-word;
+    white-space: normal;
+  }
+
+  .directory-row-grid .info-col-cell {
+    min-width: 120px;
   }
 
   .directory-table th {
@@ -2572,6 +2577,51 @@ body, p, .description {
 @media (max-width: 640px) {
   .baggage-details-two-col {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Experiences (arrivals) mobile: detail card visible, conveyor aligned */
+@media (max-width: 768px) {
+  .baggage-claim-details.details-panel {
+    min-height: 200px;
+    overflow: visible;
+  }
+
+  .baggage-details-two-col .baggage-details-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+    min-height: 140px;
+  }
+
+  .baggage-details-two-col .baggage-details-content .baggage-origin,
+  .baggage-details-two-col .baggage-details-content .baggage-role,
+  .baggage-details-two-col .baggage-details-content p {
+    color: var(--metal-gray);
+  }
+
+  .baggage-details-two-col .baggage-details-content .baggage-role {
+    color: var(--window-white);
+  }
+
+  .baggage-details-two-col .trolley-right {
+    padding: 12px;
+  }
+
+  .baggage-details-two-col .trolley-right .luggage-trolley {
+    width: 120px;
+    height: 90px;
+    margin: 0 auto;
+  }
+
+  .conveyor-belt-inner {
+    mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 24px, black calc(100% - 24px), transparent 100%);
+  }
+
+  .conveyor-belt-tall {
+    min-height: 260px;
   }
 }
 
