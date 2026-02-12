@@ -1,6 +1,5 @@
 "use client";
 
-import { siteConfig } from "@/data/site";
 import { aboutIntro, aboutPhotos, aboutHighlights, aboutLocationStamps } from "@/data/about";
 
 export function AboutEditorial() {
@@ -24,30 +23,13 @@ export function AboutEditorial() {
           Gate C · About
         </h1>
 
-        <div className="about-passport-block">
-          <div className="passport-photo-wrap">
-            <div className="passport-photo-frame">
-              {siteConfig.photoUrl ? (
-                <img src={siteConfig.photoUrl} alt="" className="w-full h-full object-cover" />
-              ) : (
-                <span className="passport-photo-placeholder">AA</span>
-              )}
-            </div>
-            <div className="passport-corner-stamps" aria-hidden>
-              <span className="passport-corner tl" />
-              <span className="passport-corner tr" />
-              <span className="passport-corner bl" />
-              <span className="passport-corner br" />
-            </div>
-          </div>
-          <div className="about-intro-text">
-            <h2 className="about-name font-mono text-2xl font-bold text-[var(--window-white)] mb-3">
-              Hi, I&apos;m Ammar.
-            </h2>
-            <p className="about-bio text-[var(--metal-gray)] leading-relaxed text-base">
-              {aboutIntro}
-            </p>
-          </div>
+        <div className="about-intro-text mb-10">
+          <h2 className="about-name font-mono text-2xl font-bold text-[var(--window-white)] mb-3">
+            Hi, I&apos;m Ammar.
+          </h2>
+          <p className="about-bio text-[var(--metal-gray)] leading-relaxed text-base">
+            {aboutIntro}
+          </p>
         </div>
 
         <h3 className="font-mono text-xs font-bold text-[var(--departure-amber)] uppercase tracking-[0.15em] mb-3 mt-10">
@@ -85,12 +67,14 @@ export function AboutEditorial() {
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photo.src}
-                  alt={photo.caption}
+                  alt={photo.caption || `Photo ${i + 1}`}
                   className="w-full h-full object-cover"
                 />
-                <figcaption className="p-2 text-[10px] font-mono text-[var(--metal-gray)]">
-                  {photo.caption}
-                </figcaption>
+                {photo.caption ? (
+                  <figcaption className="p-2 text-[10px] font-mono text-[var(--metal-gray)]">
+                    {photo.caption}
+                  </figcaption>
+                ) : null}
               </figure>
             ))}
           </div>

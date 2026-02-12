@@ -72,8 +72,8 @@ export function DetailsPanel(props: DetailsPanelProps) {
         )}
 
         {p.screenshot && (
-          <div className="project-image project-image-compact w-full max-h-[180px] rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-blue)]">
-            <img src={p.screenshot} alt="" className="w-full h-full object-cover" />
+          <div className="project-image project-image-compact w-full rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-navy)] flex items-center justify-center p-2">
+            <img src={p.screenshot} alt="" className="max-w-full max-h-[280px] w-auto h-auto object-contain" />
           </div>
         )}
 
@@ -128,8 +128,12 @@ export function DetailsPanel(props: DetailsPanelProps) {
   return (
     <div className="baggage-claim-details details-panel h-full flex flex-col baggage-details-two-col">
       <div className="baggage-details-content">
-        <div className="aspect-video w-full max-w-[220px] rounded-lg border border-[var(--floor-line)] bg-[var(--terminal-blue)] flex items-center justify-center mb-3 flex-shrink-0">
-          <span className="font-mono text-xs text-[var(--metal-gray)]">Image</span>
+        <div className="aspect-video w-full max-w-[220px] rounded-lg border border-[var(--floor-line)] bg-[var(--terminal-blue)] overflow-hidden mb-3 flex-shrink-0">
+          {e.image ? (
+            <img src={e.image} alt="" className="w-full h-full object-cover" />
+          ) : (
+            <span className="flex w-full h-full items-center justify-center font-mono text-xs text-[var(--metal-gray)]">Image</span>
+          )}
         </div>
         <span className="baggage-origin">
           From:{" "}

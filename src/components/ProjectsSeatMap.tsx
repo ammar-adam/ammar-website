@@ -130,11 +130,11 @@ export function ProjectsSeatMap() {
               <>
                 <div className="flex flex-col sm:flex-row gap-4 mb-4">
                   {selectedProject.screenshot && (
-                    <div className="flex-shrink-0 w-full sm:w-40 h-28 rounded-lg overflow-hidden bg-[var(--bg-surface)]">
+                    <div className="flex-shrink-0 w-full sm:w-40 h-28 rounded-lg overflow-hidden bg-[var(--bg-surface)] flex items-center justify-center">
                       <img
                         src={selectedProject.screenshot}
                         alt=""
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-contain"
                       />
                     </div>
                   )}

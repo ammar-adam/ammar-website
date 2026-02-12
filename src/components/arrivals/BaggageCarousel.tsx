@@ -10,6 +10,7 @@ function LuggageBag({
   origin,
   title,
   slug,
+  image,
   isSelected,
   onSelect,
 }: {
@@ -17,6 +18,7 @@ function LuggageBag({
   origin: string;
   title: string;
   slug: string;
+  image?: string;
   isSelected: boolean;
   onSelect: () => void;
 }) {
@@ -31,8 +33,12 @@ function LuggageBag({
       <div className="baggage-card-handle" aria-hidden />
       <span className="bag-tag" aria-hidden>{origin}</span>
       <div className="p-3 pt-4 border-2 border-t-0 border-[var(--floor-line)] rounded-b-lg bg-[var(--terminal-dark)]">
-        <div className="aspect-[4/3] w-full rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] flex items-center justify-center mb-2">
-          <span className="font-mono text-[9px] text-[var(--metal-gray)]">Image</span>
+        <div className="aspect-[4/3] w-full rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] overflow-hidden mb-2">
+          {image ? (
+            <img src={image} alt="" className="w-full h-full object-cover" />
+          ) : (
+            <span className="flex w-full h-full items-center justify-center font-mono text-[9px] text-[var(--metal-gray)]">Image</span>
+          )}
         </div>
         <span className="baggage-origin block truncate">From: {from}</span>
         <span className="baggage-role block mt-0.5 truncate">{title}</span>
@@ -87,6 +93,7 @@ export function BaggageCarousel() {
                   origin={a.origin}
                   title={a.title}
                   slug={a.slug}
+                  image={a.image}
                   isSelected={selectedSlug === a.slug}
                   onSelect={() => setSelectedSlug(selectedSlug === a.slug ? null : a.slug)}
                 />

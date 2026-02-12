@@ -45,7 +45,7 @@ export const projects: Project[] = [
     gate: "A",
     status: "Boarding",
     shortDesc: "Screening S&P 500 stocks to find undervalued rocketships through technical scoring and agentic debate",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/ROCKETSHIP.png",
     seats: [
       {
         id: "main",
@@ -69,7 +69,7 @@ export const projects: Project[] = [
     gate: "B",
     status: "Boarding",
     shortDesc: "Finding areas of difference through double-blind conflict resolution and financial stress tests.",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/ZARF.png",
     seats: [
       {
         id: "main",
@@ -92,7 +92,7 @@ export const projects: Project[] = [
     gate: "C",
     status: "Boarding Closed",
     shortDesc: "Using volatility and covariance to create a portfolio allocation using convex optimization",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/RISKFREE.png",
     seats: [
       {
         id: "main",
@@ -115,7 +115,7 @@ export const projects: Project[] = [
     gate: "D",
     status: "Boarding",
     shortDesc: "Built a team of volunteers to create resources in 5 languages, getting approval from Ontario's Associate Minister of Small Business.",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/DOLARSEEDS.png",
     seats: [
       {
         id: "main",
@@ -138,7 +138,7 @@ export const projects: Project[] = [
     gate: "E",
     status: "Departed",
     shortDesc: "Made a mock platform to incentivize sustainable community actions through an online marketplace.",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/MYCELIA.png",
     seats: [
       {
         id: "main",
@@ -160,7 +160,7 @@ export const projects: Project[] = [
     gate: "F",
     status: "Departed",
     shortDesc: "Led Mentor DECA to a top 100/4400 chapter in the world, regularly winning awards at the biggest stage.",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/DECA.jpg",
     seats: [
       {
         id: "main",

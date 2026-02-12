@@ -13,6 +13,8 @@ export interface Arrival {
   from: string;
   /** Company/category URL for detail card */
   fromUrl?: string;
+  /** Image path for bag card and detail panel (e.g. /WATERLOOVG.jpg) */
+  image?: string;
   /** Bag tag text (e.g. "Waterloo", "Mississauga", "Dubai") */
   origin: string;
   title: string;
@@ -29,6 +31,7 @@ export const arrivals: Arrival[] = [
     slug: "waterloo-venture",
     from: "Waterloo Venture Group",
     fromUrl: "https://www.waterloovg.com/",
+    image: "/WATERLOOVG.jpg",
     origin: "Waterloo",
     title: "Ecosystems Partnerships",
     detailTitle: "Ecosystems Partnerships Associate",
@@ -40,6 +43,7 @@ export const arrivals: Arrival[] = [
     slug: "ace-consulting",
     from: "ACE Consulting Group",
     fromUrl: "https://www.aceconsultinggroup.ca/",
+    image: "/ACECONSULTING.jpg",
     origin: "Waterloo",
     title: "Associate",
     detailTitle: "Consulting Associate",
@@ -51,6 +55,7 @@ export const arrivals: Arrival[] = [
     slug: "datastealth",
     from: "Datastealth",
     fromUrl: "https://datastealth.io/",
+    image: "/DATASTEALTH.jpg",
     origin: "Mississauga",
     title: "Product Engineering",
     detailTitle: "Product Engineering Intern",
@@ -62,6 +67,7 @@ export const arrivals: Arrival[] = [
     slug: "alpen-capital",
     from: "Alpen Capital",
     fromUrl: "https://alpencapital.com/",
+    image: "/ALPENCAPITAL.jpg",
     origin: "Dubai",
     title: "M&A Analyst",
     detailTitle: "Mergers & Acquisitions Summer Analyst",
