@@ -18,8 +18,6 @@ export const aboutAmenities = [
   "Super passionate about airplanes and aviation",
   "How I Met Your Mother is my favourite show ever. And, Paddington 2 is the best movie ever",
   "I'm a massive sports fan. Liverpool, the Toronto Blue Jays, and the Raptors",
-  "Toronto, Dubai, Karachi",
-  "Looking for Summer 2026 co-ops",
 ];
 
 /** Optional fieldnotes cards: title, date, one line */

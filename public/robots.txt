@@ -1,0 +1,6 @@
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Optional: add a sitemap when you have one (e.g. https://ammar.vercel.app/sitemap.xml)
+# Sitemap: https://ammar.vercel.app/sitemap.xml

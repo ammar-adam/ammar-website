@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Bebas_Neue, JetBrains_Mono, Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { AppShell } from "@/components/AppShell";
@@ -28,6 +28,11 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Ammar Adam",
   description: "Ammar Adam - Student at UWaterloo",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({
