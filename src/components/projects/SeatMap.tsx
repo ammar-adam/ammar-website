@@ -65,8 +65,9 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
                 <button
                   type="button"
                   onClick={() => onSelect(selectedSlug === projA.slug ? null : projA.slug)}
-                  className="plane-seat-narrow"
+                  className="plane-seat-narrow touch-manipulation"
                   data-selected={selectedSlug === projA.slug ? "true" : "false"}
+                  aria-pressed={selectedSlug === projA.slug}
                 >
                   <span className="seat-code">{row}A</span>
                   <span className="seat-project-name">{projA.name}</span>
@@ -82,8 +83,9 @@ export function SeatMap({ projects, selectedSlug, onSelect }: SeatMapProps) {
                 <button
                   type="button"
                   onClick={() => onSelect(selectedSlug === projB.slug ? null : projB.slug)}
-                  className="plane-seat-narrow"
+                  className="plane-seat-narrow touch-manipulation"
                   data-selected={selectedSlug === projB.slug ? "true" : "false"}
+                  aria-pressed={selectedSlug === projB.slug}
                 >
                   <span className="seat-code">{row}B</span>
                   <span className="seat-project-name">{projB.name}</span>
