@@ -63,7 +63,11 @@ export function AboutEditorial() {
         {aboutPhotos.length > 0 ? (
           <div className="photos-grid grid grid-cols-2 sm:grid-cols-3 gap-4">
             {aboutPhotos.map((photo, i) => (
-              <figure key={i} className="photo-item aspect-square rounded-lg overflow-hidden bg-[var(--terminal-blue)] border-2 border-[var(--floor-line)]">
+              <figure
+                key={i}
+                className="photo-item aspect-square rounded-lg overflow-hidden bg-[var(--terminal-blue)] border-2 border-[var(--floor-line)] group relative"
+                title={photo.caption || undefined}
+              >
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src={photo.src}
@@ -71,8 +75,10 @@ export function AboutEditorial() {
                   className="w-full h-full object-cover"
                 />
                 {photo.caption ? (
-                  <figcaption className="p-2 text-[10px] font-mono text-[var(--metal-gray)]">
-                    {photo.caption}
+                  <figcaption className="photo-item-caption absolute inset-0 flex items-end bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-3">
+                    <span className="text-xs font-mono text-[var(--window-white)] leading-snug">
+                      {photo.caption}
+                    </span>
                   </figcaption>
                 ) : null}
               </figure>

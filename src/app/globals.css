@@ -1073,9 +1073,22 @@ a:hover {
     width: calc(100% + 32px);
   }
 
+  /* Projects: stack seat map on top, details card underneath (mobile only) */
   .seat-map-container {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
     padding: 24px 16px;
+    max-width: 100%;
+  }
+
+  .seat-map-container .seat-map-surface {
+    width: 100%;
+  }
+
+  .seat-map-container .gate-display-panel {
+    width: 100%;
+    order: 2;
   }
 
   /* Projects: allow touch to reach seat buttons (overflow visible so taps register); center seat map */
