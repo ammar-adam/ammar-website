@@ -1,8 +1,8 @@
 # AFA International Airport
 
-A personal portfolio site styled as an airport terminal. Built for Ammar — CS & Finance at the University of Waterloo.
+A personal portfolio site styled as an airport terminal.
 
-**Live:** [ammar.vercel.app](https://ammar.vercel.app) (or your deployed URL)
+Live at: ammaradam.com
 
 ## Tech Stack
 
@@ -54,15 +54,3 @@ All copy and links live in **`src/data/`**:
 
 - **Navbar** (top): Gate letters A–D → Projects, Experiences, About, Resume. Links for email, GitHub, LinkedIn, X.
 - **Hero** (home): One-line intro and **Terminal Directory** table with gate, destination, and info copy. Edit directory rows in **`src/components/terminal/TerminalDirectoryBoard.tsx`** and gate links in **`src/components/AppShell.tsx`**.
-
-## Waterloo Web Ring
-
-Footer includes a subtle [Waterloo Web Ring](https://github.com/JusGu/uwatering) (cs.uwatering.com). Set **`NEXT_PUBLIC_SITE_URL`** to your production URL so prev/next work after you join the ring.
-
-## Build & Deploy
-
-```bash
-npm run build
-```
-
-Deploy the output (e.g. Vercel, Netlify). Ensure `public/` assets and env (e.g. `NEXT_PUBLIC_SITE_URL`) are correct for production.
