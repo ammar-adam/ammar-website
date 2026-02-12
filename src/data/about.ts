@@ -15,9 +15,9 @@ export const aboutWhatsUp = loungeRoomContent.cafe.items;
 /** "Some Cool Stuff" — replace highlights section */
 export const aboutHighlights = [
   "I love cooking and eating food: from shawarma and steaks, to iced coffee and matcha",
-  "Super passionate about airplanes and aviation.",
-  "How I Met Your Mother is the favourite show ever. And, Paddington 2 is the best movie ever.",
-  "I'm a massive sports fan. Liverpool, the Toronto Blue Jays, and the Raptors.",
+  "Super passionate about airplanes and aviation",
+  "How I Met Your Mother is my favourite show ever. And, Paddington 2 is the best movie ever",
+  "I'm a massive sports fan. Liverpool, the Toronto Blue Jays, and the Raptors",
   "I lowkey can't think of anything else",
   "I'm very indecisive",
 ];
