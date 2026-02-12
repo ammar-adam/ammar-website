@@ -1,6 +1,8 @@
-# AFA INTERNATIONAL AIRPORT
+# AFA International Airport
 
-A personal website styled as a fictional airport terminal — Check-in Hall, Terminal, Departures, Arrivals, Lounge, Boarding Pass Office.
+A personal portfolio site styled as an airport terminal. Built for Ammar — CS & Finance at the University of Waterloo.
+
+**Live:** [ammar.vercel.app](https://ammar.vercel.app) (or your deployed URL)
 
 ## Tech Stack
 
@@ -18,36 +20,49 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Routes (Locations)
+## Routes
 
-| Route | Location |
-|-------|----------|
-| `/` | Check-in Hall |
-| `/terminal` | Main Terminal / Concourse |
-| `/departures` | Departures Hall |
-| `/departures/[slug]` | Gate / Aircraft View |
-| `/arrivals` | Arrivals Hall |
-| `/arrivals/[slug]` | Baggage Claim |
-| `/lounge` | Airport Lounge |
-| `/boarding-pass` | Boarding Pass Office |
+| Route        | Description                          |
+|-------------|--------------------------------------|
+| `/`         | Home — Terminal Directory (gate links) |
+| `/projects` | Projects — seat map, pick a seat for details |
+| `/arrivals` | Experiences — baggage carousel, pick a bag |
+| `/about`    | About — bio, highlights, photos      |
+| `/resume`   | Resume — boarding pass + PDF download |
 
-## Content Configuration
+## Content & Assets
 
-All content lives in `src/data/`:
+All copy and links live in **`src/data/`**:
 
-### `site.ts`
-- `airportName`, `checkIn` (headline, subtext, CTAs), `socialLinks`, `navLabels`
+| File              | What it controls |
+|-------------------|------------------|
+| **`site.ts`**     | Airport name, hero line, social links (email, GitHub, LinkedIn, X), ticker, check-in intro |
+| **`departures.ts`** | Projects: `name`, `destination`, `shortDesc`, `screenshot` path, `seats[].links` (View Project, GitHub, Demo, More) |
+| **`arrivals.ts`** | Experiences: `from`, `fromUrl`, `image`, `origin` (bag tag), `detailTitle`, `impact`, `details` |
+| **`about.ts`**    | Intro, “Some Cool Stuff” list, location stamps (YYZ, DXB, KHI) and their URLs |
+| **`loungeRoom.ts`** | About page photos: `photos.items[]` with `src` and optional `caption` (e.g. `/ABOUT1.jpg` … `/ABOUT12.jpg`) |
+| **`boardingPass.ts`** | Resume: `displayName`, `from`, `to`, `flight`, `tagline`, `resumeFileUrl` (PDF path) |
 
-### `departures.ts`
-- `projects[]`: `slug`, `destination`, `flightCode`, `routeName`, `gate`, `status` (Boarding | Ready | Scheduled), `screenshot`, `links`, `overview`, `build`
+### Images (in `public/`)
 
-### `arrivals.ts`
-- `arrivals[]`: `slug`, `from`, `title`, `shortDesc`, `details`
+- **Projects:** Set each project’s `screenshot` in `departures.ts` (e.g. `/ROCKETSHIP.png`).
+- **Experiences:** Set each experience’s `image` in `arrivals.ts` (e.g. `/WATERLOOVG.jpg`).
+- **About photos:** Point `loungeRoom.ts` → `photos.items[].src` at your files (e.g. `/ABOUT1.jpg` … `/ABOUT12.jpg`).
+- **Resume PDF:** Put **`Ammar_Adam.pdf`** (or your file) in `public/` and set `resumeFileUrl` in `boardingPass.ts` (e.g. `"/Ammar_Adam.pdf"`). Clicking the barcode on the resume page downloads it.
 
-### `lounge.ts`
-- `headline`, `blurb`, `interests[]`
+## Navbar & Hero
 
-### `boardingPass.ts`
-- `displayName`, `resumeFileUrl`, `sections[]`
+- **Navbar** (top): Gate letters A–D → Projects, Experiences, About, Resume. Links for email, GitHub, LinkedIn, X.
+- **Hero** (home): One-line intro and **Terminal Directory** table with gate, destination, and info copy. Edit directory rows in **`src/components/terminal/TerminalDirectoryBoard.tsx`** and gate links in **`src/components/AppShell.tsx`**.
 
-Add `resume.pdf` to `public/` for the Boarding Pass download.
+## Waterloo Web Ring
+
+Footer includes a subtle [Waterloo Web Ring](https://github.com/JusGu/uwatering) (cs.uwatering.com). Set **`NEXT_PUBLIC_SITE_URL`** to your production URL so prev/next work after you join the ring.
+
+## Build & Deploy
+
+```bash
+npm run build
+```
+
+Deploy the output (e.g. Vercel, Netlify). Ensure `public/` assets and env (e.g. `NEXT_PUBLIC_SITE_URL`) are correct for production.
