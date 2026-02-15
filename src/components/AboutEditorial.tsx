@@ -18,7 +18,7 @@ export function AboutEditorial() {
           <span className="signage-text">Departures</span>
         </div>
       </div>
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl about-page-inner">
         <h1 className="page-title font-mono text-sm font-bold text-[var(--departure-amber)] uppercase tracking-[0.15em] mb-2">
           Gate C · About
         </h1>
@@ -32,8 +32,8 @@ export function AboutEditorial() {
           </p>
         </div>
 
-        <section className="passenger-amenities mt-10 mb-8">
-          <h2 className="amenities-header">IN-FLIGHT ENTERTAINMENT</h2>
+        <section className="cabin-notes mt-10 mb-8">
+          <h2 className="amenities-header">CABIN NOTES</h2>
           <ul className="amenities-list">
             {aboutAmenities.map((item, i) => (
               <li key={i}>{item}</li>
@@ -57,36 +57,49 @@ export function AboutEditorial() {
           ))}
         </div>
 
-        <h3 className="font-mono text-xs font-bold text-[var(--departure-amber)] uppercase tracking-[0.15em] mb-4">
-          Photos
-        </h3>
-        {aboutPhotos.length > 0 ? (
-          <div className="photos-grid grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {aboutPhotos.map((photo, i) => (
-              <figure
-                key={i}
-                className="photo-item aspect-square rounded-lg overflow-hidden bg-[var(--terminal-blue)] border-2 border-[var(--floor-line)] group relative"
-                title={photo.caption || undefined}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={photo.src}
-                  alt={photo.caption || `Photo ${i + 1}`}
-                  className="w-full h-full object-cover"
-                />
-                {photo.caption ? (
-                  <figcaption className="photo-item-caption absolute inset-0 flex items-end bg-gradient-to-t from-black/90 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200 p-3">
-                    <span className="text-xs font-mono text-[var(--window-white)] leading-snug">
-                      {photo.caption}
-                    </span>
-                  </figcaption>
-                ) : null}
-              </figure>
-            ))}
+        <section className="in-flight-entertainment-screen mt-10 mb-10" aria-label="In-Flight Entertainment">
+          <div className="ife-seatback">
+            <div className="ife-seatback-frame">
+              <div className="ife-seatback-header">
+                <span className="ife-screen-title">IN-FLIGHT ENTERTAINMENT</span>
+                <span className="ife-screen-subtitle">Select a title</span>
+              </div>
+              <div className="ife-seatback-screen">
+                {aboutPhotos.length > 0 ? (
+                  <div className="ife-grid">
+                    {aboutPhotos.map((photo, i) => (
+                      <figure
+                        key={i}
+                        className="ife-tile"
+                        title={photo.caption || undefined}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={photo.src}
+                          alt={photo.caption || `Title ${i + 1}`}
+                          className="ife-tile-img"
+                        />
+                        {photo.caption ? (
+                          <figcaption className="ife-tile-caption">
+                            {photo.caption}
+                          </figcaption>
+                        ) : null}
+                      </figure>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="ife-empty">No titles available.</p>
+                )}
+                <div className="ife-scanline" aria-hidden />
+              </div>
+              <div className="ife-seatback-controls" aria-hidden>
+                <span className="ife-control-dot" />
+                <span className="ife-control-dot" />
+                <span className="ife-control-dot" />
+              </div>
+            </div>
           </div>
-        ) : (
-          <p className="text-sm font-mono text-[var(--metal-gray)]">Photo grid placeholder.</p>
-        )}
+        </section>
       </div>
     </article>
   );
