@@ -7,6 +7,7 @@ import { PlaneIcon } from "@/components/ui/PlaneIcon";
 import { TerminalClock } from "@/components/ui/TerminalClock";
 import { InfoDesk } from "@/components/InfoDesk";
 import { WaterlooWebRing } from "@/components/WaterlooWebRing";
+import { UWaterlooNetworkWidget } from "@/components/UWaterlooNetworkWidget";
 
 const GATES = [
   { id: "projects", gate: "A", destination: "PROJECTS", href: "/projects" },
@@ -128,7 +129,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               You are here
             </span>
           </div>
-          <WaterlooWebRing />
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <WaterlooWebRing />
+            <UWaterlooNetworkWidget />
+          </div>
         </div>
       </footer>
     </div>

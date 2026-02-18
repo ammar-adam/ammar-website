@@ -73,7 +73,7 @@ export function DetailsPanel(props: DetailsPanelProps) {
 
         {p.screenshot && (
           <div className="project-image project-image-compact w-full rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-navy)] flex items-center justify-center p-2">
-            <img src={p.screenshot} alt="" className="max-w-full max-h-[280px] w-auto h-auto object-contain" />
+            <img src={p.screenshot} alt="" className="max-w-full max-h-[380px] w-auto h-auto object-contain" />
           </div>
         )}
 

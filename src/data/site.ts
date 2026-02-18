@@ -13,6 +13,9 @@ export const siteConfig = {
   siteName: "AFA INTERNATIONAL AIRPORT",
   siteUrl,
 
+  /** uwaterloo.network webring — set your id after joining (https://github.com/Shayaan-Azeem/waterloo.network). */
+  uwaterlooNetworkUserId: undefined as string | undefined,
+
   navLabels: {
     projects: "Projects",
     arrivals: "Experiences",

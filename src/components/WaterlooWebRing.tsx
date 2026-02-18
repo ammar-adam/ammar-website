@@ -3,36 +3,49 @@
 import { siteConfig } from "@/data/site";
 
 /**
- * Waterloo Web Ring (UWaterloo CS) — subtle footer integration.
- * @see https://github.com/JusGu/uwatering
+ * Waterloo CS Web Ring — minimal footer widget per official template.
+ * @see https://github.com/JusGu/uwatering#widget-template
  * Set NEXT_PUBLIC_SITE_URL to your canonical URL when you join the ring.
  */
-const WEBRING_HUB = "https://cs.uwatering.com";
+const CS_WEBRING_HUB = "https://cs.uwatering.com";
+/** Dark theme: use white icon. Use icon.black.svg for light backgrounds. */
+const CS_WEBRING_ICON = `${CS_WEBRING_HUB}/icon.white.svg`;
 
-function buildNavUrl(nav: "prev" | "next"): string {
+function csRingUrl(fragment: string): string {
   const base = siteConfig.siteUrl;
-  return `${WEBRING_HUB}/#${encodeURIComponent(base)}?nav=${nav}`;
+  return `${CS_WEBRING_HUB}/#${encodeURIComponent(base)}${fragment}`;
 }
 
 export function WaterlooWebRing() {
-  const prevUrl = buildNavUrl("prev");
-  const nextUrl = buildNavUrl("next");
+  const prevUrl = csRingUrl("?nav=prev");
+  const centerUrl = csRingUrl("");
+  const nextUrl = csRingUrl("?nav=next");
 
   return (
-    <div className="webring-minimal" aria-label="Waterloo Web Ring">
-      <span className="webring-text">
-        <a href={prevUrl} title="Previous site in ring">
+    <div className="webring-minimal" aria-label="CS Webring">
+      <div className="webring-inner">
+        <a href={prevUrl} title="Previous site in ring" className="webring-nav">
           ←
         </a>
-        {" · "}
-        <a href={WEBRING_HUB} target="_blank" rel="noopener noreferrer" title="Waterloo Web Ring">
-          Waterloo Web Ring
+        <a
+          href={centerUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          title="CS Webring"
+          className="webring-icon-link"
+        >
+          <img
+            src={CS_WEBRING_ICON}
+            alt="CS Webring"
+            width={24}
+            height={24}
+            className="webring-icon"
+          />
         </a>
-        {" · "}
-        <a href={nextUrl} title="Next site in ring">
+        <a href={nextUrl} title="Next site in ring" className="webring-nav">
           →
         </a>
-      </span>
+      </div>
     </div>
   );
 }

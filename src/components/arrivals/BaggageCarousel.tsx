@@ -28,7 +28,7 @@ function LuggageBag({
       onClick={onSelect}
       aria-pressed={isSelected}
       data-selected={isSelected ? "true" : "false"}
-      className="baggage-card flex-shrink-0 w-[240px] min-h-[120px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] touch-manipulation"
+      className="baggage-card flex-shrink-0 w-[360px] min-h-[180px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] touch-manipulation"
     >
       <div className="baggage-card-handle" aria-hidden />
       <span className="bag-tag" aria-hidden>{origin}</span>
