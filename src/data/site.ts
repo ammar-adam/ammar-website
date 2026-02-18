@@ -6,7 +6,7 @@
 
 /** Canonical site URL for webring. Set NEXT_PUBLIC_SITE_URL or replace this so prev/next point to your registered site. */
 export const siteUrl =
-  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ammar.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://ammaradam.com";
 
 export const siteConfig = {
   airportName: "AFA INTERNATIONAL AIRPORT",

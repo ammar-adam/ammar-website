@@ -2922,41 +2922,6 @@ body, p, .description {
   line-height: 1;
 }
 
-/* uwaterloo.network — icon + link */
-.webring-uw {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.webring-uw-icon {
-  width: 24px;
-  height: 24px;
-  opacity: 0.8;
-  display: block;
-  object-fit: contain;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.webring-uw-link {
-  color: var(--metal-gray);
-  text-decoration: none;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  transition: color 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.webring-uw-link:hover {
-  color: var(--departure-amber);
-}
-
-.webring-uw-link:hover .webring-uw-icon {
-  opacity: 1;
-  transform: scale(1.08);
-}
 
 @media (max-width: 640px) {
   .about-page .about-passport-block {

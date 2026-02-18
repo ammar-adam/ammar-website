@@ -129,10 +129,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               You are here
             </span>
           </div>
-          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          <>
             <WaterlooWebRing />
             <UWaterlooNetworkWidget />
-          </div>
+          </>
         </div>
       </footer>
     </div>
