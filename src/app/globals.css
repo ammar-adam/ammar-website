@@ -2854,8 +2854,7 @@ body, p, .description {
   }
 }
 
-/* Waterloo Web Ring — subtle, single-line, airport theme */
-/* CS Webring + uwaterloo.network — keep super small */
+/* uwaterloo.network webring — keep super small */
 
 @keyframes webring-icon-pulse {
   0%, 100% { opacity: 0.8; transform: scale(1); }
@@ -2916,12 +2915,6 @@ body, p, .description {
 .webring-icon-link:hover .webring-icon {
   transform: scale(1.1);
 }
-
-.webring-nav {
-  font-size: 14px;
-  line-height: 1;
-}
-
 
 @media (max-width: 640px) {
   .about-page .about-passport-block {
