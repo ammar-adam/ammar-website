@@ -2,19 +2,18 @@
 
 *A portfolio disguised as an airport terminal.*
 
-[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
-[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-ff69b4)](https://www.framer.com/motion/)
-[![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?logo=vercel)](https://vercel.com/)
-
-[**Live site → ammaradam.com**](https://ammaradam.com)
+![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
+![Framer Motion](https://img.shields.io/badge/Framer-Motion-EF0080?style=for-the-badge&logo=framer&logoColor=white)
+![Vercel](https://img.shields.io/badge/Vercel-Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white)
+[![Live](https://img.shields.io/badge/Live-ammaradam.com-F5A623?style=for-the-badge&logo=safari&logoColor=white)](https://ammaradam.com)
 
 ---
 
 ## Design Philosophy
 
-The site is built around a single metaphor: you’re moving through an airport. Projects are **gates and seats**—pick a flight and a seat to see what’s on board. Experiences are the **baggage carousel**—grab a bag to see where it’s been. The About page is the **lounge**: bio, highlights, and a grid of moments. The Resume is your **boarding pass**: one tap opens the PDF in a new tab. No corporate clutter—just clear signage and a calm, human tone.
+The site is built around a single metaphor: you’re moving through an airport. Projects are **gates and seats** - pick a flight and a seat to see what’s on board. Experiences are the **baggage carousel** - grab a bag to see where it’s been. The About page is the **lounge**: bio, highlights, and a grid of moments. The Resume is your **boarding pass**: one tap opens the PDF in a new tab. No corporate clutter - just clear signage and a calm, human tone.
 
 ---
 
@@ -33,11 +32,11 @@ Open [http://localhost:3000](http://localhost:3000).
 
 | Route        | Description                          |
 |-------------|--------------------------------------|
-| `/`         | Home — Terminal Directory (gate links) |
-| `/projects` | Projects — seat map, pick a seat for details |
-| `/arrivals` | Experiences — baggage carousel, pick a bag |
-| `/about`    | About — bio, highlights, photos      |
-| `/resume`   | Resume — boarding pass + open PDF in new tab |
+| `/`         | Home - Terminal Directory (gate links) |
+| `/projects` | Projects - seat map, pick a seat for details |
+| `/arrivals` | Experiences - baggage carousel, pick a bag |
+| `/about`    | About - bio, highlights, photos      |
+| `/resume`   | Resume - boarding pass + open PDF in new tab |
 
 ---
 
