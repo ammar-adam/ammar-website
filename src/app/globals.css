@@ -2678,6 +2678,15 @@ body, p, .description {
   opacity: 1;
 }
 
+@keyframes lightboxFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.lightbox-overlay {
+  animation: lightboxFadeIn 0.2s ease-out;
+}
+
 .ife-empty {
   position: absolute;
   inset: 0;

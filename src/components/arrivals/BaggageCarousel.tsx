@@ -28,12 +28,12 @@ function LuggageBag({
       onClick={onSelect}
       aria-pressed={isSelected}
       data-selected={isSelected ? "true" : "false"}
-      className="baggage-card flex-shrink-0 w-[360px] min-h-[180px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] touch-manipulation"
+      className="baggage-card flex-shrink-0 w-[360px] min-h-[280px] text-left overflow-visible rounded-lg border-2 border-[var(--floor-line)] bg-[var(--terminal-dark)] touch-manipulation"
     >
       <div className="baggage-card-handle" aria-hidden />
       <span className="bag-tag" aria-hidden>{origin}</span>
-      <div className="p-3 pt-4 border-2 border-t-0 border-[var(--floor-line)] rounded-b-lg bg-[var(--terminal-dark)]">
-        <div className="aspect-[4/3] w-full rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] overflow-hidden mb-2">
+        <div className="p-3 pt-4 border-2 border-t-0 border-[var(--floor-line)] rounded-b-lg bg-[var(--terminal-dark)]">
+        <div className="w-full min-h-[220px] rounded bg-[var(--terminal-blue)]/40 border border-[var(--floor-line)] overflow-hidden mb-2">
           {image ? (
             <img src={image} alt="" className="w-full h-full object-cover" />
           ) : (

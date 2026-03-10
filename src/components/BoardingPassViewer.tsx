@@ -53,9 +53,10 @@ export function BoardingPassViewer() {
 
             <a
               href={boardingPassConfig.resumeFileUrl}
-              download="Ammar_Adam.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="barcode-download-section group block w-full mt-8 mb-6 py-6 px-6 rounded-lg border-2 border-dashed border-[var(--floor-line)] bg-transparent cursor-pointer transition-all duration-300 hover:border-[var(--departure-amber)] hover:bg-[var(--terminal-glow)] hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)] no-underline"
-              aria-label="Download resume PDF"
+              aria-label="View resume"
             >
               <div
                 className="barcode-lines w-full h-20 rounded bg-[var(--terminal-navy)] mb-4 opacity-70 transition-opacity duration-300 group-hover:opacity-100"
@@ -64,9 +65,6 @@ export function BoardingPassViewer() {
                 }}
                 aria-hidden
               />
-              <p className="barcode-instruction font-mono text-[11px] text-[var(--metal-gray)] tracking-[0.15em] mb-2 uppercase transition-colors duration-300 group-hover:text-[var(--departure-amber)]">
-                Click barcode to download PDF
-              </p>
               <p className="barcode-label font-mono text-[9px] text-[var(--metal-gray)] tracking-[0.1em] uppercase">
                 Sequence · Priority boarding
               </p>

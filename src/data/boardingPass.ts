@@ -6,7 +6,7 @@
 export const boardingPassConfig = {
   displayName: "Ammar Adam",
   resumeFileUrl: "/Ammar_Adam.pdf",
-  ctaLabel: "Click barcode to download PDF",
+  ctaLabel: "Scan barcode to view resume",
   from: "YYZ",
   to: "My next adventure",
   flight: "Wandering",

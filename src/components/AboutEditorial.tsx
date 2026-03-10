@@ -1,8 +1,24 @@
 "use client";
 
+import { useState, useCallback, useEffect } from "react";
 import { aboutIntro, aboutPhotos, aboutAmenities, aboutLocationStamps } from "@/data/about";
 
+type PhotoItem = { src: string; caption?: string };
+
 export function AboutEditorial() {
+  const [lightboxPhoto, setLightboxPhoto] = useState<PhotoItem | null>(null);
+
+  const closeLightbox = useCallback(() => setLightboxPhoto(null), []);
+
+  useEffect(() => {
+    if (!lightboxPhoto) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeLightbox();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [lightboxPhoto, closeLightbox]);
+
   return (
     <article className="about-page about-page-with-signage py-12 sm:py-16 px-4 sm:px-6 lg:px-12 relative">
       <div className="page-signage page-signage-about" aria-hidden>
@@ -70,8 +86,18 @@ export function AboutEditorial() {
                     {aboutPhotos.map((photo, i) => (
                       <figure
                         key={i}
-                        className="ife-tile"
+                        className="ife-tile cursor-pointer"
                         title={photo.caption || undefined}
+                        role="button"
+                        tabIndex={0}
+                        onClick={() => setLightboxPhoto(photo)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            setLightboxPhoto(photo);
+                          }
+                        }}
+                        aria-label={photo.caption ? `View: ${photo.caption}` : `View photo ${i + 1}`}
                       >
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
@@ -101,6 +127,33 @@ export function AboutEditorial() {
           </div>
         </section>
       </div>
+
+      {lightboxPhoto && (
+        <div
+          className="fixed inset-0 z-[100] bg-black/80 flex items-center justify-center p-4 lightbox-overlay"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Photo lightbox"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) closeLightbox();
+          }}
+        >
+          <button
+            type="button"
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center rounded-full text-[var(--window-white)] text-2xl leading-none hover:bg-white/20 focus:outline-none focus:ring-2 focus:ring-[var(--departure-amber)]"
+            aria-label="Close lightbox"
+          >
+            ×
+          </button>
+          <img
+            src={lightboxPhoto.src}
+            alt={lightboxPhoto.caption || "Expanded view"}
+            className="max-w-4xl max-h-[90vh] w-auto h-auto object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </article>
   );
 }

@@ -3,6 +3,8 @@
 import type { Project } from "@/data/departures";
 import type { Arrival } from "@/data/arrivals";
 
+const CANADACLIP_EMBED_URL = "https://drive.google.com/file/d/1-s-o1AFuRXx4xwkbjdpHnE9LNMn8wQo8/preview";
+
 type ProjectDetailsProps = {
   variant: "project";
   data: Project;
@@ -72,8 +74,18 @@ export function DetailsPanel(props: DetailsPanelProps) {
         )}
 
         {p.screenshot && (
-          <div className="project-image project-image-compact w-full rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-navy)] flex items-center justify-center p-2">
-            <img src={p.screenshot} alt="" className="max-w-full max-h-[380px] w-auto h-auto object-contain" />
+          <div className="project-image project-image-compact w-full rounded-lg border-2 border-[var(--floor-line)] overflow-hidden bg-[var(--terminal-navy)] flex items-center justify-center p-2 min-h-[320px]">
+            {p.screenshot.toLowerCase().endsWith(".mp4") ? (
+              <iframe
+                src={CANADACLIP_EMBED_URL}
+                className="w-full h-full min-h-[320px] rounded"
+                allow="autoplay"
+                style={{ border: "none" }}
+                title="Project demo"
+              />
+            ) : (
+              <img src={p.screenshot} alt="" className="max-w-full max-h-[520px] w-auto h-auto object-contain" />
+            )}
           </div>
         )}
 

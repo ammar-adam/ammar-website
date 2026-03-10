@@ -7,6 +7,8 @@ import { projects } from "@/data/departures";
 import { DeparturesBoardDisplay } from "@/components/DeparturesBoardDisplay";
 import { AirportIcon } from "@/components/AirportIcon";
 
+const CANADACLIP_EMBED_URL = "https://drive.google.com/file/d/1-s-o1AFuRXx4xwkbjdpHnE9LNMn8wQo8/preview";
+
 const ROWS = ["A", "B"];
 const COLS_LEFT = [1, 2];
 const COLS_RIGHT = [3];
@@ -130,12 +132,22 @@ export function ProjectsSeatMap() {
               <>
                 <div className="flex flex-col sm:flex-row gap-4 mb-4">
                   {selectedProject.screenshot && (
-                    <div className="flex-shrink-0 w-full sm:w-52 h-36 rounded-lg overflow-hidden bg-[var(--bg-surface)] flex items-center justify-center">
-                      <img
-                        src={selectedProject.screenshot}
-                        alt=""
-                        className="w-full h-full object-contain"
-                      />
+                    <div className="flex-shrink-0 w-full sm:min-w-[280px] min-h-[200px] sm:min-h-[240px] rounded-lg overflow-hidden bg-[var(--bg-surface)] flex items-center justify-center">
+                      {selectedProject.screenshot.toLowerCase().endsWith(".mp4") ? (
+                        <iframe
+                          src={CANADACLIP_EMBED_URL}
+                          className="w-full h-full min-h-[200px] sm:min-h-[240px]"
+                          allow="autoplay"
+                          style={{ border: "none" }}
+                          title="Project demo"
+                        />
+                      ) : (
+                        <img
+                          src={selectedProject.screenshot}
+                          alt=""
+                          className="w-full h-full min-h-[200px] sm:min-h-[240px] object-contain"
+                        />
+                      )}
                     </div>
                   )}
                   <div>

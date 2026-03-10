@@ -1,15 +1,22 @@
-# AFA International Airport
+# ✈️ AFA International Airport
 
-A personal portfolio site styled as an airport terminal.
+*A portfolio disguised as an airport terminal.*
 
-Live at: ammaradam.com
+[![Next.js](https://img.shields.io/badge/Next.js-15-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3-38bdf8?logo=tailwind-css)](https://tailwindcss.com/)
+[![Framer Motion](https://img.shields.io/badge/Framer_Motion-11-ff69b4)](https://www.framer.com/motion/)
+[![Vercel](https://img.shields.io/badge/Vercel-Deploy-black?logo=vercel)](https://vercel.com/)
 
-## Tech Stack
+[**Live site → ammaradam.com**](https://ammaradam.com)
 
-- **Next.js** (App Router)
-- **React** + **TypeScript**
-- **Tailwind CSS**
-- **Framer Motion**
+---
+
+## Design Philosophy
+
+The site is built around a single metaphor: you’re moving through an airport. Projects are **gates and seats**—pick a flight and a seat to see what’s on board. Experiences are the **baggage carousel**—grab a bag to see where it’s been. The About page is the **lounge**: bio, highlights, and a grid of moments. The Resume is your **boarding pass**: one tap opens the PDF in a new tab. No corporate clutter—just clear signage and a calm, human tone.
+
+---
 
 ## Getting Started
 
@@ -20,6 +27,8 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+---
+
 ## Routes
 
 | Route        | Description                          |
@@ -28,7 +37,9 @@ Open [http://localhost:3000](http://localhost:3000).
 | `/projects` | Projects — seat map, pick a seat for details |
 | `/arrivals` | Experiences — baggage carousel, pick a bag |
 | `/about`    | About — bio, highlights, photos      |
-| `/resume`   | Resume — boarding pass + PDF download |
+| `/resume`   | Resume — boarding pass + open PDF in new tab |
+
+---
 
 ## Content & Assets
 
@@ -45,12 +56,11 @@ All copy and links live in **`src/data/`**:
 
 ### Images (in `public/`)
 
-- **Projects:** Set each project’s `screenshot` in `departures.ts` (e.g. `/ROCKETSHIP.png`).
+- **Projects:** Set each project’s `screenshot` in `departures.ts` (e.g. `/ROCKETSHIP.png`). Use `.mp4` for video; the app will show a Google Drive embed where appropriate.
 - **Experiences:** Set each experience’s `image` in `arrivals.ts` (e.g. `/WATERLOOVG.jpg`).
 - **About photos:** Point `loungeRoom.ts` → `photos.items[].src` at your files (e.g. `/ABOUT1.jpg` … `/ABOUT12.jpg`).
-- **Resume PDF:** Put **`Ammar_Adam.pdf`** (or your file) in `public/` and set `resumeFileUrl` in `boardingPass.ts` (e.g. `"/Ammar_Adam.pdf"`). Clicking the barcode on the resume page downloads it.
+- **Resume PDF:** Put **`Ammar_Adam.pdf`** (or your file) in `public/` and set `resumeFileUrl` in `boardingPass.ts` (e.g. `"/Ammar_Adam.pdf"`). Clicking the barcode opens the PDF in a new tab.
 
-## Navbar & Hero
+---
 
-- **Navbar** (top): Gate letters A–D → Projects, Experiences, About, Resume. Links for email, GitHub, LinkedIn, X.
-- **Hero** (home): One-line intro and **Terminal Directory** table with gate, destination, and info copy. Edit directory rows in **`src/components/terminal/TerminalDirectoryBoard.tsx`** and gate links in **`src/components/AppShell.tsx`**.
+*Designed and built by Ammar Adam*
