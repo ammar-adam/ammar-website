@@ -99,7 +99,6 @@ export function AboutEditorial() {
                         }}
                         aria-label={photo.caption ? `View: ${photo.caption}` : `View photo ${i + 1}`}
                       >
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img
                           src={photo.src}
                           alt={photo.caption || `Title ${i + 1}`}

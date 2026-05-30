@@ -7,10 +7,7 @@ interface AmbientBackgroundProps {
   children: React.ReactNode;
 }
 
-export function AmbientBackground({
-  variant = "terminal",
-  children,
-}: AmbientBackgroundProps) {
+export function AmbientBackground({ children }: AmbientBackgroundProps) {
   return (
     <div className="relative min-h-[60vh] overflow-hidden">
       {/* Glass / steel gradient base */}

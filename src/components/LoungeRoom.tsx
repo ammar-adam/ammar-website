@@ -3,7 +3,6 @@
 import { useState, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { loungeRoomContent } from "@/data/loungeRoom";
-import { siteConfig } from "@/data/site";
 import { cafeContent } from "@/data/lounge";
 
 type ContentType = "window" | "bookshelf" | "photos" | "table" | "cafe";
@@ -33,7 +32,6 @@ export function LoungeRoom() {
   const t = loungeRoomContent.table;
   const c = loungeRoomContent.cafe;
   const emailUrl = cafeContent.sayHelloEmail;
-  const linkedinUrl = siteConfig.socialLinks.linkedin;
 
   return (
     <div className="lounge-room-page min-h-screen relative">

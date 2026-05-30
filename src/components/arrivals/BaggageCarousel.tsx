@@ -9,7 +9,6 @@ function LuggageBag({
   from,
   origin,
   title,
-  slug,
   image,
   isSelected,
   onSelect,
@@ -17,7 +16,6 @@ function LuggageBag({
   from: string;
   origin: string;
   title: string;
-  slug: string;
   image?: string;
   isSelected: boolean;
   onSelect: () => void;
@@ -92,7 +90,6 @@ export function BaggageCarousel() {
                   from={a.from}
                   origin={a.origin}
                   title={a.title}
-                  slug={a.slug}
                   image={a.image}
                   isSelected={selectedSlug === a.slug}
                   onSelect={() => setSelectedSlug(selectedSlug === a.slug ? null : a.slug)}
