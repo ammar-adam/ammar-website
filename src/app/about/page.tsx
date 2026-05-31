@@ -1,16 +1,58 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { aboutAmenities, aboutFunFacts, aboutIntro, aboutLocationStamps, aboutMenuItems, aboutPhotos } from "@/data/about";
 import { boardingPassConfig } from "@/data/boardingPass";
 
 type Flyer = "passport" | "safety" | "magazine" | "menu" | null;
+type DockSection = "home" | "info" | "comms" | "entertainment" | "search" | "favourites";
 
 export default function AboutPage() {
   const [photoIndex, setPhotoIndex] = useState<number | null>(null);
   const [flyer, setFlyer] = useState<Flyer>(null);
+  const [playing, setPlaying] = useState(true);
+  const [activeDock, setActiveDock] = useState<DockSection>("entertainment");
+  const [milesLeft, setMilesLeft] = useState(4081);
   const currentPhoto = photoIndex === null ? null : aboutPhotos[photoIndex];
+
+  const goHome = () => {
+    setPhotoIndex(null);
+    setActiveDock("entertainment");
+  };
+
+  const goPrev = () => {
+    setPhotoIndex((index) => (index === null ? aboutPhotos.length - 1 : (index - 1 + aboutPhotos.length) % aboutPhotos.length));
+    setActiveDock("entertainment");
+  };
+
+  const goNext = () => {
+    setPhotoIndex((index) => (index === null ? 0 : (index + 1) % aboutPhotos.length));
+    setActiveDock("entertainment");
+  };
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") goPrev();
+      if (event.key === "ArrowRight") goNext();
+      if (event.key === "Escape") goHome();
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    if (!playing || photoIndex !== null) return;
+    const timer = window.setInterval(() => {
+      setMilesLeft((value) => Math.max(0, value - 1));
+    }, 4000);
+    return () => window.clearInterval(timer);
+  }, [playing, photoIndex]);
+
+  const dockAction = (section: DockSection) => {
+    setActiveDock(section);
+    if (section === "home" || section === "entertainment") goHome();
+  };
 
   return (
     <section className="view wrap" data-screen-label="About">
@@ -27,62 +69,42 @@ export default function AboutPage() {
         <div className="sp-headrest" />
         <div className="sp-back">
           <div className="sp-screen ife-screen">
-            <header className="ife-top">
-              <div className="ife-flight-meta">
-                <span className="ife-route">AFA 1A · YYZ</span>
-                <span className="ife-progress">{photoIndex === null ? "In-Flight Entertainment" : `${photoIndex + 1} of ${aboutPhotos.length}`}</span>
-              </div>
-              <nav className="ife-tabs" aria-label="Screen sections">
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={photoIndex === null}
-                  className={`ife-tab${photoIndex === null ? " is-active" : ""}`}
-                  onClick={() => setPhotoIndex(null)}
-                >
-                  In-Flight Entertainment
-                </button>
-                <button
-                  type="button"
-                  role="tab"
-                  aria-selected={photoIndex !== null}
-                  className={`ife-tab${photoIndex !== null ? " is-active" : ""}`}
-                  disabled={photoIndex === null}
-                  onClick={() => photoIndex === null && setPhotoIndex(0)}
-                >
-                  Viewer
-                </button>
-              </nav>
-            </header>
+            <div className="ife-status-bar">
+              <span className="ife-miles">{milesLeft.toLocaleString()} mi to YYZ</span>
+              <span className="ife-ticker">Welcome aboard · Seat 1A · AFA International</span>
+              <button type="button" className="ife-gear" aria-label="Screen settings" onClick={() => setPlaying((value) => !value)}>
+                ⚙
+              </button>
+            </div>
+
+            <div className="ife-nav-bar">
+              {photoIndex !== null ? (
+                <button type="button" className="ife-back" onClick={goHome}>Back</button>
+              ) : (
+                <span className="ife-back ife-back-placeholder" aria-hidden />
+              )}
+              <span className="ife-category">{photoIndex === null ? "In-Flight Entertainment" : "Now Viewing"}</span>
+              <span className="ife-ch">{photoIndex === null ? "IFE" : `CH ${photoIndex + 1} / ${aboutPhotos.length}`}</span>
+            </div>
 
             <div className="ife-body">
               {currentPhoto ? (
-                <div className="ife-viewer" key={currentPhoto.src}>
-                  <button
-                    type="button"
-                    className="ife-nav-btn"
-                    aria-label="Previous photo"
-                    onClick={() => setPhotoIndex((index) => (index === null ? null : (index - 1 + aboutPhotos.length) % aboutPhotos.length))}
-                  >
-                    ←
-                  </button>
-                  <div className="ife-feature">
-                    <img src={currentPhoto.src} alt={currentPhoto.caption} />
-                    <p className="ife-caption">{currentPhoto.caption}</p>
-                  </div>
-                  <button
-                    type="button"
-                    className="ife-nav-btn"
-                    aria-label="Next photo"
-                    onClick={() => setPhotoIndex((index) => (index === null ? 0 : (index + 1) % aboutPhotos.length))}
-                  >
-                    →
-                  </button>
+                <div className="ife-feature" key={currentPhoto.src}>
+                  <img src={currentPhoto.src} alt={currentPhoto.caption} />
+                  <p className="ife-feature-cap">{currentPhoto.caption}</p>
                 </div>
               ) : (
                 <div className="ife-gallery-grid">
                   {aboutPhotos.slice(0, 15).map((photo, index) => (
-                    <button type="button" className="ife-poster" key={photo.src} onClick={() => setPhotoIndex(index)}>
+                    <button
+                      type="button"
+                      className={`ife-poster${photoIndex === index ? " is-active" : ""}`}
+                      key={photo.src}
+                      onClick={() => {
+                        setPhotoIndex(index);
+                        setActiveDock("entertainment");
+                      }}
+                    >
                       <span className="ife-poster-art">
                         <img src={photo.src} alt={photo.caption} loading="lazy" decoding="async" />
                       </span>
@@ -93,16 +115,27 @@ export default function AboutPage() {
               )}
             </div>
 
-            <footer className="ife-footer">
-              {photoIndex !== null ? (
-                <button type="button" className="ife-back-btn" onClick={() => setPhotoIndex(null)}>
-                  ← Back to In-Flight Entertainment
-                </button>
-              ) : (
-                <span className="ife-hint">Select a title below</span>
-              )}
-              <span className="ife-footer-count">{aboutPhotos.length} moments</span>
-            </footer>
+            <div className="ife-dock">
+              <div className="ife-dock-icons">
+                <button type="button" className={`ife-icon ife-icon-home${activeDock === "home" ? " is-active" : ""}`} title="Home" aria-label="Home" onClick={() => dockAction("home")} />
+                <button type="button" className={`ife-icon ife-icon-i${activeDock === "info" ? " is-active" : ""}`} title="Information" aria-label="Information" onClick={() => dockAction("info")} />
+                <button type="button" className={`ife-icon ife-icon-c${activeDock === "comms" ? " is-active" : ""}`} title="Communications" aria-label="Communications" onClick={() => dockAction("comms")} />
+                <button type="button" className={`ife-icon ife-icon-e${activeDock === "entertainment" ? " is-active" : ""}`} title="Entertainment" aria-label="Entertainment" onClick={() => dockAction("entertainment")} />
+                <button type="button" className={`ife-icon ife-icon-search${activeDock === "search" ? " is-active" : ""}`} title="Search" aria-label="Search" onClick={() => dockAction("search")} />
+                <button type="button" className={`ife-icon ife-icon-heart${activeDock === "favourites" ? " is-active" : ""}`} title="Favourites" aria-label="Favourites" onClick={() => dockAction("favourites")} />
+              </div>
+              <div className="ife-now-playing">
+                <span className="ife-np-label">Now Playing</span>
+                <span className="ife-np-title">{currentPhoto ? currentPhoto.caption : "Browse In-Flight Entertainment"}</span>
+                <span className="ife-np-controls">
+                  <button type="button" className="ife-np-btn" aria-label="Previous" onClick={goPrev}>⏮</button>
+                  <button type="button" className="ife-np-btn" aria-label={playing ? "Pause" : "Play"} onClick={() => setPlaying((value) => !value)}>
+                    {playing ? "⏸" : "▶"}
+                  </button>
+                  <button type="button" className="ife-np-btn" aria-label="Next" onClick={goNext}>⏭</button>
+                </span>
+              </div>
+            </div>
           </div>
 
           <div className="sp-deck">
