@@ -39,7 +39,7 @@ export default function ProjectsPage() {
         <Link className="back-link" href="/">{"<-"} Terminal</Link>
         <div className="kicker mast-kicker">Gate A · Departures</div>
         <h1>Projects</h1>
-        <p className="m-sub">Pick a seat - each one boards a different build. Your ticket prints on the right.</p>
+        <p className="m-sub">Pick a seat - each one boards a different build. Your bag opens on the right.</p>
       </div>
 
       <div className="proj">
