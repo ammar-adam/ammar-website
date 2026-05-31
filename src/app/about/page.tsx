@@ -27,26 +27,57 @@ export default function AboutPage() {
         <div className="sp-headrest" />
         <div className="sp-back">
           <div className="sp-screen ife-screen">
-            <div className="ife-status-bar">
-              <span className="ife-miles">4,081 mi to YYZ</span>
-              <span className="ife-ticker">Welcome aboard · Seat 1A · AFA International</span>
-              <span className="ife-gear" aria-hidden>⚙</span>
-            </div>
-
-            <div className="ife-nav-bar">
-              {photoIndex !== null ? (
-                <button type="button" className="ife-back" onClick={() => setPhotoIndex(null)}>Back</button>
-              ) : (
-                <span className="ife-back ife-back-placeholder" aria-hidden />
-              )}
-              <span className="ife-category">{photoIndex === null ? "Photo Gallery" : "Now Viewing"}</span>
-              <span className="ife-ch">{photoIndex === null ? "GALLERY" : `CH ${photoIndex + 1} / ${aboutPhotos.length}`}</span>
-            </div>
+            <header className="ife-top">
+              <div className="ife-flight-meta">
+                <span className="ife-route">AFA 1A · YYZ</span>
+                <span className="ife-progress">{photoIndex === null ? "In-Flight Entertainment" : `${photoIndex + 1} of ${aboutPhotos.length}`}</span>
+              </div>
+              <nav className="ife-tabs" aria-label="Screen sections">
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={photoIndex === null}
+                  className={`ife-tab${photoIndex === null ? " is-active" : ""}`}
+                  onClick={() => setPhotoIndex(null)}
+                >
+                  In-Flight Entertainment
+                </button>
+                <button
+                  type="button"
+                  role="tab"
+                  aria-selected={photoIndex !== null}
+                  className={`ife-tab${photoIndex !== null ? " is-active" : ""}`}
+                  disabled={photoIndex === null}
+                  onClick={() => photoIndex === null && setPhotoIndex(0)}
+                >
+                  Viewer
+                </button>
+              </nav>
+            </header>
 
             <div className="ife-body">
               {currentPhoto ? (
-                <div className="ife-feature" key={currentPhoto.src}>
-                  <img src={currentPhoto.src} alt={currentPhoto.caption} />
+                <div className="ife-viewer" key={currentPhoto.src}>
+                  <button
+                    type="button"
+                    className="ife-nav-btn"
+                    aria-label="Previous photo"
+                    onClick={() => setPhotoIndex((index) => (index === null ? null : (index - 1 + aboutPhotos.length) % aboutPhotos.length))}
+                  >
+                    ←
+                  </button>
+                  <div className="ife-feature">
+                    <img src={currentPhoto.src} alt={currentPhoto.caption} />
+                    <p className="ife-caption">{currentPhoto.caption}</p>
+                  </div>
+                  <button
+                    type="button"
+                    className="ife-nav-btn"
+                    aria-label="Next photo"
+                    onClick={() => setPhotoIndex((index) => (index === null ? 0 : (index + 1) % aboutPhotos.length))}
+                  >
+                    →
+                  </button>
                 </div>
               ) : (
                 <div className="ife-gallery-grid">
@@ -62,21 +93,16 @@ export default function AboutPage() {
               )}
             </div>
 
-            <div className="ife-dock">
-              <div className="ife-dock-icons">
-                <span className="ife-icon ife-icon-home" title="Home" />
-                <span className="ife-icon ife-icon-i" title="Information" />
-                <span className="ife-icon ife-icon-c" title="Communications" />
-                <span className="ife-icon ife-icon-e" title="Entertainment" />
-                <span className="ife-icon ife-icon-search" title="Search" />
-                <span className="ife-icon ife-icon-heart" title="Favourites" />
-              </div>
-              <div className="ife-now-playing">
-                <span className="ife-np-label">Now Playing</span>
-                <span className="ife-np-title">{currentPhoto ? currentPhoto.caption : "Browse the gallery"}</span>
-                <span className="ife-np-controls" aria-hidden>▮▮ ▶ ▮▮</span>
-              </div>
-            </div>
+            <footer className="ife-footer">
+              {photoIndex !== null ? (
+                <button type="button" className="ife-back-btn" onClick={() => setPhotoIndex(null)}>
+                  ← Back to In-Flight Entertainment
+                </button>
+              ) : (
+                <span className="ife-hint">Select a title below</span>
+              )}
+              <span className="ife-footer-count">{aboutPhotos.length} moments</span>
+            </footer>
           </div>
 
           <div className="sp-deck">

@@ -85,7 +85,7 @@ export default function ArrivalsPage() {
       </div>
 
       <div className="arr-detail">
-        <div className="ad-l">
+        <div className="xp-trolley">
           <div className="trolley-load">
             <div className="tl-bags tl-bags-single">
               {current ? (
@@ -105,24 +105,24 @@ export default function ArrivalsPage() {
             <div className="tl-count">{current ? `${current.origin} bag loaded` : "Select a bag above"}</div>
           </div>
         </div>
-        <aside className="ad-r" ref={infoRef} aria-live="polite">
+        <div className="xp-copy" ref={infoRef} aria-live="polite">
           {current ? (
             <>
-              <div className="ad-origin">{current.origin.toUpperCase()} · {current.from}</div>
-              <div className="ad-title">{current.detailTitle || current.title}</div>
-              <div className="ad-impact">{current.impact}</div>
-              <div className="ad-det">{current.details}</div>
+              <div className="xp-meta">{current.origin.toUpperCase()} · {current.from}</div>
+              <div className="xp-role">{current.detailTitle || current.title}</div>
+              <div className="xp-headline">{current.impact}</div>
+              <div className="xp-body">{current.details}</div>
               {current.status && (
-                <div className="ad-status"><i />{current.status}</div>
+                <div className="xp-status"><i />{current.status}</div>
               )}
-              <div className="ad-links">
+              <div className="xp-links">
                 {current.fromUrl && (
-                  <a className="btn ad-link-btn" href={current.fromUrl} target="_blank" rel="noreferrer">
+                  <a className="btn xp-link" href={current.fromUrl} target="_blank" rel="noreferrer">
                     Visit {current.from} -&gt;
                   </a>
                 )}
                 {current.links?.map((link) => (
-                  <a className="btn ad-link-btn ad-link-secondary" key={link.url} href={link.url} target="_blank" rel="noreferrer">
+                  <a className="btn xp-link xp-link-alt" key={link.url} href={link.url} target="_blank" rel="noreferrer">
                     {link.label} -&gt;
                   </a>
                 ))}
@@ -130,12 +130,12 @@ export default function ArrivalsPage() {
             </>
           ) : (
             <>
-              <div className="ad-origin">BAGGAGE CLAIM · CAROUSEL 03</div>
-              <div className="ad-title">Select a bag</div>
-              <div className="ad-impact">Pick an experience from the belt to load it into the trolley.</div>
+              <div className="xp-meta">BAGGAGE CLAIM · CAROUSEL 03</div>
+              <div className="xp-role">Select a bag</div>
+              <div className="xp-headline">Pick an experience from the belt to load it into the trolley.</div>
             </>
           )}
-        </aside>
+        </div>
       </div>
     </section>
   );
