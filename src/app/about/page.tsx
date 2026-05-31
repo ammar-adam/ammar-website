@@ -26,26 +26,57 @@ export default function AboutPage() {
         <div className="sp-wing r" />
         <div className="sp-headrest" />
         <div className="sp-back">
-          <div className="sp-screen">
-            <div className="sp-bar"><span className="live"><i />AFA · IN-FLIGHT ENTERTAINMENT</span><span>{photoIndex === null ? "GALLERY" : `CH ${photoIndex + 1} / ${aboutPhotos.length}`}</span></div>
-            {currentPhoto ? (
-              <>
-                <div className="sp-feature" key={currentPhoto.src}>
+          <div className="sp-screen ife-screen">
+            <div className="ife-status-bar">
+              <span className="ife-miles">4,081 mi to YYZ</span>
+              <span className="ife-ticker">Welcome aboard · Seat 1A · AFA International</span>
+              <span className="ife-gear" aria-hidden>⚙</span>
+            </div>
+
+            <div className="ife-nav-bar">
+              {photoIndex !== null ? (
+                <button type="button" className="ife-back" onClick={() => setPhotoIndex(null)}>Back</button>
+              ) : (
+                <span className="ife-back ife-back-placeholder" aria-hidden />
+              )}
+              <span className="ife-category">{photoIndex === null ? "Photo Gallery" : "Now Viewing"}</span>
+              <span className="ife-ch">{photoIndex === null ? "GALLERY" : `CH ${photoIndex + 1} / ${aboutPhotos.length}`}</span>
+            </div>
+
+            <div className="ife-body">
+              {currentPhoto ? (
+                <div className="ife-feature" key={currentPhoto.src}>
                   <img src={currentPhoto.src} alt={currentPhoto.caption} />
-                  <button type="button" className="ife-grid-back" onClick={() => setPhotoIndex(null)}>All photos</button>
-                  <div className="sp-cap"><div className="np">NOW PLAYING</div><div className="cp">{currentPhoto.caption}</div></div>
                 </div>
-              </>
-            ) : (
-              <div className="ife-gallery-grid">
-                {aboutPhotos.slice(0, 15).map((photo, index) => (
-                  <button type="button" className="ife-gallery-tile" key={photo.src} onClick={() => setPhotoIndex(index)}>
-                    <img src={photo.src} alt={photo.caption} loading="lazy" decoding="async" />
-                    <span>{String(index + 1).padStart(2, "0")}</span>
-                  </button>
-                ))}
+              ) : (
+                <div className="ife-gallery-grid">
+                  {aboutPhotos.slice(0, 15).map((photo, index) => (
+                    <button type="button" className="ife-poster" key={photo.src} onClick={() => setPhotoIndex(index)}>
+                      <span className="ife-poster-art">
+                        <img src={photo.src} alt={photo.caption} loading="lazy" decoding="async" />
+                      </span>
+                      <span className="ife-poster-title">{photo.caption}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            <div className="ife-dock">
+              <div className="ife-dock-icons">
+                <span className="ife-icon ife-icon-home" title="Home" />
+                <span className="ife-icon ife-icon-i" title="Information" />
+                <span className="ife-icon ife-icon-c" title="Communications" />
+                <span className="ife-icon ife-icon-e" title="Entertainment" />
+                <span className="ife-icon ife-icon-search" title="Search" />
+                <span className="ife-icon ife-icon-heart" title="Favourites" />
               </div>
-            )}
+              <div className="ife-now-playing">
+                <span className="ife-np-label">Now Playing</span>
+                <span className="ife-np-title">{currentPhoto ? currentPhoto.caption : "Browse the gallery"}</span>
+                <span className="ife-np-controls" aria-hidden>▮▮ ▶ ▮▮</span>
+              </div>
+            </div>
           </div>
 
           <div className="sp-deck">

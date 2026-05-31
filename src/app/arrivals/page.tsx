@@ -84,64 +84,58 @@ export default function ArrivalsPage() {
         </div>
       </div>
 
-      <div className="claim-display">
-        <div className="claim-display-bar">
-          <span className="live"><i />BAGGAGE DETAIL · TROLLEY BAY</span>
-          <span>{current ? `${current.origin.toUpperCase()} · LOADED` : "AWAITING SELECTION"}</span>
-        </div>
-        <div className={`arr-detail${current ? " arr-detail--active" : ""}`}>
-          <div className="ad-l">
-            <div className="trolley-load">
-              <div className="tl-bags tl-bags-single">
-                {current ? (
-                  <div
-                    className="tl-photo-bag"
-                    key={`${current.slug}-${dropKey}`}
-                    style={{ "--bc": bagColor[current.origin] || "#8a8f9a" } as React.CSSProperties}
-                  >
-                    <strong>{current.origin}</strong>
-                    <small>{current.from}</small>
-                  </div>
-                ) : (
-                  <div className="tl-empty-cart">Cart empty</div>
-                )}
-              </div>
-              <div className="tl-cart"><span className="tl-handle" /><span className="tl-platform" /><span className="tl-wheel l" /><span className="tl-wheel r" /></div>
-              <div className="tl-count">{current ? `${current.origin} bag loaded` : "Select a bag above"}</div>
-            </div>
-          </div>
-          <div className="ad-r" ref={infoRef}>
-            {current ? (
-              <div className="ad-r-body" key={current.slug}>
-                <div className="ad-origin">{current.origin.toUpperCase()} · {current.from}</div>
-                <div className="ad-title">{current.detailTitle || current.title}</div>
-                <div className="ad-impact">{current.impact}</div>
-                <div className="ad-det">{current.details}</div>
-                {current.status && (
-                  <div className="ad-status"><i />{current.status}</div>
-                )}
-                <div className="ad-links">
-                  {current.fromUrl && (
-                    <a className="btn ad-link-btn" href={current.fromUrl} target="_blank" rel="noreferrer">
-                      Visit {current.from} -&gt;
-                    </a>
-                  )}
-                  {current.links?.map((link) => (
-                    <a className="btn ad-link-btn ad-link-secondary" key={link.url} href={link.url} target="_blank" rel="noreferrer">
-                      {link.label} -&gt;
-                    </a>
-                  ))}
+      <div className="arr-detail">
+        <div className="ad-l">
+          <div className="trolley-load">
+            <div className="tl-bags tl-bags-single">
+              {current ? (
+                <div
+                  className="tl-photo-bag"
+                  key={`${current.slug}-${dropKey}`}
+                  style={{ "--bc": bagColor[current.origin] || "#8a8f9a" } as React.CSSProperties}
+                >
+                  <strong>{current.origin}</strong>
+                  <small>{current.from}</small>
                 </div>
-              </div>
-            ) : (
-              <div className="ad-r-body ad-r-empty">
-                <div className="ad-origin">BAGGAGE CLAIM · CAROUSEL 03</div>
-                <div className="ad-title">Select a bag</div>
-                <div className="ad-impact">Pick an experience from the belt to load it into the trolley.</div>
-              </div>
-            )}
+              ) : (
+                <div className="tl-empty-cart">Cart empty</div>
+              )}
+            </div>
+            <div className="tl-cart"><span className="tl-handle" /><span className="tl-platform" /><span className="tl-wheel l" /><span className="tl-wheel r" /></div>
+            <div className="tl-count">{current ? `${current.origin} bag loaded` : "Select a bag above"}</div>
           </div>
         </div>
+        <aside className="ad-r" ref={infoRef} aria-live="polite">
+          {current ? (
+            <>
+              <div className="ad-origin">{current.origin.toUpperCase()} · {current.from}</div>
+              <div className="ad-title">{current.detailTitle || current.title}</div>
+              <div className="ad-impact">{current.impact}</div>
+              <div className="ad-det">{current.details}</div>
+              {current.status && (
+                <div className="ad-status"><i />{current.status}</div>
+              )}
+              <div className="ad-links">
+                {current.fromUrl && (
+                  <a className="btn ad-link-btn" href={current.fromUrl} target="_blank" rel="noreferrer">
+                    Visit {current.from} -&gt;
+                  </a>
+                )}
+                {current.links?.map((link) => (
+                  <a className="btn ad-link-btn ad-link-secondary" key={link.url} href={link.url} target="_blank" rel="noreferrer">
+                    {link.label} -&gt;
+                  </a>
+                ))}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="ad-origin">BAGGAGE CLAIM · CAROUSEL 03</div>
+              <div className="ad-title">Select a bag</div>
+              <div className="ad-impact">Pick an experience from the belt to load it into the trolley.</div>
+            </>
+          )}
+        </aside>
       </div>
     </section>
   );
