@@ -1288,8 +1288,10 @@ dd {
 .belt-tex { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, rgba(255,255,255,.05) 0 1px, transparent 1px 46px); animation: seams 2.2s linear infinite; opacity: .6; }
 @keyframes seams { from { background-position: 0 0; } to { background-position: -46px 0; } }
 .belt-rollers { position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: repeating-linear-gradient(90deg, #1b1f27 0 14px, #0d1015 14px 28px); border-top: 1px solid rgba(255,255,255,.08); animation: seams .9s linear infinite; }
-.belt-track { display: flex; gap: 26px; width: max-content; padding: 0 26px; animation: claimMove 32s linear infinite; }
-.carousel:hover .belt-track { animation-play-state: paused; }
+.belt-track { display: flex; gap: 26px; width: max-content; padding: 0 26px; animation: claimMove 32s linear infinite; will-change: transform; }
+@media (hover: hover) and (pointer: fine) {
+  .carousel:hover .belt-track { animation-play-state: paused; }
+}
 @keyframes claimMove { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .bag { width: 212px; flex: 0 0 auto; position: relative; cursor: pointer; text-align: left; padding: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; background: var(--surface-solid); transform: rotate(-1deg); transition: transform .28s var(--ease), border-color .28s, box-shadow .28s; box-shadow: 0 14px 30px -20px rgba(0,0,0,.7); }
 .bag:nth-child(even) { transform: rotate(1.3deg); }
@@ -2900,19 +2902,6 @@ dd {
     overflow-x: hidden;
   }
 
-  .belt-track {
-    animation: none;
-    display: grid;
-    grid-template-columns: 1fr;
-    width: 100%;
-    padding: 0 14px;
-  }
-
-  .bag {
-    width: 100%;
-    transform: none !important;
-  }
-
   .claim-open-bag {
     grid-template-columns: 1fr;
   }
@@ -3484,27 +3473,15 @@ dd {
   .belt-track {
     display: flex;
     flex-direction: row;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
     gap: 14px;
-    padding: 0 14px 6px;
-    width: 100%;
-    animation: none;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-  }
-
-  .belt-track::-webkit-scrollbar {
-    display: none;
-  }
-
-  .belt-track .bag:nth-child(n+7) {
-    display: none;
+    padding: 0 14px;
+    width: max-content;
+    animation: claimMove 38s linear infinite;
+    touch-action: pan-y;
   }
 
   .bag {
-    flex: 0 0 min(84vw, 320px);
-    scroll-snap-align: start;
+    flex: 0 0 min(72vw, 280px);
   }
 
   .carousel {
