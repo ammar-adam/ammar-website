@@ -14,7 +14,7 @@ const bagColor: Record<string, string> = {
 export default function ArrivalsPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [dropKey, setDropKey] = useState(0);
-  const detailRef = useRef<HTMLDivElement>(null);
+  const infoRef = useRef<HTMLDivElement>(null);
   const current = selected === null ? null : arrivals[selected];
   const loop = [...arrivals, ...arrivals];
 
@@ -24,9 +24,18 @@ export default function ArrivalsPage() {
   };
 
   useEffect(() => {
-    if (selected !== null && detailRef.current) {
-      detailRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    }
+    if (selected === null || !infoRef.current) return;
+
+    const scrollInfo = () => {
+      const mobile = window.matchMedia("(max-width: 720px)").matches;
+      infoRef.current?.scrollIntoView({
+        behavior: "smooth",
+        block: mobile ? "start" : "nearest",
+      });
+    };
+
+    const timer = window.setTimeout(scrollInfo, 120);
+    return () => window.clearTimeout(timer);
   }, [selected, dropKey]);
 
   return (
@@ -77,7 +86,7 @@ export default function ArrivalsPage() {
         </div>
       </div>
 
-      <div className="arr-detail" ref={detailRef}>
+      <div className={`arr-detail${current ? " arr-detail--active" : ""}`}>
         <div className="ad-l">
           <div className="trolley-load">
             <div className="tl-bags tl-bags-single">
@@ -101,7 +110,7 @@ export default function ArrivalsPage() {
             <div className="tl-count">{current ? `${current.origin} bag loaded` : "Select a bag above"}</div>
           </div>
         </div>
-        <div className="ad-r" key={current?.slug ?? "empty"}>
+        <div className="ad-r" ref={infoRef}>
           {current ? (
             <>
               <div className="ad-origin">{current.origin.toUpperCase()} · {current.from}</div>
