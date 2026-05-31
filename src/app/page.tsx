@@ -16,7 +16,7 @@ export default function HomePage() {
         <div>
           <div className="kicker h-eyebrow">Terminal Directory</div>
           <h1>
-            Hi, I&apos;m Ammar. I study CS &amp; Finance at UWaterloo.{" "}
+            Hi, I&apos;m Ammar.{" "}
             <span className="amb">Welcome to AFA International.</span>
           </h1>
           <p className="h-sub">Select your gate for departure.</p>
