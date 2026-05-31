@@ -108,7 +108,6 @@ export default function ArrivalsPage() {
               <div className="ad-origin">BAGGAGE CLAIM · CAROUSEL 03</div>
               <div className="ad-title">Select a bag</div>
               <div className="ad-impact">Pick an experience from the belt to load it into the trolley.</div>
-              <div className="ad-det">No experience is selected by default.</div>
             </>
           )}
         </div>
