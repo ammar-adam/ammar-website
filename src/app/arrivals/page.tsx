@@ -26,15 +26,13 @@ export default function ArrivalsPage() {
   useEffect(() => {
     if (selected === null || !infoRef.current) return;
 
-    const scrollInfo = () => {
-      const mobile = window.matchMedia("(max-width: 720px)").matches;
-      infoRef.current?.scrollIntoView({
-        behavior: "smooth",
-        block: mobile ? "start" : "nearest",
-      });
-    };
+    const mobile = window.matchMedia("(max-width: 720px)").matches;
+    if (!mobile) return;
 
-    const timer = window.setTimeout(scrollInfo, 120);
+    const timer = window.setTimeout(() => {
+      infoRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 180);
+
     return () => window.clearTimeout(timer);
   }, [selected, dropKey]);
 
@@ -112,7 +110,7 @@ export default function ArrivalsPage() {
         </div>
         <div className="ad-r" ref={infoRef}>
           {current ? (
-            <>
+            <div className="ad-r-body" key={current.slug}>
               <div className="ad-origin">{current.origin.toUpperCase()} · {current.from}</div>
               <div className="ad-title">{current.detailTitle || current.title}</div>
               <div className="ad-impact">{current.impact}</div>
@@ -120,25 +118,27 @@ export default function ArrivalsPage() {
               {current.status && (
                 <div className="ad-status"><i />{current.status}</div>
               )}
-              <div className="ad-links">
-                {current.fromUrl && (
-                  <a className="btn ad-link-btn" href={current.fromUrl} target="_blank" rel="noreferrer">
-                    Visit {current.from} -&gt;
-                  </a>
-                )}
-                {current.links?.map((link) => (
-                  <a className="btn ad-link-btn ad-link-secondary" key={link.url} href={link.url} target="_blank" rel="noreferrer">
-                    {link.label} -&gt;
-                  </a>
-                ))}
-              </div>
-            </>
+              {(current.fromUrl || current.links?.length) ? (
+                <div className="ad-links">
+                  {current.fromUrl && (
+                    <a className="btn ad-link-btn" href={current.fromUrl} target="_blank" rel="noreferrer">
+                      Visit {current.from} -&gt;
+                    </a>
+                  )}
+                  {current.links?.map((link) => (
+                    <a className="btn ad-link-btn ad-link-secondary" key={link.url} href={link.url} target="_blank" rel="noreferrer">
+                      {link.label} -&gt;
+                    </a>
+                  ))}
+                </div>
+              ) : null}
+            </div>
           ) : (
-            <>
+            <div className="ad-r-body ad-r-empty">
               <div className="ad-origin">BAGGAGE CLAIM · CAROUSEL 03</div>
               <div className="ad-title">Select a bag</div>
               <div className="ad-impact">Pick an experience from the belt to load it into the trolley.</div>
-            </>
+            </div>
           )}
         </div>
       </div>
