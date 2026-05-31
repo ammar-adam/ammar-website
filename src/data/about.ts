@@ -10,9 +10,31 @@ export const aboutIntro =
 
 export const aboutPhotos = loungeRoomContent.photos.items;
 
+/** F&B menu — food and drink on this flight */
+export const aboutMenuItems = [
+  "Iced coffee and mango matcha (non-negotiable)",
+  "Chicken shawarma hunts across the GTA",
+  "Steak nights when I actually have time to cook",
+  "Matcha before anything else on hard days",
+  "Cooking experiments that sometimes work",
+  "Post-hackathon pizza at 2am",
+];
+
+/** In-flight magazine — lighter fun facts */
+export const aboutFunFacts = [
+  "Youngest intern at Alpen Capital at 16",
+  "Liverpool supporter since I was 10",
+  "Paddington 2 is the best movie ever made",
+  "I can talk about airplanes for way too long",
+  "Led a DECA chapter to top 100 in the world",
+  "Built this site like an airport because most of my life feels like movement",
+  "Toronto sunsets > almost everything else",
+  "Currently looking for Summer 2026 co-ops",
+];
+
 export const aboutWhatsUp = loungeRoomContent.cafe.items;
 
-/** IN-FLIGHT ENTERTAINMENT — amenities list */
+/** Safety card — personal interests */
 export const aboutAmenities = [
   "I love cooking and eating food: from shawarma and steaks, to iced coffee and matcha",
   "Super passionate about airplanes and aviation",

@@ -8,6 +8,11 @@ export interface ArrivalArtifact {
   type?: "analytics" | "automation" | "presentation" | "finance" | "default";
 }
 
+export interface ArrivalLink {
+  label: string;
+  url: string;
+}
+
 export interface Arrival {
   slug: string;
   from: string;
@@ -24,6 +29,8 @@ export interface Arrival {
   details: string;
   status?: "Bags ready" | "Bags loading";
   artifacts?: ArrivalArtifact[];
+  /** Optional extra links shown in the detail panel */
+  links?: ArrivalLink[];
 }
 
 export const arrivals: Arrival[] = [
@@ -33,11 +40,39 @@ export const arrivals: Arrival[] = [
     fromUrl: "https://www.waterloovg.com/",
     image: "/WATERLOOVG.jpg",
     origin: "Waterloo",
-    title: "Ecosystems Partnerships",
-    detailTitle: "Ecosystems Partnerships Associate",
-    impact: "Turning the Maple Valley into North America's strongest tech hub.",
-    details: "Helping startups raise and connecting cracked builders.",
+    title: "Partner Innovation",
+    detailTitle: "Partner Innovation Lead",
+    impact: "Helping portcos raise and turning the Maple Valley into North America's strongest tech hub.",
+    details: "Supported our portfolio companies through $8.8M in raises. Still connecting cracked builders.",
     status: "Bags loading",
+  },
+  {
+    slug: "sagard",
+    from: "Sagard",
+    fromUrl: "https://www.sagard.com/",
+    image: "/SAGARD.png",
+    origin: "Toronto",
+    title: "AI Engineering",
+    detailTitle: "AI Engineering Intern",
+    impact: "Building internal tooling for a global private equity platform.",
+    details: "Currently shipping tools that help teams move faster behind the scenes.",
+    status: "Bags loading",
+  },
+  {
+    slug: "hack-the-north",
+    from: "Techyon",
+    fromUrl: "https://techyon.org/",
+    image: "/HTN_ORGANIZER.png",
+    origin: "Waterloo",
+    title: "Event Organizer",
+    detailTitle: "Organizer · Hack the North & Waterloo Tech Week",
+    impact: "Helping run two of Waterloo's biggest builder weekends.",
+    details: "Planning logistics, wrangling volunteers, and making sure hackers actually have a good time.",
+    status: "Bags ready",
+    links: [
+      { label: "Hack the North", url: "https://hackthenorth.com/" },
+      { label: "Waterloo Tech Week", url: "https://waterlootechweek.ca/" },
+    ],
   },
   {
     slug: "ace-consulting",

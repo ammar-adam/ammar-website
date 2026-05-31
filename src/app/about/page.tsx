@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { aboutAmenities, aboutIntro, aboutLocationStamps, aboutPhotos, aboutWhatsUp } from "@/data/about";
+import { aboutAmenities, aboutFunFacts, aboutIntro, aboutLocationStamps, aboutMenuItems, aboutPhotos } from "@/data/about";
 import { boardingPassConfig } from "@/data/boardingPass";
 
 type Flyer = "passport" | "safety" | "magazine" | "menu" | null;
@@ -114,8 +114,8 @@ function FlyerCard({ flyer, onClose }: { flyer: Exclude<Flyer, null>; onClose: (
 
   const content = {
     safety: { heading: "Safety Card", items: aboutAmenities, list: true, className: "fc-safety" },
-    magazine: { heading: "Inflight Magazine", items: aboutWhatsUp, list: false, className: "fc-magazine" },
-    menu: { heading: "Flight Menu", items: aboutWhatsUp, list: false, className: "fc-menu" },
+    magazine: { heading: "Inflight Magazine", items: aboutFunFacts, list: false, className: "fc-magazine" },
+    menu: { heading: "Flight Menu", items: aboutMenuItems, list: false, className: "fc-menu" },
   }[flyer];
 
   return (
@@ -127,6 +127,12 @@ function FlyerCard({ flyer, onClose }: { flyer: Exclude<Flyer, null>; onClose: (
           <div className="menu-stamps" aria-hidden>
             <span>☕</span><span>🥙</span><span>🍵</span><span>🍽</span>
           </div>
+        )}
+        {flyer === "magazine" && (
+          <p className="fc-sub">Random facts from seat 1A.</p>
+        )}
+        {flyer === "menu" && (
+          <p className="fc-sub">What&apos;s on the menu this flight.</p>
         )}
         {content.list ? (
           <ul>{content.items.map((item) => <li key={item}>{item}</li>)}</ul>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { arrivals } from "@/data/arrivals";
 
@@ -8,11 +8,13 @@ const bagColor: Record<string, string> = {
   Waterloo: "#d8a64a",
   Mississauga: "#5b9bd8",
   Dubai: "#c97b4a",
+  Toronto: "#6b8cae",
 };
 
 export default function ArrivalsPage() {
   const [selected, setSelected] = useState<number | null>(null);
   const [dropKey, setDropKey] = useState(0);
+  const detailRef = useRef<HTMLDivElement>(null);
   const current = selected === null ? null : arrivals[selected];
   const loop = [...arrivals, ...arrivals];
 
@@ -20,6 +22,12 @@ export default function ArrivalsPage() {
     setSelected(index);
     setDropKey((value) => value + 1);
   };
+
+  useEffect(() => {
+    if (selected !== null && detailRef.current) {
+      detailRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [selected, dropKey]);
 
   return (
     <section className="view wrap" data-screen-label="Experiences">
@@ -69,7 +77,7 @@ export default function ArrivalsPage() {
         </div>
       </div>
 
-      <div className="arr-detail">
+      <div className="arr-detail" ref={detailRef}>
         <div className="ad-l">
           <div className="trolley-load">
             <div className="tl-bags tl-bags-single">
@@ -81,6 +89,9 @@ export default function ArrivalsPage() {
                 >
                   <span className="tl-photo-handle" />
                   <span className="tl-photo-pull" />
+                  {current.image && (
+                    <img className="tl-photo-img" src={current.image} alt="" />
+                  )}
                   <strong>{current.origin}</strong>
                   <small>{current.from}</small>
                   <i aria-hidden />
@@ -100,8 +111,21 @@ export default function ArrivalsPage() {
               <div className="ad-title">{current.detailTitle || current.title}</div>
               <div className="ad-impact">{current.impact}</div>
               <div className="ad-det">{current.details}</div>
-              <div className="ad-status"><i />{current.status}</div>
-              {current.fromUrl && <div className="ad-link"><a className="btn" href={current.fromUrl} target="_blank" rel="noreferrer">Visit {current.from} -&gt;</a></div>}
+              {current.status && (
+                <div className="ad-status"><i />{current.status}</div>
+              )}
+              <div className="ad-links">
+                {current.fromUrl && (
+                  <a className="btn ad-link-btn" href={current.fromUrl} target="_blank" rel="noreferrer">
+                    Visit {current.from} -&gt;
+                  </a>
+                )}
+                {current.links?.map((link) => (
+                  <a className="btn ad-link-btn ad-link-secondary" key={link.url} href={link.url} target="_blank" rel="noreferrer">
+                    {link.label} -&gt;
+                  </a>
+                ))}
+              </div>
             </>
           ) : (
             <>
