@@ -125,6 +125,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             Ctrl K
           </button>
         </div>
+        <button
+          type="button"
+          className="mobile-search"
+          onClick={() => setCommandOpen(true)}
+          aria-label="Search site"
+        >
+          <SearchIcon />
+        </button>
       </header>
 
       <main className="app-main">{children}</main>
@@ -170,6 +178,15 @@ function MoonIcon() {
   return (
     <svg viewBox="0 0 24 24" aria-hidden="true">
       <path d="M20.2 15.6A8.4 8.4 0 0 1 8.4 3.8 8.7 8.7 0 1 0 20.2 15.6Z" />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="M16 16l5 5" />
     </svg>
   );
 }

@@ -89,9 +89,6 @@ export default function ArrivalsPage() {
                 >
                   <span className="tl-photo-handle" />
                   <span className="tl-photo-pull" />
-                  {current.image && (
-                    <img className="tl-photo-img" src={current.image} alt="" />
-                  )}
                   <strong>{current.origin}</strong>
                   <small>{current.from}</small>
                   <i aria-hidden />
