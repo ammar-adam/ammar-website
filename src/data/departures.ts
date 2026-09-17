@@ -152,15 +152,15 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "givefund",
-    name: "Givefund",
+    slug: "waze-voice-sdk",
+    name: "Waze Voice SDK",
     year: "2026",
-    destination: "Give Better",
-    flightCode: "GF26",
-    routeName: "Cross-platform cause discovery",
+    destination: "Recalculating",
+    flightCode: "WVS26",
+    routeName: "Custom character voices for Waze",
     gate: "E",
     status: "Boarding",
-    shortDesc: "Indexes crowdfunding campaigns across platforms so you can find causes you care about, tied to real people. Saved Stripe Link details autofill donations so you skip creating accounts everywhere.",
+    shortDesc: "Python toolkit that builds custom Waze navigation voice packs from recordings or TTS. Exports all 43 prompts, both unit systems, packed inside Waze's size cap. Seven packs are live.",
     screenshot: "/placeholders/screenshot.svg",
     seats: [
       {
@@ -168,7 +168,8 @@ export const projects: Project[] = [
         label: "Links",
         content: "",
         links: [
-          { label: "View Project", url: "https://givefund.vercel.app/" },
+          { label: "GitHub", url: "https://github.com/ammar-adam/waze-voice-sdk" },
+          { label: "Try Voices", url: "https://claude.ai/code/artifact/02f68bd0-af45-409b-a48a-448810b0f430" },
         ],
       },
     ],
