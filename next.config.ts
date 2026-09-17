@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
       { source: "/boarding-pass", destination: "/resume", permanent: true },
       { source: "/departures/etf-builder", destination: "/departures/risk-optimized", permanent: true },
       { source: "/departures/cooltogether", destination: "/departures/mycelia", permanent: true },
+      { source: "/departures/givefund", destination: "/departures/waze-voice-sdk", permanent: true },
     ];
   },
 };
