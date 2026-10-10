@@ -8,16 +8,15 @@ export const loungeRoomContent = {
     paragraphs: [
       "Recent reflections on goals, direction, and what comes next.",
     ],
-    date: "February 2026",
+    date: "October 2026",
   },
 
   bookshelf: {
     title: "What I'm Working On",
     items: [
-      { label: "", text: "Agentic trading systems" },
-      { label: "", text: "WhatsApp automation for a commodities business" },
-      { label: "", text: "Machine learning for football predictions" },
-      { label: "", text: "Case competitions" },
+      { label: "", text: "Legal AI tooling and computer-use agents at Sagard" },
+      { label: "", text: "Scouting student builders for OpenAI" },
+      { label: "", text: "Evals for RocketShip" },
       { label: "", text: "Trying to read more" },
       { label: "", text: "Cooking" },
     ],
@@ -50,7 +49,7 @@ export const loungeRoomContent = {
   table: {
     title: "What's on the table",
     items: [
-      { title: "Café", text: "Looking for Summer 2026 co-ops. Iced coffee and matcha experiments. Chicken shawarma hunts. Liverpool kits. Lego sets. CN Tower models." },
+      { title: "Café", text: "Iced coffee and matcha experiments. Chicken shawarma hunts. Liverpool kits. Lego sets. CN Tower models." },
     ],
   },
 
@@ -58,7 +57,6 @@ export const loungeRoomContent = {
     title: "Café",
     intro: "What's on the table:",
     items: [
-      "Looking for Summer 2026 co-ops",
       "Iced coffee and matcha experiments",
       "Chicken shawarma hunts",
       "Liverpool kits",

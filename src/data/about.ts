@@ -6,7 +6,7 @@ import { loungeRoomContent } from "./loungeRoom";
 import { siteConfig } from "./site";
 
 export const aboutIntro =
-  "I'm a first-year Computer Science & Finance student at the University of Waterloo. I love building and trying new things while figuring it all out in the process.";
+  "I'm a second-year Computer Science & Finance student at the University of Waterloo. I love building and trying new things while figuring it all out in the process.";
 
 export const aboutPhotos = loungeRoomContent.photos.items;
 
@@ -26,10 +26,10 @@ export const aboutFunFacts = [
   "Liverpool supporter since I was 10",
   "Paddington 2 is the best movie ever made",
   "I can talk about airplanes for way too long",
-  "Led a DECA chapter to top 100 in the world",
+  "DECA International Finalist and FBLA National Champion",
   "Built this site like an airport because most of my life feels like movement",
   "Toronto sunsets > almost everything else",
-  "Currently looking for Summer 2026 co-ops",
+  "Founding Builder Lead at OpenAI, one of 5 across North America",
 ];
 
 export const aboutWhatsUp = loungeRoomContent.cafe.items;
@@ -44,7 +44,7 @@ export const aboutAmenities = [
 
 /** Optional fieldnotes cards: title, date, one line */
 export const aboutFieldnotes = [
-  { title: "Window View", date: "Feb 2026", line: "Recent reflections on goals and direction." },
+  { title: "Window View", date: "Oct 2026", line: "Recent reflections on goals and direction." },
   { title: "What I'm Working On", date: "2026", line: loungeRoomContent.bookshelf.items.map((i) => i.text).slice(0, 2).join(" · ") },
 ];
 

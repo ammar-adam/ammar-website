@@ -9,6 +9,8 @@ const bagColor: Record<string, string> = {
   Mississauga: "#5b9bd8",
   Dubai: "#c97b4a",
   Toronto: "#6b8cae",
+  "San Francisco": "#3f8f6e",
+  "Palo Alto": "#7a9b4a",
 };
 
 export default function ArrivalsPage() {

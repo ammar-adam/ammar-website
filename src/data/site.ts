@@ -77,6 +77,6 @@ export const siteConfig = {
   /** Caption shown below lounge photo when photoUrl is set. */
   photoCaption: {
     name: "",
-    subtitle: "CS + Finance · UW 1B",
+    subtitle: "CS + Finance · UW 2A",
   },
 } as const;

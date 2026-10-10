@@ -1,6 +1,6 @@
 /**
  * Departures = Projects as flights.
- * Seat map order: 1A, 1B, 2A, 2B, 3A, 3B.
+ * Seat map order: 1A, 1B, 2A, 2B, 3A, 3B (max 6).
  */
 
 export type FlightStatus = "Boarding" | "Boarding Closed" | "Departed" | "Delayed";
@@ -41,10 +41,10 @@ export const projects: Project[] = [
     year: "2026",
     destination: "To the moon!",
     flightCode: "RS493",
-    routeName: "Multi-agent equity research and stock picker",
+    routeName: "Multi-agent equity research with honest evals",
     gate: "A",
     status: "Boarding",
-    shortDesc: "Screening S&P 500 stocks to find undervalued rocketships through technical scoring and agentic debate",
+    shortDesc: "Equity research system combining screening, a 5-agent LLM debate, live news and portfolio optimization. Then I built walk-forward evals and found a simple momentum baseline beat the LLM ranker, which exposed inflated backtests.",
     screenshot: "/ROCKETSHIP.png",
     seats: [
       {
@@ -90,7 +90,7 @@ export const projects: Project[] = [
     flightCode: "BETA16",
     routeName: "Portfolio construction for risk-averse investors",
     gate: "C",
-    status: "Boarding Closed",
+    status: "Departed",
     shortDesc: "Using volatility and covariance to create a portfolio allocation using convex optimization",
     screenshot: "/RISKFREE.png",
     seats: [
@@ -105,52 +105,8 @@ export const projects: Project[] = [
       },
     ],
   },
-  {
-    slug: "zarf",
-    name: "Zarf",
-    year: "2026",
-    destination: "Awareness",
-    flightCode: "ZARF21",
-    routeName: "Building clarity and intention in relationships",
-    gate: "B",
-    status: "Boarding",
-    shortDesc: "Finding areas of difference through double-blind conflict resolution and financial stress tests.",
-    screenshot: "/ZARF.png",
-    seats: [
-      {
-        id: "main",
-        label: "Links",
-        content: "",
-        links: [
-          { label: "View Project", url: "https://usezarf.vercel.app/" },
-          { label: "GitHub", url: "https://github.com/ammar-adam/zarf" },
-        ],
-      },
-    ],
-  },
-  {
-    slug: "dollar-seeds",
-    name: "Dollar Seeds",
-    year: "2024-25",
-    destination: "Financial Freedom",
-    flightCode: "CAN25",
-    routeName: "Financial literacy for Canadian immigrants",
-    gate: "D",
-    status: "Boarding",
-    shortDesc: "Built a team of volunteers to create resources in 5 languages, getting approval from Ontario's Associate Minister of Small Business.",
-    screenshot: "/DOLARSEEDS.png",
-    seats: [
-      {
-        id: "main",
-        label: "Links",
-        content: "",
-        links: [
-          { label: "View Project", url: "https://dollarseeds.typedream.app/" },
-          { label: "More", url: "https://www.linkedin.com/posts/ammar-adam_had-the-pleasure-of-meeting-mississauga-streetsville-activity-7257135182573453312-jtfb/?utm_source=share&utm_medium=member_desktop&rcm=ACoAAC8vrDUBjNRa1oP20m7X93vdsiFuxMFdNfE" },
-        ],
-      },
-    ],
-  },
+
+
   {
     slug: "waze-voice-sdk",
     name: "Waze Voice SDK",
