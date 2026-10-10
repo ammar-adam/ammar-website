@@ -68,7 +68,7 @@ export const projects: Project[] = [
     routeName: "iOS App Clip + AI Merchant Dashboard",
     gate: "A",
     status: "Boarding",
-    shortDesc: "Two-sided platform redirecting LLM product links to Canadian small businesses",
+    shortDesc: "iOS App Clip that takes the big-brand product links AI assistants recommend and points them to Canadian small businesses instead. Includes merchant onboarding and Gemini product matching.",
     screenshot: "/CANADACLIP.mp4",
     seats: [
       {
@@ -84,14 +84,14 @@ export const projects: Project[] = [
   },
   {
     slug: "risk-optimized-equity-system",
-    name: "Risk-Free Equity System",
+    name: "Risk-Optimized Portfolio",
     year: "2025",
-    destination: "Risk-Free",
+    destination: "Low Volatility",
     flightCode: "BETA16",
     routeName: "Portfolio construction for risk-averse investors",
     gate: "C",
     status: "Departed",
-    shortDesc: "Using volatility and covariance to create a portfolio allocation using convex optimization",
+    shortDesc: "Portfolio builder for risk-averse investors. Estimates volatility and covariance, then solves for the lowest-risk allocation with convex optimization.",
     screenshot: "/RISKFREE.png",
     seats: [
       {

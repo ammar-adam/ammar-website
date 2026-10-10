@@ -57,7 +57,7 @@ export default function ResumePage() {
         </div>
         <div className="resume-cta">
           <a className="btn solid" href={boardingPassConfig.resumeFileUrl} target="_blank" rel="noreferrer">Download Resume</a>
-          <a className="btn" href="mailto:ammar.adam@uwaterloo.ca">Contact the pilot</a>
+          <a className="btn" href="mailto:ammar.adam@uwaterloo.ca">Email me</a>
         </div>
       </div>
     </section>

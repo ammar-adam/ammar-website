@@ -3,10 +3,10 @@ import { FlapText } from "@/components/FlapText";
 import { siteConfig } from "@/data/site";
 
 const boardRows = [
-  { key: "projects", href: "/projects", gate: "A", destination: "PROJECTS", info: "Things I've been building!", status: "NOW BOARDING", statusClass: "st-amber", arrow: "->" },
-  { key: "arrivals", href: "/arrivals", gate: "B", destination: "EXPERIENCES", info: "Cool stuff I've done", status: "ON TIME", statusClass: "st-green", arrow: "->" },
-  { key: "about", href: "/about", gate: "C", destination: "ABOUT", info: "Get to know the pilot", status: "ON TIME", statusClass: "st-green", arrow: "->" },
-  { key: "resume", href: "/resume", gate: "D", destination: "RESUME", info: "Scan your boarding pass", status: "FINAL CALL", statusClass: "st-amber", arrow: "v" },
+  { key: "projects", href: "/projects", gate: "A", destination: "PROJECTS", info: "Things I've built", status: "NOW BOARDING", statusClass: "st-amber", arrow: "->" },
+  { key: "arrivals", href: "/arrivals", gate: "B", destination: "EXPERIENCES", info: "Where I've worked", status: "ON TIME", statusClass: "st-green", arrow: "->" },
+  { key: "about", href: "/about", gate: "C", destination: "ABOUT", info: "Off the clock", status: "ON TIME", statusClass: "st-green", arrow: "->" },
+  { key: "resume", href: "/resume", gate: "D", destination: "RESUME", info: "The one-page version", status: "FINAL CALL", statusClass: "st-amber", arrow: "v" },
 ];
 
 export default function HomePage() {
@@ -19,7 +19,7 @@ export default function HomePage() {
             Hi, I&apos;m Ammar.{" "}
             <span className="amb">Welcome to AFA International.</span>
           </h1>
-          <p className="h-sub">Select your gate for departure.</p>
+          <p className="h-sub">CS &amp; Finance at Waterloo. Building AI tools at Sagard, scouting builders for OpenAI. Pick a gate.</p>
           <div className="h-socials">
             <a className="soc-link soc-mail" href={siteConfig.socialLinks.email} aria-label="Email" />
             <a className="soc-link soc-github" href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer" aria-label="GitHub" />

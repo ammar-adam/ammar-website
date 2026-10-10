@@ -10,5 +10,5 @@ export const boardingPassConfig = {
   from: "YYZ",
   to: "My next adventure",
   flight: "Wandering",
-  tagline: "Builder · Innovator · Operator",
+  tagline: "AI Engineer @ Sagard",
 } as const;

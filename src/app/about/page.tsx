@@ -190,7 +190,7 @@ function FlyerCard({ flyer, onClose }: { flyer: Exclude<Flyer, null>; onClose: (
           <div className="pp-sub">Computer Science and Finance · University of Waterloo</div>
           <div className="pp-photo-row">
             <div className="pp-photo-placeholder">AFA</div>
-            <div className="pp-fields"><span>FROM YYZ</span><span>STATUS IN PROGRESS</span><span>FOCUS SYSTEMS / STARTUPS / FINTECH</span></div>
+            <div className="pp-fields"><span>FROM YYZ</span><span>STATUS IN PROGRESS</span><span>FOCUS AI / FINANCE / STARTUPS</span></div>
           </div>
           <div className="pp-stamps">
             {aboutLocationStamps.map((stamp) => (

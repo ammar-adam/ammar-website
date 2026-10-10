@@ -10,10 +10,10 @@ import { siteConfig } from "@/data/site";
 const cloudVideoUrl = "https://videos.pexels.com/video-files/9669392/9669392-hd_1080_1920_30fps.mp4";
 
 const gates = [
-  { id: "projects", gate: "A", label: "Projects", href: "/projects", info: "Things I've been building" },
-  { id: "arrivals", gate: "B", label: "Experiences", href: "/arrivals", info: "Cool stuff I've done" },
-  { id: "about", gate: "C", label: "About", href: "/about", info: "Get to know the pilot" },
-  { id: "resume", gate: "D", label: "Resume", href: "/resume", info: "Scan your boarding pass" },
+  { id: "projects", gate: "A", label: "Projects", href: "/projects", info: "Things I've built" },
+  { id: "arrivals", gate: "B", label: "Experiences", href: "/arrivals", info: "Where I've worked" },
+  { id: "about", gate: "C", label: "About", href: "/about", info: "Off the clock" },
+  { id: "resume", gate: "D", label: "Resume", href: "/resume", info: "The one-page version" },
 ] as const;
 
 type Theme = "day" | "night";
@@ -203,10 +203,10 @@ function CommandPalette({
   const [query, setQuery] = useState("");
   const items = useMemo(
     () => [
-      { code: "A", title: "Projects", sub: "Things I've been building", href: "/projects" },
-      { code: "B", title: "Experiences", sub: "Cool stuff I've done", href: "/arrivals" },
-      { code: "C", title: "About", sub: "Get to know the pilot", href: "/about" },
-      { code: "D", title: "Resume", sub: "Scan your boarding pass", href: "/resume" },
+      { code: "A", title: "Projects", sub: "Things I've built", href: "/projects" },
+      { code: "B", title: "Experiences", sub: "Where I've worked", href: "/arrivals" },
+      { code: "C", title: "About", sub: "Off the clock", href: "/about" },
+      { code: "D", title: "Resume", sub: "The one-page version", href: "/resume" },
       ...projects.map((project) => ({
         code: project.flightCode,
         title: project.name,

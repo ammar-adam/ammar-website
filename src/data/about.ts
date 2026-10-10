@@ -6,7 +6,7 @@ import { loungeRoomContent } from "./loungeRoom";
 import { siteConfig } from "./site";
 
 export const aboutIntro =
-  "I'm a second-year Computer Science & Finance student at the University of Waterloo. I love building and trying new things while figuring it all out in the process.";
+  "I'm a second-year CS & Finance student at Waterloo. Right now I'm building AI tools for the legal team at Sagard and scouting student builders for OpenAI. On the side I ship things like Backseat and RocketShip.";
 
 export const aboutPhotos = loungeRoomContent.photos.items;
 
@@ -15,31 +15,29 @@ export const aboutMenuItems = [
   "Iced coffee and mango matcha (non-negotiable)",
   "Chicken shawarma hunts across the GTA",
   "Steak nights when I actually have time to cook",
-  "Matcha before anything else on hard days",
   "Cooking experiments that sometimes work",
   "Post-hackathon pizza at 2am",
 ];
 
 /** In-flight magazine — lighter fun facts */
 export const aboutFunFacts = [
-  "Youngest intern at Alpen Capital at 16",
+  "Youngest intern at Alpen Capital, at 16",
   "Liverpool supporter since I was 10",
   "Paddington 2 is the best movie ever made",
   "I can talk about airplanes for way too long",
-  "DECA International Finalist and FBLA National Champion",
-  "Built this site like an airport because most of my life feels like movement",
+  "DECA International Finalist, FBLA National Champion",
+  "High school valedictorian",
   "Toronto sunsets > almost everything else",
-  "Founding Builder Lead at OpenAI, one of 5 across North America",
 ];
 
 export const aboutWhatsUp = loungeRoomContent.cafe.items;
 
 /** Safety card — personal interests */
 export const aboutAmenities = [
-  "I love cooking and eating food: from shawarma and steaks, to iced coffee and matcha",
-  "Super passionate about airplanes and aviation",
-  "How I Met Your Mother is my favourite show ever. And, Paddington 2 is the best movie ever",
-  "I'm a massive sports fan. Liverpool, the Toronto Blue Jays, and the Raptors",
+  "Aviation nerd. Ask me about airline economics",
+  "Liverpool, the Blue Jays and the Raptors",
+  "How I Met Your Mother is my favourite show",
+  "Golf, LEGO and the NYT puzzles",
 ];
 
 /** Optional fieldnotes cards: title, date, one line */

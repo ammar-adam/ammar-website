@@ -43,7 +43,7 @@ export const arrivals: Arrival[] = [
     title: "M&A Analyst",
     detailTitle: "Mergers & Acquisitions Summer Analyst",
     impact: "Supported $50M+ in deal flow on buy and sell-side equity advisory.",
-    details: "Youngest intern @ 16. Learned financial modelling and investment research.",
+    details: "Youngest intern there, at 16. Learned financial modelling and investment research.",
     status: "Bags ready",
   },
   {

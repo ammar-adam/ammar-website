@@ -1,4 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
-  <circle cx="16" cy="16" r="16" fill="#000"/>
-  <text x="16" y="21" font-family="system-ui, -apple-system, sans-serif" font-size="14" font-weight="700" fill="#f8fafc" text-anchor="middle">AA</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="7" fill="#11151c"/>
+  <g transform="translate(16 16) rotate(45) translate(-12 -12) translate(1.2 1.2) scale(0.9)">
+    <path fill="#f2b33d" d="M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/>
+  </g>
 </svg>

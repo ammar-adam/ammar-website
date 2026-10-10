@@ -24,7 +24,7 @@ export const siteConfig = {
   },
 
   /** Landing hero: one clear sentence. */
-  heroOneLiner: "Hi, I'm Ammar. I study CS & Finance at UWaterloo. Welcome to AFA International.",
+  heroOneLiner: "Hi, I'm Ammar. CS & Finance at Waterloo. Welcome to AFA International.",
 
   socialLinks: {
     email: "mailto:ammar.adam@uwaterloo.ca",
@@ -40,10 +40,11 @@ export const siteConfig = {
 
   /** Top ticker: floating taglines */
   tickerIdentifiers: [
-    "Computer Science and Finance at the University of Waterloo",
+    "CS & Finance at Waterloo",
     "Toronto, Dubai, Karachi",
-    "Building systems and startups",
-    "Food, travel, learning as I go",
+    "AI Engineer at Sagard",
+    "Founding Builder Lead at OpenAI",
+    "Probably eating shawarma",
   ],
 
   /** Hero background image (optional). Add /hero-airport.jpg to public. */
@@ -54,7 +55,7 @@ export const siteConfig = {
     passenger: "Ammar Adam",
     program: "Computer Science and Finance",
     institution: "University of Waterloo",
-    focus: "Systems, startups, fintech",
+    focus: "AI, finance, startups",
     currentStatus: "In progress",
   },
 
