@@ -108,15 +108,15 @@ export const projects: Project[] = [
 
 
   {
-    slug: "waze-voice-sdk",
-    name: "Waze Voice SDK",
+    slug: "backseat",
+    name: "Backseat",
     year: "2026",
     destination: "Recalculating",
-    flightCode: "WVS26",
-    routeName: "Custom character voices for Waze",
+    flightCode: "BKS26",
+    routeName: "Make your GPS iconic",
     gate: "E",
     status: "Boarding",
-    shortDesc: "Python toolkit that builds custom Waze navigation voice packs from recordings or TTS. Exports all 43 prompts, both unit systems, packed inside Waze's size cap. Seven packs are live.",
+    shortDesc: "Pick a character as your Waze navigator and install it in one tap. Built on an open-source SDK I wrote after reverse-engineering Waze's undocumented voice format: TTS, source separation, and round-trip validation across all 43 prompts.",
     screenshot: "/placeholders/screenshot.svg",
     seats: [
       {
@@ -124,8 +124,8 @@ export const projects: Project[] = [
         label: "Links",
         content: "",
         links: [
+          { label: "View Project", url: "https://backseatnav.com/" },
           { label: "GitHub", url: "https://github.com/ammar-adam/waze-voice-sdk" },
-          { label: "Try Voices", url: "https://claude.ai/code/artifact/02f68bd0-af45-409b-a48a-448810b0f430" },
         ],
       },
     ],
