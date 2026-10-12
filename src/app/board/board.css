@@ -1,0 +1,66 @@
+.board-page {
+  min-height: 100vh;
+  background: #0b0c0e;
+  color: #f4d48a;
+  padding: 72px 16px;
+  font-family: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+}
+.brd {
+  max-width: 720px;
+  margin: 0 auto;
+  font-size: 13px;
+}
+.brd-head {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #2a2b2f;
+  color: #8a8578;
+  letter-spacing: 0.08em;
+}
+.brd-who { padding: 28px 0 8px; }
+.brd-who h1 { margin: 0 0 6px; font-size: 22px; font-weight: 600; letter-spacing: 0.08em; }
+.brd-who p { margin: 0 0 12px; color: #b5ad98; }
+.brd-who nav { display: flex; flex-wrap: wrap; gap: 14px; }
+.brd a { color: #f4d48a; text-decoration: none; border-bottom: 1px solid #5a4d2c; }
+.brd a:hover { border-color: #f4d48a; }
+
+.brd-label {
+  margin: 32px 0 6px;
+  color: #6f6a5f;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 11px;
+}
+.brd-item { border-top: 1px solid #1d1e22; }
+.brd-row {
+  display: grid;
+  grid-template-columns: 52px 1fr 190px 70px;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  padding: 10px 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.brd-row:hover .c-name { color: #fff3cf; }
+.flap { white-space: pre; letter-spacing: 0.06em; }
+.c-code { color: #8a8578; }
+.c-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.c-role { color: #8a8578; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.c-status { text-align: right; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; }
+.c-status.now { color: #7ee2a0; }
+.c-status.done { color: #6f6a5f; }
+.brd-note { padding: 0 0 12px 64px; color: #b5ad98; line-height: 1.6; }
+.brd-foot { margin-top: 32px; padding-top: 10px; border-top: 1px solid #2a2b2f; color: #6f6a5f; font-size: 11px; letter-spacing: 0.06em; }
+
+@media (max-width: 600px) {
+  .board-page { padding: 40px 16px; }
+  .brd-row { grid-template-columns: 40px 1fr 60px; }
+  .c-role { display: none; }
+  .brd-note { padding-left: 52px; }
+}

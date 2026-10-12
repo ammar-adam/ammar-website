@@ -1,0 +1,50 @@
+.route { margin: 36px 0 28px; padding: 0 18px; }
+.route-line {
+  position: relative;
+  height: 44px;
+  border-bottom: 1.5px dashed var(--line);
+  margin-bottom: 30px;
+}
+.route-plane {
+  position: absolute;
+  bottom: -11px;
+  transform: translateX(-50%);
+  font-size: 18px;
+  opacity: 0;
+  transition: left 0.7s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.3s;
+  pointer-events: none;
+}
+.route-plane.moving { opacity: 1; }
+.stop {
+  position: absolute;
+  bottom: -7px;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--dim);
+  font: 12px ui-monospace, "SFMono-Regular", Menlo, monospace;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+.stop i {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bg);
+  border: 1.5px solid var(--dim);
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.stop span { position: relative; top: 0; }
+.stop:hover, .stop.on { color: var(--text); }
+.stop.on i { background: var(--text); border-color: var(--text); }
+.stop.on i, .stop:hover i { transform: scale(1.1); }
+.route-caption { min-height: 24px; color: var(--dim); }
+.route-caption b { color: var(--text); font-weight: 500; }
+.route-caption .hint { font-size: 13px; }
+.route-page li { transition: opacity 0.25s; }
+.route-page li.faded { opacity: 0.3; }
