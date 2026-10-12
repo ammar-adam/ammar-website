@@ -117,7 +117,7 @@ export const projects: Project[] = [
     gate: "E",
     status: "Boarding",
     shortDesc: "Pick a character as your Waze navigator and install it in one tap. Built on an open-source SDK I wrote after reverse-engineering Waze's undocumented voice format: TTS, source separation, and round-trip validation across all 43 prompts.",
-    screenshot: "/placeholders/screenshot.svg",
+    screenshot: "/BACKSEAT.png",
     seats: [
       {
         id: "main",
