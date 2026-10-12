@@ -1,20 +1,11 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
-import { projects } from "@/data/departures";
-import { arrivals } from "@/data/arrivals";
+import { useEffect, useRef, useState } from "react";
+import { stops, type StopId } from "@/components/stops/stops";
 import { siteConfig } from "@/data/site";
 
 const cloudVideoUrl = "https://videos.pexels.com/video-files/9669392/9669392-hd_1080_1920_30fps.mp4";
 
-const gates = [
-  { id: "projects", gate: "A", label: "Projects", href: "/projects", info: "Things I've built" },
-  { id: "arrivals", gate: "B", label: "Experiences", href: "/arrivals", info: "Where I've worked" },
-  { id: "about", gate: "C", label: "About", href: "/about", info: "Off the clock" },
-  { id: "resume", gate: "D", label: "Resume", href: "/resume", info: "The one-page version" },
-] as const;
 
 type Theme = "day" | "night";
 
@@ -40,22 +31,37 @@ function useClock() {
   }).format(now);
 }
 
-function activeGate(pathname: string) {
-  if (pathname.startsWith("/projects") || pathname.startsWith("/departures")) return "projects";
-  if (pathname.startsWith("/arrivals")) return "arrivals";
-  if (pathname.startsWith("/about") || pathname.startsWith("/lounge")) return "about";
-  if (pathname.startsWith("/resume") || pathname.startsWith("/boarding-pass")) return "resume";
-  return "home";
+/** Which stop is under the top third of the screen. */
+function useActiveStop(): StopId {
+  const [active, setActive] = useState<StopId>("check-in");
+  useEffect(() => {
+    const update = () => {
+      const line = window.innerHeight * 0.35;
+      let current: StopId = "check-in";
+      for (const stop of stops) {
+        const el = document.getElementById(stop.id);
+        if (el && el.getBoundingClientRect().top <= line) current = stop.id;
+      }
+      setActive(current);
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+    window.addEventListener("resize", update);
+    return () => {
+      window.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+  return active;
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const router = useRouter();
   const clock = useClock();
   const [theme, setTheme] = useState<Theme>("day");
   const [themeHydrated, setThemeHydrated] = useState(false);
-  const [commandOpen, setCommandOpen] = useState(false);
-  const active = activeGate(pathname);
+  const active = useActiveStop();
+  const navRef = useRef<HTMLElement>(null);
+  const [planeX, setPlaneX] = useState<number | null>(null);
 
   useEffect(() => {
     const id = window.setTimeout(() => {
@@ -74,16 +80,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     document.documentElement.dataset.accent = "amber";
   }, []);
 
+
   useEffect(() => {
-    const onKey = (event: KeyboardEvent) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === "k") {
-        event.preventDefault();
-        setCommandOpen((value) => !value);
-      }
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
+    const nav = navRef.current;
+    const link = nav?.querySelector<HTMLAnchorElement>(`a[data-stop="${active}"]`);
+    if (!nav || !link) return;
+    const place = () => setPlaneX(link.offsetLeft + link.offsetWidth / 2);
+    place();
+    window.addEventListener("resize", place);
+    return () => window.removeEventListener("resize", place);
+  }, [active]);
 
   return (
     <div className="app-shell">
@@ -107,39 +113,32 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <span className="float-bag-card float-bag-card-b"><b>DXB</b><small>CLAIM 03</small></span>
       </div>
       <header className="topbar">
-        <Link href="/" className="brand" aria-label="AFA International home">
+        <a href="#check-in" className="brand" aria-label="Back to check-in">
           <span className="brand-pin"><img src="/airport-icons/plane-side.svg" alt="" /></span>
           <span>AFA <b>International</b></span>
-        </Link>
-        <nav className="topnav" aria-label="Gate navigation">
-          {gates.map((gate) => (
-            <Link key={gate.id} href={gate.href} className={active === gate.id ? "active" : ""}>
-              <span>{gate.gate}</span>
-              {gate.label}
-            </Link>
+        </a>
+        <nav className="topnav walk-nav" aria-label="Walk through the terminal" ref={navRef}>
+          {stops.map((stop) => (
+            <a key={stop.id} href={`#${stop.id}`} data-stop={stop.id} className={active === stop.id ? "active" : ""}>
+              <span>{stop.code}</span>
+              {stop.label}
+            </a>
           ))}
+          <i className="walk-track" aria-hidden />
+          {planeX !== null && (
+            <img className="walk-plane" src="/airport-icons/plane-top.svg" alt="" style={{ transform: `translateX(${planeX}px) translateX(-50%) rotate(90deg)` }} />
+          )}
         </nav>
         <div className="topmeta">
           <span className="clock">{clock}</span>
-          <button type="button" className="kbd" onClick={() => setCommandOpen(true)}>
-            Ctrl K
-          </button>
         </div>
-        <button
-          type="button"
-          className="mobile-search"
-          onClick={() => setCommandOpen(true)}
-          aria-label="Search site"
-        >
-          <SearchIcon />
-        </button>
       </header>
 
       <main className="app-main">{children}</main>
 
       <footer className="footer">
         <div>
-          <div className="footer-title">AFA International</div>
+          <div className="footer-title">Thanks for flying AFA International</div>
           <div className="footer-sub">Ammar Adam · Toronto · Dubai · Karachi · built in Waterloo</div>
         </div>
         <div className="socials" aria-label="Social links">
@@ -156,11 +155,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </button>
       </div>
 
-      <CommandPalette
-        open={commandOpen}
-        onClose={() => setCommandOpen(false)}
-        onGo={(href) => router.push(href)}
-      />
     </div>
   );
 }
@@ -182,85 +176,3 @@ function MoonIcon() {
   );
 }
 
-function SearchIcon() {
-  return (
-    <svg viewBox="0 0 24 24" aria-hidden="true">
-      <circle cx="11" cy="11" r="6.5" />
-      <path d="M16 16l5 5" />
-    </svg>
-  );
-}
-
-function CommandPalette({
-  open,
-  onClose,
-  onGo,
-}: {
-  open: boolean;
-  onClose: () => void;
-  onGo: (href: string) => void;
-}) {
-  const [query, setQuery] = useState("");
-  const items = useMemo(
-    () => [
-      { code: "A", title: "Projects", sub: "Things I've built", href: "/projects" },
-      { code: "B", title: "Experiences", sub: "Where I've worked", href: "/arrivals" },
-      { code: "C", title: "About", sub: "Off the clock", href: "/about" },
-      { code: "D", title: "Resume", sub: "The one-page version", href: "/resume" },
-      ...projects.map((project) => ({
-        code: project.flightCode,
-        title: project.name,
-        sub: project.routeName,
-        href: `/departures/${project.slug}`,
-      })),
-      ...arrivals.map((arrival) => ({
-        code: arrival.origin,
-        title: arrival.from,
-        sub: arrival.title,
-        href: `/arrivals/${arrival.slug}`,
-      })),
-    ],
-    [],
-  );
-  const filtered = items.filter((item) => `${item.title} ${item.sub}`.toLowerCase().includes(query.toLowerCase()));
-
-  if (!open) return null;
-
-  return (
-    <div className="cmdk-overlay" onClick={onClose}>
-      <div className="cmdk" onClick={(event) => event.stopPropagation()}>
-        <input
-          autoFocus
-          value={query}
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Escape") onClose();
-            if (event.key === "Enter" && filtered[0]) {
-              onGo(filtered[0].href);
-              onClose();
-            }
-          }}
-          placeholder="Where to? Search gates, projects, experiences..."
-        />
-        <div className="cmdk-list">
-          {filtered.map((item) => (
-            <button
-              type="button"
-              key={`${item.href}-${item.code}`}
-              className="cmdk-item"
-              onClick={() => {
-                onGo(item.href);
-                onClose();
-              }}
-            >
-              <span>{item.code}</span>
-              <strong>{item.title}</strong>
-              <em>{item.sub}</em>
-            </button>
-          ))}
-          {filtered.length === 0 && <div className="cmdk-empty">No gates found.</div>}
-        </div>
-      </div>
-    </div>
-  );
-}

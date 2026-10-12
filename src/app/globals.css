@@ -3886,3 +3886,84 @@ dd {
     --w: .5em;
   }
 }
+
+/* ------------------------------------------------------------------ */
+/* Walk through the terminal: one page, five stops.                    */
+/* ------------------------------------------------------------------ */
+
+html { scroll-behavior: smooth; }
+.stop, .home { scroll-margin-top: 64px; }
+.stop { padding: 96px 0 32px; }
+.stop:last-of-type { padding-bottom: 96px; }
+
+.stop-head { margin-bottom: 32px; }
+.stop-sign {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 20px 9px 9px;
+  background: var(--brd-bg);
+  color: var(--brd-text);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.ss-code {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 6px;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.ss-name { font-weight: 600; }
+.ss-arrow { color: var(--accent); letter-spacing: 0; }
+.ss-dest { color: var(--brd-dim, var(--dim)); }
+.stop-hint { margin-top: 14px; color: var(--dim); font-size: 16px; }
+
+/* the directory now points down the page */
+.home .directory { padding: 56px 0 24px; }
+.home-board-row .fr-arrow { display: inline-block; transition: transform .25s var(--ease); }
+.home-board-row:hover .fr-arrow { transform: translateY(3px); }
+
+/* nav: a dashed route with a plane that follows you down the page */
+.walk-nav { position: relative; }
+.walk-track {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -9px;
+  border-bottom: 1px dashed var(--line);
+  pointer-events: none;
+}
+.walk-plane {
+  position: absolute;
+  left: 0;
+  bottom: -17px;
+  width: 16px;
+  height: 16px;
+  opacity: .9;
+  pointer-events: none;
+  transition: transform .7s cubic-bezier(.65, 0, .35, 1);
+}
+
+@media (max-width: 720px) {
+  .stop { padding: 64px 0 24px; }
+  .stop-sign { gap: 10px; font-size: 11px; padding-right: 14px; }
+  .ss-dest { display: none; }
+  .walk-track, .walk-plane { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .walk-plane { transition: none; }
+}

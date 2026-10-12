@@ -8,7 +8,7 @@ export default function NotFound() {
         This route doesn&apos;t exist. Head back to the terminal.
       </p>
       <Link
-        href="/terminal"
+        href="/"
         className="mt-6 text-sm text-[var(--accent-warm)] hover:underline underline-offset-4"
       >
         → Terminal

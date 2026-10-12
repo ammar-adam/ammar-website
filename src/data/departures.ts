@@ -60,6 +60,28 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "backseat",
+    name: "Backseat",
+    year: "2026",
+    destination: "Recalculating",
+    flightCode: "BKS26",
+    routeName: "Make your GPS iconic",
+    gate: "E",
+    status: "Boarding",
+    shortDesc: "Pick a character as your Waze navigator and install it in one tap. Built on an open-source SDK I wrote after reverse-engineering Waze's undocumented voice format: TTS, source separation, and round-trip validation across all 43 prompts.",
+    screenshot: "/BACKSEAT.png",
+    seats: [
+      {
+        id: "main",
+        label: "Links",
+        content: "",
+        links: [
+          { label: "View Project", url: "https://backseatnav.com/" },
+          { label: "GitHub", url: "https://github.com/ammar-adam/waze-voice-sdk" },
+        ],
+      },
+    ],
+  },  {
     slug: "canadaclip",
     name: "CanadaClip",
     year: "2026",
@@ -107,29 +129,7 @@ export const projects: Project[] = [
   },
 
 
-  {
-    slug: "backseat",
-    name: "Backseat",
-    year: "2026",
-    destination: "Recalculating",
-    flightCode: "BKS26",
-    routeName: "Make your GPS iconic",
-    gate: "E",
-    status: "Boarding",
-    shortDesc: "Pick a character as your Waze navigator and install it in one tap. Built on an open-source SDK I wrote after reverse-engineering Waze's undocumented voice format: TTS, source separation, and round-trip validation across all 43 prompts.",
-    screenshot: "/placeholders/screenshot.svg",
-    seats: [
-      {
-        id: "main",
-        label: "Links",
-        content: "",
-        links: [
-          { label: "View Project", url: "https://backseatnav.com/" },
-          { label: "GitHub", url: "https://github.com/ammar-adam/waze-voice-sdk" },
-        ],
-      },
-    ],
-  },
+
 ];
 
 export function getProjectBySlug(slug: string): Project | undefined {

@@ -6,12 +6,16 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/departures", destination: "/projects", permanent: true },
-      { source: "/boarding-pass", destination: "/resume", permanent: true },
-      { source: "/departures/etf-builder", destination: "/departures/risk-optimized", permanent: true },
-      { source: "/departures/cooltogether", destination: "/departures/mycelia", permanent: true },
-      { source: "/departures/givefund", destination: "/departures/waze-voice-sdk", permanent: true },
+      { source: "/arrivals/:path*", destination: "/#bag-drop", permanent: false },
+      { source: "/projects", destination: "/#gate", permanent: false },
+      { source: "/departures/:path*", destination: "/#gate", permanent: false },
+      { source: "/resume", destination: "/#boarding", permanent: false },
+      { source: "/boarding-pass", destination: "/#boarding", permanent: false },
+      { source: "/about", destination: "/#in-flight", permanent: false },
+      { source: "/lounge", destination: "/#in-flight", permanent: false },
+      { source: "/terminal", destination: "/", permanent: false },
     ];
+
   },
 };
 
