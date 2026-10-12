@@ -1,0 +1,137 @@
+/**
+ * Departures = Projects as flights.
+ * Seat map order: 1A, 1B, 2A, 2B, 3A, 3B (max 6).
+ */
+
+export type FlightStatus = "Boarding" | "Boarding Closed" | "Departed" | "Delayed";
+
+export interface ProjectLink {
+  label: string;
+  url: string;
+}
+
+export interface ProjectSeat {
+  id: string;
+  label: string;
+  content: string;
+  links?: ProjectLink[];
+}
+
+export interface Project {
+  slug: string;
+  /** Display name on seat (e.g. "Rocketship") */
+  name: string;
+  year: string;
+  /** Gate panel destination line (e.g. "To the moon!") */
+  destination: string;
+  flightCode: string;
+  routeName: string;
+  stackTag?: string;
+  gate: string;
+  status: FlightStatus;
+  shortDesc: string;
+  screenshot: string;
+  seats: ProjectSeat[];
+}
+
+export const projects: Project[] = [
+  {
+    slug: "rocketship",
+    name: "Rocketship",
+    year: "2026",
+    destination: "To the moon!",
+    flightCode: "RS493",
+    routeName: "Multi-agent equity research with honest evals",
+    gate: "A",
+    status: "Boarding",
+    shortDesc: "Equity research system combining screening, a 5-agent LLM debate, live news and portfolio optimization. Then I built walk-forward evals and found a simple momentum baseline beat the LLM ranker, which exposed inflated backtests.",
+    screenshot: "/ROCKETSHIP.png",
+    seats: [
+      {
+        id: "main",
+        label: "Links",
+        content: "",
+        links: [
+          { label: "View Project", url: "https://rocketshipstocks.vercel.app/" },
+          { label: "GitHub", url: "https://github.com/ammar-adam/rocketship" },
+          { label: "Demo", url: "https://www.loom.com/share/9df9303e6d7742838730fdc1ff5bff29" },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "canadaclip",
+    name: "CanadaClip",
+    year: "2026",
+    destination: "Canadian SMBs",
+    flightCode: "CC24",
+    routeName: "iOS App Clip + AI Merchant Dashboard",
+    gate: "A",
+    status: "Boarding",
+    shortDesc: "iOS App Clip that takes the big-brand product links AI assistants recommend and points them to Canadian small businesses instead. Includes merchant onboarding and Gemini product matching.",
+    screenshot: "/CANADACLIP.mp4",
+    seats: [
+      {
+        id: "main",
+        label: "Links",
+        content: "",
+        links: [
+          { label: "GitHub", url: "https://github.com/ammar-adam/canada-clip-hackcanada" },
+          { label: "Demo", url: "https://youtu.be/JzYwfPrcPtM?si=v9hC_aww9t8z7gmK" },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "risk-optimized-equity-system",
+    name: "Risk-Optimized Portfolio",
+    year: "2025",
+    destination: "Low Volatility",
+    flightCode: "BETA16",
+    routeName: "Portfolio construction for risk-averse investors",
+    gate: "C",
+    status: "Departed",
+    shortDesc: "Portfolio builder for risk-averse investors. Estimates volatility and covariance, then solves for the lowest-risk allocation with convex optimization.",
+    screenshot: "/RISKFREE.png",
+    seats: [
+      {
+        id: "main",
+        label: "Links",
+        content: "",
+        links: [
+          { label: "GitHub", url: "https://github.com/ammar-adam/risk-optimized-equity-system" },
+          { label: "Demo", url: "https://www.loom.com/share/f9d68d48cef5487896156f55c5669271" },
+        ],
+      },
+    ],
+  },
+
+
+  {
+    slug: "backseat",
+    name: "Backseat",
+    year: "2026",
+    destination: "Recalculating",
+    flightCode: "BKS26",
+    routeName: "Make your GPS iconic",
+    gate: "E",
+    status: "Boarding",
+    shortDesc: "Pick a character as your Waze navigator and install it in one tap. Built on an open-source SDK I wrote after reverse-engineering Waze's undocumented voice format: TTS, source separation, and round-trip validation across all 43 prompts.",
+    screenshot: "/placeholders/screenshot.svg",
+    seats: [
+      {
+        id: "main",
+        label: "Links",
+        content: "",
+        links: [
+          { label: "View Project", url: "https://backseatnav.com/" },
+          { label: "GitHub", url: "https://github.com/ammar-adam/waze-voice-sdk" },
+        ],
+      },
+    ],
+  },
+];
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return projects.find((p) => p.slug === slug);
+}
