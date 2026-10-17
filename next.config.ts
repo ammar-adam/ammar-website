@@ -5,12 +5,16 @@ const nextConfig: NextConfig = {
     root: __dirname,
   },
   async redirects() {
+    // The old multi-page terminal now lives on one page; keep old links working.
     return [
-      { source: "/departures", destination: "/projects", permanent: true },
-      { source: "/boarding-pass", destination: "/resume", permanent: true },
-      { source: "/departures/etf-builder", destination: "/departures/risk-optimized", permanent: true },
-      { source: "/departures/cooltogether", destination: "/departures/mycelia", permanent: true },
-      { source: "/departures/givefund", destination: "/departures/waze-voice-sdk", permanent: true },
+      { source: "/terminal", destination: "/", permanent: false },
+      { source: "/arrivals/:path*", destination: "/#departures", permanent: false },
+      { source: "/projects", destination: "/#security", permanent: false },
+      { source: "/departures/:path*", destination: "/#security", permanent: false },
+      { source: "/about", destination: "/#gate", permanent: false },
+      { source: "/lounge", destination: "/#gate", permanent: false },
+      { source: "/resume", destination: "/Ammar_Adam.pdf", permanent: false },
+      { source: "/boarding-pass", destination: "/#boarding", permanent: false },
     ];
   },
 };

@@ -2,17 +2,12 @@ import Link from "next/link";
 
 export default function NotFound() {
   return (
-    <div className="min-h-[60vh] flex flex-col items-center justify-center px-4">
-      <h1 className="text-2xl font-light text-[var(--text-primary)]">Gate not found</h1>
-      <p className="text-[var(--text-secondary)] mt-2 text-sm">
-        This route doesn&apos;t exist. Head back to the terminal.
-      </p>
-      <Link
-        href="/terminal"
-        className="mt-6 text-sm text-[var(--accent-warm)] hover:underline underline-offset-4"
-      >
-        → Terminal
+    <main className="lost">
+      <p className="eyebrow">Gate not found</p>
+      <h1>This flight doesn&apos;t exist.</h1>
+      <Link href="/" className="btn-depart">
+        Back to check-in <span className="btn-arrow" aria-hidden>←</span>
       </Link>
-    </div>
+    </main>
   );
 }
