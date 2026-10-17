@@ -9,10 +9,10 @@ const nextConfig: NextConfig = {
     return [
       { source: "/terminal", destination: "/", permanent: false },
       { source: "/arrivals/:path*", destination: "/#departures", permanent: false },
-      { source: "/projects", destination: "/#security", permanent: false },
-      { source: "/departures/:path*", destination: "/#security", permanent: false },
-      { source: "/about", destination: "/#gate", permanent: false },
-      { source: "/lounge", destination: "/#gate", permanent: false },
+      { source: "/projects", destination: "/#gates", permanent: false },
+      { source: "/departures/:path*", destination: "/#gates", permanent: false },
+      { source: "/about", destination: "/#lounge", permanent: false },
+      { source: "/lounge", destination: "/#lounge", permanent: false },
       { source: "/resume", destination: "/Ammar_Adam.pdf", permanent: false },
       { source: "/boarding-pass", destination: "/#boarding", permanent: false },
     ];

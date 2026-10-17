@@ -1,10 +1,8 @@
 "use client";
 
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { useEffect, useState, useSyncExternalStore } from "react";
 import { stops, type StopId } from "@/data/journey";
-import { boardingPassConfig } from "@/data/boardingPass";
-import { Flap } from "./Flap";
 
 type Theme = "day" | "night";
 
@@ -33,14 +31,14 @@ export function useTheme() {
 }
 
 function useCurrentStop() {
-  const [stop, setStop] = useState<StopId>("check-in");
+  const [stop, setStop] = useState<StopId>("hall");
   useEffect(() => {
     const els = stops.map((s) => document.getElementById(s.id)).filter((el): el is HTMLElement => !!el);
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) if (e.isIntersecting) setStop(e.target.id as StopId);
       },
-      { rootMargin: "-45% 0px -54% 0px" },
+      { rootMargin: "-40% 0px -59% 0px" },
     );
     els.forEach((el) => io.observe(el));
     return () => io.disconnect();
@@ -48,42 +46,56 @@ function useCurrentStop() {
   return stop;
 }
 
+function useClock() {
+  const [time, setTime] = useState("--:--");
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-CA", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Toronto" });
+    const tick = () => setTime(fmt.format(new Date()));
+    tick();
+    const id = window.setInterval(tick, 10_000);
+    return () => window.clearInterval(id);
+  }, []);
+  return time;
+}
+
 export function TopBar() {
   const { theme, toggle } = useTheme();
   const stop = useCurrentStop();
-  const label = stops.find((s) => s.id === stop)?.label ?? "";
+  const current = stops.find((s) => s.id === stop) ?? stops[0];
+  const time = useClock();
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 });
-  const planeLeft = useTransform(progress, (v) => `${v * 100}%`);
 
   return (
     <header className="topbar">
       <div className="topbar-inner">
-        <a href="#check-in" className="tb-name">
-          <span className="tb-mark" aria-hidden>
-            <svg viewBox="0 0 24 24"><path d="M21 12c0-.8-.7-1.3-1.5-1.3H15L10 3H8l2.5 7.7H6L4.3 8.5H3l1 3.5-1 3.5h1.3L6 13.3h4.5L8 21h2l5-7.7h4.5c.8 0 1.5-.5 1.5-1.3Z" /></svg>
-          </span>
-          Ammar Adam
-        </a>
+        <a href="#hall" className="tb-name">Ammar Adam</a>
 
-        <nav className="tb-stops" aria-label="Sections">
-          <span className="tb-now">Now at</span>
-          <Flap value={label} length={10} stagger={18} step={30} className="flap-sm" />
-        </nav>
+        <div className="tb-here" aria-live="polite">
+          <span className="tb-here-dot" aria-hidden />
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={current.id}
+              className="tb-here-label"
+              initial={{ y: 10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -10, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            >
+              {current.label}
+              {current.walk && <em> · {current.walk}</em>}
+            </motion.span>
+          </AnimatePresence>
+        </div>
 
-        <div className="tb-actions">
-          <a className="tb-link" href={boardingPassConfig.resumeFileUrl} target="_blank" rel="noreferrer">Resume</a>
+        <div className="tb-right">
+          <span className="tb-clock" title="Toronto time">YYZ {time}</span>
           <button className="tb-theme" onClick={toggle} aria-label={theme === "day" ? "Switch to night" : "Switch to day"}>
             <span className={`tb-orb ${theme}`} aria-hidden />
           </button>
         </div>
       </div>
-      <div className="tb-route" aria-hidden>
-        <motion.span className="tb-route-fill" style={{ scaleX: progress }} />
-        <motion.span className="tb-route-plane" style={{ left: planeLeft }}>
-          <svg viewBox="0 0 24 24"><path d="M21 12c0-.8-.7-1.3-1.5-1.3H15L10 3H8l2.5 7.7H6L4.3 8.5H3l1 3.5-1 3.5h1.3L6 13.3h4.5L8 21h2l5-7.7h4.5c.8 0 1.5-.5 1.5-1.3Z" /></svg>
-        </motion.span>
-      </div>
+      <motion.div className="tb-progress" style={{ scaleX: progress }} aria-hidden />
     </header>
   );
 }

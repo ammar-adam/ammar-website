@@ -3,46 +3,48 @@
  * arrivals.ts and departures.ts; this file only holds the words around them.
  */
 
-import { loungeRoomContent } from "./loungeRoom";
-
 export const stops = [
-  { id: "check-in", label: "Check-in" },
-  { id: "departures", label: "Departures" },
-  { id: "security", label: "Security" },
-  { id: "gate", label: "Gate" },
-  { id: "boarding", label: "Boarding" },
+  { id: "hall", label: "Arrivals hall", walk: "" },
+  { id: "departures", label: "Departures", walk: "1 min walk" },
+  { id: "gates", label: "Gates A1–A4", walk: "2 min walk" },
+  { id: "lounge", label: "Gate area", walk: "3 min walk" },
+  { id: "boarding", label: "Boarding", walk: "4 min walk" },
 ] as const;
 
 export type StopId = (typeof stops)[number]["id"];
 
-export const homeCities = [
-  { code: "YYZ", city: "Toronto", country: "Canada" },
-  { code: "DXB", city: "Dubai", country: "UAE" },
-  { code: "KHI", city: "Karachi", country: "Pakistan" },
-] as const;
-
-export const hero = {
-  name: "Ammar Adam",
-  lede: "I grew up between Toronto, Dubai and Karachi. Now I study CS & Finance at Waterloo, build AI tools at Sagard and scout student builders for OpenAI.",
+export type SignItem = {
+  href: string;
+  label: string;
+  sub: string;
+  arrow: "→" | "↓" | "↗";
+  external?: boolean;
 };
 
-/** The three beats that play while the sky outside the gate goes from day to night. */
-export const gateBeats = [
-  {
-    time: "14:20",
-    title: "Three home airports.",
-    body: "Toronto, Dubai and Karachi. I spent a lot of my life in departure halls between them, so this site lives in one.",
-  },
-  {
-    time: "18:45",
-    title: "Right now.",
-    body: "Second year of CS & Finance at Waterloo. Building a Legal AI hub at Sagard, scouting builders for OpenAI as one of five Founding Builder Leads, and shipping things like Backseat and RocketShip on the side.",
-  },
-  {
-    time: "22:10",
-    title: "Off the clock.",
-    body: "Liverpool since I was ten. Paddington 2 is the best movie ever made. Ask me about airline economics, mango matcha, or the best shawarma in the GTA.",
-  },
-] as const;
+/** Wayfinding sign in the hall. Doubles as the site navigation. */
+export const signage: SignItem[] = [
+  { href: "#departures", label: "Departures", sub: "Where I've worked", arrow: "→" },
+  { href: "#gates", label: "Gates", sub: "What I've built", arrow: "→" },
+  { href: "#lounge", label: "Gate area", sub: "About me", arrow: "→" },
+  { href: "/Ammar_Adam.pdf", label: "Resume", sub: "One page, PDF", arrow: "↓", external: true },
+];
 
-export const moments = loungeRoomContent.photos.items;
+export const hero = {
+  kicker: "AFA International · Arrivals hall",
+  name: ["Ammar", "Adam"],
+  voice: "CS & Finance at Waterloo. Building AI tools at Sagard, scouting student builders for OpenAI, shipping things on the side.",
+};
+
+/** The gate area. Two sentences and what's in the carry-on. */
+export const lounge = {
+  intro: [
+    "I grew up between Toronto, Dubai and Karachi, so a lot of my life happened in departure halls. This site lives in one.",
+    "When I'm not building, I'm hunting for the best shawarma in the GTA or talking about airplanes for longer than anyone asked.",
+  ],
+  carryOn: [
+    "Liverpool supporter since I was ten",
+    "Paddington 2 is the best movie ever made",
+    "Iced coffee and mango matcha, non-negotiable",
+    "Ask me about airline economics",
+  ],
+};
