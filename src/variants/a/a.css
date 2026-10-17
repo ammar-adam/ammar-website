@@ -1,0 +1,163 @@
+/* Variant A: "Terminal objects, curated". Everything scoped under .va.
+   Objects (window, board, cabin, suitcase, pass, ticker) keep their old global
+   classes; this file only lays them out as five scenes and fixes small gaps. */
+
+.va { position: relative; z-index: 1; }
+.va { --brd-dim: oklch(0.6 0.02 255); }
+:root[data-theme="day"] .va { --brd-dim: oklch(0.5 0.02 262); }
+
+/* Lines reveal (shared) needs its clipping box */
+.va .mask { display: block; overflow: hidden; }
+.va .mask > span { display: block; will-change: transform; }
+
+/* Recurring rhythm: a mono eyebrow left, a mono hint right, then one object */
+.va-scene-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 18px; }
+.va-scene-head small { font-family: var(--mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--faint); }
+
+/* Pinned scenes */
+.va-pinwrap { position: relative; }
+.va-pinwrap-board { height: 350svh; }
+.va-pinwrap-gate { height: 280svh; }
+.va-pin { position: sticky; top: 0; height: 100svh; display: grid; align-content: center; padding-top: 56px; }
+
+/* ---------- 1 · Check-in ---------- */
+.va-checkin { min-height: 100svh; display: flex; flex-direction: column; padding-top: 56px; }
+.va-hero { flex: 1; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 56px; align-items: center; padding: 36px 0 40px; }
+.va-h1 { font-family: var(--sans); font-weight: 700; font-size: clamp(46px, 6.6vw, 88px); letter-spacing: -0.035em; line-height: 0.96; margin: 20px 0 0; color: var(--text); }
+.va-sub p { margin: 26px 0 0; color: var(--dim); font-size: 17px; line-height: 1.6; max-width: 44ch; }
+.va-socials { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--dim); }
+.va-socials a { transition: color 0.3s var(--ease); }
+.va-socials a:hover { color: var(--accent); }
+.va-hero-window { will-change: transform; }
+.va-hero-window .window { height: 480px; }
+.va .flight-card .fc-sub span:last-child { text-align: right; }
+/* an older .flight-card i rule gives the bar a 14px margin, which collapses the absolute fill to nothing */
+.va .flight-card .fc-bar i { margin: 0; height: auto; background: var(--accent); }
+.va .ticker { margin: 0; }
+.va .ticker span::after { content: none; }
+.va .ticker-item { padding: 0; }
+
+/* ---------- 2 · Departures ---------- */
+.va .fboard { --cols: 76px 1.35fr 1.4fr 150px; }
+.va .fboard-row { row-gap: 0; padding-top: 13px; padding-bottom: 13px; }
+.va .fr-time { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--brd-text); }
+.va .fr-dest { font-family: var(--sans); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--brd-text); line-height: 1.2; }
+.va .fr-status { font-size: 13px; }
+.va .fr-status .sf-cell { font-size: 12px; }
+.va .st-dim { color: var(--brd-dim); }
+.va .st-dim i { background: var(--brd-dim); }
+.va .va-row > span { transition: opacity 0.6s var(--ease); }
+.va .va-row.departed > span { opacity: 0.45; }
+.va .va-row.boarding { background: oklch(1 0 0 / 0.045); }
+:root[data-theme="day"] .va .va-row.boarding { background: oklch(0.56 0.14 66 / 0.1); }
+.va .va-row.boarding::before { width: 4px; }
+.va .va-row-x { grid-column: 1 / -1; overflow: hidden; }
+.va .va-row-x p { margin: 12px 0 0; font-size: 15px; line-height: 1.55; color: var(--brd-text); max-width: 66ch; opacity: 0.9; }
+.va .va-row-x a { display: inline-flex; align-items: center; gap: 6px; margin: 10px 0 4px; font-family: var(--mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--brd-amber); }
+.va .va-row-x a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- 3 · Gate A ---------- */
+.va-gate-grid { display: grid; grid-template-columns: 420px 1fr; gap: 40px; align-items: start; }
+.va .cabin { padding: 22px 24px 18px; }
+.va .seat-row .aisle { height: 116px; }
+.va .pseat { padding: 12px 6px 10px; }
+.va .pseat .pn { font-size: 13px; }
+.va .cabin-legend { justify-content: space-between; }
+.va .cabin-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.va-dot-sel { width: 7px; height: 7px; border-radius: 50%; display: inline-block; background: var(--accent); }
+.va .case-open { margin-top: 30px; }
+.va .case-lid, .va .case-body { min-height: 470px; }
+.va-lid-in, .va-case-in { position: relative; }
+/* The suitcase is dark at night and pale canvas by day (globals); text follows */
+.va .case-body .case-note { color: #dfe4ee; font-size: 14.5px; }
+.va .case-body .btn { color: #e8ecf3; border-color: rgba(255, 255, 255, 0.2); padding: 10px 16px; font-size: 11px; }
+.va .case-body .btn:hover { color: oklch(0.83 0.13 82); border-color: oklch(0.83 0.13 82); }
+.va .case-lid .sticker.stat.s-board { color: oklch(0.8 0.16 150); }
+.va .case-lid .sticker.stat.s-dep { color: #a3abb8; }
+:root[data-theme="day"] .va .case-body .case-note { color: oklch(0.24 0.016 262); }
+:root[data-theme="day"] .va .case-body .btn { color: oklch(0.24 0.016 262); border-color: oklch(0.3 0.02 262 / 0.28); }
+:root[data-theme="day"] .va .case-body .btn:hover { color: var(--accent); border-color: var(--accent); }
+:root[data-theme="day"] .va .case-body .case-lining { border-color: oklch(0.3 0.02 262 / 0.14); }
+:root[data-theme="day"] .va .case-lid .sticker.stat.s-board { color: oklch(0.45 0.15 152); }
+:root[data-theme="day"] .va .case-lid .sticker.stat.s-dep { color: oklch(0.42 0.02 262); }
+:root[data-theme="day"] .va .case-lid .lid-mesh { border-color: rgba(0, 0, 0, 0.12); }
+
+/* ---------- 4 · Window seat ---------- */
+.va-seat { min-height: 100svh; display: grid; align-content: center; padding: 100px 0 70px; }
+.va-seat-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: 64px; align-items: center; }
+.va-window-sm { height: 400px; border-radius: 170px 170px 22px 22px; }
+.va-about { font-family: var(--sans); font-weight: 600; font-size: clamp(22px, 2.3vw, 30px); letter-spacing: -0.02em; line-height: 1.25; margin: 18px 0 0; color: var(--text); }
+.va-about .mask + .mask { margin-top: 0.45em; }
+.va-about-dim { color: var(--dim); }
+.va-carry { margin-top: 36px; max-width: 460px; }
+.va-carry ul { list-style: none; margin: 10px 0 0; padding: 0; }
+.va-carry li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; padding: 11px 0; border-top: 1px solid var(--line); font-family: var(--mono); font-size: 13px; letter-spacing: 0.02em; color: var(--text); }
+.va-carry li:last-child { border-bottom: 1px solid var(--line); }
+.va-carry li b { color: var(--faint); font-weight: 500; }
+
+/* ---------- 5 · Boarding ---------- */
+.va-boarding { min-height: 90svh; display: grid; align-content: center; padding: 100px 0 44px; }
+.va-pass-w { width: min(880px, 96%); margin-inline: auto; }
+.va .pass { margin-inline: auto; }
+.va .pass-main { padding: 30px 34px 32px; }
+.va-stub-links { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; margin: 4px 0 26px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; }
+.va-stub-links a { width: max-content; padding-bottom: 2px; border-bottom: 1px solid color-mix(in oklab, var(--accent-ink) 35%, transparent); opacity: 0.92; transition: border-color 0.3s, opacity 0.3s; }
+.va-stub-links a:hover { opacity: 1; border-color: var(--accent-ink); }
+.va .scan-btn, .va .scan-frame, .va .ps-bar, .va .scan-hint { display: block; }
+.va .scan-btn:hover .scan-frame { border-color: #ff3b30; }
+.va .scan-btn:hover .scan-laser { opacity: 1; animation: laser 1.05s ease-in-out infinite; }
+.va-foot { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; gap: 10px 24px; flex-wrap: wrap; font-family: var(--mono); font-size: 12px; letter-spacing: 0.04em; color: var(--dim); }
+.va-foot a { display: inline-flex; align-items: center; gap: 8px; transition: color 0.3s var(--ease); }
+.va-foot a img { width: 14px; height: 14px; }
+.va-foot a:hover { color: var(--accent); }
+
+/* ---------- Mobile ---------- */
+/* globals sets html, body { overflow-x: hidden } under 720px, which turns body into the
+   sticky containing scroller and unpins every scene. clip prevents sideways scroll without that. */
+@media (max-width: 720px) {
+  html:has(.va), body:has(.va) { overflow-x: clip; }
+}
+@media (max-width: 900px) {
+  .va-hero { grid-template-columns: 1fr; gap: 34px; padding: 22px 0 28px; }
+  .va-h1 { font-size: clamp(44px, 13vw, 64px); }
+  .va-hero-window .window { height: 300px; border-radius: 150px 150px 18px 18px; }
+  .va-pin { padding-top: 64px; align-content: start; }
+
+  .va .fboard-cols, .va .fboard-row { grid-template-columns: 44px 1fr 118px; gap: 10px; }
+  .va .fboard-cols span:nth-child(3), .va .fboard-row > .fr-info { display: none; }
+  .va .fboard-head { padding: 12px 14px; }
+  .va .fboard-cols, .va .fboard-row { padding-left: 14px; padding-right: 14px; }
+  .va .fr-time { font-size: 12px; letter-spacing: 0.02em; }
+  .va .fr-dest { font-size: 15px; }
+  .va .fr-status { gap: 6px; }
+  .va .fr-status .sf-cell { font-size: 12px; --w: 0.88em; }
+  .va .fr-status .sf-word { gap: 1px; }
+  .va .va-row-x p { font-size: 14px; }
+
+  .va-gate-grid { grid-template-columns: 1fr; gap: 30px; }
+  .va .cabin { padding: 12px 16px 10px; }
+  .va .cabin-nose { padding-bottom: 10px; margin-bottom: 8px; }
+  .va .seat-svg { width: 48px; }
+  .va .pseat { padding: 8px 4px 6px; gap: 5px; }
+  .va .seat-row .aisle { height: 78px; }
+  .va .cabin-legend { display: none; }
+  .va .case-open { margin-top: 30px; grid-template-columns: 1fr; }
+  .va .case-lid { display: none; }
+  .va .case-body { min-height: 0; padding: 18px 18px 20px; }
+  .va .case-photo { height: 110px; width: 58%; }
+  .va .case-body .case-note { font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin: 12px 0 14px; }
+  .va .case-handle { width: 120px; height: 34px; top: -22px; }
+  .va .case-links { flex-direction: row; }
+  .va .case-links .btn { width: auto; min-height: 0; }
+
+  .va-seat { padding: 84px 0 56px; }
+  .va-seat-grid { grid-template-columns: 1fr; gap: 36px; }
+  .va-window-sm { height: 260px; width: min(100%, 360px); border-radius: 130px 130px 18px 18px; }
+  .va-boarding { padding: 84px 0 36px; }
+  .va .pass-main { padding: 24px 20px 26px; }
+  .va .pass-fields { grid-template-columns: 1.3fr 0.7fr 1fr; gap: 12px; }
+  .va .pass-field .pf-v { font-size: 14px; }
+  .va .pass-stub { padding: 24px 20px; }
+  .va-stub-links { margin-bottom: 22px; }
+  .va-foot { justify-content: flex-start; margin-top: 40px; }
+}
