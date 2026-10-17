@@ -1,40 +1,13 @@
-import type { PartId } from "./parts";
-
 /**
- * Side view of an airliner, nose to the right. Each clickable part is its own
- * group so it can light up on hover. Coordinates live in a 1200 x 440 box.
+ * Side view of an airliner, nose to the right. Scenery only.
+ * Coordinates live in a 1200 x 440 box.
  */
-export function PlaneArt({
-  hovered,
-  onHover,
-  onPick,
-}: {
-  hovered: PartId | null;
-  onHover: (part: PartId | null) => void;
-  onPick: (part: PartId) => void;
-}) {
-  const part = (id: PartId) => ({
-    className: `pp${hovered === id ? " on" : ""}`,
-    onMouseEnter: () => onHover(id),
-    onMouseLeave: () => onHover(null),
-    onClick: () => onPick(id),
-    role: "button" as const,
-    tabIndex: 0,
-    "aria-label": id,
-    onKeyDown: (event: React.KeyboardEvent) => {
-      if (event.key === "Enter" || event.key === " ") {
-        event.preventDefault();
-        onPick(id);
-      }
-    },
-    onFocus: () => onHover(id),
-    onBlur: () => onHover(null),
-  });
+export function PlaneArt() {
 
   const windows = Array.from({ length: 22 }, (_, i) => 330 + i * 27);
 
   return (
-    <svg className="plane-art" viewBox="0 0 1200 440" aria-label="An airplane. Pick a part to explore.">
+    <svg className="plane-art" viewBox="0 0 1200 440" aria-hidden="true">
       <defs>
         <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0" stopColor="var(--pl-body-hi)" />
@@ -64,8 +37,8 @@ export function PlaneArt({
       <path d="M150 168 L196 168 L120 128 L104 128 Z" fill="var(--pl-wing-far)" />
 
       {/* TAIL */}
-      <g {...part("tail")}>
-        <path className="pp-shape" d="M112 172 L60 42 C58 36 62 32 68 32 L104 32 C112 32 118 36 122 42 L258 172 Z" fill="url(#body)" />
+      <g>
+        <path d="M112 172 L60 42 C58 36 62 32 68 32 L104 32 C112 32 118 36 122 42 L258 172 Z" fill="url(#body)" />
         <path d="M70 46 L106 46 L196 150 L140 150 Z" fill="var(--accent)" opacity="0.92" />
         <text x="128" y="98" className="tail-mark" textAnchor="middle" dominantBaseline="central" transform="rotate(52.4 128 98)">AFA</text>
       </g>
@@ -80,26 +53,23 @@ export function PlaneArt({
       <path d={FUSELAGE} fill="none" stroke="var(--pl-line)" strokeWidth="1.2" />
 
       {/* WINDOWS */}
-      <g {...part("windows")}>
-        <rect className="pp-hit" x="318" y="178" width="610" height="36" rx="8" />
+      <g>
         {windows.map((x) => (
           <rect key={x} className="win" x={x} y="186" width="13" height="19" rx="6.5" />
         ))}
       </g>
 
       {/* DOOR (front) */}
-      <g {...part("door")}>
-        <rect className="pp-hit" x="958" y="168" width="44" height="90" rx="8" />
-        <rect className="pp-shape door" x="968" y="176" width="26" height="70" rx="6" />
+      <g>
+        <rect className="door" x="968" y="176" width="26" height="70" rx="6" />
         <circle cx="989" cy="212" r="2" fill="var(--pl-line)" />
       </g>
       {/* rear door, decorative */}
       <rect x="268" y="180" width="22" height="60" rx="5" fill="none" stroke="var(--pl-line)" strokeWidth="1.2" />
 
       {/* COCKPIT */}
-      <g {...part("cockpit")}>
-        <path className="pp-hit" d="M1030 170 L1150 170 L1170 230 L1030 230 Z" />
-        <path className="pp-shape cockpit-glass" d="M1052 190 L1082 186 L1100 186 C1112 187 1124 193 1132 202 L1060 204 Z" />
+      <g>
+        <path className="cockpit-glass" d="M1052 190 L1082 186 L1100 186 C1112 187 1124 193 1132 202 L1060 204 Z" />
         <path d="M1081 186 L1083 204 M1103 187 L1104 203" stroke="var(--pl-body)" strokeWidth="2.5" />
       </g>
 
@@ -108,10 +78,9 @@ export function PlaneArt({
       <path d="M470 380 L494 380 L486 392 L466 392 Z" fill="var(--pl-wing-lo)" />
 
       {/* ENGINE */}
-      <g {...part("engine")}>
-        <rect className="pp-hit" x="520" y="250" width="200" height="90" rx="20" />
+      <g>
         <path d="M600 262 L640 262 L626 286 L606 286 Z" fill="var(--pl-wing-lo)" />
-        <path className="pp-shape" d="M548 284 L690 284 C702 284 710 294 710 308 C710 322 702 332 690 332 L560 332 C548 332 538 322 538 308 C538 294 540 284 548 284 Z" fill="url(#nacelle)" stroke="var(--pl-line)" strokeWidth="1" />
+        <path d="M548 284 L690 284 C702 284 710 294 710 308 C710 322 702 332 690 332 L560 332 C548 332 538 322 538 308 C538 294 540 284 548 284 Z" fill="url(#nacelle)" stroke="var(--pl-line)" strokeWidth="1" />
         <ellipse cx="704" cy="308" rx="9" ry="24" fill="var(--pl-intake)" />
         <ellipse cx="705" cy="308" rx="4" ry="12" fill="var(--pl-intake-in)" />
         <path d="M538 300 L524 302 L524 314 L538 316 Z" fill="var(--pl-wing-lo)" />

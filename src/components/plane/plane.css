@@ -167,63 +167,12 @@
 :root[data-theme="night"] .win { filter: drop-shadow(0 0 4px rgba(246, 199, 107, 0.8)); }
 .cockpit-glass { fill: var(--pl-cockpit); }
 .door { fill: transparent; stroke: var(--pl-line); stroke-width: 1.4; }
-.pp { cursor: pointer; outline: none; }
-.pp-hit { fill: transparent; }
-.pp .pp-shape, .pp .win { transition: fill 0.25s ease, filter 0.25s ease, stroke 0.25s ease; }
-.pp.on .pp-shape { filter: brightness(1.06) drop-shadow(0 0 10px color-mix(in srgb, var(--accent) 70%, transparent)); }
-.pp.on .win { fill: var(--accent); }
-.pp.on .door { stroke: var(--accent); stroke-width: 2.4; fill: color-mix(in srgb, var(--accent) 18%, transparent); }
-.pp.on .cockpit-glass { fill: var(--accent); }
 
-.ph-label {
-  position: absolute;
-  left: 50%;
-  bottom: -6px;
-  transform: translate(-50%, 6px);
-  padding: 8px 14px;
-  border-radius: 999px;
-  background: var(--panel);
-  border: 1px solid var(--panel-line);
-  box-shadow: 0 12px 30px -18px rgba(0, 0, 0, 0.4);
-  font: 12px var(--font-mono);
-  letter-spacing: 0.08em;
-  color: var(--ink-dim);
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 0.2s ease, transform 0.2s ease;
-  pointer-events: none;
-}
-.ph-label b { color: var(--accent); font-weight: 600; }
-.ph-label.show { opacity: 1; transform: translate(-50%, 0); }
 
-.ph-legend {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 8px;
-  margin-top: 5vh;
-  transition: opacity 0.4s ease;
-}
-.ph-legend button {
-  display: flex;
-  align-items: baseline;
-  gap: 8px;
-  padding: 9px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--panel-line);
-  background: color-mix(in srgb, var(--panel) 70%, transparent);
-  backdrop-filter: blur(8px);
-  color: var(--ink-dim);
-  font: 13px var(--font-body);
-  cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, transform 0.2s;
-}
-.ph-legend button span { font: 600 11px var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink); }
-.ph-legend button:hover, .ph-legend button.on { color: var(--ink); border-color: var(--accent); transform: translateY(-1px); }
 
 /* opened: camera flies in, everything else steps back */
-.ph.is-open .ph-camera { opacity: 0.35; filter: blur(2px); }
-.ph.is-open .ph-intro, .ph.is-open .ph-legend { opacity: 0; pointer-events: none; }
+.ph.is-open .ph-camera { transform: scale(1.25) translateY(4%); opacity: 0.35; filter: blur(3px); }
+.ph.is-open .ph-intro { opacity: 0; pointer-events: none; }
 .ph.is-open .ph-float { animation-play-state: paused; }
 
 .ph-panel-wrap {
@@ -251,7 +200,6 @@
 @keyframes fade { from { opacity: 0; } }
 @keyframes rise { from { opacity: 0; transform: translateY(24px) scale(0.98); } }
 .ph-panel-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; margin-bottom: 22px; }
-.ph-kicker { font: 11px var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent); }
 .ph-panel h2 { margin: 8px 0 0; font-size: 30px; letter-spacing: -0.025em; font-weight: 650; }
 .ph-close {
   width: 36px;
@@ -374,8 +322,7 @@
 @media (max-width: 720px) {
   .ph-main { padding-bottom: 12vh; }
   .ph-stage { margin: 5vh -16px 0; width: calc(100% + 32px); }
-  .ph-legend { margin-top: 4vh; }
-  .ph-panel { padding: 20px 18px 24px; max-height: calc(100svh - 90px); }
+    .ph-panel { padding: 20px 18px 24px; max-height: calc(100svh - 90px); }
   .seats { grid-template-columns: 1fr; gap: 18px; }
   .seats li { flex-direction: row; gap: 16px; align-items: flex-start; }
   .porthole { width: 66px; height: 88px; flex: none; border-width: 5px; }
@@ -390,3 +337,21 @@
   .ph-float, .ph-cloud { animation: none; }
   .ph-camera { transition: none; }
 }
+
+/* plain section links under the name */
+.ph-nav { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px 22px; margin-top: 22px; }
+.ph-nav button {
+  border: 0;
+  padding: 4px 0;
+  background: none;
+  color: var(--ink);
+  font: 500 15px var(--font-body);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--ink) 25%, transparent);
+  text-underline-offset: 5px;
+  text-decoration-thickness: 1.5px;
+  transition: text-decoration-color 0.2s, color 0.2s;
+}
+.ph-nav button:hover { color: var(--accent); text-decoration-color: var(--accent); }
+.ph-panel-head h2 { margin: 0; }

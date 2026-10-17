@@ -9,15 +9,15 @@ import { siteConfig } from "@/data/site";
 import type { PartId } from "./parts";
 
 export function Section({ id }: { id: PartId }) {
-  if (id === "windows") return <Windows />;
-  if (id === "engine") return <Engine />;
-  if (id === "cockpit") return <Cockpit />;
-  if (id === "door") return <Door />;
-  return <Tail />;
+  if (id === "experience") return <Experience />;
+  if (id === "projects") return <Projects />;
+  if (id === "about") return <About />;
+  if (id === "resume") return <Resume />;
+  return <Contact />;
 }
 
-/** Each role is a window seat with a view of where it happened. */
-function Windows() {
+/** One row per role, with a photo from where it happened. */
+function Experience() {
   return (
     <ul className="seats">
       {arrivals.map((a, i) => (
@@ -26,10 +26,7 @@ function Windows() {
             {a.image ? <img src={a.image} alt="" loading="lazy" /> : <span className="porthole-blank" />}
           </a>
           <div className="seat-text">
-            <div className="seat-row">
-              <span className="seat-no">{i + 1}A</span>
-              {a.status === "Bags loading" && <span className="seat-now">now</span>}
-            </div>
+            {a.status === "Bags loading" && <div className="seat-row"><span className="seat-now">now</span></div>}
             <a className="seat-co" href={a.fromUrl} target="_blank" rel="noreferrer">{a.from}</a>
             <div className="seat-role">{a.title}</div>
             <p>{a.impact}</p>
@@ -41,7 +38,7 @@ function Windows() {
 }
 
 /** Projects, one row each, with the screenshot if there is one. */
-function Engine() {
+function Projects() {
   return (
     <ul className="builds">
       {projects.map((p) => {
@@ -68,14 +65,14 @@ function Engine() {
   );
 }
 
-/** A captain's announcement, a few photos, a few facts. */
-function Cockpit() {
+/** A short bio, a photo, a few facts. */
+function About() {
   const [i, setI] = useState(0);
   const photo = aboutPhotos[i];
   return (
     <div className="cockpit">
       <p className="pa">
-        <span>“This is your captain speaking.”</span> {aboutIntro}
+        {aboutIntro}
       </p>
       <button type="button" className="cockpit-photo" onClick={() => setI((i + 1) % aboutPhotos.length)} aria-label="Next photo">
         <img src={photo.src} alt={photo.caption} />
@@ -91,8 +88,8 @@ function Cockpit() {
   );
 }
 
-/** The resume, as the only boarding pass that matters. */
-function Door() {
+/** The resume, as a boarding pass. */
+function Resume() {
   return (
     <div className="door">
       <a className="mini-pass" href={boardingPassConfig.resumeFileUrl} target="_blank" rel="noreferrer">
@@ -113,7 +110,7 @@ function Door() {
 }
 
 /** Ways to reach me. */
-function Tail() {
+function Contact() {
   const s = siteConfig.socialLinks;
   const rows = [
     { k: "Email", v: "ammar.adam@uwaterloo.ca", url: s.email },

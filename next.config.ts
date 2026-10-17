@@ -6,13 +6,13 @@ const nextConfig: NextConfig = {
   },
   async redirects() {
     return [
-      { source: "/arrivals/:path*", destination: "/#windows", permanent: false },
-      { source: "/projects", destination: "/#engine", permanent: false },
-      { source: "/departures/:path*", destination: "/#engine", permanent: false },
-      { source: "/resume", destination: "/#door", permanent: false },
-      { source: "/boarding-pass", destination: "/#door", permanent: false },
-      { source: "/about", destination: "/#cockpit", permanent: false },
-      { source: "/lounge", destination: "/#cockpit", permanent: false },
+      { source: "/arrivals/:path*", destination: "/#experience", permanent: false },
+      { source: "/projects", destination: "/#projects", permanent: false },
+      { source: "/departures/:path*", destination: "/#projects", permanent: false },
+      { source: "/resume", destination: "/#resume", permanent: false },
+      { source: "/boarding-pass", destination: "/#resume", permanent: false },
+      { source: "/about", destination: "/#about", permanent: false },
+      { source: "/lounge", destination: "/#about", permanent: false },
       { source: "/terminal", destination: "/", permanent: false },
     ];
 

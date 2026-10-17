@@ -26,7 +26,6 @@ function isPart(value: string): value is PartId {
 
 export function PlaneHome() {
   const [open, setOpen] = useState<PartId | null>(null);
-  const [hovered, setHovered] = useState<PartId | null>(null);
   const [theme, setTheme] = useState<Theme>("day");
   const clock = useClock();
 
@@ -74,10 +73,6 @@ export function PlaneHome() {
   };
 
   const focus = open ? getPart(open) : null;
-  const camera = focus
-    ? { transform: `scale(2.6) translate(${(0.5 - focus.x / 1200) * 100}%, ${(0.5 - focus.y / 440) * 100}%)` }
-    : undefined;
-  const label = hovered ? getPart(hovered) : null;
 
   return (
     <div className={`ph${open ? " is-open" : ""}`}>
@@ -104,50 +99,32 @@ export function PlaneHome() {
       <main className="ph-main">
         <div className="ph-intro">
           <h1>Hi, I&apos;m Ammar.</h1>
-          <p>CS &amp; Finance at Waterloo. Pick a part of the plane.</p>
+          <p>CS &amp; Finance at Waterloo. AI engineer at Sagard, founding builder lead at OpenAI.</p>
+          <nav className="ph-nav" aria-label="Sections">
+            {parts.map((p) => (
+              <button type="button" key={p.id} onClick={() => pick(p.id)}>
+                {p.label}
+              </button>
+            ))}
+          </nav>
         </div>
 
         <div className="ph-stage">
-          <div className="ph-camera" style={camera}>
+          <div className="ph-camera">
             <div className="ph-float">
-              <PlaneArt hovered={hovered} onHover={setHovered} onPick={pick} />
+              <PlaneArt />
             </div>
-          </div>
-          <div className={`ph-label${label && !open ? " show" : ""}`} aria-hidden>
-            {label && (
-              <>
-                <b>{label.label}</b> → {label.sub}
-              </>
-            )}
           </div>
         </div>
 
-        <nav className="ph-legend" aria-label="Parts of the plane">
-          {parts.map((p) => (
-            <button
-              type="button"
-              key={p.id}
-              className={hovered === p.id ? "on" : ""}
-              onMouseEnter={() => setHovered(p.id)}
-              onMouseLeave={() => setHovered(null)}
-              onClick={() => pick(p.id)}
-            >
-              <span>{p.label}</span>
-              {p.sub}
-            </button>
-          ))}
-        </nav>
       </main>
 
       {focus && (
         <div className="ph-panel-wrap" onClick={close}>
-          <section className="ph-panel" key={focus.id} onClick={(event) => event.stopPropagation()} aria-label={focus.title}>
+          <section className="ph-panel" key={focus.id} onClick={(event) => event.stopPropagation()} aria-label={focus.label}>
             <div className="ph-panel-head">
-              <div>
-                <div className="ph-kicker">{focus.label} · {focus.sub}</div>
-                <h2>{focus.title}</h2>
-              </div>
-              <button type="button" className="ph-close" onClick={close} aria-label="Back to the plane">✕</button>
+              <h2>{focus.label}</h2>
+              <button type="button" className="ph-close" onClick={close} aria-label="Close">✕</button>
             </div>
             <Section id={focus.id} />
           </section>
