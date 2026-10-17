@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import { cloudVideoUrl } from "@/variants/shared/Shell";
+import { cloudVideoUrl } from "@/components/shell/Shell";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 

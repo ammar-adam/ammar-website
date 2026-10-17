@@ -2,8 +2,8 @@
 
 import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Sky, TopBar } from "@/variants/shared/Shell";
-import { Fade, Lines } from "@/variants/shared/Reveal";
+import { Sky, TopBar } from "@/components/shell/Shell";
+import { Fade, Lines } from "@/components/shell/Reveal";
 import { arrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { siteConfig } from "@/data/site";
@@ -72,7 +72,7 @@ export function VariantB() {
   return (
     <>
       <Sky />
-      <TopBar variant="B" here={STOPS[view].here} />
+      <TopBar here={STOPS[view].here} />
       <main className="vb">
         <aside className="vb-win-wrap">
           <div className="vb-win-sticky">

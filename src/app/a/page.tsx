@@ -1,5 +1,5 @@
-import { VariantA } from "@/variants/a/Variant";
+import { Home } from "@/components/home/Home";
 
 export default function Page() {
-  return <VariantA />;
+  return <Home />;
 }

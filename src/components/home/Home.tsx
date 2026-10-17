@@ -2,14 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useInView, useMotionValueEvent, useScroll, useSpring, useTransform } from "framer-motion";
-import { Sky, TopBar, cloudVideoUrl } from "@/variants/shared/Shell";
-import { Fade, Lines } from "@/variants/shared/Reveal";
+import { Sky, TopBar, cloudVideoUrl } from "@/components/shell/Shell";
+import { Fade, Lines } from "@/components/shell/Reveal";
 import { arrivals } from "@/data/arrivals";
 import { projects, type Project } from "@/data/departures";
 import { boardingPassConfig } from "@/data/boardingPass";
 import { siteConfig } from "@/data/site";
 import { Flap } from "./Flap";
-import "./a.css";
+import "./home.css";
 
 const ease = [0.22, 1, 0.36, 1] as const;
 
@@ -329,6 +329,12 @@ function Gate() {
                       <span className="sticker dest">{p.destination}</span>
                       <span className={`sticker stat ${p.status === "Boarding" ? "s-board" : "s-dep"}`}>{p.status}</span>
                     </div>
+                    <dl className="va-lid-meta">
+                      <div><dt>Flight</dt><dd>{p.flightCode}</dd></div>
+                      <div><dt>Gate</dt><dd>{p.gate}</dd></div>
+                      <div><dt>Seat</dt><dd>{SEATS[sel]}</dd></div>
+                      <div><dt>Year</dt><dd>{p.year}</dd></div>
+                    </dl>
                   </motion.div>
                 </AnimatePresence>
               </div>
@@ -496,12 +502,12 @@ function Boarding() {
 
 /* ------------------------------------------------------------------ */
 
-export function VariantA() {
+export function Home() {
   const here = useHere();
   return (
     <>
       <Sky />
-      <TopBar variant="A" here={here} />
+      <TopBar here={here} />
       <main className="va">
         <CheckIn />
         <Departures />

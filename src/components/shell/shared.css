@@ -1,4 +1,4 @@
-/* Shared shell for the variant routes. Sits on top of the old site's globals. */
+/* Shell: top bar and theme toggle. Sits on top of the site's globals. */
 .vbar {
   position: fixed;
   inset: 0 0 auto;
@@ -14,7 +14,6 @@
   -webkit-backdrop-filter: blur(18px);
 }
 .vbar .brand b { font-weight: 700; }
-.vbar-variant { color: var(--accent); }
 .vbar-here { display: flex; justify-content: center; min-width: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); white-space: nowrap; overflow: hidden; }
 .vbar-theme { width: 44px; height: 24px; border-radius: 99px; border: 1px solid var(--line); background: var(--surface); position: relative; cursor: pointer; }
 .vbar-orb {
@@ -27,13 +26,3 @@
   .vbar { grid-template-columns: auto auto; }
   .vbar-here, .vbar .clock { display: none; }
 }
-
-/* Index page listing the variants */
-.vindex { min-height: 100svh; display: grid; place-content: center; gap: 28px; padding: 100px clamp(16px, 4vw, 42px); position: relative; z-index: 1; }
-.vindex h1 { margin: 0; font-size: clamp(28px, 4vw, 44px); font-weight: 700; letter-spacing: -0.02em; }
-.vindex p { margin: 0; color: var(--dim); max-width: 52ch; }
-.vindex ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
-.vindex a { display: grid; grid-template-columns: 2.4em 1fr; gap: 16px; align-items: baseline; padding: 18px 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); transition: transform 0.4s var(--ease), border-color 0.3s; }
-.vindex a:hover { transform: translateY(-2px); border-color: var(--accent); }
-.vindex a b { font-family: var(--font-mono); color: var(--accent); font-size: 18px; }
-.vindex a small { display: block; color: var(--dim); margin-top: 4px; font-size: 14px; }

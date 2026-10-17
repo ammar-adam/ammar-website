@@ -66,14 +66,14 @@ export function Sky({ className = "" }: { className?: string }) {
  * Minimal top bar in the old site's style: brand, a live "you are here" slot,
  * Toronto clock and the day/night toggle. `here` is whatever the variant wants to show.
  */
-export function TopBar({ here, variant }: { here?: React.ReactNode; variant?: string }) {
+export function TopBar({ here }: { here?: React.ReactNode }) {
   const { theme, toggle } = useTheme();
   const clock = useClock();
   return (
     <header className="vbar">
       <Link href="/" className="brand" aria-label="AFA International home">
         <span className="brand-pin"><img src="/airport-icons/plane-side.svg" alt="" /></span>
-        <span>AFA <b>International</b>{variant && <span className="vbar-variant"> · {variant}</span>}</span>
+        <span>AFA <b>International</b></span>
       </Link>
       <div className="vbar-here">{here}</div>
       <div className="topmeta">

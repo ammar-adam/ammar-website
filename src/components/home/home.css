@@ -1,6 +1,6 @@
-/* Variant A: "Terminal objects, curated". Everything scoped under .va.
-   Objects (window, board, cabin, suitcase, pass, ticker) keep their old global
-   classes; this file only lays them out as five scenes and fixes small gaps. */
+/* Home: five pinned scenes through the terminal. Everything scoped under .va.
+   Objects (window, board, cabin, suitcase, pass, ticker) keep their global
+   classes; this file lays them out as scenes and fixes small gaps. */
 
 .va { position: relative; z-index: 1; }
 .va { --brd-dim: oklch(0.6 0.02 255); }
@@ -38,7 +38,7 @@
 .va .ticker-item { padding: 0; }
 
 /* ---------- 2 · Departures ---------- */
-.va .fboard { --cols: 76px 1.35fr 1.4fr 150px; }
+.va .fboard { --cols: 76px 1.35fr 1.4fr 150px; animation: none; }
 .va .fboard-row { row-gap: 0; padding-top: 13px; padding-bottom: 13px; }
 .va .fr-time { font-family: var(--mono); font-size: 13px; letter-spacing: 0.06em; color: var(--brd-text); }
 .va .fr-dest { font-family: var(--sans); font-weight: 600; font-size: 17px; letter-spacing: -0.01em; color: var(--brd-text); line-height: 1.2; }
@@ -66,7 +66,15 @@
 .va .cabin-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .va-dot-sel { width: 7px; height: 7px; border-radius: 50%; display: inline-block; background: var(--accent); }
 .va .case-open { margin-top: 30px; }
-.va .case-lid, .va .case-body { min-height: 470px; }
+.va .case-lid, .va .case-body { min-height: 0; }
+.va .case-lid { display: flex; flex-direction: column; }
+.va-lid-in { display: flex; flex-direction: column; flex: 1; }
+.va-lid-meta { position: relative; display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 12px; margin: auto 0 0; padding-top: 18px; border-top: 1px solid rgba(255,255,255,.14); font-family: var(--mono); }
+.va-lid-meta dt { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; opacity: .6; }
+.va-lid-meta dd { margin: 4px 0 0; font-size: 13px; letter-spacing: .04em; }
+:root[data-theme="day"] .va .va-lid-meta { border-top-color: rgba(0,0,0,.12); }
+.va .case-photo { width: 58%; height: 140px; }
+.va .case-note { margin: 14px 0 16px; }
 .va-lid-in, .va-case-in { position: relative; }
 /* The suitcase is dark at night and pale canvas by day (globals); text follows */
 .va .case-body .case-note { color: #dfe4ee; font-size: 14.5px; }
@@ -143,6 +151,7 @@
   .va .cabin-legend { display: none; }
   .va .case-open { margin-top: 30px; grid-template-columns: 1fr; }
   .va .case-lid { display: none; }
+  .va-lid-meta { display: none; }
   .va .case-body { min-height: 0; padding: 18px 18px 20px; }
   .va .case-photo { height: 110px; width: 58%; }
   .va .case-body .case-note { font-size: 13.5px; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; margin: 12px 0 14px; }

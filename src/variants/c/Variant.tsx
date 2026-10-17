@@ -6,7 +6,7 @@ import { arrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { boardingPassConfig } from "@/data/boardingPass";
 import { siteConfig } from "@/data/site";
-import { Sky, TopBar, cloudVideoUrl } from "@/variants/shared/Shell";
+import { Sky, TopBar, cloudVideoUrl } from "@/components/shell/Shell";
 import { Flaps } from "./Flaps";
 import "./c.css";
 
@@ -302,7 +302,7 @@ export function VariantC() {
   return (
     <>
       <Sky />
-      <TopBar variant="C" here={here} />
+      <TopBar here={here} />
       <main className="vc">
         <div className="vc-walk" ref={walkRef}>
           <div className="vc-stage">
