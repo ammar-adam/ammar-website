@@ -43,7 +43,8 @@ export function useClock() {
   return time;
 }
 
-export const cloudVideoUrl = "https://videos.pexels.com/video-files/9669392/9669392-hd_1080_1920_30fps.mp4";
+export const cloudVideoUrl = "/sky.mp4";
+export const cloudPosterUrl = "/sky-poster.jpg";
 
 /** The old site's sky: gradient, drifting clouds, cloud video, grain, a plane crossing now and then. */
 export function Sky({ className = "" }: { className?: string }) {
@@ -52,7 +53,7 @@ export function Sky({ className = "" }: { className?: string }) {
       <div className="sky-grad" />
       <div className="sky-clouds sky-clouds-a" />
       <div className="sky-clouds sky-clouds-b" />
-      <video className="sky-video" autoPlay muted loop playsInline preload="metadata">
+      <video className="sky-video" autoPlay muted loop playsInline preload="metadata" poster={cloudPosterUrl}>
         <source src={cloudVideoUrl} type="video/mp4" />
       </video>
       <div className="sky-grain" />
