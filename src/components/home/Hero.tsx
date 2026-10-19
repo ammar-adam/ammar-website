@@ -6,11 +6,11 @@ import { Fade, Lines } from "@/components/shell/Reveal";
 import { Flap } from "./Flap";
 import { ease, SOCIALS, STOPS, WindowSky } from "./shared";
 
-/** Hero: name, the arched window, and the departures board as the way into the site. */
+/** Hall: name, the arched window, and a quiet departures strip as the way in. */
 export function Hero() {
   const ref = useRef<HTMLElement>(null);
-  const boardRef = useRef<HTMLDivElement>(null);
-  const live = useInView(boardRef, { once: true, amount: 0.3 });
+  const stripRef = useRef<HTMLDivElement>(null);
+  const live = useInView(stripRef, { once: true, amount: 0.3 });
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const yRaw = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const y = useSpring(yRaw, { stiffness: 90, damping: 24, mass: 0.6 });
@@ -54,33 +54,23 @@ export function Hero() {
         </motion.div>
       </div>
 
-      <motion.div
-        className="wrap va-dir"
-        ref={boardRef}
-        initial={{ opacity: 0, y: 24 }}
+      <motion.nav
+        className="wrap va-strip"
+        ref={stripRef}
+        aria-label="Gates"
+        initial={{ opacity: 0, y: 18 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, ease, delay: 0.75 }}
       >
-        <div className="fboard va-board">
-          <div className="fboard-head">
-            <div className="fh-l"><i className="fh-dot" />DEPARTURES · PICK A GATE</div>
-            <div className="fh-clock">AFA</div>
-          </div>
-          <div className="fboard-cols va-dir-cols" aria-hidden>
-            <span>GATE</span><span>DESTINATION</span><span>INFO</span><span>STATUS</span>
-          </div>
-          {STOPS.map((s, i) => (
-            <a key={s.id} href={`#${s.id}`} className="fboard-row va-dir-row">
-              <span className="fr-gate">{s.gate}</span>
-              <span className="fr-dest"><Flap value={live ? s.dest : ""} length={10} perChar={22} stepMs={32 + i * 2} /></span>
-              <span className="fr-info">{s.info}</span>
-              <span className={`fr-status ${s.status === "ON TIME" ? "st-green" : "st-amber"}`}>
-                <i /><Flap value={live ? s.status : ""} length={12} perChar={16} stepMs={30} />
-              </span>
-            </a>
-          ))}
-        </div>
-      </motion.div>
+        {STOPS.map((s, i) => (
+          <a key={s.id} href={`#${s.id}`} className="va-strip-row">
+            <span className="va-strip-gate">{s.gate}</span>
+            <span className="va-strip-dest"><Flap value={live ? s.dest : ""} length={10} perChar={22} stepMs={32 + i * 2} /></span>
+            <span className="va-strip-info">{s.info}</span>
+            <span className={`va-strip-status ${s.status === "ON TIME" ? "ok" : "hot"}`}><i />{s.status}</span>
+          </a>
+        ))}
+      </motion.nav>
     </section>
   );
 }

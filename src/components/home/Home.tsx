@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Sky, TopBar } from "@/components/shell/Shell";
-import { BagDrop } from "./BagDrop";
 import { Boarding } from "./Boarding";
+import { CheckIn } from "./CheckIn";
 import { Concourse } from "./Concourse";
 import { Hero } from "./Hero";
 import { Security } from "./Security";
@@ -42,7 +42,7 @@ export function Home() {
       <TopBar here={here} />
       <main className="va">
         <Hero />
-        <BagDrop />
+        <CheckIn />
         <Security />
         <Concourse />
         <Boarding />
