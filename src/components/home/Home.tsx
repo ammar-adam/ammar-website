@@ -19,14 +19,14 @@ const shotFor = (p: Project) =>
 
 /* ------------------------------------------------------------------ */
 /* Stops. The top bar's "you are here" follows the scene at the centre  */
-/* of the viewport; the directory board links to them.                 */
+/* of the viewport; the hero lists them as gates.                      */
 /* ------------------------------------------------------------------ */
 const STOPS = [
-  { id: "checkin", gate: "", here: "Check-in · Hall A", dest: "CHECK-IN", info: "", status: "" },
-  { id: "security", gate: "A", here: "Security · Bag check", dest: "SECURITY", info: "Things I've built", status: "NOW BOARDING" },
-  { id: "window", gate: "B", here: "Window seat · 2A", dest: "WINDOW SEAT", info: "About me", status: "ON TIME" },
-  { id: "claim", gate: "C", here: "Baggage claim · Carousel 3", dest: "BAGGAGE CLAIM", info: "Where I've worked", status: "ON TIME" },
-  { id: "boarding", gate: "D", here: "Boarding · Final call", dest: "BOARDING PASS", info: "Resume and contact", status: "FINAL CALL" },
+  { id: "checkin", gate: "", here: "Check-in · Hall A", label: "", sub: "" },
+  { id: "security", gate: "A", here: "Security · X-ray lane 2", label: "Security", sub: "Things I've built" },
+  { id: "departures", gate: "B", here: "Departures · 1 min walk", label: "Departures", sub: "Where I've worked" },
+  { id: "window", gate: "C", here: "Window seat · 2A", label: "Window seat", sub: "About me" },
+  { id: "boarding", gate: "D", here: "Boarding · Final call", label: "Boarding", sub: "Resume and contact" },
 ] as const;
 
 function useHere() {
@@ -74,14 +74,14 @@ function useStepFrom(mv: MotionValue<number>, n: number, from = 0, to = 1) {
 /* ------------------------------------------------------------------ */
 /* The arched window's inside: the old sky, clouds and cloud video.    */
 /* ------------------------------------------------------------------ */
-function WindowSky() {
+function WindowSky({ lazy = false }: { lazy?: boolean }) {
   return (
     <div className="win-inner" aria-hidden>
       <div className="sky">
         <div className="sky-grad" />
         <div className="sky-clouds sky-clouds-a" />
         <div className="sky-clouds sky-clouds-b" />
-        <video className="sky-video" autoPlay muted loop playsInline preload="metadata" poster={cloudPosterUrl}>
+        <video className="sky-video" autoPlay muted loop playsInline preload={lazy ? "none" : "metadata"} poster={cloudPosterUrl}>
           <source src={cloudVideoUrl} type="video/mp4" />
         </video>
         <div className="sky-grain" />
@@ -91,7 +91,7 @@ function WindowSky() {
 }
 
 /* ------------------------------------------------------------------ */
-/* 1 · Check-in: name, window, then the directory board                */
+/* 1 · Check-in                                                        */
 /* ------------------------------------------------------------------ */
 const SOCIALS = [
   { label: "Email", href: siteConfig.socialLinks.email },
@@ -105,25 +105,36 @@ function CheckIn() {
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
   const yRaw = useTransform(scrollYProgress, [0, 1], [0, 120]);
   const y = useSpring(yRaw, { stiffness: 90, damping: 24, mass: 0.6 });
+  const gates = STOPS.filter((s) => s.gate);
 
   return (
     <section id="checkin" ref={ref} className="va-scene va-checkin">
       <div className="wrap va-hero">
         <div className="va-hero-copy">
-          <Fade className="kicker" delay={0.1} y={10}>CHECK-IN · AFA INTERNATIONAL</Fade>
-          <Lines as="h1" className="va-h1" delay={0.25}>{["Ammar", "Adam"]}</Lines>
-          <Fade className="va-sub" delay={0.8}>
+          <Fade className="kicker" delay={0.05} y={10}>CHECK-IN · AFA INTERNATIONAL</Fade>
+          <Lines as="h1" className="va-h1" delay={0.15}>{["Ammar", "Adam"]}</Lines>
+          <Fade className="va-sub" delay={0.55}>
             <p>CS &amp; Finance at Waterloo. Building AI tools at Sagard, scouting student builders for OpenAI, shipping things on the side.</p>
           </Fade>
-          <Fade className="va-socials" delay={0.95} y={10}>
+          <Fade className="va-socials" delay={0.7} y={10}>
             {SOCIALS.map((s) => (
               <a key={s.label} href={s.href} target="_blank" rel="noreferrer">{s.label}</a>
+            ))}
+          </Fade>
+          <Fade className="va-gates" delay={0.85} y={10}>
+            {gates.map((g) => (
+              <a key={g.id} href={`#${g.id}`} className="va-gate">
+                <b>{g.gate}</b>
+                <span>{g.label}</span>
+                <small>{g.sub}</small>
+                <i aria-hidden>→</i>
+              </a>
             ))}
           </Fade>
         </div>
 
         <motion.div className="va-hero-window" style={{ y }}>
-          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.2, ease, delay: 0.45 }}>
+          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1.1, ease, delay: 0.3 }}>
             <div className="window">
               <WindowSky />
               <div className="win-frame" />
@@ -133,7 +144,7 @@ function CheckIn() {
                   <span className="fc-status">ON TIME</span>
                 </div>
                 <div className="fc-bar">
-                  <motion.i initial={{ width: 0 }} animate={{ width: "42%" }} transition={{ duration: 1.6, ease, delay: 1.2 }} />
+                  <motion.i initial={{ width: 0 }} animate={{ width: "42%" }} transition={{ duration: 1.4, ease, delay: 0.9 }} />
                 </div>
                 <div className="fc-sub">
                   <span>YYZ → TBD</span>
@@ -148,69 +159,27 @@ function CheckIn() {
   );
 }
 
-/** The terminal directory: the split-flap board as navigation, like the live home. */
-function Directory() {
-  const ref = useRef<HTMLDivElement>(null);
-  const live = useInView(ref, { once: true, amount: 0.4 });
-  const rows = STOPS.filter((s) => s.gate);
-  return (
-    <div className="wrap va-directory" ref={ref}>
-      <div className="va-scene-head">
-        <span className="kicker">TERMINAL DIRECTORY</span>
-        <small>Pick a gate</small>
-      </div>
-      <div className="fboard va-board">
-        <div className="fboard-head">
-          <div className="fh-l"><i className="fh-dot" />DEPARTURES</div>
-          <div className="fh-clock">AFA</div>
-        </div>
-        <div className="fboard-cols va-dir-cols">
-          <span>GATE</span><span>DESTINATION</span><span>INFO</span><span>STATUS</span>
-        </div>
-        {rows.map((r, i) => (
-          <a key={r.id} href={`#${r.id}`} className="fboard-row va-dir-row">
-            <span className="fr-gate">{r.gate}</span>
-            <span className="fr-dest"><Flap value={live ? r.dest : ""} length={13} perChar={22} /></span>
-            <span className="fr-info">{r.info}</span>
-            <span className={`fr-status ${r.status === "ON TIME" ? "st-green" : "st-amber"}`}>
-              <i /><Flap value={live ? r.status : ""} length={12} perChar={18} stepMs={30 + i * 2} />
-            </span>
-          </a>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
-/* 2 · Security: the bag rides into the X-ray, comes out, and opens.   */
-/*     Inside are the projects.                                        */
+/* 2 · Security: the X-ray is the scene. Your bag is in the scanner;   */
+/*     the items inside are the projects. Scroll highlights each one   */
+/*     on the screen and opens it onto the inspection tray.            */
 /* ------------------------------------------------------------------ */
-const SEATS = ["1A", "1B", "2A", "2B"];
-
 function Security() {
   const ref = useRef<HTMLElement>(null);
   const n = projects.length;
   const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const smooth = useSpring(p, { stiffness: 110, damping: 26, mass: 0.5 });
+  const smooth = useSpring(p, { stiffness: 140, damping: 28, mass: 0.5 });
 
-  // Belt choreography, as fractions of the pinned scroll.
-  const bagX = useTransform(smooth, [0, 0.16, 0.34, 0.46], ["-52vw", "0vw", "0vw", "52vw"]);
-  const bagOpacity = useTransform(smooth, [0.44, 0.5], [1, 0]);
-  const beltOpacity = useTransform(smooth, [0.42, 0.56], [1, 0]);
-  const beltY = useTransform(smooth, [0.42, 0.56], ["0px", "-40px"]);
-  const xray = useTransform(smooth, [0.14, 0.18, 0.32, 0.36], [0, 1, 1, 0]);
-  const caseOpacity = useTransform(smooth, [0.5, 0.6], [0, 1]);
-  const caseY = useTransform(smooth, [0.5, 0.62], ["48px", "0px"]);
-  const lidOpen = useTransform(smooth, [0.54, 0.7], [0, 1]);
-  const lidRot = useTransform(lidOpen, [0, 1], [-96, 0]);
-
-  const phase = useStepFrom(p, 3, 0, 0.5); // 0 approaching · 1 inside · 2 leaving
-  const sel = useStepFrom(p, n, 0.6, 1);
+  const INTRO = 0.14; // the bag slides onto the screen, then items step
+  const bagX = useTransform(smooth, [0, INTRO], ["-115%", "0%"]);
+  const bagIn = useTransform(smooth, [INTRO * 0.8, INTRO], [0, 1]);
+  const waiting = useTransform(smooth, [0, INTRO * 0.9], [1, 0]);
+  const loaded = useStepFrom(p, 2, 0, INTRO) === 1 || false;
+  const sel = useStepFrom(p, n, INTRO, 1);
+  const inside = useInView(ref, { amount: 0.1 });
+  const active = inside && loaded;
   const proj = projects[sel];
   const links = proj.seats[0]?.links ?? [];
-
-  const hint = phase === 0 ? "Place your bag on the belt" : phase === 1 ? "Scanning" : "Cleared · Open your bag";
 
   return (
     <section id="security" ref={ref} className="va-scene va-pinwrap va-pinwrap-sec">
@@ -218,117 +187,100 @@ function Security() {
         <div className="wrap">
           <div className="va-scene-head">
             <span className="kicker">GATE A · SECURITY · PROJECTS</span>
-            <small aria-live="polite">{hint}</small>
+            <small aria-live="polite">{active ? `Item ${pad2(sel + 1)} of ${pad2(n)} · Scroll to inspect` : "Place your bag on the belt"}</small>
           </div>
 
-          <div className="va-stage">
-            {/* Belt + scanner */}
-            <motion.div className="va-belt-wrap" style={{ opacity: beltOpacity, y: beltY }} aria-hidden>
-              <div className="va-scanner">
-                <div className="va-scanner-top">
-                  <span><i className="va-led" />X-RAY · LANE 2</span>
-                  <motion.span className="va-scanner-count" style={{ opacity: xray }}>4 ITEMS · CLEARED</motion.span>
-                </div>
-                <div className="va-tunnel">
-                  <motion.div className="va-xray" style={{ opacity: xray }}>
-                    <div className="va-xray-bag">
-                      {projects.map((q, i) => (
-                        <img key={q.slug} src={shotFor(q)} alt="" className={`va-xray-item va-xray-item-${i}`} />
+          <div className="va-xr">
+            {/* The X-ray monitor */}
+            <div className="va-mon">
+              <div className="va-mon-top">
+                <span><i className="va-led" />X-RAY · LANE 2</span>
+                <span className="va-mon-id">BAG AA-YYZ-2A</span>
+              </div>
+              <div className="va-screen">
+                <div className="va-screen-grid" aria-hidden />
+                <motion.div className="va-screen-wait" style={{ opacity: waiting }} aria-hidden>
+                  <span>WAITING FOR BAG</span>
+                  <i />
+                </motion.div>
+                <motion.div className="va-xbag" style={{ x: bagX, opacity: bagIn }}>
+                  <span className="va-xbag-handle" aria-hidden />
+                  {projects.map((q, i) => {
+                    const on = active && i === sel;
+                    return (
+                      <button
+                        key={q.slug}
+                        type="button"
+                        className={`va-xitem va-xitem-${i} ${on ? "on" : ""} ${active && !on ? "off" : ""}`}
+                        onClick={() => jumpToStep(ref.current, i, n, INTRO, 1)}
+                        aria-label={`Inspect ${q.name}`}
+                        aria-pressed={on}
+                      >
+                        <img src={shotFor(q)} alt="" draggable={false} />
+                        <span className="va-xitem-reticle" aria-hidden><i /><i /><i /><i /></span>
+                        <span className="va-xitem-tag">ITEM {pad2(i + 1)}</span>
+                      </button>
+                    );
+                  })}
+                </motion.div>
+                <span className="va-xscan" aria-hidden />
+              </div>
+              <div className="va-mon-bottom">
+                <span>ITEMS {pad2(n)}</span>
+                <span>THREAT · NONE</span>
+                <span className="va-mon-status">
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.span key={active ? proj.slug : "wait"} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.3 }}>
+                      {active ? `ITEM ${pad2(sel + 1)} · ${proj.name.toUpperCase()} · CLEARED` : "SCANNING"}
+                    </motion.span>
+                  </AnimatePresence>
+                </span>
+              </div>
+            </div>
+
+            {/* The inspection tray: the item, opened */}
+            <div className="va-tray">
+              <div className="va-tray-head">
+                <span>INSPECTION TRAY</span>
+                <span>{active ? `ITEM ${pad2(sel + 1)} / ${pad2(n)}` : "EMPTY"}</span>
+              </div>
+              <AnimatePresence mode="wait" initial={false}>
+                {active ? (
+                  <motion.div
+                    key={proj.slug}
+                    className="va-tray-body"
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.45, ease }}
+                  >
+                    <img className="va-tray-photo" src={shotFor(proj)} alt={`${proj.name} screenshot`} />
+                    <div className="va-tray-meta">
+                      <span className="claim-tag">{proj.flightCode} · {proj.year}</span>
+                      <span className={`sticker stat ${proj.status === "Boarding" ? "s-board" : "s-dep"}`}>{proj.status}</span>
+                    </div>
+                    <h3 className="va-tray-name">{proj.name}</h3>
+                    <p className="va-tray-route">{proj.routeName}</p>
+                    <p className="va-tray-note">{proj.shortDesc}</p>
+                    <div className="va-tray-links">
+                      {links.map((l) => (
+                        <a key={l.url} className="btn" href={l.url} target="_blank" rel="noreferrer">{l.label}</a>
                       ))}
                     </div>
-                    <span className="va-xray-scan" />
                   </motion.div>
-                  <span className="va-curtain va-curtain-l" />
-                  <span className="va-curtain va-curtain-r" />
-                </div>
-              </div>
-              <div className="va-belt">
-                <motion.div className="va-tray" style={{ x: bagX, opacity: bagOpacity }}>
-                  <div className="va-bag">
-                    <span className="va-bag-handle" />
-                    <span className="va-bag-tag">AA · YYZ</span>
-                    <span className="va-bag-stripe" />
-                  </div>
-                </motion.div>
-                <div className="va-rollers" />
-              </div>
-            </motion.div>
-
-            {/* Open suitcase with the projects */}
-            <motion.div className="va-case-wrap" style={{ opacity: caseOpacity, y: caseY }}>
-              <div className="va-items" role="tablist" aria-label="Projects">
+                ) : (
+                  <motion.div key="empty" className="va-tray-empty" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    <span>Scroll to send your bag through.</span>
+                    <small>Four items inside. Each one opens here.</small>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+              <ol className="va-tray-index" aria-hidden>
                 {projects.map((q, i) => (
-                  <button
-                    key={q.slug}
-                    role="tab"
-                    aria-selected={sel === i}
-                    className={`va-item ${sel === i ? "sel" : ""}`}
-                    onClick={() => jumpToStep(ref.current, i, n, 0.6, 1)}
-                  >
-                    <span className="va-item-no">{pad2(i + 1)}</span>
-                    <span className="va-item-name">{q.name}</span>
-                    <span className="va-item-year">{q.year}</span>
-                  </button>
+                  <li key={q.slug} className={active && i === sel ? "on" : active && i < sel ? "done" : ""}>{pad2(i + 1)}</li>
                 ))}
-              </div>
-
-              <div className="case-open va-case">
-                <div className="case-handle" aria-hidden />
-                <div className="case-wheel case-wheel-l" aria-hidden />
-                <div className="case-wheel case-wheel-r" aria-hidden />
-
-                <motion.div className="case-lid va-lid" style={{ rotateX: lidRot }}>
-                  <div className="lid-mesh" />
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={proj.slug}
-                      className="va-lid-in"
-                      initial={{ opacity: 0, y: -14 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.45, ease }}
-                    >
-                      <div className="lid-brand"><img src="/airport-icons/suitcase-1.svg" alt="" />AFA · {proj.flightCode}</div>
-                      <div className="lid-name">{proj.name}</div>
-                      <div className="lid-route">{proj.routeName}</div>
-                      <div className="lid-stickers">
-                        <span className="sticker dest">{proj.destination}</span>
-                        <span className={`sticker stat ${proj.status === "Boarding" ? "s-board" : "s-dep"}`}>{proj.status}</span>
-                      </div>
-                      <dl className="va-lid-meta">
-                        <div><dt>Flight</dt><dd>{proj.flightCode}</dd></div>
-                        <div><dt>Gate</dt><dd>{proj.gate}</dd></div>
-                        <div><dt>Seat</dt><dd>{SEATS[sel]}</dd></div>
-                        <div><dt>Year</dt><dd>{proj.year}</dd></div>
-                      </dl>
-                    </motion.div>
-                  </AnimatePresence>
-                </motion.div>
-
-                <div className="case-body">
-                  <div className="case-lining" />
-                  <AnimatePresence mode="wait" initial={false}>
-                    <motion.div
-                      key={proj.slug}
-                      className="va-case-in"
-                      initial={{ opacity: 0, y: 16 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -8 }}
-                      transition={{ duration: 0.45, ease }}
-                    >
-                      <img className="case-photo" src={shotFor(proj)} alt={`${proj.name} screenshot`} />
-                      <span className="case-tag">ITEM {pad2(sel + 1)} · {proj.year}</span>
-                      <p className="case-note">{proj.shortDesc}</p>
-                      <div className="case-links">
-                        {links.map((l) => (
-                          <a key={l.url} className="btn" href={l.url} target="_blank" rel="noreferrer">{l.label}</a>
-                        ))}
-                      </div>
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
-              </div>
-            </motion.div>
+              </ol>
+            </div>
           </div>
         </div>
       </div>
@@ -337,7 +289,97 @@ function Security() {
 }
 
 /* ------------------------------------------------------------------ */
-/* 3 · Window seat (about)                                             */
+/* 3 · Departures: experience on the split-flap board. Rows board in   */
+/*     order as you scroll.                                            */
+/* ------------------------------------------------------------------ */
+const TIMES = ["06:40", "08:15", "09:50", "11:05", "12:30", "14:20", "16:45"];
+const GATES = ["A3", "A7", "B2", "B5", "B9", "C4", "C8"];
+const shortName = (s: string) => s.replace("Waterloo Tech Week / ", "");
+
+function Departures() {
+  const ref = useRef<HTMLElement>(null);
+  const n = arrivals.length;
+  const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const active = useStepFrom(p, n);
+  const live = useInView(ref, { once: true, amount: 0.05 });
+  const [clock, setClock] = useState("--:--");
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-CA", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Toronto" });
+    const tick = () => setClock(fmt.format(new Date()));
+    tick();
+    const id = window.setInterval(tick, 10_000);
+    return () => window.clearInterval(id);
+  }, []);
+
+  return (
+    <section id="departures" ref={ref} className="va-scene va-pinwrap va-pinwrap-board">
+      <div className="va-pin">
+        <div className="wrap">
+          <div className="va-scene-head">
+            <span className="kicker">GATE B · DEPARTURES · EXPERIENCE</span>
+            <small>Scroll to board · {pad2(active + 1)} / {pad2(n)}</small>
+          </div>
+
+          <div className="fboard va-board">
+            <div className="fboard-head">
+              <div className="fh-l"><i className="fh-dot" />DEPARTURES</div>
+              <div className="fh-clock">YYZ {clock}</div>
+            </div>
+            <div className="fboard-cols va-cols">
+              <span>TIME</span><span>DESTINATION</span><span>ROLE · CITY</span><span>GATE</span><span>STATUS</span>
+            </div>
+
+            {arrivals.map((a, i) => {
+              const state = i < active ? "departed" : i === active ? "boarding" : "scheduled";
+              const label = !live ? "" : state === "departed" ? "DEPARTED" : state === "boarding" ? "BOARDING" : "ON TIME";
+              const st = state === "boarding" ? "st-amber" : state === "scheduled" ? "st-green" : "st-dim";
+              return (
+                <div
+                  key={a.slug}
+                  className={`fboard-row va-row ${state}`}
+                  role="button"
+                  tabIndex={0}
+                  aria-current={state === "boarding" ? "step" : undefined}
+                  onClick={() => jumpToStep(ref.current, i, n)}
+                  onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); jumpToStep(ref.current, i, n); } }}
+                >
+                  <span className="fr-time">{TIMES[i]}</span>
+                  <span className="fr-dest"><Flap value={live ? shortName(a.from).toUpperCase() : ""} length={16} perChar={14} stepMs={30} /></span>
+                  <span className="fr-info">{a.title} · {a.origin}</span>
+                  <span className="fr-gate">{GATES[i]}</span>
+                  <span className={`fr-status ${st}`}><i /><Flap value={label} length={8} /></span>
+                  <AnimatePresence initial={false}>
+                    {state === "boarding" && (
+                      <motion.div
+                        key="x"
+                        className="va-row-x"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.55, ease }}
+                      >
+                        <p>{a.impact}</p>
+                        <span className="va-row-meta">
+                          {a.detailTitle ?? a.title}
+                          {a.fromUrl && (
+                            <> · <a href={a.fromUrl} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{host(a.fromUrl)} ↗</a></>
+                          )}
+                        </span>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* 4 · Window seat (about)                                             */
 /* ------------------------------------------------------------------ */
 const CARRY_ON = [
   "Liverpool, since I was ten",
@@ -352,7 +394,7 @@ function WindowSeat() {
       <div className="wrap va-seat-grid">
         <Fade className="va-seat-window" amount={0.3}>
           <div className="window va-window-sm">
-            <WindowSky />
+            <WindowSky lazy />
             <div className="win-frame" />
             <div className="flight-card">
               <div className="fc-top">
@@ -368,7 +410,7 @@ function WindowSeat() {
         </Fade>
 
         <div className="va-seat-copy">
-          <Fade className="kicker" y={10} amount={0.3}>GATE B · WINDOW SEAT · ABOUT</Fade>
+          <Fade className="kicker" y={10} amount={0.3}>GATE C · WINDOW SEAT · ABOUT</Fade>
           <Lines as="p" className="va-about" delay={0.1} amount={0.3}>
             {[
               <span key="a">I grew up between Toronto, Dubai and Karachi, so a lot of my life happened in departure halls.</span>,
@@ -383,114 +425,6 @@ function WindowSeat() {
               ))}
             </ul>
           </Fade>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
-/* 4 · Baggage claim: experience as bags on the carousel. Scrolling    */
-/*     moves the belt; the bag in front of you opens its claim ticket. */
-/* ------------------------------------------------------------------ */
-const CODES: Record<string, string> = { Dubai: "DXB", Mississauga: "YYZ", Toronto: "YYZ", Waterloo: "YKF", "San Francisco": "SFO", "Palo Alto": "SFO" };
-
-function Claim() {
-  const ref = useRef<HTMLElement>(null);
-  const n = arrivals.length;
-  const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const smooth = useSpring(p, { stiffness: 170, damping: 30, mass: 0.4 });
-  const sel = useStepFrom(p, n);
-  const a = arrivals[sel];
-
-  // Bag width and gap come from CSS (they change on phones), so measure them.
-  const trackRef = useRef<HTMLDivElement>(null);
-  const dims = useRef({ w: 212, step: 238, cw: 1180 });
-  useEffect(() => {
-    const el = trackRef.current;
-    const box = el?.parentElement;
-    if (!el || !box) return;
-    const measure = () => {
-      const bags = el.querySelectorAll<HTMLElement>(".bag");
-      if (bags.length > 1) dims.current = { w: bags[0].offsetWidth, step: bags[1].offsetLeft - bags[0].offsetLeft, cw: box.clientWidth };
-    };
-    measure();
-    const ro = new ResizeObserver(measure);
-    ro.observe(box);
-    return () => ro.disconnect();
-  }, []);
-
-  // Belt offset in px (a % here would be relative to the track, not the carousel):
-  // bag i is centred when progress sits in the middle of its step.
-  const beltX = useTransform(smooth, (v) => {
-    const t = Math.min(0.999, Math.max(0, v)) * n - 0.5;
-    const i = Math.max(0, Math.min(n - 1, t));
-    const { w, step, cw } = dims.current;
-    return cw / 2 - (w / 2 + i * step);
-  });
-
-  return (
-    <section id="claim" ref={ref} className="va-scene va-pinwrap va-pinwrap-claim">
-      <div className="va-pin">
-        <div className="wrap">
-          <div className="va-scene-head">
-            <span className="kicker">GATE C · BAGGAGE CLAIM · EXPERIENCE</span>
-            <small>Carousel 3 · bag {pad2(sel + 1)} / {pad2(n)}</small>
-          </div>
-
-          <div className="claim va-claim">
-            <div className="carousel va-carousel">
-              <div className="belt-tex" aria-hidden />
-              <motion.div className="belt-track va-belt-track" ref={trackRef} style={{ x: beltX }}>
-                {arrivals.map((b, i) => (
-                  <button
-                    key={b.slug}
-                    type="button"
-                    className={`bag va-claim-bag ${sel === i ? "sel" : ""}`}
-                    aria-pressed={sel === i}
-                    onClick={() => jumpToStep(ref.current, i, n)}
-                  >
-                    {b.image ? <img className="b-img" src={b.image} alt="" /> : <div className="b-img" />}
-                    <span className="b-tag">{b.origin}</span>
-                    <div className="b-body">
-                      <div className="b-from">{b.from}</div>
-                      <div className="b-title">{b.title}</div>
-                      <div className="b-strip" aria-hidden />
-                    </div>
-                  </button>
-                ))}
-              </motion.div>
-              <div className="belt-rollers" aria-hidden />
-            </div>
-
-            <AnimatePresence mode="wait" initial={false}>
-              <motion.div
-                key={a.slug}
-                className="va-ticket"
-                initial={{ opacity: 0, y: 14 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -8 }}
-                transition={{ duration: 0.45, ease }}
-              >
-                <div className="va-ticket-l">
-                  <span className="claim-tag">{CODES[a.origin] ?? "AFA"} · {a.origin.toUpperCase()}</span>
-                  <div className="va-ticket-co">{a.from}</div>
-                  <div className="va-ticket-role">{a.detailTitle ?? a.title}</div>
-                </div>
-                <div className="va-ticket-r">
-                  <p className="va-ticket-impact">{a.impact}</p>
-                  <p className="va-ticket-details">{a.details}</p>
-                  <div className="va-ticket-links">
-                    {a.fromUrl && <a href={a.fromUrl} target="_blank" rel="noreferrer">{host(a.fromUrl)} ↗</a>}
-                    {a.links?.map((l) => (
-                      <a key={l.url} href={l.url} target="_blank" rel="noreferrer">{l.label} ↗</a>
-                    ))}
-                  </div>
-                </div>
-                <div className="va-ticket-bar" aria-hidden />
-              </motion.div>
-            </AnimatePresence>
-          </div>
         </div>
       </div>
     </section>
@@ -585,10 +519,9 @@ export function Home() {
       <TopBar here={here} />
       <main className="va">
         <CheckIn />
-        <Directory />
         <Security />
+        <Departures />
         <WindowSeat />
-        <Claim />
         <Boarding />
       </main>
     </>
