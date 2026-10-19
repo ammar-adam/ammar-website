@@ -405,26 +405,28 @@ function Claim() {
 
   // Bag width and gap come from CSS (they change on phones), so measure them.
   const trackRef = useRef<HTMLDivElement>(null);
-  const dims = useRef({ w: 212, step: 238 });
+  const dims = useRef({ w: 212, step: 238, cw: 1180 });
   useEffect(() => {
     const el = trackRef.current;
-    if (!el) return;
+    const box = el?.parentElement;
+    if (!el || !box) return;
     const measure = () => {
       const bags = el.querySelectorAll<HTMLElement>(".bag");
-      if (bags.length > 1) dims.current = { w: bags[0].offsetWidth, step: bags[1].offsetLeft - bags[0].offsetLeft };
+      if (bags.length > 1) dims.current = { w: bags[0].offsetWidth, step: bags[1].offsetLeft - bags[0].offsetLeft, cw: box.clientWidth };
     };
     measure();
     const ro = new ResizeObserver(measure);
-    ro.observe(el);
+    ro.observe(box);
     return () => ro.disconnect();
   }, []);
 
-  // Belt offset: bag i is centred when progress sits in the middle of its step.
+  // Belt offset in px (a % here would be relative to the track, not the carousel):
+  // bag i is centred when progress sits in the middle of its step.
   const beltX = useTransform(smooth, (v) => {
     const t = Math.min(0.999, Math.max(0, v)) * n - 0.5;
     const i = Math.max(0, Math.min(n - 1, t));
-    const { w, step } = dims.current;
-    return `calc(50% - ${w / 2 + i * step}px)`;
+    const { w, step, cw } = dims.current;
+    return cw / 2 - (w / 2 + i * step);
   });
 
   return (
