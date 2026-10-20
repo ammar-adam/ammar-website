@@ -4,14 +4,31 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Fade } from "@/components/shell/Reveal";
 import { boardingPassConfig } from "@/data/boardingPass";
-import { ease, SOCIALS } from "./shared";
+import { ease, SceneHead, SOCIALS } from "./shared";
+
+const TAKEOFF_MS = 2600; // the resume opens once the plane is gone
 
 /**
- * Boarding · the pass. Scanning the barcode opens the resume and, at the same
- * moment, the whole terminal takes off: laser, stamp, stub torn, sky climbs.
+ * 04 · Boarding. The pass. Scanning the barcode boards you: laser, stamp, stub
+ * torn, the sky climbs and the plane crosses the page. Then the resume opens.
  */
 export function Boarding() {
   const [boarded, setBoarded] = useState(false);
+
+  const scan = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    // Let modified clicks (new tab, etc.) behave normally.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.button !== 0) return;
+    e.preventDefault();
+    if (boarded) return;
+    setBoarded(true);
+    window.setTimeout(() => {
+      // No "noopener" feature string: with it, window.open always returns null.
+      const w = window.open(boardingPassConfig.resumeFileUrl, "_blank");
+      if (w) w.opener = null;
+      // If the browser blocks the delayed tab, open it here instead.
+      else window.location.assign(boardingPassConfig.resumeFileUrl);
+    }, TAKEOFF_MS);
+  };
 
   useEffect(() => {
     if (!boarded) return;
@@ -27,12 +44,15 @@ export function Boarding() {
   }, [boarded]);
 
   return (
-    <section id="boarding" className="va-scene va-boarding">
+    <section id="boarding" className="va-boarding">
       <div className="wrap">
-        <div className="va-scene-head va-pass-w">
-          <span className="kicker">GATE D · BOARDING · NEXT FLIGHT</span>
-          <small>{boarded ? "Boarded · Enjoy the flight" : "Final call · Scan to board"}</small>
-        </div>
+        <SceneHead
+          no="04"
+          title="Boarding"
+          where="Gate D"
+          sub="Resume and contact. Scan the barcode to board."
+          hint={boarded ? "Boarded · enjoy the flight" : "Final call"}
+        />
 
         <Fade amount={0.2}>
           <div className={`pass va-pass ${boarded ? "boarded" : ""}`}>
@@ -107,19 +127,19 @@ export function Boarding() {
                 target="_blank"
                 rel="noreferrer"
                 aria-label="Scan boarding pass: open resume (PDF)"
-                onClick={() => setBoarded(true)}
+                onClick={scan}
               >
                 <span className="scan-frame">
                   <span className="ps-bar" />
                   <span className="scan-laser" />
                 </span>
-                <span className="scan-hint">{boarded ? "BOARDED · RESUME OPENED" : "SCAN FOR RESUME"}</span>
+                <span className="scan-hint">{boarded ? "BOARDED · OPENING RESUME" : "SCAN FOR RESUME"}</span>
               </a>
             </motion.div>
           </div>
         </Fade>
 
-        <footer className="va-foot va-pass-w">
+        <footer className="va-foot">
           <span>Thanks for flying with me.</span>
           <a href="https://uwaterloo.network" target="_blank" rel="noreferrer">
             <img src="https://uwaterloo.network/icon.svg" alt="" />uwaterloo.network

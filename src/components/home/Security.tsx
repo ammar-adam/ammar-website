@@ -1,120 +1,144 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { Fade } from "@/components/shell/Reveal";
+import { useRef } from "react";
+import { AnimatePresence, motion, useScroll, useTransform } from "framer-motion";
 import { projects } from "@/data/departures";
-import { ease, pad2, shotFor } from "./shared";
+import { ease, jumpToStep, pad2, SceneHead, shotFor, Suitcase, useStepFrom, Walker } from "./shared";
+
+const INTRO = 0.2; // the tray rides through the machine, then items step
 
 /**
- * Security · one object: the X-ray screen. Your bag is on it; the four scans
- * inside are the projects. Hover one and it scans amber; click and the screen
- * opens it: the real screenshot fills the screen with its details.
+ * 02 · Security. A lane: queue, divest table, X-ray, bag check. Your tray
+ * goes through; the monitor shows what's inside (the projects) and the
+ * officer lays each one out on the bag-check table.
  */
 export function Security() {
-  const [hover, setHover] = useState<number | null>(null);
-  const [open, setOpen] = useState<number | null>(null);
+  const ref = useRef<HTMLElement>(null);
   const n = projects.length;
-  const focus = open ?? hover;
-  const current = focus === null ? null : projects[focus];
+  const { scrollYProgress: p } = useScroll({ target: ref, offset: ["start start", "end end"] });
 
-  useEffect(() => {
-    if (open === null) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setOpen(null); };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  // Tray: divest table → into the machine → out onto bag check.
+  const trayX = useTransform(p, [0, INTRO * 0.45, INTRO * 0.6, INTRO], ["0%", "190%", "190%", "380%"]);
+  const queue = useTransform(p, [0, INTRO], ["0px", "26px"]);
+  const scanning = useTransform(p, [INTRO * 0.4, INTRO * 0.5, INTRO * 0.7, INTRO * 0.8], [0, 1, 1, 0]);
+  const phase = useStepFrom(p, 2, 0, INTRO);
+  const sel = useStepFrom(p, n, INTRO, 1);
+  const ready = phase === 1;
+  const proj = projects[sel];
+  const links = proj.seats[0]?.links ?? [];
 
   return (
-    <section id="security" className="va-scene va-sec">
-      <div className="wrap">
-        <Fade className="kicker" y={10} amount={0.4}>GATE B · SECURITY · WHAT I&apos;VE BUILT</Fade>
+    <section id="security" ref={ref} className="va-pinwrap va-pin-sec">
+      <div className="va-pin">
+        <div className="wrap">
+          <SceneHead
+            no="02"
+            title="Security"
+            where="Lane 2"
+            sub="What I've built. Everything in the bag gets checked."
+            hint={ready ? <>Item {pad2(sel + 1)} / {pad2(n)} · scroll to check the next</> : "Your tray is going through"}
+            skip="security"
+          />
 
-        <Fade className="va-mon" amount={0.25} y={24}>
-          <div className="va-mon-top">
-            <span><i className="va-led" />X-RAY · LANE 2</span>
-            <span className="va-mon-id">BAG AA-YYZ-2A · {pad2(n)} ITEMS</span>
+          {/* The lane */}
+          <div className="sc-stage" aria-hidden>
+            <div className="sc-sign"><i className="va-led" />SECURITY · LANE 2 · LAPTOPS OUT</div>
+            <motion.div className="sc-queue" style={{ x: queue }}>
+              <span className="sc-person sc-person-1"><Walker variant={1} /></span>
+              <span className="sc-person sc-person-2"><Walker /></span>
+              <span className="sc-person sc-person-3"><Walker variant={1} /></span>
+            </motion.div>
+            <div className="sc-stanchions"><span /><i /><span /><i /><span /></div>
+
+            <div className="sc-rollers sc-rollers-in" />
+            <div className="sc-machine">
+              <span className="sc-machine-label">X-RAY</span>
+              <motion.span className="sc-machine-light" style={{ opacity: scanning }} />
+              <span className="sc-curtain sc-curtain-l" /><span className="sc-curtain sc-curtain-r" />
+            </div>
+            <div className="sc-rollers sc-rollers-out" />
+            <div className="sc-check"><span>BAG CHECK</span></div>
+
+            <motion.div className="sc-tray" style={{ x: trayX }}>
+              <Suitcase finish="navy" code="AA" className="sc-bag" />
+            </motion.div>
+            <div className="ci-floor" />
           </div>
 
-          <div className={`va-screen ${open !== null ? "is-open" : ""}`}>
-            <div className="va-screen-grid" aria-hidden />
-            <div className="va-xbag" aria-hidden={open !== null}>
-              <span className="va-xbag-handle" aria-hidden />
-              {projects.map((q, i) => {
-                const on = focus === i;
-                return (
-                  <button
-                    key={q.slug}
-                    type="button"
-                    className={`va-xitem va-xitem-${i} ${on ? "on" : ""} ${focus !== null && !on ? "off" : ""}`}
-                    onMouseEnter={() => setHover(i)}
-                    onMouseLeave={() => setHover(null)}
-                    onFocus={() => setHover(i)}
-                    onBlur={() => setHover(null)}
-                    onClick={() => setOpen(i)}
-                    aria-label={`Open ${q.name}`}
-                    tabIndex={open === null ? 0 : -1}
-                  >
-                    <img src={shotFor(q)} alt="" draggable={false} loading="lazy" />
-                    <span className="va-xitem-reticle" aria-hidden><i /><i /><i /><i /></span>
-                    <span className="va-xitem-tag">{pad2(i + 1)} · {q.name.toUpperCase()}</span>
-                  </button>
-                );
-              })}
+          <div className="sc-panels">
+            {/* X-ray monitor */}
+            <div className="va-mon">
+              <div className="va-mon-top">
+                <span><i className="va-led" />X-RAY · LANE 2</span>
+                <span className="va-mon-id">{ready ? `ITEM ${pad2(sel + 1)} / ${pad2(n)}` : "SCANNING"}</span>
+              </div>
+              <div className="va-screen">
+                <div className="va-screen-grid" />
+                <div className="va-xbag">
+                  <span className="va-xbag-handle" />
+                  {projects.map((q, i) => {
+                    const on = ready && i === sel;
+                    return (
+                      <button
+                        key={q.slug}
+                        type="button"
+                        className={`va-xitem va-xitem-${i} ${on ? "on" : ""} ${ready && !on ? "off" : ""}`}
+                        onClick={() => jumpToStep(ref.current, i, n, INTRO, 1)}
+                        aria-label={`Check ${q.name}`}
+                        aria-pressed={on}
+                      >
+                        <img src={shotFor(q)} alt="" draggable={false} loading="lazy" />
+                        <span className="va-xitem-reticle" aria-hidden><i /><i /><i /><i /></span>
+                        <span className="va-xitem-tag">{pad2(i + 1)}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+                <span className="va-xscan" aria-hidden />
+              </div>
             </div>
-            <span className="va-xscan" aria-hidden />
 
-            <AnimatePresence>
-              {open !== null && (
-                <motion.div
-                  key={projects[open].slug}
-                  className="va-open"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.45, ease }}
-                >
-                  <motion.img
-                    src={shotFor(projects[open])}
-                    alt={`${projects[open].name} screenshot`}
-                    initial={{ scale: 1.06 }}
-                    animate={{ scale: 1 }}
-                    transition={{ duration: 1.2, ease }}
-                  />
-                  <div className="va-open-bar">
-                    <div className="va-open-text">
-                      <span className="va-open-no">ITEM {pad2(open + 1)} · {projects[open].flightCode} · {projects[open].year}</span>
-                      <h3>{projects[open].name}</h3>
-                      <p>{projects[open].shortDesc}</p>
+            {/* Bag-check table: the item, laid out whole */}
+            <div className="sc-table">
+              <div className="sc-table-head">
+                <span>BAG CHECK</span>
+                <span>{ready ? `ITEM ${pad2(sel + 1)} · CLEARED` : "WAITING FOR TRAY"}</span>
+              </div>
+              <AnimatePresence mode="wait" initial={false}>
+                {ready ? (
+                  <motion.div
+                    key={proj.slug}
+                    className="sc-item"
+                    initial={{ opacity: 0, y: 14 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -8 }}
+                    transition={{ duration: 0.45, ease }}
+                  >
+                    <div className="sc-shot">
+                      <img src={shotFor(proj)} alt={`${proj.name} screenshot`} />
                     </div>
-                    <div className="va-open-actions">
-                      {(projects[open].seats[0]?.links ?? []).map((l) => (
+                    <div className="sc-item-meta">
+                      <span className="claim-tag">{proj.flightCode} · {proj.year}</span>
+                      <span className={`sticker stat ${proj.status === "Boarding" ? "s-board" : "s-dep"}`}>{proj.status}</span>
+                    </div>
+                    <h3 className="sc-item-name">{proj.name}</h3>
+                    <p className="sc-item-route">{proj.routeName}</p>
+                    <p className="sc-item-note">{proj.shortDesc}</p>
+                    <div className="sc-item-links">
+                      {links.map((l) => (
                         <a key={l.url} className="btn" href={l.url} target="_blank" rel="noreferrer">{l.label}</a>
                       ))}
-                      <button type="button" className="btn va-open-close" onClick={() => setOpen(null)}>← Back to scan</button>
                     </div>
-                  </div>
-                  <div className="va-open-nav" aria-label="Other items">
-                    {projects.map((q, i) => (
-                      <button key={q.slug} type="button" className={i === open ? "on" : ""} onClick={() => setOpen(i)} aria-label={q.name}>{pad2(i + 1)}</button>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </div>
-
-          <div className="va-mon-bottom">
-            <span>THREAT · NONE</span>
-            <span className="va-mon-status">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span key={current ? current.slug + (open !== null ? "o" : "h") : "idle"} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.25 }}>
-                  {current ? `${open !== null ? "OPENED" : "INSPECTING"} · ${current.name.toUpperCase()} · CLEARED` : "HOVER AN ITEM · CLICK TO OPEN"}
-                </motion.span>
+                  </motion.div>
+                ) : (
+                  <motion.div key="wait" className="sc-wait" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+                    Four items inside. Keep scrolling.
+                  </motion.div>
+                )}
               </AnimatePresence>
-            </span>
+            </div>
           </div>
-        </Fade>
+        </div>
       </div>
     </section>
   );
