@@ -1,0 +1,37 @@
+/* Base reset for the Spider-Verse Toronto mock. Tokens live here; comic components in sv.css. */
+:root {
+  --ink: #0b0a12;
+  --paper: #f6efdc;
+  --paper-2: #efe4c6;
+  --magenta: #ff2d8d;
+  --cyan: #19d3ff;
+  --red: #e3242b;
+  --amber: #ffb020;
+  --violet: #2a1248;
+  --dusk-1: #1a0b2e;
+  --dusk-2: #4b1d6b;
+  --dusk-3: #c62f7a;
+  --dusk-4: #ff7a3d;
+  --dusk-5: #ffc45c;
+  --night-1: #05040c;
+  --night-2: #120a26;
+  --night-3: #2a1248;
+  --font-display: var(--font-bangers), Impact, "Arial Black", sans-serif;
+  --font-hand: var(--font-marker), "Comic Sans MS", cursive;
+  --font-ui: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jb), ui-monospace, Consolas, monospace;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; position: relative; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--dusk-1);
+  color: var(--ink);
+  font-family: var(--font-ui);
+  overflow-x: clip;
+  -webkit-font-smoothing: antialiased;
+}
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+button { font: inherit; }

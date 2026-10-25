@@ -1,38 +1,30 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Bangers, Permanent_Marker } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { MotionProvider } from "@/components/MotionProvider";
-import "./tw.generated.css";
-import "./globals.css";
+import "./sv-base.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500", "600", "700"], variable: "--font-jb" });
+const bangers = Bangers({ subsets: ["latin"], weight: "400", variable: "--font-bangers" });
+const marker = Permanent_Marker({ subsets: ["latin"], weight: "400", variable: "--font-marker" });
 
 export const metadata: Metadata = {
   title: "Ammar Adam",
-  description: "Ammar Adam. CS & Finance at Waterloo. Toronto, Dubai, Karachi.",
+  description: "Ammar Adam. CS & Finance at Waterloo. Toronto, Dubai, Karachi. One more time.",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f2ede4" },
-    { media: "(prefers-color-scheme: dark)", color: "#1a1f28" },
-  ],
+  themeColor: "#1a0b2e",
 };
-
-/* Runs before paint so a saved night theme never flashes day first. */
-const themeScript = `try{var t=localStorage.getItem("afa-theme");if(t==="night"||t==="day")document.documentElement.dataset.theme=t}catch(e){}`;
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" data-theme="day" data-accent="amber" className={`${inter.variable} ${mono.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
-      </head>
-      <body className="font-sans antialiased">
+    <html lang="en" className={`${inter.variable} ${mono.variable} ${bangers.variable} ${marker.variable}`}>
+      <body>
         <MotionProvider>{children}</MotionProvider>
         <Analytics />
       </body>
