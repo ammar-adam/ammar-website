@@ -493,15 +493,15 @@ function Thwip({ to }: { to: { x: number; y: number } }) {
   const mobile = useMobile();
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
-  const hx = vw * 0.22 + (mobile ? 6 : 10);
-  const hy = vh - (mobile ? 120 : 200) + (mobile ? 13 : 22) - (mobile ? 0.16 : 0.22) * vh * 0.45;
+  const hx = vw * 0.22 + (mobile ? 8 : 14);
+  const hy = vh - (mobile ? 120 : 200) + (mobile ? 13 : 22) - (mobile ? 0.11 : 0.16) * vh;
   return (
     <div className="sv-thwip" aria-hidden="true">
       <svg className="sv-thwip-svg">
         <line x1={hx} y1={hy} x2={to.x} y2={to.y} className="sv-thwip-line" pathLength={1} />
         <circle cx={to.x} cy={to.y} r={10} className="sv-thwip-dot" />
       </svg>
-      <div className="sv-thwip-word" style={{ left: hx + 20, top: hy - 70 }}>
+      <div className="sv-thwip-word" style={{ left: Math.min(hx + 70, vw - 150), top: Math.max(10, hy - 190) }}>
         <Burst color="var(--magenta)" />
         <Onoma color="paper" size="md">THWIP</Onoma>
       </div>
