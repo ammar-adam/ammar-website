@@ -114,9 +114,10 @@ export function Passport() {
                   key={idx}
                   className="pp-leaf"
                   custom={dir}
-                  initial={(d: number) => ({ rotateY: d > 0 ? 90 : -90, opacity: 0.6 })}
-                  animate={{ rotateY: 0, opacity: 1 }}
-                  exit={(d: number) => ({ rotateY: d > 0 ? -90 : 90, opacity: 0.6 })}
+                  variants={{ enter: (d: number) => ({ rotateY: d > 0 ? 90 : -90, opacity: 0.6 }), on: { rotateY: 0, opacity: 1 }, exit: (d: number) => ({ rotateY: d > 0 ? -90 : 90, opacity: 0.6 }) }}
+                  initial="enter"
+                  animate="on"
+                  exit="exit"
                   transition={{ duration: 0.55, ease }}
                 >
                   <span className="pp-page-head">{code} · {CITIES[code].toUpperCase()} · {pad2(idx + 1)} / {pad2(n)}</span>
