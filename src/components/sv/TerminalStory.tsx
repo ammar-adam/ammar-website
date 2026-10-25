@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { careerArrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
@@ -36,51 +36,76 @@ function IntroBeat({ t, beat, reduced }: { t: MotionValue<number>; beat: number;
 }
 
 const WORK = [
-  { line: "I started in finance. At sixteen.", body: "At Alpen Capital, I supported $50M+ in deal flow and learned financial modelling and investment research as the firm’s youngest intern." },
-  { line: "Then I started building the tools.", body: "At DataStealth, I built a demo environment spanning eight product capabilities. Setup went from months to hours. Automated competitor research cut research time by about 40%." },
-  { line: "Now, I build AI that has a job to do.", body: "At Sagard, I’m rolling out a six-tool Legal AI Hub and extending a local-LLM computer-use agent. As an intern, I cut KYC preparation from weeks to hours." },
-  { line: "I like finding other builders, too.", body: "I’m one of five Founding Builder Leads selected across North America: scouting student builders and helping them get started with OpenAI’s developer tools." },
-  { line: "And meeting founders early.", body: "As a Pear VC Fellow, I source and evaluate early-stage startups and founder talent. I was one of roughly 50 selected from 650+ applicants across 17 campuses." },
+  { line: "I started in finance.", result: "$50M+", label: "in deal flow supported", body: "At sixteen, I was Alpen’s youngest intern. I worked on buy- and sell-side equity advisory, learning financial modelling and investment research." },
+  { line: "Then I started building the tools.", result: "Months → hours", label: "to set up a product demo", body: "I built a demo environment covering eight product capabilities. I also automated competitor comparisons, cutting product research time by about 40%." },
+  { line: "I like AI that has a job to do.", result: "Weeks → hours", label: "to prepare a KYC package", body: "Now I’m rolling out a six-tool Legal AI Hub and extending a local-LLM computer-use agent for the Legal & Compliance team." },
+  { line: "And finding other people who build.", result: "1 of 5", label: "Founding Builder Leads in North America", body: "I scout student builders and help them get started with OpenAI’s developer tools. A good idea gets a lot further with the right people around it." },
+  { line: "Sometimes, before they’ve even started.", result: "~50 / 650+", label: "fellows selected / applicants", body: "At Pear, I source and evaluate early-stage startups and founder talent as part of a fellowship spanning 17 campuses." },
 ];
 
+function ItemControls({ kind, labels, selected, select }: { kind: "experience" | "project"; labels: string[]; selected: number; select: (index: number) => void }) {
+  return <div className="tj-item-controls">
+    <label className="tj-item-select"><span>Choose {kind === "experience" ? "a role" : "a project"}</span>
+      <select aria-label={`Choose ${kind}`} value={selected} onChange={event => select(Number(event.target.value))}>
+        {labels.map((label, index) => <option key={label} value={index}>{label}</option>)}
+      </select>
+    </label>
+    <nav className="tj-item-pager" aria-label={`Browse ${kind === "experience" ? "experience" : "projects"}`}>
+      <button aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button>
+      <span aria-label={`${selected + 1} of ${labels.length}`}>{String(selected + 1).padStart(2, "0")}<i>/</i>{String(labels.length).padStart(2, "0")}</span>
+      <button aria-label={`Next ${kind}`} disabled={selected === labels.length - 1} onClick={() => select(selected + 1)}>→</button>
+    </nav>
+  </div>;
+}
+
 export function ExperienceStory({ selected, select, onDirectory }: { selected: number; select: (index: number) => void; onDirectory: () => void }) {
+  const reader = useRef<HTMLDivElement>(null);
+  useEffect(() => { if (reader.current) reader.current.scrollTop = 0; }, [selected]);
   const current = careerArrivals[selected];
   const copy = WORK[selected];
   return <section className="tj-work-scene" aria-label="Experience">
-    <article className="tj-story-copy" data-experience-detail={current.slug}>
+    <div className="tj-reader" ref={reader}>
       <p className="tj-kicker"><span>01 / CHECK-IN</span><span>EXPERIENCE</span></p>
-      <p className="tj-spoken-line">{copy.line}</p>
-      <h2>{current.from}</h2>
-      <p className="tj-role">{current.detailTitle ?? current.title}<span>{current.origin}</span></p>
-      <p className="tj-detail">{copy.body}</p>
-      <div className="tj-links"><button onClick={onDirectory}>Full experience <span aria-hidden="true">↗</span></button>{current.fromUrl && <a href={current.fromUrl} target="_blank" rel="noreferrer">{current.from} <span aria-hidden="true">↗</span></a>}</div>
-    </article>
-    <nav className="tj-selector" aria-label="Choose experience">
-      {careerArrivals.map((arrival, index) => <button key={arrival.slug} onClick={() => select(index)} aria-pressed={selected === index}><span>0{index + 1}</span><strong>{arrival.from}</strong><i aria-hidden="true">{selected === index ? "●" : "·"}</i></button>)}
-    </nav>
+      <ItemControls kind="experience" labels={careerArrivals.map(arrival => arrival.from)} selected={selected} select={select} />
+      <article className="tj-story-copy" data-experience-detail={current.slug}>
+        <p className="tj-spoken-line">{copy.line}</p>
+        <h2>{current.from}</h2>
+        <p className="tj-role">{current.detailTitle ?? current.title}<span>{current.origin}</span></p>
+        <p className="tj-result"><strong>{copy.result}</strong><span>{copy.label}</span></p>
+        <p className="tj-detail">{copy.body}</p>
+        <div className="tj-links"><button onClick={onDirectory} aria-haspopup="dialog">Read all experience <span aria-hidden="true">≡</span></button>{current.fromUrl && <a href={current.fromUrl} target="_blank" rel="noreferrer">Company website <span aria-hidden="true">↗</span></a>}</div>
+      </article>
+      <p className="tj-browse-hint">Scroll to continue, or choose any role above.</p>
+    </div>
   </section>;
 }
 
 const PROJECT_VOICE = [
-  { line: "Your GPS could use a better voice.", detail: "So I reverse-engineered Waze’s voice format, wrote an open-source SDK, and made character voice packs install in one tap.", type: "VOICE / OPEN SOURCE" },
-  { line: "This one taught me to test my own ideas.", detail: "I built five agents to research stocks. Then a simple momentum baseline beat my LLM ranker. The evaluations became the most useful thing I built.", type: "AI / FINANCE / EVALUATION" },
-  { line: "Some things take a lot more than code.", detail: "I run a 1,300+ member student venture community. We’ve placed 30+ students into startups; I also help founders with market research and partner introductions.", type: "COMMUNITY / VENTURE" },
-  { line: "Like getting a whole city building.", detail: "I organized Waterloo Tech Week across 70 events, raised $6K+ in sponsorship, and hosted founder conversations. At Hack the North, I designed the application and selection rubric.", type: "COMMUNITY / EVENTS" },
+  { line: "Your GPS could use a better voice.", result: "43 prompts. One tap.", label: "Character voices, straight into Waze", detail: "I reverse-engineered Waze’s undocumented voice format, wrote an open-source SDK, and built a way to install character voice packs in one tap.", type: "SOFTWARE / VOICE" },
+  { line: "This one made me question my own idea.", result: "5 agents. Real tests.", label: "A stock-research system with honest evaluations", detail: "I built five agents to debate stocks. Then a simple momentum baseline beat my LLM ranker. The evaluations became the most useful thing I built.", type: "SOFTWARE / AI & FINANCE" },
+  { line: "Some projects are made of people.", result: "1,300+ members", label: "30+ students placed into startups", detail: "I run Waterloo’s student venture community. Alongside connecting builders, I help founders with market research and partner introductions.", type: "COMMUNITY / VENTURE" },
+  { line: "And sometimes, a whole city shows up.", result: "70 events", label: "$6K+ raised in sponsorship", detail: "I organized Waterloo Tech Week and hosted founder conversations. At Hack the North, I designed the application and selection rubric.", type: "COMMUNITY / EVENTS" },
 ];
 
-export function ProjectStory({ selected, select }: { selected: number; select: (index: number) => void }) {
+export function ProjectStory({ selected, select, onDirectory }: { selected: number; select: (index: number) => void; onDirectory: () => void }) {
+  const reader = useRef<HTMLDivElement>(null);
+  useEffect(() => { if (reader.current) reader.current.scrollTop = 0; }, [selected]);
   const current = projects[selected];
   const copy = PROJECT_VOICE[selected];
   return <section className="tj-work-scene tj-projects" aria-label="Projects">
-    <article className="tj-story-copy" data-project-detail={current.slug}>
+    <div className="tj-reader" ref={reader}>
       <p className="tj-kicker"><span>02 / SECURITY</span><span>PROJECTS</span></p>
-      <p className="tj-spoken-line">{copy.line}</p>
-      <h2>{current.name}</h2>
-      <p className="tj-role">{copy.type}</p>
-      <p className="tj-detail">{copy.detail}</p>
-      <div className="tj-links">{current.seats.flatMap(seat => seat.links ?? []).map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span></a>)}</div>
-    </article>
-    <nav className="tj-selector" aria-label="Choose project">{projects.map((project, index) => <button key={project.slug} onClick={() => select(index)} aria-pressed={selected === index}><span>0{index + 1}</span><strong>{["Backseat", "Rocketship", "WVG", "WTW / HTN"][index]}</strong><i aria-hidden="true">{selected === index ? "●" : "·"}</i></button>)}</nav>
+      <ItemControls kind="project" labels={projects.map(project => project.name)} selected={selected} select={select} />
+      <article className="tj-story-copy" data-project-detail={current.slug}>
+        <p className="tj-spoken-line">{copy.line}</p>
+        <h2>{current.name}</h2>
+        <p className="tj-role">{copy.type}</p>
+        <p className="tj-result"><strong>{copy.result}</strong><span>{copy.label}</span></p>
+        <p className="tj-detail">{copy.detail}</p>
+        <div className="tj-links">{current.seats.flatMap(seat => seat.links ?? []).slice(0, 2).map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span></a>)}<button onClick={onDirectory} aria-haspopup="dialog">All details <span aria-hidden="true">≡</span></button></div>
+      </article>
+      <p className="tj-browse-hint">Scroll to continue, or choose any project above.</p>
+    </div>
   </section>;
 }
 
@@ -91,9 +116,10 @@ export function MemoryStory({ t, onGallery }: { t: MotionValue<number>; onGaller
   const current = memoryGroups[group];
   const photo = memorySequence.find(memory => memory.group === group);
   return <section className="tj-memory-copy" aria-label="Life outside work">
-    <p className="tj-kicker">03 / ON THE WAY</p>
+    <p className="tj-kicker">03 / CONCOURSE A</p>
     <h2>{current.title}</h2>
     <p>{current.copy}</p>
-    <button onClick={() => onGallery(photo?.photoIndex ?? 0)}>Open the camera roll <span>25 photos ↗</span></button>
+    <button onClick={() => onGallery(photo?.photoIndex ?? 0)} aria-haspopup="dialog">View all 25 photos <span aria-hidden="true">↗</span></button>
+    <small>Tap a photograph to take a closer look.</small>
   </section>;
 }

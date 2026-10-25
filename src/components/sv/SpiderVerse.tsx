@@ -30,21 +30,27 @@ export function SpiderVerse() {
   const experienceProgress = useSceneProgress(t, 1);
   const projectProgress = useSceneProgress(t, 2);
   const boardingProgress = useSceneProgress(t, 4);
-  const [experience, selectExperience] = useSelection(experienceProgress, 5);
-  const [project, selectProject] = useSelection(projectProgress, 4);
+  const [experience, selectExperience] = useSelection(experienceProgress, 5, true);
+  const [project, selectProject] = useSelection(projectProgress, 4, true);
   const departure = useMotionValue(0);
   const departureAnimation = useRef<AnimationPlaybackControls | null>(null);
+  const resetDeparture = useCallback(() => {
+    departureAnimation.current?.stop();
+    departure.set(0);
+  }, [departure]);
   const launchDeparture = useCallback(() => {
     departureAnimation.current?.stop();
     departure.set(0);
     if (reduced) departure.set(1);
-    else departureAnimation.current = animate(departure, 1, { duration: 4.4, ease: [.42, 0, .25, 1] });
+    else departureAnimation.current = animate(departure, 1, { duration: .9, ease: [.42, 0, .25, 1] });
   }, [departure, reduced]);
   useEffect(() => {
     if (chapter !== 4) { departureAnimation.current?.stop(); departure.set(0); }
     return () => departureAnimation.current?.stop();
   }, [chapter, departure]);
   const [directory, setDirectory] = useState(false);
+  const [directorySection, setDirectorySection] = useState<"experience" | "projects" | "contact">("experience");
+  const openDirectory = useCallback((section: "experience" | "projects" | "contact" = "experience") => { setDirectorySection(section); setDirectory(true); }, []);
   const [ready, setReady] = useState(false);
   const [gallery, setGallery] = useState({ open: false, index: 0 });
   const openGallery = useCallback((index = 0) => setGallery({ open: true, index }), []);
@@ -78,9 +84,27 @@ export function SpiderVerse() {
     const node = track.current;
     if (!node) return;
     const top = node.getBoundingClientRect().top + window.scrollY;
-    window.scrollTo({ top: top + (node.offsetHeight - window.innerHeight) * CHAPTERS[index].at, behavior: reduced ? "instant" : "smooth" });
+    const destination = top + (node.offsetHeight - window.innerHeight) * CHAPTERS[index].at;
+    // No scroll event fires when history already restored the requested position.
+    if (Math.abs(window.scrollY - destination) < 2) {
+      scrollYProgress.set(CHAPTERS[index].at);
+      smooth.jump(CHAPTERS[index].at);
+    }
+    window.scrollTo({ top: destination, behavior: reduced ? "instant" : "smooth" });
     window.history.replaceState(null, "", index ? `#${CHAPTERS[index].id}` : window.location.pathname);
-  }, [reduced]);
+  }, [reduced, scrollYProgress, smooth]);
+
+  const seekItem = (section: 1 | 2, index: number) => {
+    const node = track.current;
+    if (!node) return;
+    const start = CUTS[section - 1];
+    const end = CUTS[section];
+    const count = section === 1 ? 5 : 4;
+    const progress = start + (index + .45) / count * (end - start);
+    if (section === 1) selectExperience(index);
+    else selectProject(index);
+    window.scrollTo({ top: (node.offsetHeight - window.innerHeight) * progress, behavior: "instant" });
+  };
 
   useEffect(() => {
     const aliases: Record<string, string> = { checkin: "experience", security: "projects", passport: "top", origins: "top", photos: "people", concourse: "people", boarding: "contact", resume: "contact" };
@@ -104,24 +128,24 @@ export function SpiderVerse() {
         <div className="tj-screen-shade" aria-hidden="true" />
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
-          {chapter === 1 && <ExperienceStory selected={experience} select={selectExperience} onDirectory={() => setDirectory(true)} />}
-          {chapter === 2 && <ProjectStory selected={project} select={selectProject} />}
+          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onDirectory={() => openDirectory("experience")} />}
+          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onDirectory={() => openDirectory("projects")} />}
           {chapter === 3 && <MemoryStory t={t} onGallery={openGallery} />}
-          {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} />}
+          {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
         <header className="tj-header">
           <button className="tj-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span aria-hidden="true">a<span>/</span>a</span><b>AMMAR ADAM</b></button>
-          <nav aria-label="Portfolio shortcuts"><button onClick={() => openGallery()}>Camera roll <span>25</span></button><button onClick={() => setDirectory(true)}>All work ↗</button></nav>
+          <nav aria-label="Portfolio shortcuts"><button onClick={() => openGallery()} aria-haspopup="dialog">Photos <span>25</span></button><button onClick={() => openDirectory(chapter === 2 ? "projects" : "experience")} aria-haspopup="dialog">Read portfolio <span aria-hidden="true">≡</span></button></nav>
         </header>
         <footer className="tj-footer">
           <p className="tj-location"><b>0{chapter + 1}</b> {CHAPTERS[chapter].label}</p>
-          <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => jump(index)} aria-label={`Go to ${c.short}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{c.short}</b></button>)}</nav>
+          <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => jump(index)} aria-label={`Go to ${["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}</b></button>)}</nav>
           <p className="tj-scroll">{!ready ? "Loading the terminal…" : chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>KEEP SCROLLING <span aria-hidden="true">↓</span></>}</p>
         </footer>
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>
     </div>
-    <TerminalDirectory open={directory} onClose={closeDirectory} />
+    <TerminalDirectory key={directorySection} initialTab={directorySection} open={directory} onClose={closeDirectory} />
     <PhotoGallery open={gallery.open} initialIndex={gallery.index} onClose={closeGallery} />
   </main>;
 }

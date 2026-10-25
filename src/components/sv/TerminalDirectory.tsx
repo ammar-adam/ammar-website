@@ -15,11 +15,11 @@ const TABS = [
 
 type DirectoryTab = (typeof TABS)[number]["id"];
 
-export function TerminalDirectory({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function TerminalDirectory({ open, onClose, initialTab = "experience" }: { open: boolean; onClose: () => void; initialTab?: DirectoryTab }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const scrollBody = useRef<HTMLDivElement>(null);
   const tabButtons = useRef<(HTMLButtonElement | null)[]>([]);
-  const [activeTab, setActiveTab] = useState<DirectoryTab>("experience");
+  const [activeTab, setActiveTab] = useState<DirectoryTab>(initialTab);
   const id = useId();
 
   useEffect(() => {

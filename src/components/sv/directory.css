@@ -159,3 +159,6 @@
 }
 
 .terminal-directory .td-detail { color: #aeb8c1; margin-top: 9px; }
+
+/* Directory remains the comfortable reading view on small screens. */
+.terminal-directory .td-description{font-size:14px;line-height:1.65}.terminal-directory .td-links a{min-height:44px;display:inline-flex;align-items:center}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 
 export const SEG = {
@@ -20,11 +20,21 @@ export function useSceneProgress(t: MotionValue<number>, chapter: number) {
   return useTransform(t, [chapter === 0 ? 0 : CUTS[chapter - 1], CUTS[chapter] ?? 1], [0, 1]);
 }
 
-/** Scroll chooses an item; clicking can hold a different item until the next scroll stop. */
-export function useSelection(p: MotionValue<number>, count: number) {
+/** Optional seeking keeps a clicked item visible while the camera catches up to its scroll stop. */
+export function useSelection(p: MotionValue<number>, count: number, seekWithSelection = false) {
   const selectAt = (value: number) => Math.min(count - 1, Math.max(0, Math.floor(value * count)));
   const [selected, setSelected] = useState(() => selectAt(p.get()));
   const index = useTransform(p, selectAt);
-  useMotionValueEvent(index, "change", setSelected);
-  return [selected, setSelected] as const;
+  const pending = useRef<number | null>(null);
+  useMotionValueEvent(index, "change", value => {
+    if (p.get() === 0 || p.get() === 1) pending.current = null;
+    if (pending.current !== null && value !== pending.current) return;
+    pending.current = null;
+    setSelected(value);
+  });
+  const select = (value: number) => {
+    pending.current = seekWithSelection && value !== index.get() ? value : null;
+    setSelected(value);
+  };
+  return [selected, select] as const;
 }
