@@ -4,15 +4,15 @@ import { useState } from "react";
 import { useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 
 export const SEG = {
-  hero: [0, 0.15], checkin: [0.15, 0.42], security: [0.42, 0.70],
-  gate: [0.70, 0.90], boarding: [0.90, 1],
+  hero: [0, 0.20], checkin: [0.20, 0.39], security: [0.39, 0.59],
+  gate: [0.59, 0.90], boarding: [0.90, 1],
 } as const;
-export const CUTS = [0.15, 0.42, 0.70, 0.90];
+export const CUTS = [0.20, 0.39, 0.59, 0.90];
 export const CHAPTERS = [
   { id: "top", label: "The introduction", short: "Intro", at: 0 },
-  { id: "experience", label: "What I do", short: "Experience", at: 0.17 },
-  { id: "projects", label: "Things I’ve built", short: "Projects", at: 0.445 },
-  { id: "people", label: "Away from the laptop", short: "Life", at: 0.74 },
+  { id: "experience", label: "Check-in / Experience", short: "Experience", at: 0.215 },
+  { id: "projects", label: "Security / Projects", short: "Projects", at: 0.415 },
+  { id: "people", label: "On the way to the gate", short: "Life", at: 0.602 },
   { id: "contact", label: "The next departure", short: "Contact", at: 0.96 },
 ];
 

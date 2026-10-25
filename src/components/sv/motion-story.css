@@ -1,0 +1,13 @@
+.sv-scene-cut { position:absolute; inset:0; z-index:10; pointer-events:none; background:#0c1828; transform:translateZ(0); }
+.sv-scene-cut::before { content:""; position:absolute; inset:0; background:repeating-linear-gradient(165deg,transparent 0 30px,#2b485133 31px 32px); }
+.sv-scene-cut i { position:absolute; inset:0 auto 0 47%; width:5%; transform:skewX(-18deg); background:#ed5a4d; border-left:6px solid #71d2d1; }
+.sv-scene-cut span { position:absolute; left:12%; top:48%; color:#fff0d2; font:12px var(--font-jb);letter-spacing:.2em; }
+.sv-work-heading { top:13%; }.sv-work-heading h2 { font-size:clamp(39px,4.3vw,66px); }.sv-work-heading .sv-section-deck { margin-top:12px; }
+.sv-work-list { top:38%; }.sv-work-list > button { min-height:50px;padding-block:8px; }
+.sv-project-heading h2 { font-size:clamp(38px,4.3vw,64px); }
+.sv-project-heading { top:15%; }
+.sv-security-sign { top:25%; }.sv-conveyor { opacity:.95;height:9%;bottom:7%; }
+.sv-tray-frame { box-shadow:12px 16px 0 #020d1999,-3px 2px #5293a77a; }
+@media(max-width:719px) { .sv-work-heading{top:13%;}.sv-work-heading h2{font-size:10vw;}.sv-work-heading .sv-section-deck{font-size:10px;margin-top:8px;}.sv-work-list{top:33%;}.sv-work-list > button{min-height:39px;padding-block:5px;}.sv-work-list>.sv-work-full{min-height:30px;}.sv-work-detail{top:61%;}.sv-project-heading{top:14%;}.sv-project-heading h2{font-size:8.5vw;}.sv-scene-cut span{font-size:7px;left:10%;letter-spacing:.1em;} }
+@media(max-height:730px) and (min-width:720px) { .sv-work-heading{top:14%;}.sv-work-heading h2{font-size:7vh;}.sv-work-list{top:39%;}.sv-work-list>button{min-height:36px;padding-block:5px;}.sv-work-list>.sv-work-full{min-height:30px;}.sv-project-heading h2{font-size:7vh;} }
+@media(max-width:719px) and (max-height:640px) { .sv-work-heading{top:14%;}.sv-work-heading h2{font-size:8.6vw;}.sv-work-heading .sv-section-deck{font-size:8px;margin-top:5px;}.sv-work-list{top:33%;}.sv-work-list>button{min-height:28px;padding-block:4px;}.sv-work-list>.sv-work-full{min-height:25px;}.sv-work-detail{top:61%;}.sv-project-heading h2{font-size:8vw;} }

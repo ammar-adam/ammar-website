@@ -128,3 +128,6 @@ export const arrivals: Arrival[] = [
 export function getArrivalBySlug(slug: string): Arrival | undefined {
   return arrivals.find((a) => a.slug === slug);
 }
+
+/** Career chronology; community-building work is featured under projects. */
+export const careerArrivals = ["alpen-capital", "datastealth", "sagard", "openai", "pear-vc"].map(slug => arrivals.find(item => item.slug === slug)!);

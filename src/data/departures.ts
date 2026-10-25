@@ -34,7 +34,7 @@ export interface Project {
   seats: ProjectSeat[];
 }
 
-export const projects: Project[] = [
+const softwareProjects: Project[] = [
   {
     slug: "rocketship",
     name: "Rocketship",
@@ -131,6 +131,28 @@ export const projects: Project[] = [
     ],
   },
 ];
+
+export const projects: Project[] = [
+  softwareProjects.find(project => project.slug === "backseat")!,
+  softwareProjects.find(project => project.slug === "rocketship")!,
+  {
+    slug: "waterloo-venture", name: "Waterloo Venture Group", year: "", destination: "Student founders",
+    flightCode: "WVG01", routeName: "A community for student builders", gate: "C", status: "Boarding",
+    shortDesc: "I run a 1,300+ member student venture community that has placed 30+ students into startups. I support founders with market research and partner introductions, including Smoov's expansion beyond the US.",
+    screenshot: "/WATERLOOVG.jpg", stackTag: "COMMUNITY / VENTURE",
+    seats: [{ id: "main", label: "Links", content: "", links: [{ label: "Visit WVG", url: "https://www.waterloovg.com/" }] }],
+  },
+  {
+    slug: "waterloo-tech-week", name: "Waterloo Tech Week / Hack the North", year: "", destination: "A week of builders",
+    flightCode: "WTW70", routeName: "Bringing student builders together", gate: "D", status: "Boarding",
+    shortDesc: "I organized Waterloo Tech Week across 70 events, raised $6K+ in sponsorship, and moderated founder conversations. At Hack the North, I designed the application and selection rubric.",
+    screenshot: "/HTN_ORGANIZER.jpg", stackTag: "COMMUNITY / EVENTS",
+    seats: [{ id: "main", label: "Links", content: "", links: [{ label: "Tech Week", url: "https://waterlootechweek.ca/" }, { label: "Hack the North", url: "https://hackthenorth.com/" }, { label: "Techyon", url: "https://techyon.org/" }] }],
+  },
+];
+
+/** Earlier software projects remain available as source records. */
+export const archivedProjects = softwareProjects.filter(project => !projects.some(featured => featured.slug === project.slug));
 
 export function getProjectBySlug(slug: string): Project | undefined {
   return projects.find((p) => p.slug === slug);

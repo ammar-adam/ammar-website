@@ -1,0 +1,17 @@
+.dw-world { position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden; }
+.dw-window { position:absolute;inset:0;box-shadow:inset 0 0 0 14px #142c39; }
+.dw-window > i { position:absolute;top:-5%;bottom:0;width:13px;background:linear-gradient(90deg,#203b49,#41616b 35%,#0c202e 50%);box-shadow:10px 0 #04152255;transform:skewX(-4deg); }
+.dw-window > i:first-child { left:30%; }.dw-window > i:nth-child(2) { right:17%; }.dw-window > span { position:absolute;left:0;right:0;bottom:16%;height:18px;background:linear-gradient(#5e7b82,#112d3e 30%,#081b2c);box-shadow:0 10px #05172366; }
+.dw-aircraft { position:absolute;left:5%;top:10%;width:52vw;height:auto;object-fit:contain;transform-origin:50% 50%;filter:drop-shadow(2px 3px 0 #174052);will-change:transform; }
+.dw-gate-sign { position:absolute;left:50%;right:auto;top:12%;display:grid;grid-template-columns:auto auto;align-items:center;gap:5px 12px;padding:12px 17px;background:#0b2230e8;border-top:2px solid #9fbcaf;box-shadow:5px 7px #04132477; }
+.dw-gate-sign > span { font:8px var(--font-jb);color:#e5e0cd; }.dw-gate-sign > strong { font:29px var(--font-anton);color:#ffd18a; }.dw-gate-sign > b { display:flex;align-items:center;gap:12px;grid-column:1/-1;font:6px var(--font-jb);color:#ffcf8a;letter-spacing:.06em; }.dw-gate-sign > b i { width:5px;height:5px;border-radius:50%;background:currentColor; }.dw-gate-sign > b.is-cleared { color:#99f0c9; }
+.dw-runway-lights { position:absolute;bottom:17%;left:8%;right:8%;display:flex;justify-content:space-between; }.dw-runway-lights i { width:5px;height:5px;background:#b9f5c7;box-shadow:0 0 12px 3px #9cdda544; }
+@media(max-width:719px) { .dw-aircraft { width:85vw;top:10%; }.dw-window > i:first-child { left:7%; }.dw-window > i:nth-child(2) { right:5%; }.dw-window { box-shadow:inset 0 0 0 8px #142c39; }.dw-window > i { width:7px; }.dw-window > span { bottom:12%;height:10px; }.dw-gate-sign { top:10%;left:auto;right:7%;padding:6px 9px;gap:3px 7px; }.dw-gate-sign > span { font-size:5px; }.dw-gate-sign > strong { font-size:19px; }.dw-gate-sign > b { font-size:4px;gap:6px; }.dw-gate-sign > b i { width:3px;height:3px; }.dw-runway-lights { bottom:13%; } }
+
+@media(max-width:719px) {
+ .dw-gate-sign { top:76px;left:auto;right:7%;display:flex;padding:4px 6px;gap:5px;box-shadow:none; }
+ .dw-gate-sign > span { font-size:5px; }.dw-gate-sign > strong { font-size:11px; }
+ .dw-gate-sign > b { font-size:0;gap:0; }.dw-gate-sign > b i { width:4px;height:4px; }
+ .dw-aircraft { top:10%; }
+}
+@media(max-width:719px) and (max-height:640px) { .dw-gate-sign { top:66px; } }

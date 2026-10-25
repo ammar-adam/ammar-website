@@ -18,12 +18,16 @@ layout(location = 0) out vec4 oCol;
 layout(location = 1) out vec4 oDep;
 uniform sampler2D uTex, uDep;
 uniform vec2 uRes, uTexSize, uFocus;
-uniform float uScale, uGain;
+uniform float uScale, uGain, uRoll;
 void main(){
   float ca = uRes.x / uRes.y, ta = uTexSize.x / uTexSize.y;
   vec2 span = ((ta > ca) ? vec2(ca / ta, 1.0) : vec2(1.0, ta / ca)) / uScale;
   vec2 centre = clamp(uFocus, span * 0.5, vec2(1.0) - span * 0.5);
-  vec2 uv = centre + (vec2(vUv.x, 1.0 - vUv.y) - 0.5) * span;
+  vec2 screen = vec2(vUv.x, 1.0 - vUv.y) - 0.5;
+  screen.x *= ca;
+  screen = mat2(cos(uRoll), -sin(uRoll), sin(uRoll), cos(uRoll)) * screen;
+  screen.x /= ca;
+  vec2 uv = centre + screen * span;
   oCol = vec4(texture(uTex, uv).rgb * uGain, 1.0);
   oDep = vec4(texture(uDep, uv).r, 0.0, 0.0, 1.0);
 }`;
@@ -42,10 +46,9 @@ float noise(vec2 p){
 }
 float lum(vec3 c){ return dot(c, vec3(0.2126, 0.7152, 0.0722)); }
 void main(){
-  vec2 px = vUv * uRes;
   float depth = texture(uDep, vUv).r;
   // A forward dolly magnifies the foreground more than the distant terminal.
-  vec2 uv = uFocusUv + (vUv - uFocusUv) / (1.0 + uTravel * depth * 0.065);
+  vec2 uv = uFocusUv + (vUv - uFocusUv) / (1.0 + uTravel * depth * 0.085);
   uv += uPan * mix(0.16, 1.0, depth);
   uv = clamp(uv, vec2(0.001), vec2(0.999));
   vec3 source = texture(uTex, uv).rgb;
@@ -77,7 +80,7 @@ void main(){
   // rather than a translucent tint spread over the entire photograph.
   float shadow = 1.0 - smoothstep(0.10, 0.48, L);
   vec3 cool = uShadow * (0.22 + L * 2.7);
-  c = mix(c, cool, shadow * 0.78);
+  c = mix(c, cool, shadow * 0.67);
   float warm = smoothstep(0.30, 0.86, L);
   vec3 key = mix(vec3(0.94, 0.29, 0.18), uHigh, smoothstep(0.22, 0.76, L));
   // Fluorescent greens in the source become deliberately painted warm light.
@@ -91,7 +94,7 @@ void main(){
   // A rough ink contour and one lit rim: no uniform cartoon outline.
   float broken = smoothstep(0.20, 0.72, brush);
   float contour = smoothstep(0.055, 0.24, edgeSize) * mix(0.26, 0.72, broken);
-  c = mix(c, uShadow * 0.18, contour * 0.64);
+  c = mix(c, uShadow * 0.18, contour * 0.5);
   float rim = smoothstep(0.09, 0.28, max(0.0, edge.x - edge.y * 0.65));
   c += vec3(0.05, 0.34, 0.39) * rim * broken * (1.0 - warm) * 0.52;
   // The lens registers cyan / red at off-focus boundaries only, never a blur.
@@ -126,7 +129,7 @@ function sceneAt(progress: number) {
   return SCENES.find((scene) => progress < scene.range[1]) ?? SCENES[SCENES.length - 1];
 }
 
-export function Film({ t, fx }: { t: MotionValue<number>; fx: MotionValue<number> }) {
+export function Film({ t, fx, departure }: { t: MotionValue<number>; fx: MotionValue<number>; departure: MotionValue<number> }) {
   const rootRef = useRef<HTMLDivElement>(null);
   const fallbackRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -147,17 +150,23 @@ export function Film({ t, fx }: { t: MotionValue<number>; fx: MotionValue<number
       const scene = sceneAt(progress);
       const local = Math.max(0, Math.min(1, (progress - scene.range[0]) / (scene.range[1] - scene.range[0])));
       const camera = scene.camera(motionPreference.matches ? 0.35 : local);
+      const flight = scene.id === "boarding" && !motionPreference.matches ? departure.get() : 0;
+      camera.zoom += flight * .24;
+      camera.travel += flight * .9;
+      camera.roll -= Math.sin(flight * Math.PI) * 1.7;
+      camera.pan = [camera.pan[0] + flight * .025, camera.pan[1] + flight * .055];
+      root.dataset.departure = flight.toFixed(3);
       const small = root.clientWidth < 720;
       const plate = `/plates/${scene.plate}-paint-${small ? 1600 : 2000}.webp`;
       if (fallbackPlate !== plate) {
         fallback.style.backgroundImage = `linear-gradient(180deg, rgba(6, 19, 31, 0.16), rgba(4, 15, 27, 0.33)), url("${plate}")`;
         fallbackPlate = plate;
       }
-      const rest = small && scene.restMobile ? scene.restMobile : scene.rest;
+      const rest = camera.crop ?? (small && scene.restMobile ? scene.restMobile : scene.rest);
       fallback.style.backgroundPosition = `${rest[0] * 100}% ${rest[1] * 100}%`;
       fallback.style.transformOrigin = `${camera.focusUv[0] * 100}% ${camera.focusUv[1] * 100}%`;
-      fallback.style.transform = `translate3d(${-camera.pan[0] * 100}%, ${camera.pan[1] * 100}%, 0) scale(${camera.zoom * (1 + effect * 0.3)})`;
-      fallback.style.filter = `saturate(1.35) contrast(1.2) brightness(${1.04 - effect * 0.5})`;
+      fallback.style.transform = `translate3d(${-camera.pan[0] * 100}%, ${camera.pan[1] * 100}%, 0) scale(${camera.zoom * (1 + effect * 0.085)}) rotate(${camera.roll}deg)`;
+      fallback.style.filter = `saturate(1.35) contrast(1.2) brightness(${1.04 - effect * 0.18})`;
       root.dataset.scene = scene.id;
       if (renderer && !contextLost) renderer.draw(scene, camera, effect);
     };
@@ -284,19 +293,20 @@ export function Film({ t, fx }: { t: MotionValue<number>; fx: MotionValue<number
             gl.useProgram(layer); quad(layer);
             bind(0, plate.color, layer, "uTex"); bind(1, plate.depth, layer, "uDep");
             gl.uniform2f(uniform(layer, "uRes"), width, height); gl.uniform2f(uniform(layer, "uTexSize"), plate.width, plate.height);
-            const rest = root.clientWidth < 720 && scene.restMobile ? scene.restMobile : scene.rest;
+            const rest = camera.crop ?? (root.clientWidth < 720 && scene.restMobile ? scene.restMobile : scene.rest);
             gl.uniform2f(uniform(layer, "uFocus"), rest[0], rest[1]);
-            gl.uniform1f(uniform(layer, "uScale"), camera.zoom * (1 + effect * 0.3)); gl.uniform1f(uniform(layer, "uGain"), scene.gain);
+            gl.uniform1f(uniform(layer, "uScale"), camera.zoom * (1 + effect * 0.085)); gl.uniform1f(uniform(layer, "uGain"), scene.gain);
+            gl.uniform1f(uniform(layer, "uRoll"), camera.roll * Math.PI / 180);
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
             gl.bindFramebuffer(gl.FRAMEBUFFER, null); gl.useProgram(post); quad(post);
             bind(0, colorTarget, post, "uTex"); bind(1, depthTarget, post, "uDep");
-            gl.uniform2f(uniform(post, "uRes"), width, height); gl.uniform2f(uniform(post, "uPan"), camera.pan[0], camera.pan[1] + effect * 0.025);
+            gl.uniform2f(uniform(post, "uRes"), width, height); gl.uniform2f(uniform(post, "uPan"), camera.pan[0] + effect * 0.008, camera.pan[1] + effect * 0.012);
             gl.uniform2f(uniform(post, "uFocusUv"), camera.focusUv[0], 1 - camera.focusUv[1]);
             const grade = scene.grade;
             gl.uniform3f(uniform(post, "uShadow"), ...grade.shadow); gl.uniform3f(uniform(post, "uHigh"), ...grade.high); gl.uniform3f(uniform(post, "uHazeCol"), ...grade.hazeCol);
             gl.uniform1f(uniform(post, "uTravel"), camera.travel); gl.uniform1f(uniform(post, "uHaze"), grade.haze); gl.uniform1f(uniform(post, "uNight"), grade.night);
-            gl.uniform1f(uniform(post, "uDark"), effect * 0.5); gl.uniform1f(uniform(post, "uFocusD"), camera.focusDepth);
-            gl.uniform1f(uniform(post, "uDofAmt"), (camera.dof + effect * 3) * width / 1440);
+            gl.uniform1f(uniform(post, "uDark"), effect * 0.18); gl.uniform1f(uniform(post, "uFocusD"), camera.focusDepth);
+            gl.uniform1f(uniform(post, "uDofAmt"), (camera.dof + effect * 9) * width / 1440);
             gl.uniform1f(uniform(post, "uPaint"), scene.paint); gl.uniform1f(uniform(post, "uBands"), scene.bands); gl.uniform1f(uniform(post, "uPost"), scene.post);
             gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
             canvas.style.opacity = "1"; root.dataset.fallback = "0";
@@ -327,16 +337,16 @@ export function Film({ t, fx }: { t: MotionValue<number>; fx: MotionValue<number
     window.addEventListener("resize", schedule);
     motionPreference.addEventListener("change", schedule);
     const observer = new ResizeObserver(schedule); observer.observe(root);
-    const stopT = t.on("change", schedule), stopFx = fx.on("change", schedule);
+    const stopT = t.on("change", schedule), stopFx = fx.on("change", schedule), stopDeparture = departure.on("change", schedule);
     schedule();
     return () => {
-      disposed = true; cancelAnimationFrame(frame); stopT(); stopFx(); observer.disconnect();
+      disposed = true; cancelAnimationFrame(frame); stopT(); stopFx(); stopDeparture(); observer.disconnect();
       canvas.removeEventListener("webglcontextlost", lost); canvas.removeEventListener("webglcontextrestored", restored);
       document.removeEventListener("visibilitychange", visibility); window.removeEventListener("resize", schedule);
       motionPreference.removeEventListener("change", schedule);
       renderer?.dispose();
     };
-  }, [t, fx]);
+  }, [t, fx, departure]);
 
   return (
     <div ref={rootRef} className="film" aria-hidden="true" style={{ overflow: "hidden", pointerEvents: "none", background: "#071523" }}>

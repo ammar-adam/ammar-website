@@ -2,9 +2,11 @@
 
 import "./sv.css";
 import "./story-v7.css";
+import "./motion-story.css";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { animate, motion, useMotionValue, useScroll, useSpring, useTransform, type AnimationPlaybackControls, type MotionValue } from "framer-motion";
 import { Film } from "./Film";
+import { DepartureWorld } from "./DepartureWorld";
 import { JourneyScene } from "./Journey";
 import { TerminalDirectory } from "./TerminalDirectory";
 import { PhotoGallery } from "./PhotoGallery";
@@ -20,14 +22,31 @@ const readMotionPreference = () => window.matchMedia(motionQuery).matches;
 
 export function SpiderVerse() {
   const track = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: track, offset: ["start start", "end end"] });
+  const { scrollYProgress } = useScroll();
   const reduced = useSyncExternalStore(subscribeMotion, readMotionPreference, () => false);
   const smooth = useSpring(scrollYProgress, { stiffness: 150, damping: 30, mass: 0.45, restDelta: 0.00005 });
   const t = reduced ? scrollYProgress : smooth;
-  const fx = useMotionValue(0);
+  const fx = useTransform(t,value=>{
+    if (reduced) return 0;
+    const cuts=[.032,.068,.098,.128,.16,...CUTS];
+    const distance=Math.min(...cuts.map(cut=>Math.abs(cut-value)));
+    return Math.max(0,1-distance/.0035)*.35;
+  });
   const subscribeTimeline = useCallback((update: () => void) => t.on("change", update), [t]);
   const readChapter = useCallback(() => CUTS.filter((cut) => t.get() >= cut).length, [t]);
   const chapter = useSyncExternalStore(subscribeTimeline, readChapter, () => 0);
+  const departure = useMotionValue(0);
+  const departureAnimation = useRef<AnimationPlaybackControls | null>(null);
+  const launchDeparture = useCallback(() => {
+    departureAnimation.current?.stop();
+    departure.set(0);
+    if (reduced) departure.set(1);
+    else departureAnimation.current = animate(departure, 1, { duration: 4.4, ease: [.42, 0, .25, 1] });
+  }, [departure, reduced]);
+  useEffect(() => {
+    if (chapter !== 4) { departureAnimation.current?.stop(); departure.set(0); }
+    return () => departureAnimation.current?.stop();
+  }, [chapter, departure]);
   const [directory, setDirectory] = useState(false);
   const [gallery, setGallery] = useState<{open:boolean;index:number}>({open:false,index:0});
   const openGallery = useCallback((index=0) => setGallery({open:true,index}), []);
@@ -61,13 +80,14 @@ export function SpiderVerse() {
       <a className="sv-skip" href="#directory" onClick={(event) => { event.preventDefault(); setDirectory(true); }}>Skip to portfolio directory</a>
       <div className="sv-track" ref={track}>
         <div className="sv-stage">
-          <Film t={t} fx={fx} />
+          <Film t={t} fx={fx} departure={departure} />
+          {chapter === 4 && <DepartureWorld progress={departure} reduced={reduced} />}
           <div className="sv-vignette" aria-hidden="true" />
-          <JourneyScene key={chapter} chapter={chapter} t={t} reduced={!!reduced} onDirectory={() => setDirectory(true)} onGallery={openGallery} onEnter={() => jump(1)} />
-          {!reduced && <ArchitectureWipe t={t} />}
+          <JourneyScene key={chapter} chapter={chapter} t={t} reduced={!!reduced} onDirectory={() => setDirectory(true)} onGallery={openGallery} onEnter={() => jump(1)} onDeparture={launchDeparture} />
+          {!reduced && <SceneCut t={t} />}
           <header className="sv-header">
             <button className="sv-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span className="sv-brand-symbol" aria-hidden="true">A<span>/</span>A</span><span>AMMAR ADAM<small>THE STORY SO FAR</small></span></button>
-            <div className="sv-header-right"><span className="sv-live"><i /> CS & FINANCE / WATERLOO</span><button className="sv-gallery-button" onClick={() => openGallery()}>Photos <span>25</span></button><button className="sv-directory-button" onClick={() => setDirectory(true)}>All work <span aria-hidden="true">↗</span></button></div>
+            <div className="sv-header-right"><span className="sv-live"><i /> CS & FINANCE / WATERLOO</span><button className="sv-gallery-button" onClick={() => jump(3)}>Photos <span>25</span></button><button className="sv-directory-button" onClick={() => setDirectory(true)}>All work <span aria-hidden="true">↗</span></button></div>
           </header>
           <footer className="sv-hud">
             <div className="sv-location"><span className="sv-location-number">0{chapter + 1}</span><span>{CHAPTERS[chapter].label}<small>AMMAR ADAM</small></span></div>
@@ -85,11 +105,14 @@ export function SpiderVerse() {
   );
 }
 
-function ArchitectureWipe({ t }: { t: MotionValue<number> }) {
-  const x = useTransform(t, (v) => {
-    const cut = CUTS.find((c) => Math.abs(v - c) < 0.017);
-    if (cut === undefined) return "130vw";
-    return `${120 - ((v - cut + 0.017) / 0.034) * 240}vw`;
+function SceneCut({ t }: { t: MotionValue<number> }) {
+  const clip = useTransform(t, (v) => {
+    const cut = CUTS.find(c => Math.abs(v-c)<.012);
+    if(cut===undefined)return "polygon(0 0,0 0,0 100%,0 100%)";
+    const p=(v-cut+.012)/.024;
+    const a=p<.5?-20:(p-.5)*240-20;
+    const b=p<.5?p*240-20:120;
+    return `polygon(${a}% 0,${b}% 0,${b+20}% 100%,${a+20}% 100%)`;
   });
-  return <motion.div className="sv-pillar" style={{ x }} aria-hidden="true"><span /><i /></motion.div>;
+  return <motion.div className="sv-scene-cut" style={{clipPath:clip}} aria-hidden="true"><i /><span>AMMAR ADAM / THE STORY SO FAR</span></motion.div>;
 }

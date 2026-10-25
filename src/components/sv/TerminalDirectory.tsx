@@ -2,7 +2,7 @@
 
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
-import { arrivals } from "@/data/arrivals";
+import { careerArrivals as arrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { siteConfig } from "@/data/site";
 import "./directory.css";
