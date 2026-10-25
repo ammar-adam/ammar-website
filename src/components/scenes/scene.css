@@ -73,7 +73,7 @@
 .scn-led { width: 7px; height: 7px; border-radius: 50%; background: var(--led); box-shadow: 0 0 9px var(--led); animation: blink 2.2s ease-in-out infinite; display: inline-block; flex: 0 0 auto; }
 
 /* hud: where you are */
-.scn-hud { position: absolute; left: clamp(16px, 4vw, 64px); right: clamp(16px, 4vw, 64px); top: calc(16% + 14px); display: flex; gap: 22px; align-items: center; font-family: var(--font-mono), monospace; font-size: 10.5px; letter-spacing: 0.2em; color: color-mix(in oklab, var(--ink) 70%, transparent); z-index: 8; pointer-events: none; }
+.scn-hud { position: absolute; left: clamp(16px, 4vw, 64px); right: clamp(16px, 4vw, 64px); top: calc(16% - 36px); display: flex; gap: 22px; align-items: center; font-family: var(--font-mono), monospace; font-size: 10.5px; letter-spacing: 0.2em; color: color-mix(in oklab, var(--ink) 70%, transparent); z-index: 8; pointer-events: none; }
 .scn-hud-hint { margin-left: auto; opacity: 0.7; margin-right: var(--hud-gap, 0px); }
 
 /* the hanging card: content printed inside the scene */
@@ -125,7 +125,7 @@
 
 @media (max-width: 900px) {
   .scn-ceiling { height: 12%; }
-  .scn-hud { top: calc(12% + 10px); font-size: 9px; gap: 12px; }
+  .scn-hud { top: calc(12% - 30px); font-size: 9px; gap: 12px; }
   .scn-hud-hint { display: none; }
   .scn-dock { right: 12px; left: 12px; width: auto; top: auto; bottom: 14px; }
   .scn-dock::before { display: none; }

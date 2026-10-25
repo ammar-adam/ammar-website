@@ -1,5 +1,6 @@
 /* 01 · Check-in hall. Scene-specific pieces; the kit is in scene.css. */
-.hl .scn-hud { --hud-gap: min(400px, 38vw); }
+.hl .scn-hud { --hud-gap: 0px; }
+.hl .scn-floor { --floor-top: calc(61% + 16px + 20%); }
 
 /* back wall: glass to the apron */
 .hl-back { position: absolute; left: -10%; top: 16%; width: 320%; height: 46%; }

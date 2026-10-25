@@ -1,5 +1,5 @@
 /* 02 · Security. A lane: queue, divest table, X-ray machine, bag check. */
-.sq .scn-hud { --hud-gap: min(400px, 38vw); }
+.sq .scn-hud { --hud-gap: 0px; }
 
 .sq-wall { position: absolute; left: 0; right: 0; top: 16%; height: 40%; background: linear-gradient(var(--paper), var(--paper-2)); }
 .sq-highwin { position: absolute; left: 0; right: 0; top: 0; height: 22%; background: linear-gradient(var(--glass), var(--glass-2)); border-bottom: 6px solid var(--ink); background-clip: padding-box; }
@@ -57,7 +57,10 @@
 .sq-xr-scan { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--xr); box-shadow: 0 0 16px 4px oklch(0.8 0.14 200 / 0.55); animation: sq-scan 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite alternate; }
 @keyframes sq-scan { from { left: 5%; } to { left: 95%; } }
 
-.sq-dock { top: 19%; }
+.sq-dock { top: 42%; width: min(360px, 32vw); }
+.sq-dock .scn-card-shot { height: 120px; }
+.sq-dock .scn-card h2 { font-size: 21px; margin-top: 12px; }
+.sq-dock .scn-card-impact { font-size: 14px; margin-top: 8px; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
 .sq-slot { position: relative; display: grid; gap: 4px; justify-items: center; padding: 18px; border-radius: 6px; border: 2px dashed color-mix(in oklab, var(--ink) 30%, transparent); font-family: var(--font-mono), monospace; font-size: 11px; letter-spacing: 0.22em; color: color-mix(in oklab, var(--ink) 60%, transparent); }
 .sq-slot small { font-size: 9.5px; letter-spacing: 0.14em; opacity: 0.7; text-transform: uppercase; }
 

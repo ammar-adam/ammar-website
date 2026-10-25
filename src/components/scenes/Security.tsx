@@ -68,7 +68,7 @@ export function Security() {
           <div className="sq-highwin" />
           <div className="scn-sign" style={{ left: "5%" }}><span className="scn-sign-arrow">→</span> SECURITY · LANE 2</div>
           <div className="scn-sign scn-sign-title" style={{ left: "36%" }}>WHAT I&apos;VE BUILT <span className="scn-sign-sub">· four items in the bag</span></div>
-          <div className="scn-sign" style={{ left: "76%" }}>LAPTOPS OUT · NO LIQUIDS</div>
+          <div className="scn-sign" style={{ left: "70%" }}>LAPTOPS OUT · NO LIQUIDS</div>
         </div>
 
         {/* the queue, behind the ropes */}
