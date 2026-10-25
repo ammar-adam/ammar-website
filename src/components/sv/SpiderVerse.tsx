@@ -1,16 +1,14 @@
 "use client";
 
-import "./sv.css";
-import "./story-v7.css";
-import "./motion-story.css";
+import "./terminal-journey.css";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { animate, motion, useMotionValue, useScroll, useSpring, useTransform, type AnimationPlaybackControls, type MotionValue } from "framer-motion";
-import { Film } from "./Film";
-import { DepartureWorld } from "./DepartureWorld";
-import { JourneyScene } from "./Journey";
+import { animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
+import { TerminalWorld } from "./TerminalWorld";
+import { SpokenIntro, ExperienceStory, ProjectStory, MemoryStory } from "./TerminalStory";
+import { BoardingPass } from "./BoardingPass";
 import { TerminalDirectory } from "./TerminalDirectory";
 import { PhotoGallery } from "./PhotoGallery";
-import { CHAPTERS, CUTS } from "./timeline";
+import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (update: () => void) => {
@@ -24,17 +22,16 @@ export function SpiderVerse() {
   const track = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll();
   const reduced = useSyncExternalStore(subscribeMotion, readMotionPreference, () => false);
-  const smooth = useSpring(scrollYProgress, { stiffness: 150, damping: 30, mass: 0.45, restDelta: 0.00005 });
+  const smooth = useSpring(scrollYProgress, { stiffness: 190, damping: 35, mass: .38, restDelta: .00002 });
   const t = reduced ? scrollYProgress : smooth;
-  const fx = useTransform(t,value=>{
-    if (reduced) return 0;
-    const cuts=[.032,.068,.098,.128,.16,...CUTS];
-    const distance=Math.min(...cuts.map(cut=>Math.abs(cut-value)));
-    return Math.max(0,1-distance/.0035)*.35;
-  });
   const subscribeTimeline = useCallback((update: () => void) => t.on("change", update), [t]);
-  const readChapter = useCallback(() => CUTS.filter((cut) => t.get() >= cut).length, [t]);
+  const readChapter = useCallback(() => CUTS.filter(cut => t.get() >= cut).length, [t]);
   const chapter = useSyncExternalStore(subscribeTimeline, readChapter, () => 0);
+  const experienceProgress = useSceneProgress(t, 1);
+  const projectProgress = useSceneProgress(t, 2);
+  const boardingProgress = useSceneProgress(t, 4);
+  const [experience, selectExperience] = useSelection(experienceProgress, 5);
+  const [project, selectProject] = useSelection(projectProgress, 4);
   const departure = useMotionValue(0);
   const departureAnimation = useRef<AnimationPlaybackControls | null>(null);
   const launchDeparture = useCallback(() => {
@@ -48,11 +45,34 @@ export function SpiderVerse() {
     return () => departureAnimation.current?.stop();
   }, [chapter, departure]);
   const [directory, setDirectory] = useState(false);
-  const [gallery, setGallery] = useState<{open:boolean;index:number}>({open:false,index:0});
-  const openGallery = useCallback((index=0) => setGallery({open:true,index}), []);
-  const closeGallery = useCallback(() => setGallery(value=>({...value,open:false})), []);
+  const [ready, setReady] = useState(false);
+  const [gallery, setGallery] = useState({ open: false, index: 0 });
+  const openGallery = useCallback((index = 0) => setGallery({ open: true, index }), []);
+  const closeGallery = useCallback(() => setGallery(value => ({ ...value, open: false })), []);
   const closeDirectory = useCallback(() => setDirectory(false), []);
-  const progress = useTransform(t, [0, 1], [0, 1]);
+  const onReady = useCallback(() => setReady(true), []);
+
+  // Keep the same story position when rotation or a resized window changes svh.
+  useEffect(() => {
+    let height = window.innerHeight;
+    let progress = scrollYProgress.get();
+    let frame = 0;
+    const unsubscribe = scrollYProgress.on("change", value => { progress = value; });
+    const resize = () => {
+      if (height === window.innerHeight) return;
+      height = window.innerHeight;
+      const held = progress;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const node = track.current;
+        if (!node) return;
+        window.scrollTo({ top: (node.offsetHeight - window.innerHeight) * held, behavior: "instant" });
+        smooth.jump(held);
+      });
+    };
+    window.addEventListener("resize", resize);
+    return () => { unsubscribe(); cancelAnimationFrame(frame); window.removeEventListener("resize", resize); };
+  }, [scrollYProgress, smooth]);
 
   const jump = useCallback((index: number) => {
     const node = track.current;
@@ -67,7 +87,7 @@ export function SpiderVerse() {
     let frame = 0;
     const navigate = () => {
       const hash = window.location.hash.slice(1);
-      const index = CHAPTERS.findIndex((c) => c.id === (aliases[hash] ?? hash));
+      const index = CHAPTERS.findIndex(c => c.id === (aliases[hash] ?? hash));
       if (index >= 0) frame = requestAnimationFrame(() => jump(index));
     };
     navigate();
@@ -75,44 +95,33 @@ export function SpiderVerse() {
     return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", navigate); };
   }, [jump]);
 
-  return (
-    <main className={`sv ${reduced ? "sv-reduced" : ""}`}>
-      <a className="sv-skip" href="#directory" onClick={(event) => { event.preventDefault(); setDirectory(true); }}>Skip to portfolio directory</a>
-      <div className="sv-track" ref={track}>
-        <div className="sv-stage">
-          <Film t={t} fx={fx} departure={departure} />
-          {chapter === 4 && <DepartureWorld progress={departure} reduced={reduced} />}
-          <div className="sv-vignette" aria-hidden="true" />
-          <JourneyScene key={chapter} chapter={chapter} t={t} reduced={!!reduced} onDirectory={() => setDirectory(true)} onGallery={openGallery} onEnter={() => jump(1)} onDeparture={launchDeparture} />
-          {!reduced && <SceneCut t={t} />}
-          <header className="sv-header">
-            <button className="sv-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span className="sv-brand-symbol" aria-hidden="true">A<span>/</span>A</span><span>AMMAR ADAM<small>THE STORY SO FAR</small></span></button>
-            <div className="sv-header-right"><span className="sv-live"><i /> CS & FINANCE / WATERLOO</span><button className="sv-gallery-button" onClick={() => jump(3)}>Photos <span>25</span></button><button className="sv-directory-button" onClick={() => setDirectory(true)}>All work <span aria-hidden="true">↗</span></button></div>
-          </header>
-          <footer className="sv-hud">
-            <div className="sv-location"><span className="sv-location-number">0{chapter + 1}</span><span>{CHAPTERS[chapter].label}<small>AMMAR ADAM</small></span></div>
-            <nav className="sv-chapters" aria-label="Story chapters">
-              {CHAPTERS.map((c, i) => <button key={c.id} onClick={() => jump(i)} aria-label={`Go to ${c.label}`} aria-current={chapter === i ? "step" : undefined}><span className="sv-chapter-dot" /><span className="sv-chapter-label">{c.short}</span></button>)}
-            </nav>
-            <span className="sv-scroll-note">{chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>SCROLL TO EXPLORE <span aria-hidden="true">↓</span></>}</span>
-          </footer>
-          <div className="sv-progress" aria-hidden="true"><motion.div style={{ scaleX: progress }} /></div>
+  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready}>
+    <h1 className="tj-sr-only">Ammar Adam — CS & Finance at Waterloo</h1>
+    <a className="tj-skip" href="#directory" onClick={event => { event.preventDefault(); setDirectory(true); }}>Skip to portfolio directory</a>
+    <div className="tj-track" ref={track}>
+      <div className="tj-stage">
+        <TerminalWorld t={t} reduced={reduced} experienceIndex={experience} projectIndex={project} departure={departure} onPhoto={openGallery} onReady={onReady} />
+        <div className="tj-screen-shade" aria-hidden="true" />
+        <div className="tj-story-layer">
+          {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
+          {chapter === 1 && <ExperienceStory selected={experience} select={selectExperience} onDirectory={() => setDirectory(true)} />}
+          {chapter === 2 && <ProjectStory selected={project} select={selectProject} />}
+          {chapter === 3 && <MemoryStory t={t} onGallery={openGallery} />}
+          {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} />}
         </div>
+        <header className="tj-header">
+          <button className="tj-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span aria-hidden="true">a<span>/</span>a</span><b>AMMAR ADAM</b></button>
+          <nav aria-label="Portfolio shortcuts"><button onClick={() => openGallery()}>Camera roll <span>25</span></button><button onClick={() => setDirectory(true)}>All work ↗</button></nav>
+        </header>
+        <footer className="tj-footer">
+          <p className="tj-location"><b>0{chapter + 1}</b> {CHAPTERS[chapter].label}</p>
+          <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => jump(index)} aria-label={`Go to ${c.short}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{c.short}</b></button>)}</nav>
+          <p className="tj-scroll">{!ready ? "Loading the terminal…" : chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>KEEP SCROLLING <span aria-hidden="true">↓</span></>}</p>
+        </footer>
+        <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>
-      <TerminalDirectory open={directory} onClose={closeDirectory} />
-      <PhotoGallery open={gallery.open} initialIndex={gallery.index} onClose={closeGallery} />
-    </main>
-  );
-}
-
-function SceneCut({ t }: { t: MotionValue<number> }) {
-  const clip = useTransform(t, (v) => {
-    const cut = CUTS.find(c => Math.abs(v-c)<.012);
-    if(cut===undefined)return "polygon(0 0,0 0,0 100%,0 100%)";
-    const p=(v-cut+.012)/.024;
-    const a=p<.5?-20:(p-.5)*240-20;
-    const b=p<.5?p*240-20:120;
-    return `polygon(${a}% 0,${b}% 0,${b+20}% 100%,${a+20}% 100%)`;
-  });
-  return <motion.div className="sv-scene-cut" style={{clipPath:clip}} aria-hidden="true"><i /><span>AMMAR ADAM / THE STORY SO FAR</span></motion.div>;
+    </div>
+    <TerminalDirectory open={directory} onClose={closeDirectory} />
+    <PhotoGallery open={gallery.open} initialIndex={gallery.index} onClose={closeGallery} />
+  </main>;
 }

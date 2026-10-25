@@ -13,7 +13,7 @@ export default function CreditsPage() {
         </p>
         <h1 style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: "clamp(40px, 8vw, 64px)", fontWeight: 400, textTransform: "uppercase", margin: "16px 0 18px", lineHeight: 1.1 }}>Plate credits</h1>
         <p style={{ margin: "0 0 30px", color: "#cdd2d4" }}>
-          The airport environments begin with real photographs. Prepared plates are colour-graded, posterised, halftoned and chromatically split in your browser by a WebGL shader. The photographers, source images and licences are listed below.
+          The terminal is a shared 3D scene, with photographic plates beyond its windows and in the fallback view. A WebGL print pass adds ink, selective halftone and colour separation. The photographers, source images and licences are listed below.
         </p>
         <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 14 }}>
           {PLATE_CREDITS.map((credit) => (
@@ -29,7 +29,7 @@ export default function CreditsPage() {
         <section aria-labelledby="character-credit" style={{ marginTop: 40, borderTop: "1px solid #34404b", paddingTop: 30 }}>
           <h2 id="character-credit" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Character & prop artwork</h2>
           <p style={{ margin: 0, color: "#cdd2d4", fontSize: 14 }}>
-            The traveler poses, aircraft, and personal objects were illustrated for this site with AI image generation. Details in the luggage, food, and small gate screen reference Ammar’s interests. The personal gallery uses Ammar’s own photographs.
+            The traveler poses, aircraft artwork, personal objects, and painted surface texture were created for this site with AI image generation. Details in the luggage, food, and small gate screen reference Ammar’s interests. The personal gallery uses Ammar’s own photographs.
           </p>
         </section>
         <p style={{ marginTop: 32, fontSize: 14, color: "#aeb8c1" }}>

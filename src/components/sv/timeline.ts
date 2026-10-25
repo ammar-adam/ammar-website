@@ -4,16 +4,16 @@ import { useState } from "react";
 import { useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 
 export const SEG = {
-  hero: [0, 0.20], checkin: [0.20, 0.39], security: [0.39, 0.59],
-  gate: [0.59, 0.90], boarding: [0.90, 1],
+  hero: [0, 0.24], checkin: [0.24, 0.45], security: [0.45, 0.65],
+  gate: [0.65, 0.86], boarding: [0.86, 1],
 } as const;
-export const CUTS = [0.20, 0.39, 0.59, 0.90];
+export const CUTS = [0.24, 0.45, 0.65, 0.86];
 export const CHAPTERS = [
   { id: "top", label: "The introduction", short: "Intro", at: 0 },
-  { id: "experience", label: "Check-in / Experience", short: "Experience", at: 0.215 },
-  { id: "projects", label: "Security / Projects", short: "Projects", at: 0.415 },
-  { id: "people", label: "On the way to the gate", short: "Life", at: 0.602 },
-  { id: "contact", label: "The next departure", short: "Contact", at: 0.96 },
+  { id: "experience", label: "Check-in / Experience", short: "Experience", at: 0.255 },
+  { id: "projects", label: "Security / Projects", short: "Projects", at: 0.465 },
+  { id: "people", label: "On the way to the gate", short: "Life", at: 0.665 },
+  { id: "contact", label: "The next departure", short: "Contact", at: 0.925 },
 ];
 
 export function useSceneProgress(t: MotionValue<number>, chapter: number) {

@@ -45,7 +45,7 @@ const softwareProjects: Project[] = [
     gate: "A",
     status: "Boarding",
     shortDesc: "Equity research system combining screening, a 5-agent LLM debate, live news and portfolio optimization. Then I built walk-forward evals and found a simple momentum baseline beat the LLM ranker, which exposed inflated backtests.",
-    screenshot: "/ROCKETSHIP.png",
+    screenshot: "/ROCKETSHIP-current.webp",
     seats: [
       {
         id: "main",

@@ -77,3 +77,29 @@ Input image 1 is the identity, outfit and rendering reference. Repose this same 
 Canvas/framing: portrait 2:3, entire single figure and red suitcase visible, generous clear margin on every side including above the raised hand, no cropped limbs. True transparent background and transparent gaps between limbs, no floor or shadow.
 Pose: the RELEASE / LEAP pose. He has just let go of an overhead swing and is soaring forward into an extended airborne leap. His LEFT arm reaches far forward and upward toward the upper left with open outstretched fingers, a clear hand silhouette. Torso extends into a long diagonal, head follows the reaching hand. His LEFT leg extends long backward and down; his RIGHT leg extends on a different diagonal with knee only slightly bent, creating a strong elongated split silhouette, both feet entirely in the air. His RIGHT arm stretches backward holding the handle of the red suitcase which trails outward behind his right hip. The suitcase follows the dynamic arc. Capture physical release and stretch, not a walking stance or compact tuck.
 Constraints: two arms, two legs, anatomically clear fingers and wrists. No actual rope, web, motion trail, text, logos, panels, airport, extra people or duplicate limbs. Keep whole character and suitcase within canvas; same rear three-quarter camera direction as the reference.
+
+### public/art/terminal-paint-material.webp
+
+Generated with the built-in image-generation tool on 2026-10-25. New original material; no external reference image, photograph, API, or CLI fallback was used. Initial source: `exec-49bc50ab-842d-4e9a-9c7f-7d4b749a590e.png`; final color/edge revision: `exec-6a261e7f-fcfa-45cb-8e8f-01512ed63be7.png`. Both outputs are in the built-in generation directory `01a174af-55b6-7460-acac-7c5c2c6ed5ce`. Converted to a 1024 × 1024 opaque WebP for runtime tinting on terminal architecture. Lighting remains supplied by the 3D scene.
+
+Exact initial prompt:
+
+```text
+Use case: stylized-concept.
+Asset type: seamless tileable architectural base-color material texture for the 3D walls, steel and concrete surfaces of an airport terminal.
+Primary request: create a square 1024×1024 flat 2D production paint texture, inspired by the tactile hand-painted environmental surface treatment in the animated FILM Spider-Man: Into the Spider-Verse. This is a neutral material map, not an illustration of a room or an object.
+Subject: a close-up uninterrupted field of off-white and neutral warm-gray painted concrete / painted steel. Predominant mean color approximately #d0c7bc. Nuanced irregular brushstroke value breakup, layered scumbled pigment, softly worn dry-brush patches, sparse thin ink scratches, microscopic grain, and a few restrained crosshatched darker pigment streaks. Brush directions vary naturally; avoid horizontal woodgrain. Material should feel hand-painted for feature animation while staying low-contrast enough to accept runtime colored lighting and tint.
+Composition/framing: orthographic flat surface viewed straight on, no perspective. Equal average brightness and color across all four edges. Seamless horizontal and vertical repeat: left/right and top/bottom edges join invisibly. No distinct focal motif, no border or outlined tile.
+Lighting: unlit albedo map, uniform illumination; absolutely no baked directional light, shadows, spotlight, vignette, gradient, metallic highlights or ambient occlusion. All value variation is pigment variation, not scene lighting.
+Constraints: no text, labels, signage, symbols, characters, objects, visible panel seams, floor grid, bricks, wood, bolts, rivets, geometry, room, sky, landscape, distressed border, watermark. No ubiquitous halftone dots, dot pattern, photographic concrete scan, wallpaper pattern, plastic smoothness or neon colors. Entire canvas must be opaque surface texture. Keep neutral predominantly #d0c7bc with subtle warm ivory and cooler gray paint strokes.
+```
+
+Exact follow-up edit prompt (reference: the initial generated texture):
+
+```text
+Use case: lighting-weather.
+Edit target: the supplied flat architectural material texture.
+Change only its base paint color and edge continuity. Preserve the same scumbled painterly brushwork, small worn pigment streaks, sparse ink scratches, low contrast, and irregular brush direction. Make the average paint lighter and cooler: warm neutral gray approximately RGB(208,199,188), hex #d0c7bc, not tan or yellow beige. Keep local value variation restrained.
+Ensure this is a seamless tileable image: left/right and top/bottom edges should meet without a visible line or brightness jump when repeated in a grid. No border, no edge darkening, no distinct focal shape.
+Remain an orthographic, uniformly illuminated, unlit albedo material, not a scene. No cast shadows, baked light, vignette, gradient, perspective, panel seams, grid, woodgrain, dots, text, labels, objects, or extra elements. Output a 1024×1024 opaque square.
+```
