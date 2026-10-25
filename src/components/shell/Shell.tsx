@@ -47,15 +47,17 @@ export const cloudVideoUrl = "/sky.mp4";
 export const cloudPosterUrl = "/sky-poster.jpg";
 
 /** The old site's sky: gradient, drifting clouds, cloud video, grain, a plane crossing now and then. */
-export function Sky({ className = "" }: { className?: string }) {
+export function Sky({ className = "", video = false }: { className?: string; video?: boolean }) {
   return (
     <div className={`app-sky ${className}`} aria-hidden>
       <div className="sky-grad" />
       <div className="sky-clouds sky-clouds-a" />
       <div className="sky-clouds sky-clouds-b" />
-      <video className="sky-video" autoPlay muted loop playsInline preload="metadata" poster={cloudPosterUrl}>
-        <source src={cloudVideoUrl} type="video/mp4" />
-      </video>
+      {video && (
+        <video className="sky-video" autoPlay muted loop playsInline preload="metadata" poster={cloudPosterUrl}>
+          <source src={cloudVideoUrl} type="video/mp4" />
+        </video>
+      )}
       <div className="sky-grain" />
       <div className="sky-vignette" />
       <img className="sky-plane" src="/airport-icons/plane-side.svg" alt="" />

@@ -53,8 +53,9 @@
   repeating-linear-gradient(-60deg, transparent 0 58px, color-mix(in oklab, var(--ink) 16%, transparent) 58px 60px),
   linear-gradient(color-mix(in oklab, var(--ink) 22%, transparent), color-mix(in oklab, var(--ink) 22%, transparent)) 0 30% / 100% 2px no-repeat; }
 .scn-lights { position: absolute; left: -10%; top: 70%; width: 320%; height: 30%; }
-.scn-lights span { position: absolute; top: 0; width: 90px; height: 12px; border-radius: 0 0 6px 6px; background: oklch(0.98 0.03 90); box-shadow: 0 10px 40px 8px oklch(0.98 0.06 90 / 0.35); }
-:root[data-theme="night"] .scn-lights span { box-shadow: 0 10px 60px 14px oklch(0.95 0.08 85 / 0.45); }
+.scn-lights span { position: absolute; top: 0; width: 90px; height: 12px; border-radius: 0 0 6px 6px; background: oklch(0.98 0.03 90); }
+.scn-lights span::after { content: ""; position: absolute; left: -40px; right: -40px; top: 100%; height: 70px; background: radial-gradient(50% 100% at 50% 0, oklch(0.98 0.06 90 / 0.35), transparent 70%); }
+:root[data-theme="night"] .scn-lights span::after { background: radial-gradient(50% 100% at 50% 0, oklch(0.95 0.08 85 / 0.5), transparent 70%); }
 
 /* floor */
 .scn-floor { position: absolute; left: -20%; width: 340%; bottom: 0; top: var(--floor-top, 76%); background:
@@ -98,7 +99,7 @@
 .scn-card .btn:hover { color: var(--amber-2); border-color: var(--amber-2); }
 
 /* figures */
-.scn-fig { width: 100%; height: auto; display: block; filter: drop-shadow(0 20px 20px rgba(0,0,0,0.18)); }
+.scn-fig { width: 100%; height: auto; display: block; }
 .scn-fig .f-skin { fill: var(--skin); } .scn-fig .f-hair { fill: var(--ink); }
 .scn-fig .f-c1 { fill: var(--ink-2); } .scn-fig .f-c2 { fill: var(--amber); } .scn-fig .f-c3 { fill: var(--oat); }
 .scn-fig .f-ink { fill: var(--ink); color: var(--ink); }

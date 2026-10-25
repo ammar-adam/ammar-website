@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { Sky, TopBar } from "@/components/shell/Shell";
 import { CheckIn } from "@/components/scenes/CheckIn";
-import { Concourse } from "@/components/scenes/Concourse";
 import { Gate } from "@/components/scenes/Gate";
+import { Passport } from "@/components/scenes/Passport";
 import { Security } from "@/components/scenes/Security";
 import { Hero } from "./Hero";
 import { STOPS } from "./shared";
@@ -44,7 +44,7 @@ export function Home() {
         <Hero />
         <CheckIn />
         <Security />
-        <Concourse />
+        <Passport />
         <Gate />
       </main>
     </>

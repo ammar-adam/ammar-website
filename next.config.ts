@@ -11,7 +11,7 @@ const nextConfig: NextConfig = {
       { source: "/arrivals/:path*", destination: "/#checkin", permanent: false },
       { source: "/projects", destination: "/#security", permanent: false },
       { source: "/departures/:path*", destination: "/#security", permanent: false },
-      { source: "/about", destination: "/#concourse", permanent: false },
+      { source: "/about", destination: "/#passport", permanent: false },
       { source: "/lounge", destination: "/#concourse", permanent: false },
       { source: "/resume", destination: "/Ammar_Adam.pdf", permanent: false },
       { source: "/boarding-pass", destination: "/#boarding", permanent: false },

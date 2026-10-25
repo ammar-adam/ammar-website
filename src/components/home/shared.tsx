@@ -33,7 +33,7 @@ export const SOCIALS = [
 export const STOPS = [
   { id: "checkin", no: "01", title: "Check-in", where: "Hall A", here: "Check-in · Hall A", dest: "EXPERIENCE", time: "09:10", status: "CHECK-IN OPEN" },
   { id: "security", no: "02", title: "Security", where: "Lane 2", here: "Security · Lane 2", dest: "PROJECTS", time: "09:40", status: "ON TIME" },
-  { id: "concourse", no: "03", title: "Concourse", where: "Concourse C", here: "Concourse C · Moving walkway", dest: "PHOTOS", time: "10:05", status: "ON TIME" },
+  { id: "passport", no: "03", title: "Passport control", where: "Booth 3", here: "Passport control · Booth 3", dest: "PHOTOS", time: "10:05", status: "ON TIME" },
   { id: "boarding", no: "04", title: "Boarding", where: "Gate D", here: "Gate D · Boarding", dest: "RESUME", time: "10:30", status: "FINAL CALL" },
 ] as const;
 

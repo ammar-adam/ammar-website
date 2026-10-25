@@ -8,10 +8,8 @@
   align-items: center;
   gap: 20px;
   padding: 12px clamp(16px, 4vw, 42px);
-  background: color-mix(in oklch, var(--surface-solid) 70%, transparent);
+  background: color-mix(in oklch, var(--surface-solid) 94%, transparent);
   border-bottom: 1px solid var(--line);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
 }
 .vbar .brand b { font-weight: 700; }
 .vbar-here { display: flex; justify-content: center; min-width: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--dim); white-space: nowrap; overflow: hidden; }
