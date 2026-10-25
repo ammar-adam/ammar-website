@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { Sky, TopBar } from "@/components/shell/Shell";
-import { Boarding } from "./Boarding";
-import { CheckIn } from "./CheckIn";
-import { Concourse } from "./Concourse";
+import { CheckIn } from "@/components/scenes/CheckIn";
+import { Concourse } from "@/components/scenes/Concourse";
+import { Gate } from "@/components/scenes/Gate";
+import { Security } from "@/components/scenes/Security";
 import { Hero } from "./Hero";
-import { Security } from "./Security";
 import { STOPS } from "./shared";
 import "./home.css";
 
@@ -45,7 +45,7 @@ export function Home() {
         <CheckIn />
         <Security />
         <Concourse />
-        <Boarding />
+        <Gate />
       </main>
     </>
   );

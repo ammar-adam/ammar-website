@@ -43,6 +43,13 @@ export const loungeRoomContent = {
       { src: "/ABOUT16.jpg", caption: "grad trip" },
       { src: "/ABOUT17.jpg", caption: "post arcadium breakfast" },
       { src: "/ABOUT18.jpg", caption: "i don't even know it's a long story" },
+      { src: "/ABOUT19.jpg", caption: "morning sunrise" },
+      { src: "/ABOUT21.jpg", caption: "openai office" },
+      { src: "/ABOUT22.jpg", caption: "htn 2026!" },
+      { src: "/ABOUT24.jpg", caption: "waterloo tech week" },
+      { src: "/ABOUT25.jpg", caption: "world cup" },
+      { src: "/ABOUT26.jpg", caption: "shenanigans" },
+      { src: "/ABOUT27.jpg", caption: "pottery w/ crv" },
     ],
   },
 
