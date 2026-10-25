@@ -1,141 +1,89 @@
 "use client";
 
 import "./sv.css";
-import { useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
-import { ANCHORS, CUTS, LINES, SEG, glitchFrame, useActive, useVW, type Line } from "./timeline";
 import { Film } from "./Film";
-import { S0Hero } from "./S0Hero";
-import { S1Gates } from "./S1Gates";
-import { S2CheckIn } from "./S2CheckIn";
-import { S4Security } from "./S4Security";
-import { S5Gate } from "./S5Gate";
-import { S7Boarding } from "./S7Boarding";
+import { JourneyScene } from "./Journey";
+import { TerminalDirectory } from "./TerminalDirectory";
+import { CHAPTERS, CUTS } from "./timeline";
 
-/* Ammar's intro. One pinned stage inside a tall scroll track; scroll scrubs
-   the timeline (t). The Film canvas renders the photographic plates through
-   the print process; figures, props and readable content sit above it. */
+const motionQuery = "(prefers-reduced-motion: reduce)";
+const subscribeMotion = (update: () => void) => {
+  const query = window.matchMedia(motionQuery);
+  query.addEventListener("change", update);
+  return () => query.removeEventListener("change", update);
+};
+const readMotionPreference = () => window.matchMedia(motionQuery).matches;
+
 export function SpiderVerse() {
   const track = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: track, offset: ["start start", "end end"] });
-  const t = useSpring(scrollYProgress, { stiffness: 220, damping: 34, mass: 0.6, restDelta: 0.0005 });
-  const par = useTransform([t, scrollYProgress], ([a, b]) => Math.max(-10, Math.min(10, ((a as number) - (b as number)) * 600)));
-  // takeoff: 0 at rest, 1 during the climb (Film pushes in and darkens)
-  const fxRaw = useMotionValue(0);
-  const fx = useSpring(fxRaw, { stiffness: 40, damping: 18 });
+  const reduced = useSyncExternalStore(subscribeMotion, readMotionPreference, () => false);
+  const smooth = useSpring(scrollYProgress, { stiffness: 150, damping: 30, mass: 0.45, restDelta: 0.00005 });
+  const t = reduced ? scrollYProgress : smooth;
+  const fx = useMotionValue(0);
+  const subscribeTimeline = useCallback((update: () => void) => t.on("change", update), [t]);
+  const readChapter = useCallback(() => CUTS.filter((cut) => t.get() >= cut).length, [t]);
+  const chapter = useSyncExternalStore(subscribeTimeline, readChapter, () => 0);
+  const [directory, setDirectory] = useState(false);
+  const closeDirectory = useCallback(() => setDirectory(false), []);
+  const progress = useTransform(t, [0, 1], [0, 1]);
+
+  const jump = useCallback((index: number) => {
+    const node = track.current;
+    if (!node) return;
+    const top = node.getBoundingClientRect().top + window.scrollY;
+    window.scrollTo({ top: top + (node.offsetHeight - window.innerHeight) * CHAPTERS[index].at, behavior: reduced ? "instant" : "smooth" });
+    window.history.replaceState(null, "", index ? `#${CHAPTERS[index].id}` : window.location.pathname);
+  }, [reduced]);
+
+  useEffect(() => {
+    const aliases: Record<string, string> = { checkin: "experience", security: "projects", passport: "origins", photos: "people", concourse: "people", boarding: "contact", resume: "contact" };
+    let frame = 0;
+    const navigate = () => {
+      const hash = window.location.hash.slice(1);
+      const index = CHAPTERS.findIndex((c) => c.id === (aliases[hash] ?? hash));
+      if (index >= 0) frame = requestAnimationFrame(() => jump(index));
+    };
+    navigate();
+    window.addEventListener("hashchange", navigate);
+    return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", navigate); };
+  }, [jump]);
 
   return (
-    <main className="sv">
-      <div className="track" ref={track}>
-        {ANCHORS.map((a) => (
-          <span key={a.id} id={a.id} className="anchor" style={{ top: `${a.t * 100}%` }} aria-hidden="true" />
-        ))}
-        <div className="stage">
+    <main className={`sv ${reduced ? "sv-reduced" : ""}`}>
+      <a className="sv-skip" href="#directory" onClick={(event) => { event.preventDefault(); setDirectory(true); }}>Skip to portfolio directory</a>
+      <div className="sv-track" ref={track}>
+        <div className="sv-stage">
           <Film t={t} fx={fx} />
-          <Gated t={t} range={SEG.hero}><S0Hero t={t} /></Gated>
-          <Gated t={t} range={SEG.gates}><S1Gates t={t} /></Gated>
-          <Gated t={t} range={SEG.checkin}><S2CheckIn t={t} /></Gated>
-          <Gated t={t} range={SEG.security}><S4Security t={t} /></Gated>
-          <Gated t={t} range={SEG.gate}><S5Gate t={t} /></Gated>
-          <Gated t={t} range={SEG.boarding}><S7Boarding t={t} fx={fxRaw} /></Gated>
-
-          <Narration t={t} par={par} />
-          <GlitchCut t={t} />
-          <Nav t={t} />
+          <div className="sv-vignette" aria-hidden="true" />
+          <JourneyScene key={chapter} chapter={chapter} t={t} reduced={!!reduced} onDirectory={() => setDirectory(true)} onEnter={() => jump(1)} />
+          {!reduced && <ArchitectureWipe t={t} />}
+          <header className="sv-header">
+            <button className="sv-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span className="sv-brand-symbol" aria-hidden="true">A<span>/</span>A</span><span>AMMAR ADAM<small>PERSONAL TERMINAL</small></span></button>
+            <div className="sv-header-right"><span className="sv-live"><i /> OPEN TO WHAT’S NEXT</span><button className="sv-directory-button" onClick={() => setDirectory(true)}>Directory <span aria-hidden="true">↗</span></button></div>
+          </header>
+          <footer className="sv-hud">
+            <div className="sv-location"><span className="sv-location-number">0{chapter + 1}</span><span>{CHAPTERS[chapter].label}<small>AFA INTERNATIONAL</small></span></div>
+            <nav className="sv-chapters" aria-label="Story chapters">
+              {CHAPTERS.map((c, i) => <button key={c.id} onClick={() => jump(i)} aria-label={`Go to ${c.label}`} aria-current={chapter === i ? "step" : undefined}><span className="sv-chapter-dot" /><span className="sv-chapter-label">{c.short}</span></button>)}
+            </nav>
+            <span className="sv-scroll-note">{chapter === 5 ? <a href="/credits">Visual credits ↗</a> : <>SCROLL TO EXPLORE <span aria-hidden="true">↓</span></>}</span>
+          </footer>
+          <div className="sv-progress" aria-hidden="true"><motion.div style={{ scaleX: progress }} /></div>
         </div>
       </div>
+      <TerminalDirectory open={directory} onClose={closeDirectory} />
     </main>
   );
 }
 
-function Gated({ t, range, children }: { t: MotionValue<number>; range: readonly [number, number]; children: React.ReactNode }) {
-  const active = useActive(t, range);
-  return active ? <>{children}</> : null;
-}
-
-function Narration({ t, par }: { t: MotionValue<number>; par: MotionValue<number> }) {
-  const vw = useVW();
-  return (
-    <div className="narration" aria-live="polite">
-      {LINES.map((l) => (
-        <Caption key={l.text} t={t} par={par} line={l} mobile={vw < 720} />
-      ))}
-    </div>
-  );
-}
-
-function Caption({ t, par, line, mobile }: { t: MotionValue<number>; par: MotionValue<number>; line: Line; mobile: boolean }) {
-  const { a, b, text } = line;
-  const f = 0.004;
-  const opacity = useTransform(t, [a - f, a + f, b - f, b + f], [0, 1, 1, 0]);
-  const step = useTransform(opacity, (v) => Math.round(v * 3) / 3);
-  const rise = useTransform(t, [a - f, a + f, b - f, b + f], [10, 0, -3, -12]);
-  const y = useTransform([rise, par], ([r, pv]) => Math.round(((r as number) + (pv as number)) / 3) * 3);
-  const active = useActive(t, [Math.max(0, a), b], 0.03);
-  if (!active) return null;
-  const top = mobile && line.mobileTop ? "9vh" : line.y;
-  const left = mobile ? (line.align === "center" ? "50%" : "5vw") : line.x;
-  return (
-    <motion.p className={`cap ${line.align === "center" ? "cap-center" : ""}`} style={{ opacity: step, y, left, top }}>
-      {text}
-    </motion.p>
-  );
-}
-
-const SLICES: { top: number; h: number; x: number; c: "c" | "m" }[][] = [
-  [],
-  [{ top: 18, h: 1.2, x: -6, c: "c" }, { top: 55, h: 0.8, x: 6, c: "m" }, { top: 70, h: 1.4, x: -6, c: "c" }],
-  [{ top: 10, h: 1, x: 6, c: "m" }, { top: 40, h: 1.4, x: -6, c: "c" }, { top: 80, h: 0.8, x: 6, c: "m" }],
-  [{ top: 25, h: 1.2, x: -6, c: "m" }, { top: 50, h: 0.6, x: 6, c: "c" }, { top: 85, h: 1.2, x: -6, c: "m" }],
-  [{ top: 35, h: 1, x: 6, c: "c" }, { top: 65, h: 1.2, x: -6, c: "m" }, { top: 95, h: 0.8, x: 6, c: "c" }],
-  [],
-];
-
-function GlitchCut({ t }: { t: MotionValue<number> }) {
-  const frame = useTransform(t, (v) => {
-    for (const c of CUTS) { const f = glitchFrame(v, c); if (f >= 0) return f; }
-    return -1;
+function ArchitectureWipe({ t }: { t: MotionValue<number> }) {
+  const x = useTransform(t, (v) => {
+    const cut = CUTS.find((c) => Math.abs(v - c) < 0.017);
+    if (cut === undefined) return "130vw";
+    return `${120 - ((v - cut + 0.017) / 0.034) * 240}vw`;
   });
-  return (
-    <div className="glitch" aria-hidden="true">
-      {[0, 1, 2].map((i) => <Sliver key={i} frame={frame} i={i} />)}
-    </div>
-  );
-}
-
-function Sliver({ frame, i }: { frame: MotionValue<number>; i: number }) {
-  const get = (f: number) => (f > 0 ? SLICES[f][i] : undefined);
-  const top = useTransform(frame, (f) => `${get(f)?.top ?? 0}%`);
-  const height = useTransform(frame, (f) => `${get(f)?.h ?? 0}%`);
-  const x = useTransform(frame, (f) => get(f)?.x ?? 0);
-  const opacity = useTransform(frame, (f) => (get(f) ? 0.8 : 0));
-  const background = useTransform(frame, (f) => (get(f)?.c === "m" ? "#ff2e88" : "#19d9ff"));
-  return <motion.div className="sliver" style={{ top, height, x, opacity, background }} />;
-}
-
-function Nav({ t }: { t: MotionValue<number> }) {
-  const w = useTransform(t, (v) => `${(v * 100).toFixed(2)}%`);
-  const [open, setOpen] = useState(false);
-  return (
-    <>
-      <nav className={`nav ${open ? "open" : ""}`} aria-label="Jump to">
-        <a className="nav-home" href="#top" onClick={(e) => { e.preventDefault(); setOpen(false); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
-          Ammar Adam
-        </a>
-        <button type="button" className="nav-menu" aria-expanded={open} onClick={() => setOpen((v) => !v)}>Menu</button>
-        <div className="nav-links">
-          {ANCHORS.map((a) => (
-            <a key={a.id} href={`#${a.id}`} onClick={() => setOpen(false)}>{a.label}</a>
-          ))}
-        </div>
-      </nav>
-      <a className="credits-link" href="/credits">Plate credits</a>
-      <div className="progress" aria-hidden="true">
-        <motion.div className="progress-bar" style={{ width: w }} />
-        {CUTS.map((c) => (
-          <span key={c} className="progress-cut" style={{ left: `${c * 100}%` }} />
-        ))}
-      </div>
-    </>
-  );
+  return <motion.div className="sv-pillar" style={{ x }} aria-hidden="true"><span /><i /></motion.div>;
 }

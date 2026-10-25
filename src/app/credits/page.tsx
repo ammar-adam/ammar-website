@@ -1,49 +1,41 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PLATE_CREDITS } from "@/components/sv/plateCredits";
-import { projects } from "@/data/departures";
 
-export const metadata: Metadata = { title: "Plate credits · Ammar Adam" };
+export const metadata: Metadata = { title: "Credits · Ammar Adam" };
 
-/* The photographs behind the intro. Each one is colour-graded, posterised
-   and halftoned in real time; the originals are untouched. */
 export default function CreditsPage() {
   return (
-    <main style={{ maxWidth: 760, margin: "0 auto", padding: "48px 20px 80px", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif", color: "#fff6ea", lineHeight: 1.5 }}>
-      <p style={{ fontFamily: "var(--font-jb), monospace", fontSize: 11, letterSpacing: "0.22em", textTransform: "uppercase", color: "#ffb64a", margin: 0 }}>
-        <Link href="/" style={{ color: "inherit" }}>← Ammar Adam</Link>
-      </p>
-      <h1 style={{ fontFamily: "var(--font-bangers), Impact, sans-serif", fontSize: 56, margin: "12px 0 6px", lineHeight: 1 }}>Plate credits</h1>
-      <p style={{ margin: "0 0 28px", opacity: 0.85 }}>
-        The environments on the home page are real photographs, colour-graded, posterised, halftoned and chromatically split in real time by a WebGL shader. The originals are not modified; the processing happens in your browser. Unsplash and Pexels licences allow this use without credit, but here it is anyway.
-      </p>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 14 }}>
-        {PLATE_CREDITS.map((c) => (
-          <li key={c.id} style={{ borderLeft: "4px solid #ff2e88", padding: "6px 14px", background: "rgba(255,246,234,0.04)" }}>
-            <div style={{ fontFamily: "var(--font-jb), monospace", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", color: "#19d9ff" }}>{c.id}</div>
-            <div style={{ fontWeight: 600 }}>{c.title}</div>
-            <div style={{ fontSize: 14, opacity: 0.85 }}>
-              {c.author} · {c.licence} · {c.source.startsWith("http") ? <a href={c.source} target="_blank" rel="noreferrer" style={{ color: "#ffb64a" }}>source</a> : "owner's photo"}
-            </div>
-          </li>
-        ))}
-      </ul>
-      <h2 style={{ fontFamily: "var(--font-bangers), Impact, sans-serif", fontSize: 32, margin: "40px 0 6px", lineHeight: 1 }}>More projects</h2>
-      <p style={{ margin: "0 0 14px", opacity: 0.85, fontSize: 14 }}>Not in the sequence, still real.</p>
-      <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 10 }}>
-        {projects.filter((p) => p.slug === "canadaclip" || p.slug === "risk-optimized-equity-system").map((p) => (
-          <li key={p.slug} style={{ borderLeft: "4px solid #19d9ff", padding: "6px 14px", background: "rgba(255,246,234,0.04)" }}>
-            <div style={{ fontWeight: 600 }}>{p.name}</div>
-            <div style={{ fontSize: 14, opacity: 0.85 }}>{p.shortDesc}</div>
-            <div style={{ fontSize: 13, marginTop: 4 }}>
-              {p.seats[0].links?.map((l) => <a key={l.url} href={l.url} target="_blank" rel="noreferrer" style={{ color: "#ffb64a", marginRight: 12 }}>{l.label}</a>)}
-            </div>
-          </li>
-        ))}
-      </ul>
-      <p style={{ marginTop: 32, fontSize: 14, opacity: 0.75 }}>
-        Resume: <a href="/Ammar_Adam.pdf" target="_blank" rel="noreferrer" style={{ color: "#ffb64a" }}>Ammar_Adam.pdf</a>
-      </p>
+    <main style={{ minHeight: "100svh", padding: "48px 20px 80px", background: "#0b1421", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif", color: "#f1eee4", lineHeight: 1.6 }}>
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        <p style={{ fontFamily: "var(--font-jb), monospace", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "#efb550", margin: 0 }}>
+          <Link href="/" style={{ color: "inherit", display: "inline-block", padding: "10px 0" }}>← Back to the terminal</Link>
+        </p>
+        <h1 style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: "clamp(40px, 8vw, 64px)", fontWeight: 400, textTransform: "uppercase", margin: "16px 0 18px", lineHeight: 1.1 }}>Plate credits</h1>
+        <p style={{ margin: "0 0 30px", color: "#cdd2d4" }}>
+          The airport environments begin with real photographs. Prepared plates are colour-graded, posterised, halftoned and chromatically split in your browser by a WebGL shader. The photographers, source images and licences are listed below.
+        </p>
+        <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "grid", gap: 14 }}>
+          {PLATE_CREDITS.map((credit) => (
+            <li key={credit.id} style={{ borderLeft: "3px solid #efb550", padding: "16px 18px", background: "#101e2d" }}>
+              <div style={{ fontFamily: "var(--font-jb), monospace", fontSize: 10, letterSpacing: "0.16em", textTransform: "uppercase", color: "#efb550", marginBottom: 5 }}>{credit.id}</div>
+              <div style={{ fontWeight: 600 }}>{credit.title}</div>
+              <div style={{ fontSize: 14, color: "#aeb8c1", marginTop: 5 }}>
+                {credit.author} · {credit.licence} · {credit.source.startsWith("http") ? <a href={credit.source} target="_blank" rel="noreferrer" style={{ color: "#efb550", textUnderlineOffset: 4 }}>View source</a> : "owner's photo"}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <section aria-labelledby="character-credit" style={{ marginTop: 40, borderTop: "1px solid #34404b", paddingTop: 30 }}>
+          <h2 id="character-credit" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Character artwork</h2>
+          <p style={{ margin: 0, color: "#cdd2d4", fontSize: 14 }}>
+            The traveler character is an original AI-generated illustration created for this site.
+          </p>
+        </section>
+        <p style={{ marginTop: 32, fontSize: 14, color: "#aeb8c1" }}>
+          Resume: <a href="/Ammar_Adam.pdf" target="_blank" rel="noreferrer" style={{ color: "#efb550", textUnderlineOffset: 4 }}>Ammar_Adam.pdf</a>
+        </p>
+      </div>
     </main>
   );
 }
