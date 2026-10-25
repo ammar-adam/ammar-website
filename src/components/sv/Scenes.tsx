@@ -501,7 +501,7 @@ function Thwip({ to }: { to: { x: number; y: number } }) {
         <line x1={hx} y1={hy} x2={to.x} y2={to.y} className="sv-thwip-line" pathLength={1} />
         <circle cx={to.x} cy={to.y} r={10} className="sv-thwip-dot" />
       </svg>
-      <div className="sv-thwip-word" style={{ left: Math.min(hx + 70, vw - 150), top: Math.max(10, hy - 190) }}>
+      <div className="sv-thwip-word" style={{ left: Math.max(8, hx - 210), top: Math.max(10, hy - 160) }}>
         <Burst color="var(--magenta)" />
         <Onoma color="paper" size="md">THWIP</Onoma>
       </div>
