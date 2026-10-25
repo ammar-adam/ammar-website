@@ -3,8 +3,8 @@
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import type { CSSProperties, ReactNode } from "react";
 
-/* Overlays that float on top of the world: narration captions, sound effects,
-   chromatic depth-of-field copies, link pills. */
+/* Overlays that float on top of the world: sound effects, chromatic
+   depth-of-field copies, link pills, misregistered display type. */
 
 /** Hand-lettered onomatopoeia with a rough starburst behind it. Wobbles between frames via CSS. */
 export function Bang({
@@ -67,10 +67,10 @@ export function Cmyk({ text, className = "", as: Tag = "span" }: { text: string;
   );
 }
 
-export function LinkPill({ href, children }: { href: string; children: ReactNode }) {
+export function LinkPill({ href, children, className = "" }: { href: string; children: ReactNode; className?: string }) {
   const ext = href.startsWith("http");
   return (
-    <a className="pill" href={href} target={ext ? "_blank" : undefined} rel={ext ? "noreferrer" : undefined}>
+    <a className={`pill ${className}`} href={href} target={ext ? "_blank" : undefined} rel={ext ? "noreferrer" : undefined}>
       {children}
     </a>
   );

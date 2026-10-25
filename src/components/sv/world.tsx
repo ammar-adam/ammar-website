@@ -3,24 +3,20 @@
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import type { ReactNode } from "react";
 
-/* Environment layers: sky, stars, wet apron, light pools, spray speckle.
+/* Environment layers: sky, wet apron, light pools, haze, spray speckle.
    All pure CSS gradients; moved with transforms only. */
 
 export type SkyName = "night" | "dusk" | "dawn" | "cold" | "black";
 
-/** Sky: a set of gradient layers crossfaded by opacity motion values. */
+/** Sky: two gradient layers crossfaded by p. */
 export function Sky({ p, from, to }: { p: MotionValue<number>; from: SkyName; to: SkyName }) {
   const opTo = useTransform(p, [0.1, 0.9], [0, 1]);
   return (
     <div className="sky" aria-hidden="true">
       <div className={`sky-l sky-${from}`} />
-      <motion.div className={`sky-l sky-${to}`} style={{ opacity: opTo }} />
+      {to !== from && <motion.div className={`sky-l sky-${to}`} style={{ opacity: opTo }} />}
     </div>
   );
-}
-
-export function Stars({ className = "" }: { className?: string }) {
-  return <div className={`stars ${className}`} aria-hidden="true" />;
 }
 
 /** Wet apron with runway lights receding; `x` dollies it. */
@@ -28,7 +24,7 @@ export function Apron({ x, tone = "night", className = "" }: { x?: MotionValue<n
   return (
     <motion.div className={`apron apron-${tone} ${className}`} style={{ x }} aria-hidden="true">
       <div className="apron-lights" />
-      <div className="apron-wet" />
+      <div className="apron-streaks" />
       <div className="apron-edge" />
     </motion.div>
   );
@@ -54,7 +50,7 @@ export function Painted({ children, className = "", style }: { children: ReactNo
   );
 }
 
-/** Thin hand-drawn hatch strokes laid over a shadow region. */
-export function Hatch({ className = "" }: { className?: string }) {
-  return <div className={`hatch ${className}`} aria-hidden="true" />;
+/** Atmospheric haze band. */
+export function Haze({ className = "" }: { className?: string }) {
+  return <div className={`haze ${className}`} aria-hidden="true" />;
 }
