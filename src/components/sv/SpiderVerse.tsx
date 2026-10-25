@@ -2,27 +2,27 @@
 
 import "./sv.css";
 import { useRef, useState } from "react";
-import { motion, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
+import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { ANCHORS, CUTS, LINES, SEG, glitchFrame, useActive, useVW, type Line } from "./timeline";
 import { Film } from "./Film";
-import { S0Cold } from "./S0Cold";
-import { S1Airports } from "./S1Airports";
+import { S0Hero } from "./S0Hero";
+import { S1Gates } from "./S1Gates";
 import { S2CheckIn } from "./S2CheckIn";
-import { S3Big } from "./S3Big";
 import { S4Security } from "./S4Security";
 import { S5Gate } from "./S5Gate";
-import { S6Off } from "./S6Off";
 import { S7Boarding } from "./S7Boarding";
 
-/* Ammar's intro, the movie. One pinned stage inside a tall scroll track;
-   scroll scrubs the timeline (t). Segments are ranges of t the camera travels
-   through; cuts between them are hard, with a short sliced-picture glitch. */
+/* Ammar's intro. One pinned stage inside a tall scroll track; scroll scrubs
+   the timeline (t). The Film canvas renders the photographic plates through
+   the print process; figures, props and readable content sit above it. */
 export function SpiderVerse() {
   const track = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: track, offset: ["start start", "end end"] });
   const t = useSpring(scrollYProgress, { stiffness: 220, damping: 34, mass: 0.6, restDelta: 0.0005 });
-  // caption parallax: the lag between the camera spring and the raw scroll
   const par = useTransform([t, scrollYProgress], ([a, b]) => Math.max(-10, Math.min(10, ((a as number) - (b as number)) * 600)));
+  // takeoff: 0 at rest, 1 during the climb (Film pushes in and darkens)
+  const fxRaw = useMotionValue(0);
+  const fx = useSpring(fxRaw, { stiffness: 40, damping: 18 });
 
   return (
     <main className="sv">
@@ -31,15 +31,13 @@ export function SpiderVerse() {
           <span key={a.id} id={a.id} className="anchor" style={{ top: `${a.t * 100}%` }} aria-hidden="true" />
         ))}
         <div className="stage">
-          <Film t={t} />
-          <Gated t={t} range={SEG.cold}><S0Cold t={t} /></Gated>
-          <Gated t={t} range={SEG.airports}><S1Airports t={t} /></Gated>
+          <Film t={t} fx={fx} />
+          <Gated t={t} range={SEG.hero}><S0Hero t={t} /></Gated>
+          <Gated t={t} range={SEG.gates}><S1Gates t={t} /></Gated>
           <Gated t={t} range={SEG.checkin}><S2CheckIn t={t} /></Gated>
-          <Gated t={t} range={SEG.big}><S3Big t={t} /></Gated>
           <Gated t={t} range={SEG.security}><S4Security t={t} /></Gated>
           <Gated t={t} range={SEG.gate}><S5Gate t={t} /></Gated>
-          <Gated t={t} range={SEG.off}><S6Off t={t} /></Gated>
-          <Gated t={t} range={SEG.boarding}><S7Boarding t={t} /></Gated>
+          <Gated t={t} range={SEG.boarding}><S7Boarding t={t} fx={fxRaw} /></Gated>
 
           <Narration t={t} par={par} />
           <GlitchCut t={t} />
@@ -50,7 +48,6 @@ export function SpiderVerse() {
   );
 }
 
-/** Mounts the current segment and its neighbours only. */
 function Gated({ t, range, children }: { t: MotionValue<number>; range: readonly [number, number]; children: React.ReactNode }) {
   const active = useActive(t, range);
   return active ? <>{children}</> : null;
@@ -61,7 +58,7 @@ function Narration({ t, par }: { t: MotionValue<number>; par: MotionValue<number
   return (
     <div className="narration" aria-live="polite">
       {LINES.map((l) => (
-        <Caption key={l.a} t={t} par={par} line={l} mobile={vw < 720} />
+        <Caption key={l.text} t={t} par={par} line={l} mobile={vw < 720} />
       ))}
     </div>
   );
@@ -73,19 +70,18 @@ function Caption({ t, par, line, mobile }: { t: MotionValue<number>; par: Motion
   const opacity = useTransform(t, [a - f, a + f, b - f, b + f], [0, 1, 1, 0]);
   const step = useTransform(opacity, (v) => Math.round(v * 3) / 3);
   const rise = useTransform(t, [a - f, a + f, b - f, b + f], [10, 0, -3, -12]);
-  const y = useTransform([rise, par], ([r, p]) => Math.round(((r as number) + (p as number)) / 3) * 3);
-  const active = useActive(t, [a, b], 0.03);
+  const y = useTransform([rise, par], ([r, pv]) => Math.round(((r as number) + (pv as number)) / 3) * 3);
+  const active = useActive(t, [Math.max(0, a), b], 0.03);
   if (!active) return null;
   const top = mobile && line.mobileTop ? "9vh" : line.y;
   const left = mobile ? (line.align === "center" ? "50%" : "5vw") : line.x;
   return (
-    <motion.p className={`cap ${line.align === "center" ? "cap-center" : ""} ${text.length < 30 ? "cap-hand" : ""}`} style={{ opacity: step, y, left, top }}>
+    <motion.p className={`cap ${line.align === "center" ? "cap-center" : ""}`} style={{ opacity: step, y, left, top }}>
       {text}
     </motion.p>
   );
 }
 
-/* Cyan / magenta slivers at the slice edges during a cut. */
 const SLICES: { top: number; h: number; x: number; c: "c" | "m" }[][] = [
   [],
   [{ top: 18, h: 1.2, x: -6, c: "c" }, { top: 55, h: 0.8, x: 6, c: "m" }, { top: 70, h: 1.4, x: -6, c: "c" }],
@@ -102,9 +98,7 @@ function GlitchCut({ t }: { t: MotionValue<number> }) {
   });
   return (
     <div className="glitch" aria-hidden="true">
-      {[0, 1, 2].map((i) => (
-        <Sliver key={i} frame={frame} i={i} />
-      ))}
+      {[0, 1, 2].map((i) => <Sliver key={i} frame={frame} i={i} />)}
     </div>
   );
 }

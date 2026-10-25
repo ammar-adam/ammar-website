@@ -11,8 +11,9 @@ import { PLATE_NAMES, SCENES, type Scene } from "./plates";
    posterise the paint texture scaled by depth, a filmic grade with additive
    shadow tint, chromatic split only off the focus plane and radial from the
    focus point, a fine halftone in the shadow transitions, ink from depth
-   silhouettes, isotropic paper grain, vignette, and the sliced glitch on
-   cuts. Renders only when t changes; pauses when the tab is hidden. */
+   silhouettes, isotropic paper grain, the hero title set into the far field
+   so the near field occludes it, vignette, and the sliced glitch on cuts.
+   `fx` is the takeoff: extra push-in and darkening. */
 
 const VS = `#version 300 es
 in vec2 aPos; out vec2 vUv;
@@ -42,20 +43,21 @@ void main(){
 const FS_POST = `#version 300 es
 precision highp float;
 in vec2 vUv; out vec4 o;
-uniform sampler2D uTex, uDep;
+uniform sampler2D uTex, uDep, uTitle;
 uniform vec2 uRes, uPan, uFocusUv;
 uniform vec3 uBg, uShadow, uHigh, uHazeCol;
-uniform float uHaze, uFocusD, uDofAmt, uPaint, uBands, uPost, uNight;
-uniform float uGlitch;
+uniform float uHaze, uFocusD, uDofAmt, uPaint, uBands, uPost, uNight, uDark;
+uniform vec4 uTitleRect;
+uniform float uTitleOn, uGlitch;
 float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 float vnoise(vec2 p){ vec2 i = floor(p), f = fract(p); f = f*f*(3.0-2.0*f);
   return mix(mix(hash(i), hash(i+vec2(1,0)), f.x), mix(hash(i+vec2(0,1)), hash(i+vec2(1,1)), f.x), f.y); }
 mat2 rot(float a){ float s=sin(a), c=cos(a); return mat2(c,-s,s,c); }
 float lum(vec3 c){ return dot(c, vec3(0.299, 0.587, 0.114)); }
+float dots(vec2 px, float cell){ vec2 hp = rot(0.785398) * px / cell; return length(fract(hp) - 0.5) * cell; }
 void main(){
   vec2 uv = vUv;
   vec2 px = uv * uRes;
-  // glitch: displace slices of the picture
   if (uGlitch >= 1.0) {
     float f = uGlitch; float y = 1.0 - uv.y; float shift = 0.0;
     if (f < 1.5) { if ((y > 0.18 && y < 0.30) || (y > 0.55 && y < 0.70)) shift = 10.0; }
@@ -64,23 +66,19 @@ void main(){
     else if (f < 4.5) { if ((y > 0.20 && y < 0.35) || (y > 0.65 && y < 0.95)) shift = -8.0; }
     uv.x += shift / uRes.x;
   }
-  // depth-keyed parallax: near moves with the camera, sky barely
   float d0 = texture(uDep, uv).r;
   vec2 puv = uv + uPan * mix(0.2, 1.0, d0);
   vec4 s = texture(uTex, puv);
   float d = texture(uDep, puv).r;
   vec3 c = mix(uBg, s.rgb, s.a);
   float L = lum(c);
-  // posterise the paint texture, scaled by depth; never the sky
   vec3 q = c * uBands; vec3 fl = floor(q); vec3 fr = fract(q);
   vec3 post = (fl + smoothstep(0.42, 0.58, fr)) / uBands;
   float pw = (uPost * 0.55 * d + 0.15) * smoothstep(0.06, 0.2, d);
   c = mix(c, post, pw);
-  // haze on the far field, lowers contrast
   float haze = smoothstep(0.55, 0.95, 1.0 - d) * uHaze;
   c = mix(c, uHazeCol, haze);
   c = mix(vec3(lum(c)), c, 1.0 - 0.3 * haze);
-  // filmic grade
   L = lum(c);
   float sat = mix(1.15, 0.9, smoothstep(0.7, 1.0, L));
   c = mix(vec3(L), c, sat);
@@ -91,7 +89,24 @@ void main(){
   c = mix(c, c * uHigh, smoothstep(0.55, 0.95, L));
   c *= mix(1.0, 0.62, uNight * (1.0 - L * 0.6));
   L = lum(c);
-  // chromatic split: only off the focus plane, radial from the focus point, R and B only
+  // the title in the far field: the plane and the building occlude it
+  if (uTitleOn > 0.5) {
+    vec2 tu = (vec2(uv.x, 1.0 - uv.y) - uTitleRect.xy) / uTitleRect.zw;
+    if (tu.x > 0.0 && tu.x < 1.0 && tu.y > 0.0 && tu.y < 1.0) {
+      float a = texture(uTitle, tu).a;
+      float aR = texture(uTitle, tu - vec2(2.0 / (uRes.x * uTitleRect.z), 0.0)).a;
+      float aC = texture(uTitle, tu + vec2(2.0 / (uRes.x * uTitleRect.z), 0.0)).a;
+      float farMask = 1.0 - smoothstep(0.3, 0.42, d);
+      vec3 fill = mix(c, vec3(0.98, 0.95, 0.9), 0.9);
+      float lower = smoothstep(0.62, 0.72, tu.y);
+      fill *= 1.0 - (1.0 - smoothstep(1.2, 1.8, dots(px, 4.0))) * lower * 0.35;
+      vec3 t = c;
+      t = mix(t, vec3(0.95, 0.2, 0.25), aR * (1.0 - a) * 0.9);
+      t = mix(t, vec3(0.1, 0.85, 1.0), aC * (1.0 - a) * 0.9);
+      t = mix(t, fill, a);
+      c = mix(c, t, farMask);
+    }
+  }
   float coc = abs(d - uFocusD);
   coc = max(0.0, coc - 0.08) * uDofAmt;
   vec2 g = vec2(texture(uDep, uv + vec2(1.5 / uRes.x, 0.0)).r - texture(uDep, uv - vec2(1.5 / uRes.x, 0.0)).r,
@@ -104,27 +119,22 @@ void main(){
   float b2 = texture(uTex, puv - off).b;
   c.r = mix(c.r, r2, k);
   c.b = mix(c.b, b2, k);
-  // fine halftone only in the shadow transition band, tinted, weighted near
   float cell = 4.5 * uRes.y / 1080.0;
-  vec2 hp = rot(0.785398) * px / cell;
-  float dd = length(fract(hp) - 0.5) * cell;
+  float dd = dots(px, cell);
   float m = smoothstep(0.03, 0.10, L) * (1.0 - smoothstep(0.32, 0.45, L));
   float rad = cell * 0.5 * sqrt(1.0 - L);
   float dot1 = 1.0 - smoothstep(rad - 0.7, rad + 0.3, dd);
   c = mix(c, c * vec3(0.55, 0.5, 0.75), dot1 * m * 0.6 * (0.4 + 0.6 * d));
-  // hatching: near depth, dark mids only, faint
   float h = fract((px.x + px.y) * 0.5 / 4.0);
   float line = 1.0 - smoothstep(0.1, 0.25, abs(h - 0.5));
   float hm = step(0.6, d) * smoothstep(0.12, 0.16, L) * (1.0 - smoothstep(0.26, 0.3, L));
   c *= 1.0 - line * hm * 0.08;
-  // ink from depth silhouettes, near only
   float ink = smoothstep(0.08, 0.2, length(g)) * smoothstep(0.35, 0.6, d);
   c = mix(c, vec3(0.02, 0.012, 0.05), ink * 0.5);
-  // isotropic paper grain
   float grain = vnoise(px * 0.6) + vnoise(px * 3.1) - 1.0;
   c *= 1.0 + grain * uPaint;
-  // vignette
   vec2 vv = vUv - 0.5; c *= 1.0 - dot(vv, vv) * 0.45;
+  c *= 1.0 - uDark;
   if (uGlitch >= 1.0) {
     float y = 1.0 - vUv.y; float f = uGlitch;
     float e1 = (f < 1.5) ? 0.18 : (f < 2.5) ? 0.40 : (f < 3.5) ? 0.25 : 0.35;
@@ -137,10 +147,29 @@ void main(){
 
 type Tex = { tex: WebGLTexture; dep: WebGLTexture; w: number; h: number; ready: boolean; loading: boolean };
 
-export function Film({ t }: { t: MotionValue<number> }) {
+export const TITLE_TEXT = "AMMAR ADAM";
+
+function titleCanvas(text: string, family: string, w: number) {
+  const c = document.createElement("canvas");
+  const h = Math.round(w * 0.22);
+  c.width = w; c.height = h;
+  const x = c.getContext("2d")!;
+  x.clearRect(0, 0, w, h);
+  x.fillStyle = "#fff";
+  x.textAlign = "center";
+  x.textBaseline = "middle";
+  let size = Math.round(h * 0.92);
+  x.font = `${size}px ${family}`;
+  while (x.measureText(text).width > w * 0.98 && size > 20) { size -= 4; x.font = `${size}px ${family}`; }
+  x.fillText(text, w / 2, h / 2 + size * 0.04);
+  return { canvas: c, aspect: w / h };
+}
+
+export function Film({ t, fx }: { t: MotionValue<number>; fx: MotionValue<number> }) {
   const ref = useRef<HTMLCanvasElement>(null);
   const dirty = useRef(true);
   useMotionValueEvent(t, "change", () => { dirty.current = true; });
+  useMotionValueEvent(fx, "change", () => { dirty.current = true; });
 
   useEffect(() => {
     const canvas = ref.current;
@@ -186,7 +215,6 @@ export function Film({ t }: { t: MotionValue<number> }) {
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     };
 
-    // two render targets: colour and depth
     const fbo = gl.createFramebuffer();
     const fboCol = gl.createTexture()!;
     const fboDep = gl.createTexture()!;
@@ -209,7 +237,6 @@ export function Film({ t }: { t: MotionValue<number> }) {
       dirty.current = true;
     };
 
-    // plates: load the current scene's plate and its neighbours first, the rest on idle
     const small = window.innerWidth < 720;
     const size = small ? 1600 : 2000;
     const texes = new Map<string, Tex>();
@@ -222,7 +249,7 @@ export function Film({ t }: { t: MotionValue<number> }) {
     for (const name of PLATE_NAMES) texes.set(name, { tex: makeTex([20, 14, 40, 255]), dep: makeTex([128, 0, 0, 255]), w: 1, h: 1, ready: false, loading: false });
     const flag = window as Window & { __filmTotal?: number; __filmReady?: number };
     flag.__filmTotal = PLATE_NAMES.length; flag.__filmReady = 0;
-    const upload = (tex: WebGLTexture, img: HTMLImageElement) => {
+    const upload = (tex: WebGLTexture, img: TexImageSource) => {
       gl.bindTexture(gl.TEXTURE_2D, tex);
       gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, false);
       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, img);
@@ -241,7 +268,7 @@ export function Film({ t }: { t: MotionValue<number> }) {
       img.src = `/plates/${name}-paint-${size}.webp`;
       dep.src = `/plates/${name}-depth.webp`;
     };
-    const sceneIndex = (v: number) => Math.max(0, SCENES.findIndex((s) => v < s.range[1]) === -1 ? SCENES.length - 1 : SCENES.findIndex((s) => v < s.range[1]));
+    const sceneIndex = (v: number) => { const i = SCENES.findIndex((s) => v < s.range[1]); return i === -1 ? SCENES.length - 1 : i; };
     const ensure = (v: number) => {
       const i = sceneIndex(v);
       for (const j of [i, i + 1, i - 1]) { const s = SCENES[j]; if (s?.plate) load(s.plate); }
@@ -249,6 +276,17 @@ export function Film({ t }: { t: MotionValue<number> }) {
     ensure(t.get());
     const idle = (window as Window & { requestIdleCallback?: (cb: () => void) => number }).requestIdleCallback ?? ((cb: () => void) => window.setTimeout(cb, 1500));
     idle(() => { for (const name of PLATE_NAMES) load(name); });
+
+    const titleTex = makeTex([0, 0, 0, 0]);
+    let titleAspect = 0;
+    const family = getComputedStyle(document.documentElement).getPropertyValue("--font-anton").trim() || "Impact";
+    const makeTitle = () => {
+      const { canvas: tc, aspect } = titleCanvas(TITLE_TEXT, family, 1600);
+      upload(titleTex, tc);
+      titleAspect = aspect;
+      dirty.current = true;
+    };
+    if (document.fonts?.load) document.fonts.load(`120px ${family}`).then(makeTitle, makeTitle); else makeTitle();
 
     const sceneAt = (v: number): { scene: Scene; glitch: number } => {
       for (const s of SCENES) {
@@ -260,13 +298,13 @@ export function Film({ t }: { t: MotionValue<number> }) {
 
     const render = () => {
       const v = t.get();
+      const f = fx.get();
       ensure(v);
       const { scene, glitch } = sceneAt(v);
       const [a, b] = scene.range;
       const p = Math.max(0, Math.min(1, (v - a) / (b - a)));
       const cam = scene.camera(p);
 
-      // pass 1: plate into colour + depth targets
       gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
       gl.viewport(0, 0, W, H);
       gl.clearColor(0, 0, 0, 0);
@@ -279,22 +317,22 @@ export function Film({ t }: { t: MotionValue<number> }) {
         gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, tx.dep); gl.uniform1i(U(pLayer, "uDep"), 1);
         gl.uniform2f(U(pLayer, "uRes"), W, H);
         gl.uniform2f(U(pLayer, "uTexSize"), tx.w, tx.h);
-        const f = small && scene.restMobile ? scene.restMobile : scene.rest;
-        gl.uniform2f(U(pLayer, "uFocus"), f[0], f[1]);
-        gl.uniform1f(U(pLayer, "uScale"), cam.zoom);
+        const r = small && scene.restMobile ? scene.restMobile : scene.rest;
+        gl.uniform2f(U(pLayer, "uFocus"), r[0], r[1]);
+        gl.uniform1f(U(pLayer, "uScale"), cam.zoom * (1 + f * 0.35));
         gl.uniform1f(U(pLayer, "uGain"), scene.gain ?? 1);
         gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
       }
 
-      // pass 2: print process to the screen
       gl.bindFramebuffer(gl.FRAMEBUFFER, null);
       gl.viewport(0, 0, W, H);
       gl.useProgram(pPost);
       bindQuad(pPost);
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D, fboCol); gl.uniform1i(U(pPost, "uTex"), 0);
       gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D, fboDep); gl.uniform1i(U(pPost, "uDep"), 1);
+      gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D, titleTex); gl.uniform1i(U(pPost, "uTitle"), 2);
       gl.uniform2f(U(pPost, "uRes"), W, H);
-      gl.uniform2f(U(pPost, "uPan"), cam.pan[0], cam.pan[1]);
+      gl.uniform2f(U(pPost, "uPan"), cam.pan[0], cam.pan[1] + f * 0.04);
       gl.uniform2f(U(pPost, "uFocusUv"), cam.focusUv[0], 1 - cam.focusUv[1]);
       gl.uniform3f(U(pPost, "uBg"), scene.bg[0], scene.bg[1], scene.bg[2]);
       const g = scene.grade;
@@ -303,12 +341,21 @@ export function Film({ t }: { t: MotionValue<number> }) {
       gl.uniform3f(U(pPost, "uHazeCol"), g.hazeCol[0], g.hazeCol[1], g.hazeCol[2]);
       gl.uniform1f(U(pPost, "uHaze"), g.haze);
       gl.uniform1f(U(pPost, "uNight"), g.night);
+      gl.uniform1f(U(pPost, "uDark"), f * 0.55);
       gl.uniform1f(U(pPost, "uFocusD"), cam.focusDepth);
-      gl.uniform1f(U(pPost, "uDofAmt"), cam.dof * (W / 1440));
+      gl.uniform1f(U(pPost, "uDofAmt"), (cam.dof + f * 4) * (W / 1440));
       gl.uniform1f(U(pPost, "uPaint"), scene.paint);
       gl.uniform1f(U(pPost, "uBands"), scene.bands);
       gl.uniform1f(U(pPost, "uPost"), scene.post);
       gl.uniform1f(U(pPost, "uGlitch"), glitch);
+      const tr = small && scene.titleMobile ? scene.titleMobile : scene.title;
+      if (tr && titleAspect > 0) {
+        const th = (tr[2] / titleAspect) * (W / H);
+        gl.uniform4f(U(pPost, "uTitleRect"), tr[0], tr[1], tr[2], th);
+        gl.uniform1f(U(pPost, "uTitleOn"), 1);
+      } else {
+        gl.uniform1f(U(pPost, "uTitleOn"), 0);
+      }
       gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
     };
 
@@ -335,7 +382,7 @@ export function Film({ t }: { t: MotionValue<number> }) {
       window.removeEventListener("resize", onResize);
       gl.getExtension("WEBGL_lose_context")?.loseContext();
     };
-  }, [t]);
+  }, [t, fx]);
 
   return <canvas ref={ref} className="film" aria-hidden="true" />;
 }
