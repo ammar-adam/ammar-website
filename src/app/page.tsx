@@ -1,5 +1,5 @@
-import { Home } from "@/components/home/Home";
+import { SpiderVerse } from "@/components/sv/SpiderVerse";
 
 export default function HomePage() {
-  return <Home />;
+  return <SpiderVerse />;
 }

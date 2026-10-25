@@ -1,0 +1,19 @@
+/* Minimal base for the Spider-Verse issue. The old terminal tokens live in
+   globals.css and are no longer imported. */
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: #f6eedb;
+  color: #141217;
+  font-family: var(--font-inter), Inter, system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+button, input { font: inherit; color: inherit; }
+img { max-width: 100%; display: block; }
+::selection { background: #ff2e88; color: #f6eedb; }
