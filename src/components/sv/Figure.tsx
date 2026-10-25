@@ -2,7 +2,7 @@
 
 import { memo } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
-import { figureAt, stepOf, BEATS, SWINGS, type FigureState, type Pose, type SwingState } from "./geometry";
+import { figureAt, stepOf, BEATS, type FigureState, type Pose, type SwingState } from "./geometry";
 
 /* ------------------------------------------------------------------ */
 /* Key drawings. ViewBox 0 0 120 170; the hand that holds the line is at (60,6)
@@ -58,15 +58,28 @@ const POSES: Record<Exclude<Pose, null>, React.ReactNode> = {
 
 const POSE_IDS = Object.keys(POSES) as Array<Exclude<Pose, null>>;
 
-export const PoseSymbols = memo(function PoseSymbols() {
+/** The key drawings as symbols, once, plus the halftone used on the figure's lower half. */
+export const PoseDefs = memo(function PoseDefs() {
   return (
-    <>
-      {POSE_IDS.map((id) => (
-        <symbol key={id} id={`pose-${id}`} viewBox="0 0 120 170">
-          {POSES[id]}
-        </symbol>
-      ))}
-    </>
+    <svg width="0" height="0" className="sv-defs" aria-hidden="true" focusable="false">
+      <defs>
+        <pattern id="figDots" width="7" height="7" patternUnits="userSpaceOnUse">
+          <circle cx="3.5" cy="3.5" r="1.7" fill="#2a1d4a" />
+        </pattern>
+        <linearGradient id="halfMask" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0.45" stopColor="#000" />
+          <stop offset="1" stopColor="#fff" />
+        </linearGradient>
+        <mask id="lowerHalf" maskContentUnits="objectBoundingBox">
+          <rect width="1" height="1" fill="url(#halfMask)" />
+        </mask>
+        {POSE_IDS.map((id) => (
+          <symbol key={id} id={`pose-${id}`} viewBox="0 0 120 170">
+            {POSES[id]}
+          </symbol>
+        ))}
+      </defs>
+    </svg>
   );
 });
 
@@ -85,26 +98,10 @@ function stateToFigure(s: SwingState, mobile: boolean, lag = 0): FigureState | n
   return null;
 }
 
-/** Web anchor: the CN Tower's shaft top (under the antenna) in whichever far-layer copy is nearest the frame centre. */
+/** Web anchor: a point high in the frame that drifts with the camera pan, like a tower top in the plate. */
 function anchorFor(s: SwingState, m: Metrics) {
-  const farH = (m.mobile ? 0.4 : 0.68) * m.vh;
-  const farBottom = (m.mobile ? 0.18 : 0.1) * m.vh;
-  const copyW = 4 * farH;
-  const layerLeft = m.mobile ? -0.24 * m.vh : -0.04 * m.vw;
-  const layerX = layerLeft + (-s.travel * 9 * m.vw) / 100;
-  const towerX = (1040 / 3600) * copyW;
-  const topY = m.vh - farBottom - (750 / 900) * farH;
-  let best = 0;
-  let bestD = Infinity;
-  for (let c = 0; c < 2; c++) {
-    const x = layerX + c * copyW + towerX;
-    const d = Math.abs(x - m.vw * 0.5);
-    if (d < bestD) {
-      bestD = d;
-      best = x;
-    }
-  }
-  return { x: best, y: topY };
+  const drift = (s.index >= 0 ? Math.sin(s.phase * Math.PI) * 0.04 : 0) * m.vw;
+  return { x: m.vw * (m.mobile ? 0.3 : 0.36) - drift, y: m.vh * (m.mobile ? 0.3 : 0.18) };
 }
 
 interface Metrics {
@@ -119,8 +116,8 @@ function box(f: FigureState | null, m: Metrics) {
   const figW = (figH * 120) / 170;
   if (!f || !f.pose) return { x: -9999, y: -9999, figH, figW, handX: 0, handY: 0 };
   const grounded = f.pose === "land" || f.pose === "low" || f.pose === "stand";
-  const facade = m.mobile ? 120 : 200;
-  const cornice = m.vh - facade + (m.mobile ? 13 : 22);
+  /* the Union Station cornice in the landing plate sits around 72% down the frame */
+  const cornice = m.vh * (m.mobile ? 0.78 : 0.72);
   const x = (f.x / 100) * m.vw - figW / 2;
   const y = grounded ? cornice - figH : (f.y / 100) * m.vh - (6 / 170) * figH;
   return { x, y, figH, figW, handX: x + figW / 2, handY: y + (6 / 170) * figH };
@@ -183,7 +180,7 @@ export function Swinger({ state, vw, vh, mobile }: { state: MotionValue<SwingSta
       <FigureSvg fig={fig} m={m} className="sv-fig sv-fig-main" rim />
       <motion.svg className="sv-dust" viewBox="0 0 180 48" style={{ opacity: dustOp, transform: dustTf }}>
         <ellipse cx="90" cy="30" rx="86" ry="16" fill="#3a3f7a" opacity="0.8" />
-        <ellipse cx="90" cy="30" rx="86" ry="16" fill="url(#dots)" opacity="0.8" />
+        <ellipse cx="90" cy="30" rx="86" ry="16" fill="url(#figDots)" opacity="0.8" />
         <ellipse cx="40" cy="18" rx="22" ry="10" fill="#3a3f7a" />
         <ellipse cx="140" cy="16" rx="26" ry="11" fill="#3a3f7a" />
       </motion.svg>
@@ -213,8 +210,8 @@ function PoseUse({ id, fig, rim }: { id: Exclude<Pose, null>; fig: MotionValue<F
     <motion.g style={{ display }}>
       {rim && (
         <>
-          <use href={`#pose-${id}`} x={-2.5} className="sv-rim-m" />
-          <use href={`#pose-${id}`} x={2.5} className="sv-rim-c" />
+          <use href={`#pose-${id}`} className="sv-rim-m" />
+          <use href={`#pose-${id}`} x={3} className="sv-rim-c" />
         </>
       )}
       <use href={`#pose-${id}`} className="sv-body" />
@@ -239,4 +236,3 @@ function SpeedLines({ vmin }: { vmin: number }) {
   );
 }
 
-export { SWINGS };

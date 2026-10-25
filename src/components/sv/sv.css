@@ -8,77 +8,34 @@
 .sv { position: relative; width: 100%; isolation: isolate; }
 .sv-defs { position: absolute; width: 0; height: 0; overflow: hidden; }
 
-/* ---------- Stage: the city, fixed behind everything ---------- */
-.sv-stage { position: fixed; inset: 0; overflow: hidden; z-index: 0; pointer-events: none; contain: strict; }
-.sv-sky {
-  position: absolute; inset: -6% 0 0 0;
-  background: linear-gradient(to bottom, #0b1a3a 0%, #23285e 46%, #5a2a6e 82%, #5a2a6e 88%, #c2456e 100%);
-}
-.sv-sky-night { background: linear-gradient(to bottom, #050d22 0%, #141a40 50%, #3a1f52 88%, #7a2a52 100%); }
-/* sodium light pooling at street level */
-.sv-glow {
-  position: absolute; left: -10%; right: -10%; bottom: -10%; height: 46%;
-  background:
-    radial-gradient(ellipse 60% 80% at 50% 100%, rgba(255, 138, 74, 0.45), transparent 70%),
-    radial-gradient(ellipse 30% 60% at 18% 100%, rgba(255, 45, 141, 0.22), transparent 70%),
-    radial-gradient(ellipse 30% 60% at 82% 100%, rgba(58, 166, 201, 0.2), transparent 70%);
-}
-.sv-camera { position: absolute; inset: 0; will-change: transform; transform-origin: 50% 80%; }
-.sv-layer { position: absolute; left: 0; bottom: 0; will-change: transform; }
-.sv-layer-row { display: flex; height: 100%; }
-.sv-layer-real { position: relative; z-index: 1; }
-.sv-layer-copy { flex: 0 0 auto; height: 100%; }
-.sv-layer-svg { height: 100%; width: auto; max-width: none; display: block; }
-.sv-layer-clouds { height: 30vh; bottom: auto; top: 2vh; opacity: 0.9; }
-.sv-layer-far { height: 68vh; bottom: 10vh; left: -4vw; }
-.sv-layer-mid { height: 56vh; bottom: 2vh; }
-.sv-layer-near { height: 36vh; bottom: -1vh; }
-/* haze: towers fade into the lit air behind them */
-.sv-haze { position: absolute; left: -10%; right: -10%; height: 20vh; pointer-events: none; }
-.sv-haze-far { bottom: 10vh; background: linear-gradient(to top, rgba(90, 60, 140, 0.55), transparent); }
-.sv-haze-mid { bottom: 2vh; background: linear-gradient(to top, rgba(120, 60, 110, 0.45), transparent); }
-
-/* Depth of field: silhouette copies under the real drawing, cyan left and magenta right.
-   Only the offset edges show. */
-.sv-ghost { position: absolute; inset: 0; z-index: 0; will-change: transform; opacity: 0.85; }
-.sv-ghost-c { color: #19d3ff; }
-.sv-ghost-m { color: #ff2d8d; }
-
-/* spray-paint speckle, low frequency */
-.sv-speckle {
-  position: absolute; inset: 0; opacity: 0.22;
-  background-image: radial-gradient(circle, rgba(246, 239, 220, 0.7) 0 0.9px, transparent 1.3px), radial-gradient(circle, rgba(255, 138, 74, 0.6) 0 1px, transparent 1.4px);
-  background-size: 97px 83px, 131px 109px;
-  background-position: 0 0, 41px 23px;
-  mask-image: linear-gradient(to bottom, #000 0 30%, transparent 75%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0 30%, transparent 75%);
-}
-/* cold open: the lights come up over the first stretch of scroll */
-.sv-dark { position: absolute; inset: 0; background: radial-gradient(ellipse 50% 45% at 72% 24%, transparent 0, #03020a 100%); will-change: opacity; }
-
-/* Glitch at the cut: the silhouette ghosts split into slices and jump ±12px */
-.sv-glitch-on .sv-ghost { opacity: 1; animation: sv-slices 0.12s steps(2) infinite; }
-.sv-glitch-on .sv-ghost-m { animation-direction: reverse; }
-.sv-glitch-on .sv-camera { animation: sv-slice 0.12s steps(2) infinite; }
+/* ---------- Stage: the processed plate, fixed behind everything ---------- */
+.sv-plates { position: fixed; inset: 0; z-index: 0; pointer-events: none; background: #0b0a1e; contain: strict; }
+.sv-plate-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+/* no WebGL2: the plain plate with CSS filters standing in for the print process */
+.sv-plate-fallback { position: absolute; inset: 0; display: none; }
+.sv-plate-fallback-on { display: block; }
+.sv-plate-fallback img { width: 100%; height: 100%; object-fit: cover; filter: contrast(1.25) saturate(1.3); }
+.sv-plate-fallback::after { content: ""; position: absolute; inset: 0; background-image: radial-gradient(circle, rgba(3, 2, 10, 0.7) 0 1px, transparent 1.5px); background-size: 6px 6px; mix-blend-mode: multiply; }
+/* Glitch at the cut: the whole frame jumps in slices */
+.sv-glitch-on .sv-plates { animation: sv-slice 0.12s steps(2) infinite; }
+.sv-glitch-on .sv-screen { animation: sv-slices 0.12s steps(2) infinite; }
 @keyframes sv-slices {
-  0% { transform: translateX(-12px); clip-path: polygon(0 10%, 100% 10%, 100% 18%, 0 18%, 0 44%, 100% 44%, 100% 47%, 0 47%, 0 70%, 100% 70%, 100% 78%, 0 78%); }
-  100% { transform: translateX(12px); clip-path: polygon(0 26%, 100% 26%, 100% 29%, 0 29%, 0 55%, 100% 55%, 100% 64%, 0 64%, 0 86%, 100% 86%, 100% 88%, 0 88%); }
+  0% { transform: translateX(-10px); }
+  100% { transform: translateX(10px); }
 }
 @keyframes sv-slice { 0% { transform: translate(8px, 0); } 100% { transform: translate(-8px, 0); } }
-
-/* lit windows that switch on and off at 8fps while the camera rests */
-.sv-win-blink { animation: sv-win 2.4s steps(1) infinite; }
-@keyframes sv-win { 0% { opacity: 1; } 42% { opacity: 0.15; } 58% { opacity: 1; } 80% { opacity: 0.15; } 100% { opacity: 1; } }
 
 /* ---------- Effects layer above the beats: the figure, its web, the speed lines ---------- */
 .sv-fx { position: absolute; inset: 0; z-index: 5; pointer-events: none; }
 .sv-webline { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
 .sv-webline line, .sv-webline path { stroke: var(--paper); stroke-width: 2.5; fill: none; stroke-linecap: round; }
 .sv-fig { position: absolute; left: 0; top: 0; will-change: transform; transform-origin: 50% 0; overflow: visible; max-width: none; }
-.sv-fig .sv-body { color: #0b0618; }
-.sv-fig .sv-rim-m { color: var(--magenta); }
-.sv-fig .sv-rim-c { color: var(--cyan); }
-.sv-fig .sv-body-dots { color: #3a3f7a; opacity: 0.9; }
+/* cel shading: ink silhouette behind, flat body fill, one hard shadow tone (halftone, lower half), cyan rim on the right */
+.sv-fig .sv-rim-m { color: #05040c; transform: translate(-1px, 0) scale(1.03); transform-origin: 50% 50%; }
+.sv-fig .sv-rim-c { color: #19d3ff; }
+.sv-fig .sv-body { color: #2b1f55; }
+.sv-fig .sv-body-dots { color: #0b0618; opacity: 0.9; }
+.sv-fig-echo .sv-rim-m, .sv-fig-echo .sv-rim-c, .sv-fig-echo .sv-body-dots { display: none; }
 .sv-fig-echo-1 { opacity: 0.3; }
 .sv-fig-echo-2 { opacity: 0.15; }
 .sv-fig-echo .sv-body { color: #ff2d8d; }
@@ -105,7 +62,6 @@
 .sv-nav a { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.06em; text-decoration: none; color: var(--paper); opacity: 0.85; padding: 4px 0; border-bottom: 2px solid transparent; }
 .sv-nav a:hover { opacity: 1; border-bottom-color: var(--magenta); }
 .sv-progress { position: absolute; left: 0; top: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--magenta), var(--amber)); transform-origin: 0 50%; z-index: 7; will-change: transform; }
-.sv-union { position: absolute; left: 0; right: 0; bottom: 0; height: 200px; width: 100%; z-index: 0; pointer-events: none; }
 
 /* ---------- Type ---------- */
 .sv-cmyk { position: relative; margin: 0; font-family: var(--font-display); font-weight: 400; line-height: 0.9; letter-spacing: 0.01em; text-transform: uppercase; }
@@ -160,7 +116,7 @@
 /* ---------- Surfaces in the world: billboards on tower tops, lit from above ---------- */
 .sv-panel {
   position: relative; color: var(--paper);
-  background: linear-gradient(170deg, rgba(42, 30, 80, 0.94), rgba(11, 8, 28, 0.96) 60%);
+  background: linear-gradient(170deg, rgba(30, 20, 64, 0.82), rgba(8, 6, 22, 0.9) 60%);
   border: 2px solid var(--ink);
   box-shadow: 3px 0 0 rgba(255, 45, 141, 0.55), -3px 0 0 rgba(25, 211, 255, 0.55), 0 10px 0 -4px var(--ink);
 }
@@ -281,22 +237,19 @@
 /* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .sv *, .sv *::before, .sv *::after { animation: none !important; }
-  .sv-ghost, .sv-speed, .sv-fig-echo { display: none; }
+  .sv-speed, .sv-fig-echo { display: none; }
+  .sv-glitch-on .sv-plates, .sv-glitch-on .sv-screen { animation: none; }
 }
 
 /* ---------- Mobile ---------- */
 @media (max-width: 760px) {
-  .sv-pin { padding: 44px 14px 0; }
+  .sv-pin { padding: 56px 14px 0; }
   .sv-scene-cover .sv-pin { padding-top: 12px; }
+  .sv-caption { transform: rotate(-0.6deg); }
   .sv-scene-head { max-width: calc(100vw - 28px); }
   .sv-caption { max-width: 100%; font-size: 14px; padding: 5px 10px 6px; }
   .sv-cmyk-k { -webkit-text-stroke: 1.5px var(--ink); text-shadow: 4px 4px 0 var(--ink); }
   .sv-cmyk-c { transform: translate(-3px, -2px); } .sv-cmyk-m { transform: translate(3px, 2px); }
-  .sv-layer-clouds { height: 18vh; top: 6vh; }
-  .sv-layer-far { height: 40vh; bottom: 18vh; left: -24vh; }
-  .sv-layer-mid { height: 34vh; bottom: 8vh; }
-  .sv-layer-near { height: 22vh; bottom: 0; }
-  .sv-haze-far { bottom: 18vh; height: 14vh; } .sv-haze-mid { bottom: 8vh; height: 14vh; }
   .sv-speed-svg polygon:nth-child(n + 5) { display: none; }
   .sv-nav { right: 14px; top: 12px; gap: 12px; }
   .sv-nav a { font-size: 12px; }
@@ -343,5 +296,4 @@
   .sv-landing-title { font-size: 13vw; }
   .sv-btn { font-size: 22px; padding: 8px 20px; }
   .sv-contact a { font-size: 12px; }
-  .sv-union { height: 120px; }
 }

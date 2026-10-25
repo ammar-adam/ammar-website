@@ -8,7 +8,6 @@ import { loungeRoomContent } from "@/data/loungeRoom";
 import { siteConfig } from "@/data/site";
 import { cutState, type SectionId } from "./geometry";
 import { Burst, Caption, Cmyk, Cut, Onoma, useMobile, useStep } from "./Comic";
-import { UnionFacade } from "./Skyline";
 
 /* ------------------------------------------------------------------ */
 /* Scene shell: one beat of the timeline, cut in and out with hard pops */
@@ -482,7 +481,6 @@ export function Landing() {
         </ul>
         <p className="sv-colophon">Drawn in Toronto. No Spider-Men were harmed.</p>
       </div>
-      <UnionFacade />
       {thwip && <Thwip to={thwip} />}
     </Scene>
   );
@@ -494,7 +492,7 @@ function Thwip({ to }: { to: { x: number; y: number } }) {
   const vh = typeof window !== "undefined" ? window.innerHeight : 900;
   const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
   const hx = vw * 0.22 + (mobile ? 8 : 14);
-  const hy = vh - (mobile ? 120 : 200) + (mobile ? 13 : 22) - (mobile ? 0.11 : 0.16) * vh;
+  const hy = vh * (mobile ? 0.78 : 0.72) - (mobile ? 0.11 : 0.16) * vh;
   return (
     <div className="sv-thwip" aria-hidden="true">
       <svg className="sv-thwip-svg">
