@@ -2,11 +2,11 @@
 
 import { useEffect, useRef, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform, type MotionValue } from "framer-motion";
-import { FarLayer, MidLayer, NearLayer } from "./Skyline";
-import { Swinger } from "./Swinger";
-import { Cover, Origins, Roles, Projects, Photos, OffClock, Landing, YVh } from "./Scenes";
+import { CloudLayer, FarLayer, FarSil, MidLayer, NearLayer, NearSil, SkyDefs } from "./Skyline";
+import { Swinger } from "./Figure";
+import { Cover, Origins, Roles, Spotlight, Projects, Photos, OffClock, Landing, YVh } from "./Scenes";
 import { BEATS, SCROLL_VH, STARTS, TOTAL_VH, swingState } from "./geometry";
-import { f } from "./Comic";
+import { useMobile } from "./Comic";
 import "./sv.css";
 
 const subscribeResize = (cb: () => void) => {
@@ -14,6 +14,7 @@ const subscribeResize = (cb: () => void) => {
   return () => window.removeEventListener("resize", cb);
 };
 const readVh = () => window.innerHeight || 900;
+const readVw = () => window.innerWidth || 1440;
 
 const NAV = [
   { href: "#experience", label: "Work" },
@@ -22,10 +23,14 @@ const NAV = [
   { href: "#resume", label: "Contact" },
 ];
 
+const SPOT = BEATS.findIndex((b) => b.id === "spotlight");
+
 export function SpiderVerse() {
   const reduce = useReducedMotion();
   const vh = useSyncExternalStore(subscribeResize, readVh, () => 900);
+  const vw = useSyncExternalStore(subscribeResize, readVw, () => 1440);
   const mounted = useSyncExternalStore(subscribeResize, () => true, () => false);
+  const mobile = useMobile();
 
   /* Plain scroll listener; the whole film is a function of this one number. */
   const scrollY = useMotionValue(0);
@@ -36,74 +41,77 @@ export function SpiderVerse() {
     return () => window.removeEventListener("scroll", on);
   }, [scrollY]);
 
-  /* scroll position in viewport heights */
   const yVh = useTransform(scrollY, (y) => (y / vh) * 100);
   const yVhClamped = useTransform(yVh, (v) => Math.max(0, v));
   const state = useTransform(yVh, (v) => swingState(v));
   const progress = useTransform(yVh, (v) => Math.min(1, Math.max(0, v / SCROLL_VH)));
 
-  /* camera: travel pans the city, intensity dips and leans it */
+  /* camera: travel pans the city (fast in swings, a slow dolly in dwells); each swing has its own move */
   const k = reduce ? 0 : 1;
+  const cloudX = useTransform(state, (s) => `${-s.travel * 4 * k}vw`);
   const farX = useTransform(state, (s) => `${-s.travel * 9 * k}vw`);
   const midX = useTransform(state, (s) => `${-s.travel * 22 * k}vw`);
   const nearX = useTransform(state, (s) => `${-s.travel * 48 * k}vw`);
-  const dipY = useTransform(state, (s) => `${-s.intensity * 9 * k}vh`);
-  const lean = useTransform(state, (s) => (s.index < 0 ? 0 : -Math.sin(s.phase * Math.PI * 2) * 3.5 * k));
+  const dipY = useTransform(state, (s) => {
+    if (s.index < 0) return "0vh";
+    if (s.kind === "freefall") return `${-16 * s.phase * k}vh`;
+    if (s.kind === "lateral" || s.kind === "run" || s.kind === "whip") return "0vh";
+    return `${-9 * s.intensity * k}vh`;
+  });
+  const lean = useTransform(state, (s) => {
+    if (s.index < 0) return 0;
+    if (s.kind === "low") return -6 * Math.sin(s.phase * Math.PI) * k;
+    if (s.kind === "freefall") return 12 * s.phase * k;
+    if (s.kind === "landing") return -3.5 * Math.sin(s.phase * Math.PI * 2) * k;
+    return 0;
+  });
   const night = useTransform(yVh, [0, TOTAL_VH - 100], [0, 1]);
-  const speed = useTransform(state, (s) => Math.max(0, s.intensity - 0.35) * 1.4 * k);
-  const speedScale = useTransform(state, (s) => 1 + Math.round(s.phase * 8) * 0.05);
-  const sunOp = useTransform(night, [0, 0.5], [1, 0]);
-  const moonOp = useTransform(night, [0.4, 0.8], [0, 1]);
   /* cold open: the first stretch of scroll brings the lights up */
-  const dark = useTransform(yVh, [0, 30], [0.55, 0]);
+  const dark = useTransform(yVh, [0, 30], [0.5, 0]);
   /* depth of field: out-of-focus layers misregister more while the camera moves */
-  const dofFar = useTransform(state, (s) => 6 + s.intensity * 5);
-  const dofNear = useTransform(state, (s) => 3 + s.intensity * 7);
+  const dofFar = useTransform(state, (s) => 5 + s.intensity * 4);
+  const dofNear = useTransform(state, (s) => 4 + s.intensity * 6);
+  /* the big one: dim the city to a spotlight */
+  const dim = useTransform(state, (s) => {
+    if (s.beat !== SPOT) return 0;
+    if (s.index >= 0) return Math.max(0, (s.phase - 0.8) / 0.2) * 0.75;
+    return s.p > 0.9 ? 0.75 * (1 - (s.p - 0.9) / 0.1) : 0.75;
+  });
 
-  /* Glitch frames and landing bursts are toggled on the DOM directly: no React state
-     in a motion-value callback, so scroll never triggers a render. */
+  /* Glitch frames at the cut are toggled on the DOM directly: no React state in a motion-value callback. */
   const mainRef = useRef<HTMLElement>(null);
-  const landRef = useRef<HTMLDivElement>(null);
   useMotionValueEvent(state, "change", (s) => {
-    const g = s.index >= 0 && s.phase > 0.44 && s.phase < 0.56 && !reduce;
+    const g = s.index >= 0 && s.phase > 0.88 && s.phase < 0.96 && !reduce;
     mainRef.current?.classList.toggle("sv-glitch-on", g);
-    const l = s.index >= 0 && s.phase > 0.9 ? s.index : -1;
-    const el = landRef.current;
-    if (el && el.dataset.on !== String(l)) {
-      el.dataset.on = String(l);
-      const word = el.querySelector(".sv-land-word");
-      if (word) word.textContent = LAND_WORDS[(l + 6) % 6];
-    }
   });
 
   return (
     <main ref={mainRef} className="sv" style={{ height: `${TOTAL_VH}vh` }}>
+      <SkyDefs />
       {/* The city is decorative and scroll-driven; render it after mount so SSR markup stays stable. */}
       {mounted && (
         <div className="sv-stage" aria-hidden="true">
           <div className="sv-sky" />
           <motion.div className="sv-sky sv-sky-night" style={{ opacity: night }} />
-          <motion.div className="sv-sun" style={{ opacity: sunOp }} />
-          <motion.div className="sv-moon" style={{ opacity: moonOp }} />
           <div className="sv-glow" />
           <motion.div className="sv-camera" style={{ y: dipY, rotate: lean }}>
-            <Layer x={farX} className="sv-layer-far" copies={2} dof={dofFar}>
+            <Layer x={cloudX} className="sv-layer-clouds" copies={2}>
+              <CloudLayer />
+            </Layer>
+            <Layer x={farX} className="sv-layer-far" copies={2} dof={dofFar} sil={<FarSil />}>
               <FarLayer />
             </Layer>
+            <div className="sv-haze sv-haze-far" />
             <Layer x={midX} className="sv-layer-mid" copies={3}>
               <MidLayer />
             </Layer>
-            <Layer x={nearX} className="sv-layer-near" copies={4} dof={dofNear}>
+            <div className="sv-haze sv-haze-mid" />
+            <Layer x={nearX} className="sv-layer-near" copies={4} dof={dofNear} sil={<NearSil />}>
               <NearLayer />
             </Layer>
           </motion.div>
-          <motion.div className="sv-speed" style={{ opacity: speed, scale: speedScale }}>
-            <SpeedLines />
-          </motion.div>
           <div className="sv-speckle" />
           <motion.div className="sv-dark" style={{ opacity: dark }} />
-          <div className="sv-rgb sv-rgb-c" />
-          <div className="sv-rgb sv-rgb-m" />
         </div>
       )}
 
@@ -113,19 +121,16 @@ export function SpiderVerse() {
 
       <YVh.Provider value={yVhClamped}>
         <div className="sv-screen">
+          <motion.div className="sv-dim" style={{ opacity: dim }} aria-hidden="true" />
           <Cover />
           <Origins />
           <Roles />
+          <Spotlight />
           <Projects />
           <Photos />
           <OffClock />
           <Landing />
-          {mounted && (
-            <div className="sv-fx" aria-hidden="true">
-              <Swinger state={state} />
-              <LandingBurst ref={landRef} />
-            </div>
-          )}
+          {mounted && <Swinger state={state} vw={vw} vh={vh} mobile={mobile} />}
           <nav className="sv-nav" aria-label="Jump to">
             {NAV.map((n) => (
               <a key={n.href} href={n.href}>
@@ -149,78 +154,34 @@ const ANCHOR: Partial<Record<(typeof BEATS)[number]["id"], string>> = {
 };
 
 /**
- * A parallax layer. With `dof`, two ghost copies tinted cyan and magenta sit behind the
- * real one, offset by the current misregistration: the film's fake depth of field.
+ * A parallax layer, repeated `copies` times. With `dof` and `sil`, two silhouette copies
+ * (cyan behind-left, magenta behind-right) sit under the real drawing, offset by the
+ * current misregistration, so only a sliver of fringe shows at the edges: the film's
+ * fake depth of field.
  */
-function Layer({ x, className, copies, dof, children }: { x: MotionValue<string>; className: string; copies: number; dof?: MotionValue<number>; children: React.ReactNode }) {
+function Layer({ x, className, copies, dof, sil, children }: { x: MotionValue<string>; className: string; copies: number; dof?: MotionValue<number>; sil?: React.ReactNode; children: React.ReactNode }) {
   const zero = useMotionValue(0);
   const left = useTransform(dof ?? zero, (v) => -v);
   const right = useTransform(dof ?? zero, (v) => v);
-  const row = Array.from({ length: copies }).map((_, i) => (
-    <div key={i} className="sv-layer-copy">
-      {children}
-    </div>
-  ));
+  const row = (node: React.ReactNode) =>
+    Array.from({ length: copies }).map((_, i) => (
+      <div key={i} className="sv-layer-copy">
+        {node}
+      </div>
+    ));
   return (
     <motion.div className={`sv-layer ${className}`} style={{ x }}>
-      {dof && (
+      {dof && sil && (
         <>
           <motion.div className="sv-layer-row sv-ghost sv-ghost-c" style={{ x: left }}>
-            {row}
+            {row(sil)}
           </motion.div>
           <motion.div className="sv-layer-row sv-ghost sv-ghost-m" style={{ x: right }}>
-            {row}
+            {row(sil)}
           </motion.div>
         </>
       )}
-      <div className="sv-layer-row">{row}</div>
+      <div className="sv-layer-row sv-layer-real">{row(children)}</div>
     </motion.div>
-  );
-}
-
-function SpeedLines() {
-  const lines = [];
-  for (let i = 0; i < 46; i++) {
-    const a = (i / 46) * Math.PI * 2;
-    const r1 = 18 + (i % 4) * 8;
-    const r2 = 70 + (i % 3) * 10;
-    lines.push(<line key={i} x1={f(50 + Math.cos(a) * r1)} y1={f(50 + Math.sin(a) * r1)} x2={f(50 + Math.cos(a) * r2)} y2={f(50 + Math.sin(a) * r2)} />);
-  }
-  return (
-    <svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice" className="sv-speed-svg">
-      <g stroke="var(--paper)" strokeWidth={0.5} strokeLinecap="round">
-        {lines}
-      </g>
-    </svg>
-  );
-}
-
-const LAND_WORDS = ["WHUMP", "KA-CHUNK", "THUD", "TAK", "SKRRT", "WHUMP"];
-
-function LandingBurst({ ref }: { ref: React.RefObject<HTMLDivElement | null> }) {
-  return (
-    <div className="sv-land" ref={ref} data-on="-1">
-      <svg viewBox="0 0 200 200" className="sv-land-svg">
-        <polygon
-          points={Array.from({ length: 28 })
-            .map((_, i) => {
-              const a = (i / 28) * Math.PI * 2;
-              const r = i % 2 ? 96 : 50 + (i % 3) * 10;
-              return `${f(100 + Math.cos(a) * r)},${f(100 + Math.sin(a) * r)}`;
-            })
-            .join(" ")}
-          fill="var(--paper)"
-          stroke="var(--ink)"
-          strokeWidth={5}
-        />
-        <g fill="var(--ink)">
-          {Array.from({ length: 16 }).map((_, i) => {
-            const a = (i / 16) * Math.PI * 2 + 0.2;
-            return <circle key={i} cx={f(100 + Math.cos(a) * 110)} cy={f(100 + Math.sin(a) * 110)} r={3 + (i % 3) * 2.5} />;
-          })}
-        </g>
-      </svg>
-      <span className="sv-land-word">WHUMP</span>
-    </div>
   );
 }
