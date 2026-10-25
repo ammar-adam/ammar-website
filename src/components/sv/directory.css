@@ -157,3 +157,5 @@
   .terminal-directory .td-tabs button { min-height: 44px; }
   .terminal-directory .td-footer { padding-top: 10px; padding-bottom: 10px; }
 }
+
+.terminal-directory .td-detail { color: #aeb8c1; margin-top: 9px; }

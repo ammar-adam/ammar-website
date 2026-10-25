@@ -75,8 +75,8 @@ export function TerminalDirectory({ open, onClose }: { open: boolean; onClose: (
     >
       <header className="td-header">
         <div>
-          <p className="td-eyebrow">AFA / Terminal information</p>
-          <h2 id={`${id}-title`}>Directory</h2>
+          <p className="td-eyebrow">AMMAR ADAM / PORTFOLIO</p>
+          <h2 id={`${id}-title`}>All the work.</h2>
           <p id={`${id}-intro`} className="td-intro">The work, the projects, and a way to say hello.</p>
         </div>
         <button type="button" className="td-close" onClick={onClose}>
@@ -112,7 +112,7 @@ export function TerminalDirectory({ open, onClose }: { open: boolean; onClose: (
           tabIndex={0}
           hidden={activeTab !== "experience"}
         >
-          <p className="td-section-label">Arrivals <span>Where I&apos;ve worked</span></p>
+          <p className="td-section-label">Experience <span>Where I&apos;ve worked</span></p>
           <div className="td-grid">
             {arrivals.map((arrival, index) => (
               <article className="td-card" key={arrival.slug}>
@@ -120,6 +120,7 @@ export function TerminalDirectory({ open, onClose }: { open: boolean; onClose: (
                 <h3>{arrival.from}</h3>
                 <p className="td-role">{arrival.detailTitle ?? arrival.title}</p>
                 <p className="td-description">{arrival.impact}</p>
+                <p className="td-description td-detail">{arrival.details}</p>
                 <div className="td-links">
                   {arrival.fromUrl && <a href={arrival.fromUrl} target="_blank" rel="noreferrer">Website <span aria-hidden="true">↗</span><span className="td-sr-only"> for {arrival.from} (opens in a new tab)</span></a>}
                   {arrival.links?.filter((link) => link.url !== arrival.fromUrl).map((link) => (
@@ -139,7 +140,7 @@ export function TerminalDirectory({ open, onClose }: { open: boolean; onClose: (
           tabIndex={0}
           hidden={activeTab !== "projects"}
         >
-          <p className="td-section-label">Departures <span>Things I&apos;ve built</span></p>
+          <p className="td-section-label">Projects <span>Things I&apos;ve built</span></p>
           <div className="td-grid">
             {projects.map((project) => (
               <article className="td-card" key={project.slug}>
@@ -165,11 +166,11 @@ export function TerminalDirectory({ open, onClose }: { open: boolean; onClose: (
           tabIndex={0}
           hidden={activeTab !== "contact"}
         >
-          <p className="td-section-label">Connections <span>Let&apos;s talk</span></p>
+          <p className="td-section-label">Contact <span>Let&apos;s talk</span></p>
           <div className="td-contact-grid">
             <div className="td-resume">
-              <span className="td-eyebrow">Passenger / Ammar Adam</span>
-              <h3>The full itinerary.</h3>
+              <span className="td-eyebrow">AMMAR ADAM</span>
+              <h3>The one-page version.</h3>
               <p>CS &amp; Finance at the University of Waterloo.</p>
               <a href="/Ammar_Adam.pdf" target="_blank" rel="noreferrer">Open my resume <span aria-hidden="true">↗</span><span className="td-sr-only"> (PDF, opens in a new tab)</span></a>
             </div>

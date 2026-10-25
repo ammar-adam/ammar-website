@@ -1,11 +1,13 @@
 "use client";
 
 import "./sv.css";
+import "./story-v7.css";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "framer-motion";
 import { Film } from "./Film";
 import { JourneyScene } from "./Journey";
 import { TerminalDirectory } from "./TerminalDirectory";
+import { PhotoGallery } from "./PhotoGallery";
 import { CHAPTERS, CUTS } from "./timeline";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
@@ -27,6 +29,9 @@ export function SpiderVerse() {
   const readChapter = useCallback(() => CUTS.filter((cut) => t.get() >= cut).length, [t]);
   const chapter = useSyncExternalStore(subscribeTimeline, readChapter, () => 0);
   const [directory, setDirectory] = useState(false);
+  const [gallery, setGallery] = useState<{open:boolean;index:number}>({open:false,index:0});
+  const openGallery = useCallback((index=0) => setGallery({open:true,index}), []);
+  const closeGallery = useCallback(() => setGallery(value=>({...value,open:false})), []);
   const closeDirectory = useCallback(() => setDirectory(false), []);
   const progress = useTransform(t, [0, 1], [0, 1]);
 
@@ -39,7 +44,7 @@ export function SpiderVerse() {
   }, [reduced]);
 
   useEffect(() => {
-    const aliases: Record<string, string> = { checkin: "experience", security: "projects", passport: "origins", photos: "people", concourse: "people", boarding: "contact", resume: "contact" };
+    const aliases: Record<string, string> = { checkin: "experience", security: "projects", passport: "top", origins: "top", photos: "people", concourse: "people", boarding: "contact", resume: "contact" };
     let frame = 0;
     const navigate = () => {
       const hash = window.location.hash.slice(1);
@@ -58,23 +63,24 @@ export function SpiderVerse() {
         <div className="sv-stage">
           <Film t={t} fx={fx} />
           <div className="sv-vignette" aria-hidden="true" />
-          <JourneyScene key={chapter} chapter={chapter} t={t} reduced={!!reduced} onDirectory={() => setDirectory(true)} onEnter={() => jump(1)} />
+          <JourneyScene key={chapter} chapter={chapter} t={t} reduced={!!reduced} onDirectory={() => setDirectory(true)} onGallery={openGallery} onEnter={() => jump(1)} />
           {!reduced && <ArchitectureWipe t={t} />}
           <header className="sv-header">
-            <button className="sv-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span className="sv-brand-symbol" aria-hidden="true">A<span>/</span>A</span><span>AMMAR ADAM<small>PERSONAL TERMINAL</small></span></button>
-            <div className="sv-header-right"><span className="sv-live"><i /> OPEN TO WHAT’S NEXT</span><button className="sv-directory-button" onClick={() => setDirectory(true)}>Directory <span aria-hidden="true">↗</span></button></div>
+            <button className="sv-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span className="sv-brand-symbol" aria-hidden="true">A<span>/</span>A</span><span>AMMAR ADAM<small>THE STORY SO FAR</small></span></button>
+            <div className="sv-header-right"><span className="sv-live"><i /> CS & FINANCE / WATERLOO</span><button className="sv-gallery-button" onClick={() => openGallery()}>Photos <span>25</span></button><button className="sv-directory-button" onClick={() => setDirectory(true)}>All work <span aria-hidden="true">↗</span></button></div>
           </header>
           <footer className="sv-hud">
-            <div className="sv-location"><span className="sv-location-number">0{chapter + 1}</span><span>{CHAPTERS[chapter].label}<small>AFA INTERNATIONAL</small></span></div>
+            <div className="sv-location"><span className="sv-location-number">0{chapter + 1}</span><span>{CHAPTERS[chapter].label}<small>AMMAR ADAM</small></span></div>
             <nav className="sv-chapters" aria-label="Story chapters">
               {CHAPTERS.map((c, i) => <button key={c.id} onClick={() => jump(i)} aria-label={`Go to ${c.label}`} aria-current={chapter === i ? "step" : undefined}><span className="sv-chapter-dot" /><span className="sv-chapter-label">{c.short}</span></button>)}
             </nav>
-            <span className="sv-scroll-note">{chapter === 5 ? <a href="/credits">Visual credits ↗</a> : <>SCROLL TO EXPLORE <span aria-hidden="true">↓</span></>}</span>
+            <span className="sv-scroll-note">{chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>SCROLL TO EXPLORE <span aria-hidden="true">↓</span></>}</span>
           </footer>
           <div className="sv-progress" aria-hidden="true"><motion.div style={{ scaleX: progress }} /></div>
         </div>
       </div>
       <TerminalDirectory open={directory} onClose={closeDirectory} />
+      <PhotoGallery open={gallery.open} initialIndex={gallery.index} onClose={closeGallery} />
     </main>
   );
 }

@@ -4,17 +4,16 @@ import { useState } from "react";
 import { useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 
 export const SEG = {
-  hero: [0, 0.13], gates: [0.13, 0.26], checkin: [0.26, 0.48],
-  security: [0.48, 0.73], gate: [0.73, 0.88], boarding: [0.88, 1],
+  hero: [0, 0.15], checkin: [0.15, 0.42], security: [0.42, 0.70],
+  gate: [0.70, 0.90], boarding: [0.90, 1],
 } as const;
-export const CUTS = [0.13, 0.26, 0.48, 0.73, 0.88];
+export const CUTS = [0.15, 0.42, 0.70, 0.90];
 export const CHAPTERS = [
-  { id: "top", label: "The arrival", short: "Arrival", at: 0 },
-  { id: "origins", label: "Between cities", short: "Origins", at: 0.16 },
-  { id: "experience", label: "Connections", short: "Experience", at: 0.285 },
-  { id: "projects", label: "In the carry-on", short: "Projects", at: 0.505 },
-  { id: "people", label: "A little layover", short: "Life", at: 0.755 },
-  { id: "contact", label: "The next departure", short: "Contact", at: 0.94 },
+  { id: "top", label: "The introduction", short: "Intro", at: 0 },
+  { id: "experience", label: "What I do", short: "Experience", at: 0.17 },
+  { id: "projects", label: "Things I’ve built", short: "Projects", at: 0.445 },
+  { id: "people", label: "Away from the laptop", short: "Life", at: 0.74 },
+  { id: "contact", label: "The next departure", short: "Contact", at: 0.96 },
 ];
 
 export function useSceneProgress(t: MotionValue<number>, chapter: number) {

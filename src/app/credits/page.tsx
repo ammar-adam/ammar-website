@@ -27,9 +27,9 @@ export default function CreditsPage() {
           ))}
         </ul>
         <section aria-labelledby="character-credit" style={{ marginTop: 40, borderTop: "1px solid #34404b", paddingTop: 30 }}>
-          <h2 id="character-credit" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Character artwork</h2>
+          <h2 id="character-credit" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Character & prop artwork</h2>
           <p style={{ margin: 0, color: "#cdd2d4", fontSize: 14 }}>
-            The traveler character is an original AI-generated illustration created for this site.
+            The traveler and personal objects were illustrated for this site with AI image generation. The football shirt and Paddington illustration reference Ammar’s favourites. The personal gallery uses Ammar’s own photographs.
           </p>
         </section>
         <p style={{ marginTop: 32, fontSize: 14, color: "#aeb8c1" }}>

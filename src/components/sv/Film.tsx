@@ -4,8 +4,8 @@ import { useEffect, useRef } from "react";
 import type { MotionValue } from "framer-motion";
 import { PLATE_NAMES, SCENES, type Camera, type Scene } from "./plates";
 
-/* The photographs supply real airport architecture. A depth-aware camera,
-   restrained print registration and ink/amber grade turn them into shots.
+/* Real architecture supplies the perspective; painted value planes, broken
+   contours and off-focus colour registration supply the illustrated light.
    Rendering is driven by scroll, image loads and resize, never an idle loop. */
 const VS = `#version 300 es
 in vec2 aPos; out vec2 vUv;
@@ -50,50 +50,73 @@ void main(){
   uv = clamp(uv, vec2(0.001), vec2(0.999));
   vec3 source = texture(uTex, uv).rgb;
   float d = texture(uDep, uv).r;
-  vec3 c = source;
+  vec2 texel = 1.7 / uRes;
+  vec3 left = texture(uTex, uv - vec2(texel.x, 0)).rgb;
+  vec3 right = texture(uTex, uv + vec2(texel.x, 0)).rgb;
+  vec3 down = texture(uTex, uv - vec2(0, texel.y)).rgb;
+  vec3 up = texture(uTex, uv + vec2(0, texel.y)).rgb;
+  vec2 edge = vec2(lum(right) - lum(left), lum(up) - lum(down));
+  float edgeSize = length(edge);
+  // Remove camera micro-detail within a plane, without softening silhouettes.
+  vec3 c = mix(source, (source * 2.0 + left + right + up + down) / 6.0,
+    (1.0 - smoothstep(0.035, 0.17, edgeSize)) * 0.65);
   float L = lum(c);
-  // Quantise light, not every RGB channel: retain the photographic palette.
-  float q = L * uBands;
-  float painted = (floor(q) + smoothstep(0.32, 0.68, fract(q))) / uBands;
-  c *= (mix(L, painted, uPost * mix(0.28, 0.65, d)) + 0.018) / (L + 0.018);
-  float haze = (1.0 - smoothstep(0.12, 0.58, d)) * uHaze;
+  // Long, broken paint marks disturb the contour of the light, not the camera.
+  // These coordinates travel with the plate so the surface never boils at rest.
+  vec2 paper = uv * uRes;
+  vec2 brushUv = mat2(0.94, -0.342, 0.342, 0.94) * paper;
+  float brush = noise(brushUv * vec2(0.013, 0.16));
+  float pigment = noise(paper * 0.052) * 0.6 + brush * 0.4;
+  float q = clamp(L + (pigment - 0.5) * uPaint * 0.42, 0.0, 1.0) * uBands;
+  float painted = (floor(q) + smoothstep(0.43, 0.57, fract(q))) / uBands;
+  float value = mix(L, painted, uPost);
+  c *= (value + 0.025) / (L + 0.025);
+  L = lum(c);
+  c = mix(vec3(L), c, 1.22);
+  // Ink-blue shadow shapes oppose coral / amber light. The light is coloured,
+  // rather than a translucent tint spread over the entire photograph.
+  float shadow = 1.0 - smoothstep(0.10, 0.48, L);
+  vec3 cool = uShadow * (0.22 + L * 2.7);
+  c = mix(c, cool, shadow * 0.78);
+  float warm = smoothstep(0.30, 0.86, L);
+  vec3 key = mix(vec3(0.94, 0.29, 0.18), uHigh, smoothstep(0.22, 0.76, L));
+  // Fluorescent greens in the source become deliberately painted warm light.
+  float fluorescent = smoothstep(0.015, 0.15, source.g - source.b)
+    * smoothstep(0.02, 0.11, source.g - source.r) * smoothstep(0.12, 0.34, L);
+  warm = max(warm, fluorescent * 0.9);
+  c = mix(c, key * (0.37 + L * 0.73), warm * 0.56);
+  float haze = (1.0 - smoothstep(0.10, 0.58, d)) * uHaze;
   c = mix(c, uHazeCol, haze);
-  c = max(vec3(0.0), (c - 0.045) * 1.12);
-  L = lum(c);
-  c = mix(vec3(L), c, 0.94);
-  float shadow = 1.0 - smoothstep(0.055, 0.43, L);
-  c = mix(c, uShadow * (0.34 + L * 2.0), shadow * 0.36);
-  c *= mix(vec3(1.0), uHigh, smoothstep(0.32, 0.9, L));
-  c *= 1.0 - uNight * 0.3;
-  L = lum(c);
-  vec2 texel = 1.5 / uRes;
-  vec2 edge = vec2(
-    texture(uDep, uv + vec2(texel.x, 0)).r - texture(uDep, uv - vec2(texel.x, 0)).r,
-    texture(uDep, uv + vec2(0, texel.y)).r - texture(uDep, uv - vec2(0, texel.y)).r
-  );
-  // Registration slips only away from the focal plane and at depth edges.
+  c *= 1.0 - uNight * 0.14;
+  // A rough ink contour and one lit rim: no uniform cartoon outline.
+  float broken = smoothstep(0.20, 0.72, brush);
+  float contour = smoothstep(0.055, 0.24, edgeSize) * mix(0.26, 0.72, broken);
+  c = mix(c, uShadow * 0.18, contour * 0.64);
+  float rim = smoothstep(0.09, 0.28, max(0.0, edge.x - edge.y * 0.65));
+  c += vec3(0.05, 0.34, 0.39) * rim * broken * (1.0 - warm) * 0.52;
+  // The lens registers cyan / red at off-focus boundaries only, never a blur.
   float coc = max(0.0, abs(d - uFocusD) - 0.12) * uDofAmt;
   vec2 direction = normalize(uv - uFocusUv + vec2(0.0001));
-  vec2 off = direction * coc / uRes;
-  float split = smoothstep(0.12, 1.4, coc) * (0.2 + clamp(length(edge) * 5.0, 0.0, 0.8));
-  split *= 1.0 - smoothstep(0.65, 0.95, L);
-  c.r += (texture(uTex, uv + off).r - source.r) * split * 0.8;
-  c.b += (texture(uTex, uv - off).b - source.b) * split * 0.8;
-  // Halftone lives in shadow transitions, never as an all-over comic overlay.
-  float cell = max(2.2, 4.0 * uRes.y / 1080.0);
-  vec2 grid = mat2(0.7071, -0.7071, 0.7071, 0.7071) * px / cell;
+  vec2 off = direction * coc * 1.45 / uRes;
+  float split = smoothstep(0.12, 1.65, coc) * smoothstep(0.025, 0.16, edgeSize);
+  c.r += (texture(uTex, uv + off).r - source.r) * split * 1.1;
+  c.gb += (texture(uTex, uv - off).gb - source.gb) * split * 0.85;
+  // Print texture is confined to broken patches at shadow transitions.
+  // Deep ink, light areas and the atmospheric distance remain clean.
+  float cell = max(3.0, 5.4 * uRes.y / 1080.0);
+  vec2 grid = mat2(0.7071, -0.7071, 0.7071, 0.7071) * paper / cell;
   float dots = length(fract(grid) - 0.5) * cell;
-  float radius = cell * 0.44 * sqrt(max(0.0, 1.0 - L));
-  float mask = smoothstep(0.045, 0.13, L) * (1.0 - smoothstep(0.29, 0.44, L));
-  float inkDot = 1.0 - smoothstep(radius - 0.45, radius + 0.45, dots);
-  c *= 1.0 - inkDot * mask * (0.22 + d * 0.16);
-  float inkEdge = smoothstep(0.11, 0.3, length(edge)) * smoothstep(0.3, 0.65, d);
-  c = mix(c, vec3(0.012, 0.029, 0.048), inkEdge * 0.4);
-  float grain = noise(px * 0.68) * 0.65 + noise(px * 0.12) * 0.35 - 0.5;
-  c *= 1.0 + grain * uPaint * 2.0;
+  float radius = cell * mix(0.34, 0.17, smoothstep(0.14, 0.42, L));
+  float mask = smoothstep(0.10, 0.19, L) * (1.0 - smoothstep(0.32, 0.43, L));
+  mask *= smoothstep(0.24, 0.58, d) * smoothstep(0.35, 0.62, pigment);
+  float inkDot = 1.0 - smoothstep(radius - 0.4, radius + 0.4, dots);
+  c = mix(c, uShadow * 0.25, inkDot * mask * 0.52);
+  float hatch = 1.0 - smoothstep(0.08, 0.22, abs(fract(brushUv.y / 5.5) - 0.5));
+  c += vec3(0.25, 0.34, 0.28) * hatch * mask * broken * 0.11;
+  c *= 1.0 + (pigment - 0.5) * uPaint * 0.62;
   vec2 vignette = vUv - 0.5;
-  c *= 1.0 - dot(vignette, vignette) * 0.48;
-  o = vec4(max(c, vec3(0.0)) * (1.0 - uDark), 1.0);
+  c *= 1.0 - dot(vignette, vignette) * 0.25;
+  o = vec4(clamp(c, 0.0, 1.0) * (1.0 - uDark), 1.0);
 }`;
 
 type PlateTexture = { color: WebGLTexture; depth: WebGLTexture; width: number; height: number; ready: boolean; loading: boolean };
@@ -134,7 +157,7 @@ export function Film({ t, fx }: { t: MotionValue<number>; fx: MotionValue<number
       fallback.style.backgroundPosition = `${rest[0] * 100}% ${rest[1] * 100}%`;
       fallback.style.transformOrigin = `${camera.focusUv[0] * 100}% ${camera.focusUv[1] * 100}%`;
       fallback.style.transform = `translate3d(${-camera.pan[0] * 100}%, ${camera.pan[1] * 100}%, 0) scale(${camera.zoom * (1 + effect * 0.3)})`;
-      fallback.style.filter = `saturate(0.85) contrast(1.13) brightness(${1 - effect * 0.5})`;
+      fallback.style.filter = `saturate(1.35) contrast(1.2) brightness(${1.04 - effect * 0.5})`;
       root.dataset.scene = scene.id;
       if (renderer && !contextLost) renderer.draw(scene, camera, effect);
     };
