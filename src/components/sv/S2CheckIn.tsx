@@ -2,7 +2,6 @@
 
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { arrivals, type Arrival } from "@/data/arrivals";
-import { Counter } from "./art";
 import { SEG, useHoldDolly, useSeg, useVW } from "./timeline";
 import { LinkPill, BangAt } from "./ui";
 import { SegRoot } from "./SegRoot";
@@ -82,7 +81,6 @@ function Desk({ a, k, x, p }: { a: Arrival; k: number; x: number; p: MotionValue
         <span className="poster-spill" aria-hidden="true" />
       </div>
       <div className="counter">
-        <Counter className="counter-svg" />
         <motion.span className="tag" style={{ y: tagStep }}>{TAG[a.origin] ?? a.origin.slice(0, 3).toUpperCase()}</motion.span>
         <div className="vinyl">
           <p className="vinyl-role">{a.detailTitle ?? a.title}</p>

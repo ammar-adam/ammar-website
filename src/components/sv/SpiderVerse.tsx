@@ -79,7 +79,7 @@ function Caption({ t, par, line, mobile }: { t: MotionValue<number>; par: Motion
   const top = mobile && line.mobileTop ? "9vh" : line.y;
   const left = mobile ? (line.align === "center" ? "50%" : "5vw") : line.x;
   return (
-    <motion.p className={`cap ${line.align === "center" ? "cap-center" : ""}`} style={{ opacity: step, y, left, top }}>
+    <motion.p className={`cap ${line.align === "center" ? "cap-center" : ""} ${text.length < 30 ? "cap-hand" : ""}`} style={{ opacity: step, y, left, top }}>
       {text}
     </motion.p>
   );
@@ -135,6 +135,7 @@ function Nav({ t }: { t: MotionValue<number> }) {
           ))}
         </div>
       </nav>
+      <a className="credits-link" href="/credits">Plate credits</a>
       <div className="progress" aria-hidden="true">
         <motion.div className="progress-bar" style={{ width: w }} />
         {CUTS.map((c) => (

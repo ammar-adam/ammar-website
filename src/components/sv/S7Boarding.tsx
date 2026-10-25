@@ -93,7 +93,7 @@ export function S7Boarding({ t }: { t: MotionValue<number> }) {
             <span className="pass-crease" aria-hidden="true" />
           </div>
         </div>
-        <Hand className="hand" />
+        <Hand className="hand" rim="#19d9ff" />
       </motion.div>
 
       <motion.div className="sky-type" style={{ opacity: skyStep }}>

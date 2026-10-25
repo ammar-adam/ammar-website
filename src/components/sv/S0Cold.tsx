@@ -13,7 +13,7 @@ export function S0Cold({ t }: { t: MotionValue<number> }) {
   const seg = useSeg(t, SEG.cold);
   const { p } = seg;
   const scale = useTransform(p, [0, 1], [1, 1.16]);
-  const tagOp = useTransform(p, [0.0, 0.06], [0.34, 1]);
+  const tagOp = useTransform(p, [0.0, 0.06], [0.75, 1]);
   const tagStep = useTransform(tagOp, (v) => Math.round(v * 3) / 3);
   return (
     <SegRoot seg={seg} className="seg-cold">

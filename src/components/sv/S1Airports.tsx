@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { motion, useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 import { GateSign, Kid, Plane } from "./art";
-import { Apron } from "./world";
 import { SEG, useHoldDolly, useSeg, useStepped, useVW } from "./timeline";
 import { BangAt } from "./ui";
 import { SegRoot } from "./SegRoot";
@@ -53,7 +52,6 @@ export function S1Airports({ t }: { t: MotionValue<number> }) {
       <motion.div className="world ramp-world" style={{ scale: zoom }}>
 
         <motion.div className="layer mid" style={{ x: camX }}>
-          <Apron tone="night" />
           <motion.div className="flap-row" style={{ opacity: boardOp }}>
             <FlapRow idx={cityIdx} />
           </motion.div>
@@ -76,9 +74,11 @@ export function S1Airports({ t }: { t: MotionValue<number> }) {
       </motion.div>
 
       <motion.div className="kid-walk" style={{ x: kidX, opacity: kidOp }}>
-        <span className="kid-rim rim-c" aria-hidden="true"><Kid mono="#19d9ff" /></span>
-        <span className="kid-rim rim-a" aria-hidden="true"><Kid mono="#ffb64a" /></span>
-        <Kid className="kid-svg" />
+        <span className="kid-shadow" aria-hidden="true" />
+        <span className="kid-echo ke2" aria-hidden="true"><Kid mono="#0b0820" /></span>
+        <span className="kid-echo ke1" aria-hidden="true"><Kid mono="#0b0820" /></span>
+        <Kid className="kid-svg" rim="#ffb46a" />
+        <span className="kid-reflect" aria-hidden="true"><Kid mono="#2a1d4a" /></span>
       </motion.div>
       <BangAt t={t} at={0.128} hold={0.025} text="RRRMMMM" size={54} rotate={-6} color="#fff6ea" burst="#ff2e88" className="bang-roll sfx" />
     </SegRoot>

@@ -1,9 +1,7 @@
 "use client";
 
 import { motion, useTransform, type MotionValue } from "framer-motion";
-import { PlaneClimb } from "./art";
 import { SEG, useSeg } from "./timeline";
-import { Chroma } from "./ui";
 import { Painted } from "./world";
 import { SegRoot } from "./SegRoot";
 
@@ -21,14 +19,8 @@ const LINES = [
 export function S6Off({ t }: { t: MotionValue<number> }) {
   const seg = useSeg(t, SEG.off);
   const { p } = seg;
-  const planeY = useTransform(p, [0, 1], [40, -50]);
-  const planeX = useTransform(p, [0, 1], ["-4%", "6%"]);
-  const dof = useTransform(p, [0, 0.5, 1], [4, 1, 3]);
   return (
     <SegRoot seg={seg} className="seg-off">
-      <motion.div className="off-plane" style={{ x: planeX, y: planeY }}>
-        <Chroma amount={dof} render={(m) => <PlaneClimb id={m ? `oc-${m.slice(1)}` : "oc"} mono={m ?? "#1a1230"} />} />
-      </motion.div>
       <div className="off-band" aria-hidden="true" />
       <div className="off-copy">
         <span className="off-k">Off the clock</span>
