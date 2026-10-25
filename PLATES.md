@@ -1,13 +1,15 @@
 # Plates
 
-Photographic backgrounds for the Spider-Verse Toronto home page, processed in the browser by `src/components/sv/PrintStage.tsx`. All from Wikimedia Commons; each file below is the source, author and licence. Converted to WebP q78 at 1600px and 800px.
+Photographic backgrounds for the Spider-Verse Toronto home page. Each is colour-graded, posterised, halftoned and misregistered in real time by `src/components/sv/PrintStage.tsx`; a median-filtered "paint" bake and a hand-painted depth matte sit next to each one in `public/plates/`. The same credits are shown on the page (bottom-right while the plate is on screen) and at `/credits`.
 
-- `dusk-a`: Toronto at Dusk -a.jpg by Benson Kua from Toronto, Canada (CC BY-SA 2.0, https://creativecommons.org/licenses/by-sa/2.0), https://commons.wikimedia.org/wiki/File:Toronto_at_Dusk_-a.jpg
-- `dusk-snake`: Sunset Toronto Skyline Panorama Crop from Snake Island.jpg by Jchmrt (CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0), https://commons.wikimedia.org/wiki/File:Sunset_Toronto_Skyline_Panorama_Crop_from_Snake_Island.jpg
-- `bay-se`: Toronto at night looking south-east from Bay Street.JPG by MarcusObal (CC BY-SA 4.0, https://creativecommons.org/licenses/by-sa/4.0), https://commons.wikimedia.org/wiki/File:Toronto_at_night_looking_south-east_from_Bay_Street.JPG
-- `bay-south`: Bay Street looking south at night.JPG by MarcusObal (CC BY-SA 3.0, https://creativecommons.org/licenses/by-sa/3.0), https://commons.wikimedia.org/wiki/File:Bay_Street_looking_south_at_night.JPG
-- `night-pano`: Panorama of Toronto skyline, at night, 2023 05 30 (52939253199).jpg by Geo Swan from Toronto, Canada (CC0, http://creativecommons.org/publicdomain/zero/1.0/deed.en), https://commons.wikimedia.org/wiki/File:Panorama_of_Toronto_skyline,_at_night,_2023_05_30_(52939253199).jpg
-- `dundas`: Toronto- Yonge-Dundas Square.jpg by The City of Toronto / Jose San Juan (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Toronto-_Yonge-Dundas_Square.jpg
-- `gardiner`: Gardiner Expressway at night.jpg by Andrew Rivett from Toronto, Canada (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Gardiner_Expressway_at_night.jpg
-- `union-roof`: Rooftop view of Union Station, Toronto, at night.jpg by Duncan Rawlinson (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Rooftop_view_of_Union_Station,_Toronto,_at_night.jpg
-- `aerial-night`: Toronto at Night (22612550892).jpg by Kevin Cabral from Toronto, Canada (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Toronto_at_Night_(22612550892).jpg
+- `dusk-a`: Toronto at Dusk -a.jpg by Benson Kua from Toronto, Canada (CC BY-SA 2.0, https://creativecommons.org/licenses/by-sa/2.0), https://commons.wikimedia.org/wiki/File:Toronto_at_Dusk_-a.jpg, modified.
+- `gardiner`: Gardiner Expressway at night.jpg by Andrew Rivett from Toronto, Canada (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Gardiner_Expressway_at_night.jpg, modified.
+- `polson`: Polson Pier, Toronto (Unsplash).jpg by Alex Shutin fiveamstories (CC0, http://creativecommons.org/publicdomain/zero/1.0/deed.en), https://commons.wikimedia.org/wiki/File:Polson_Pier,_Toronto_(Unsplash).jpg, modified.
+- `night-unsplash`: Night in Toronto (Unsplash).jpg by Al x alx_andru (CC0, http://creativecommons.org/publicdomain/zero/1.0/deed.en), https://commons.wikimedia.org/wiki/File:Night_in_Toronto_(Unsplash).jpg, modified.
+- `dundas`: Toronto- Yonge-Dundas Square.jpg by The City of Toronto / Jose San Juan (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Toronto-_Yonge-Dundas_Square.jpg, modified.
+- `night-2025`: Toronto - Night 2025-06.jpg by Many pictures (CC BY 4.0, https://creativecommons.org/licenses/by/4.0), https://commons.wikimedia.org/wiki/File:Toronto_-_Night_2025-06.jpg, modified.
+- `by-night`: Toronto by night (39569597192).jpg by VV Nincic from Toronto, Canada (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Toronto_by_night_(39569597192).jpg, modified.
+- `gfx-pano`: Toronto - A cropped down night shot with my GFX 100RF.jpg by RC_Fotos (CC BY 4.0, https://creativecommons.org/licenses/by/4.0), https://commons.wikimedia.org/wiki/File:Toronto_-_A_cropped_down_night_shot_with_my_GFX_100RF.jpg, modified.
+- `aerial-night`: Toronto at Night (22612550892).jpg by Kevin Cabral from Toronto, Canada (CC BY 2.0, https://creativecommons.org/licenses/by/2.0), https://commons.wikimedia.org/wiki/File:Toronto_at_Night_(22612550892).jpg, modified.
+
+The cover plate (`dusk-a`) is CC BY-SA 2.0; processed renders of it are offered under the same licence.

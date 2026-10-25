@@ -157,8 +157,8 @@ export function figureAt(kind: SwingKind, t: number, mobile: boolean): FigureSta
   const s = stepOf(t);
   const none: FigureState = { pose: null, x: 50, y: 40, web: false, slack: false, flip: false, angle: 0, speed: 0 };
   /* the hand hangs below the CN Tower anchor (33vh desktop, 49vh mobile) */
-  const yTop = mobile ? 52 : 44;
-  const dip = mobile ? 12 : 18;
+  const yTop = mobile ? 24 : 22;
+  const dip = mobile ? 12 : 16;
 
   if (kind === "whip") return none;
 
@@ -172,14 +172,14 @@ export function figureAt(kind: SwingKind, t: number, mobile: boolean): FigureSta
 
   if (kind === "run") {
     const x = 18 + 64 * t;
-    const y = mobile ? 66 : 64;
+    const y = mobile ? 50 : 46;
     return { pose: s % 2 ? "runB" : "runA", x, y, web: false, slack: false, flip: false, angle: 0, speed: 0.6 };
   }
 
-  const flip = kind === "landing";
+  const flip = false;
   const span = mobile ? 50 : 44;
-  const x0 = flip ? 72 : 28;
-  const dir = flip ? -1 : 1;
+  const x0 = 28;
+  const dir = 1;
   const x = x0 + dir * span * t;
   const flat = kind === "lateral";
   const y = flat ? yTop + 6 : yTop + dip * Math.sin(Math.PI * t);

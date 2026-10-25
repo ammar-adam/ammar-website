@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useSyncExternalStore } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useMotionValue, useMotionValueEvent, useReducedMotion, useTransform } from "framer-motion";
 import { PrintStage } from "./PrintStage";
 import { Swinger, PoseDefs } from "./Figure";
-import { Cover, Origins, Roles, Spotlight, Projects, Photos, OffClock, Landing, YVh } from "./Scenes";
+import { Cover, Origins, Roles, Spotlight, Projects, Photos, OffClock, Landing, YVh, Cinema } from "./Scenes";
 import { BEATS, SCROLL_VH, STARTS, TOTAL_VH, swingState } from "./geometry";
+import { plateForBeat } from "./plates";
 import { useMobile } from "./Comic";
 import "./sv.css";
 
@@ -31,6 +32,7 @@ export function SpiderVerse() {
   const vw = useSyncExternalStore(subscribeResize, readVw, () => 1440);
   const mounted = useSyncExternalStore(subscribeResize, () => true, () => false);
   const mobile = useMobile();
+  const [menu, setMenu] = useState(false);
 
   /* Plain scroll listener; the whole film is a function of this one number. */
   const scrollY = useMotionValue(0);
@@ -46,24 +48,28 @@ export function SpiderVerse() {
   const state = useTransform(yVh, (v) => swingState(v));
   const progress = useTransform(yVh, (v) => Math.min(1, Math.max(0, v / SCROLL_VH)));
 
-  /* the big one: dim the city to a spotlight */
+  /* the big one: dim the world to a spotlight */
   const dim = useTransform(state, (s) => {
     if (s.beat !== SPOT) return 0;
-    if (s.index >= 0) return Math.max(0, (s.phase - 0.8) / 0.2) * 0.75;
-    return s.p > 0.9 ? 0.75 * (1 - (s.p - 0.9) / 0.1) : 0.75;
+    if (s.index >= 0) return Math.max(0, (s.phase - 0.8) / 0.2) * 0.72;
+    return s.p > 0.9 ? 0.72 * (1 - (s.p - 0.9) / 0.1) : 0.72;
   });
 
-  /* Glitch frames at the cut are toggled on the DOM directly: no React state in a motion-value callback. */
+  /* Glitch frames at the cut and the figure's key light are toggled on the DOM directly. */
   const mainRef = useRef<HTMLElement>(null);
   useMotionValueEvent(state, "change", (s) => {
     const g = s.index >= 0 && s.phase > 0.88 && s.phase < 0.96 && !reduce;
-    mainRef.current?.classList.toggle("sv-glitch-on", g);
+    const el = mainRef.current;
+    if (!el) return;
+    el.classList.toggle("sv-glitch-on", g);
+    const plate = plateForBeat(s, mobile).plate;
+    const key = plate.night ? plate.key : "gold";
+    if (el.dataset.key !== key) el.dataset.key = key;
   });
 
   return (
-    <main ref={mainRef} className="sv" style={{ height: `${TOTAL_VH}vh` }}>
+    <main ref={mainRef} className="sv" data-key="gold" style={{ height: `${TOTAL_VH}vh` }}>
       <PoseDefs />
-      {/* The world is decorative and scroll-driven; render it after mount so SSR markup stays stable. */}
       {mounted && <PrintStage state={state} mobile={mobile} />}
 
       {BEATS.map((b, i) => (
@@ -71,29 +77,36 @@ export function SpiderVerse() {
       ))}
 
       <YVh.Provider value={yVhClamped}>
-        <div className="sv-screen">
-          <motion.div className="sv-dim" style={{ opacity: dim }} aria-hidden="true" />
-          <Cover />
-          <Origins />
-          <Roles />
-          <Spotlight />
-          <Projects />
-          <Photos />
-          <OffClock />
-          <Landing />
-          {mounted && <Swinger state={state} vw={vw} vh={vh} mobile={mobile} />}
-          <nav className="sv-nav" aria-label="Jump to">
-            {NAV.map((n) => (
-              <a key={n.href} href={n.href}>
-                {n.label}
-              </a>
-            ))}
-            <a href="/Ammar_Adam.pdf" target="_blank" rel="noopener">
-              Resume
-            </a>
-          </nav>
-          <motion.div className="sv-progress" style={{ scaleX: progress }} aria-hidden="true" />
-        </div>
+        <Cinema.Provider value={{ state, vw, vh }}>
+          <div className="sv-screen">
+            <motion.div className="sv-dim" style={{ opacity: dim }} aria-hidden="true" />
+            <Cover />
+            <Origins />
+            <Roles />
+            <Spotlight />
+            <Projects />
+            <Photos />
+            <OffClock />
+            <Landing />
+            {mounted && <Swinger state={state} vw={vw} vh={vh} mobile={mobile} />}
+            <nav className={`sv-nav ${menu ? "sv-nav-open" : ""}`} aria-label="Jump to">
+              <button type="button" className="sv-menu-btn" aria-expanded={menu} onClick={() => setMenu((m) => !m)}>
+                Menu
+              </button>
+              <div className="sv-nav-links">
+                {NAV.map((n) => (
+                  <a key={n.href} href={n.href} onClick={() => setMenu(false)}>
+                    {n.label}
+                  </a>
+                ))}
+                <a href="/Ammar_Adam.pdf" target="_blank" rel="noopener">
+                  Resume
+                </a>
+              </div>
+            </nav>
+            <motion.div className="sv-progress" style={{ scaleX: progress }} aria-hidden="true" />
+          </div>
+        </Cinema.Provider>
       </YVh.Provider>
     </main>
   );

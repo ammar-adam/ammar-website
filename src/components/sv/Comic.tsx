@@ -18,9 +18,9 @@ export function useMobile() {
 }
 
 /** Narration: one line, hand-lettered, floating over the world. Pops in, no easing. */
-export function Caption({ children, className = "", tone = "paper" }: { children: ReactNode; className?: string; tone?: "paper" | "amber" | "ink" }) {
+export function Caption({ children, className = "", hand = false }: { children: ReactNode; className?: string; hand?: boolean }) {
   return (
-    <motion.p className={`sv-caption sv-caption-${tone} ${className}`} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.01 }}>
+    <motion.p className={`sv-caption ${hand ? "sv-caption-hand" : ""} ${className}`} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true, amount: 0.4 }} transition={{ duration: 0.01 }}>
       {children}
     </motion.p>
   );

@@ -6,81 +6,102 @@ import { arrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { loungeRoomContent } from "@/data/loungeRoom";
 import { siteConfig } from "@/data/site";
-import { cutState, type SectionId } from "./geometry";
-import { Burst, Caption, Cmyk, Cut, Onoma, useMobile, useStep } from "./Comic";
+import { cutState, type SectionId, type SwingState } from "./geometry";
+import { Burst, Caption, Cut, Onoma, useMobile, useStep } from "./Comic";
+import { byId, plateForBeat, type Shot } from "./plates";
+import { matrix3d, project, type Cam } from "./camera";
+import { TITLE_TEXT } from "./PrintStage";
 
 /* ------------------------------------------------------------------ */
 /* Scene shell: one beat of the timeline, cut in and out with hard pops */
 
 export const YVh = createContext<MotionValue<number> | null>(null);
+export const Cinema = createContext<{ state: MotionValue<SwingState>; vw: number; vh: number } | null>(null);
 
 function Scene({ id, children, className = "", render }: { id: SectionId; className?: string; children?: ReactNode; render?: (p: MotionValue<number>) => ReactNode }) {
   const yVh = useContext(YVh)!;
   const cut = useTransform(yVh, (v) => cutState(v, id));
   const p = useTransform(cut, (c) => c.p);
   const opacity = useTransform(cut, (c) => (c.on ? 1 : 0));
-  const scale = useTransform(cut, (c) => c.scale);
   const visibility = useTransform(cut, (c) => (c.on ? "visible" : "hidden"));
-  const drift = useTransform(p, [0, 1], ["0vh", "-3vh"]);
   return (
-    <motion.section className={`sv-scene sv-scene-${id} ${className}`} style={{ opacity, scale, visibility, "--drift": drift } as never}>
+    <motion.section className={`sv-scene sv-scene-${id} ${className}`} style={{ opacity, visibility }}>
       <div className="sv-pin">{render ? render(p) : children}</div>
     </motion.section>
   );
 }
 
-/** Narration lines keyed to dwell progress: one on screen at a time. */
-function Lines({ p, lines }: { p: MotionValue<number>; lines: Array<[number, ReactNode]> }) {
+/** Narration lines keyed to dwell progress: one on screen at a time, near the subject. */
+function Lines({ p, lines, at = "tl" }: { p: MotionValue<number>; lines: Array<[number, ReactNode, boolean?]>; at?: "tl" | "bl" | "tr" | "br" | "bc" }) {
   return (
-    <div className="sv-scene-head">
-      {lines.map(([at, text], i) => (
-        <Line key={i} p={p} at={at} until={lines[i + 1]?.[0] ?? Infinity}>
+    <div className={`sv-narr sv-narr-${at}`}>
+      {lines.map(([from, text, hand], i) => (
+        <Line key={i} p={p} at={from} until={lines[i + 1]?.[0] ?? Infinity} hand={hand}>
           {text}
         </Line>
       ))}
     </div>
   );
 }
-function Line({ p, at, until, children }: { p: MotionValue<number>; at: number; until: number; children: ReactNode }) {
+function Line({ p, at, until, hand, children }: { p: MotionValue<number>; at: number; until: number; hand?: boolean; children: ReactNode }) {
   const on = useStep(p, at, until);
   return (
     <motion.div style={{ opacity: on }} className="sv-stack">
-      <Caption>{children}</Caption>
+      <Caption hand={hand}>{children}</Caption>
+    </motion.div>
+  );
+}
+
+const ASPECT: Record<string, number> = { "dusk-a": 1.5, gardiner: 1.5, polson: 1.5, "night-unsplash": 1.498, dundas: 1.5, "night-2025": 1.333, "by-night": 1.5, "gfx-pano": 2.708, "aerial-night": 1.334 };
+
+/**
+ * A content surface mapped onto a real plane in the photograph: four plate-uv corners
+ * projected through the camera every frame, applied as matrix3d. The text stays DOM.
+ */
+function Surface({ plate, name, w, h, className = "", children }: { plate: string; name: string; w: number; h: number; className?: string; children: ReactNode }) {
+  const cin = useContext(Cinema)!;
+  const mobile = useMobile();
+  const tf = useTransform(cin.state, (s) => {
+    const shot: Shot = plateForBeat(s, mobile);
+    const P = byId.get(plate);
+    const surf = (mobile && P?.surfacesMobile?.[name]) || P?.surfaces?.[name];
+    if (!P || !surf || shot.plate.id !== P.id) return "translate(-9999px, 0)";
+    const c: Cam = { shot, vw: cin.vw, vh: cin.vh, plateAspect: ASPECT[P.id] ?? 1.5 };
+    const pts = surf.quad.map((uv) => project(uv, surf.depth, c));
+    return matrix3d(pts, w, h);
+  });
+  return (
+    <motion.div className={`sv-surface ${className}`} style={{ width: w, height: h, transform: tf }}>
+      {children}
     </motion.div>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* 1. Cover: cold open over the skyline at dusk, the name tagged on the sky */
+/* 1. Cover: the title is painted into the sky by the shader; the DOM keeps the words */
 
 export function Cover() {
   return <Scene id="cover" render={(p) => <CoverInner p={p} />} />;
 }
 
-const EXIT_SCALE = [1, 1.2, 1.6, 2.4];
 function CoverInner({ p }: { p: MotionValue<number> }) {
-  /* exit on 8fps steps: scale 1, 1.2, 1.6, 2.4 with opacity 1,1,1,0. No in-between fades. */
-  const step = useTransform(p, (v) => (v < 0.55 ? 0 : Math.min(3, Math.floor(((v - 0.55) / 0.45) * 4))));
-  const scale = useTransform(step, (s) => EXIT_SCALE[s]);
-  const opacity = useTransform(step, (s) => (s < 3 ? 1 : 0));
   const cue = useTransform(p, [0, 0.15], [1, 0]);
   return (
     <>
-      <motion.div className="sv-cover-title" style={{ scale, opacity }}>
-        <Cmyk className="sv-tag-title">AMMAR ADAM</Cmyk>
-        <p className="sv-cover-sub">CS &amp; Finance at Waterloo. Toronto, mostly.</p>
-      </motion.div>
-      <div className="sv-cover-caption">
-        <Lines
-          p={p}
-          lines={[
-            [0, <>Alright. Let&rsquo;s do this one more time.</>],
-            [0.3, <>My name is Ammar Adam.</>],
-          ]}
-        />
+      <h1 className="sv-sr">{TITLE_TEXT}</h1>
+      <div className="sv-cover-sub">
+        <Caption>CS &amp; Finance at Waterloo. Toronto, mostly.</Caption>
       </div>
+      <Lines
+        p={p}
+        at="bl"
+        lines={[
+          [0, <>Alright. Let&rsquo;s do this one more time.</>, true],
+          [0.3, <>My name is Ammar Adam.</>, true],
+        ]}
+      />
       <motion.div className="sv-cue" style={{ opacity: cue }}>
-        <span>SCROLL TO SWING</span>
+        <span>Scroll</span>
         <span className="sv-cue-arrow">▼</span>
       </motion.div>
     </>
@@ -88,126 +109,94 @@ function CoverInner({ p }: { p: MotionValue<number> }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* 2. Origins: three cities, lit like gate signs, collapse into Toronto  */
+/* 2. Origins: a departure board on the window; two rows flip away, one stays */
 
 const CITIES = [
-  { name: "TORONTO", code: "YYZ", color: "var(--amber)" },
-  { name: "DUBAI", code: "DXB", color: "var(--magenta)" },
-  { name: "KARACHI", code: "KHI", color: "var(--cyan)" },
-] as const;
-
-function MiniSkyline({ city }: { city: (typeof CITIES)[number]["name"] }) {
-  if (city === "TORONTO")
-    return (
-      <svg viewBox="0 0 200 120" className="sv-mini">
-        <rect x="10" y="70" width="30" height="50" />
-        <rect x="45" y="50" width="22" height="70" />
-        <polygon points="96,118 104,30 112,118" />
-        <rect x="90" y="34" width="28" height="12" rx="4" />
-        <rect x="102" y="2" width="4" height="30" />
-        <rect x="130" y="60" width="40" height="60" />
-        <path d="M 160 120 q 20 -40 40 0 z" />
-      </svg>
-    );
-  if (city === "DUBAI")
-    return (
-      <svg viewBox="0 0 200 120" className="sv-mini">
-        <rect x="20" y="80" width="30" height="40" />
-        <polygon points="80,120 90,40 96,10 102,40 112,120" />
-        <rect x="84" y="56" width="26" height="8" />
-        <rect x="82" y="80" width="30" height="8" />
-        <path d="M 130 120 q 10 -60 40 -50 q -10 20 0 50 z" />
-        <rect x="170" y="90" width="20" height="30" />
-      </svg>
-    );
-  return (
-    <svg viewBox="0 0 200 120" className="sv-mini">
-      <rect x="10" y="90" width="40" height="30" />
-      <rect x="60" y="60" width="60" height="60" />
-      <path d="M 70 60 q 20 -30 40 0 z" />
-      <rect x="86" y="24" width="8" height="20" />
-      <rect x="130" y="70" width="24" height="50" />
-      <rect x="160" y="50" width="30" height="70" />
-    </svg>
-  );
-}
+  { code: "YYZ", name: "Toronto", flight: "AC 001", status: "Home" },
+  { code: "DXB", name: "Dubai", flight: "EK 241", status: "Departed" },
+  { code: "KHI", name: "Karachi", flight: "PK 781", status: "Departed" },
+];
 
 export function Origins() {
   return <Scene id="origins" render={(p) => <OriginsInner p={p} />} />;
 }
 
 function OriginsInner({ p }: { p: MotionValue<number> }) {
-  const q = useTransform(p, (v) => Math.round(Math.min(1, Math.max(0, (v - 0.3) / 0.4)) * 6) / 6);
-  const leftX = useTransform(q, [0, 1], ["0%", "105%"]);
-  const rightX = useTransform(q, [0, 1], ["0%", "-105%"]);
-  const sideScale = useTransform(q, [0, 1], [1, 0.08]);
-  const sideOp = useTransform(q, (v) => (v >= 1 ? 0 : 1));
-  const mainScale = useTransform(q, [0, 1], [1, 1.35]);
-  const whump = useTransform(q, (v) => (v >= 1 ? 1 : 0));
+  const mobile = useMobile();
+  const q = useTransform(p, (v) => Math.round(Math.min(1, Math.max(0, (v - 0.3) / 0.35)) * 4) / 4);
+  const row2 = useTransform(q, (v) => (v >= 0.5 ? "none" : "table-row"));
+  const row3 = useTransform(q, (v) => (v >= 1 ? "none" : "table-row"));
+  const flipTone = useTransform(q, (v) => (v > 0 && v < 1 ? 1 : 0));
   return (
     <>
       <Lines
         p={p}
+        at="br"
         lines={[
           [0, <>I grew up between three airports. Toronto, Dubai, Karachi.</>],
           [0.72, <>Toronto stuck. Waterloo&rsquo;s close enough.</>],
         ]}
       />
-      <div className="sv-cities">
-        <motion.div className="sv-city" style={{ x: leftX, scale: sideScale, opacity: sideOp, rotate: -3 }}>
-          <CityPanel c={CITIES[1]} />
-        </motion.div>
-        <motion.div className="sv-city sv-city-main" style={{ scale: mainScale }}>
-          <CityPanel c={CITIES[0]} />
-          <motion.div className="sv-whump" style={{ opacity: whump }}>
-            <Onoma color="magenta" size="lg">WHUMP</Onoma>
-          </motion.div>
-        </motion.div>
-        <motion.div className="sv-city" style={{ x: rightX, scale: sideScale, opacity: sideOp, rotate: 3 }}>
-          <CityPanel c={CITIES[2]} />
-        </motion.div>
-      </div>
+      <Surface plate="gardiner" name="board" w={mobile ? 330 : 560} h={mobile ? 200 : 330} className="sv-led">
+        <div className="sv-board-head">
+          <span>Departures</span>
+          <span>Gate</span>
+          <span>Status</span>
+        </div>
+        <table className="sv-board">
+          <tbody>
+            <tr>
+              <td className="sv-code">YYZ</td>
+              <td>{CITIES[0].name}</td>
+              <td>{CITIES[0].flight}</td>
+              <td className="sv-status-home">{CITIES[0].status}</td>
+            </tr>
+            <motion.tr style={{ display: row2 }}>
+              <td className="sv-code">DXB</td>
+              <td>{CITIES[1].name}</td>
+              <td>{CITIES[1].flight}</td>
+              <td>{CITIES[1].status}</td>
+            </motion.tr>
+            <motion.tr style={{ display: row3 }}>
+              <td className="sv-code">KHI</td>
+              <td>{CITIES[2].name}</td>
+              <td>{CITIES[2].flight}</td>
+              <td>{CITIES[2].status}</td>
+            </motion.tr>
+          </tbody>
+        </table>
+        <motion.div className="sv-board-flip" style={{ opacity: flipTone }} />
+      </Surface>
     </>
   );
 }
 
-function CityPanel({ c }: { c: (typeof CITIES)[number] }) {
-  return (
-    <div className="sv-panel sv-board sv-city-panel" style={{ "--c": c.color } as React.CSSProperties}>
-      <MiniSkyline city={c.name} />
-      <div className="sv-city-name">{c.name}</div>
-      <div className="sv-city-code">{c.code}</div>
-    </div>
-  );
-}
-
 /* ------------------------------------------------------------------ */
-/* 3. Roles: billboards on Bay Street, two sub-beats                     */
+/* 3. Roles: LED panels on the tower wall, two sub-beats                 */
 
 const ROLE_TAGS: Record<string, string> = {
-  "alpen-capital": "AGE 16",
-  openai: "1 OF 5",
-  "pear-vc": "1 OF ~50",
-  sagard: "NOW",
-  "waterloo-venture": "NOW",
+  "alpen-capital": "Age 16",
+  openai: "1 of 5",
+  "pear-vc": "1 of ~50",
+  sagard: "Now",
+  "waterloo-venture": "Now",
 };
 
 function RoleCard({ slug, big = false, eager = false }: { slug: string; big?: boolean; eager?: boolean }) {
   const r = arrivals.find((a) => a.slug === slug)!;
   return (
-    <article className={`sv-panel sv-board sv-role-panel ${big ? "sv-role-big" : ""}`}>
-      <div className="sv-role-img">
+    <article className={`sv-card ${big ? "sv-card-big" : ""}`}>
+      <div className="sv-card-img">
         <img src={r.image} alt="" loading={eager ? "eager" : "lazy"} width={560} height={747} />
-        <div className="sv-ht" />
       </div>
-      <div className="sv-role-body">
+      <div className="sv-card-body">
         {ROLE_TAGS[slug] && <span className="sv-tag">{ROLE_TAGS[slug]}</span>}
-        <h3 className="sv-role-name">{r.from}</h3>
-        <p className="sv-role-title">
+        <h3 className="sv-card-name">{r.from}</h3>
+        <p className="sv-card-title">
           {r.detailTitle ?? r.title} · {r.origin}
         </p>
-        <p className="sv-role-line">{r.impact}</p>
-        {big && <p className="sv-role-line sv-role-more">{r.details}</p>}
+        <p className="sv-card-line">{r.impact}</p>
+        {big && <p className="sv-card-line sv-card-more">{r.details}</p>}
         <div className="sv-links">
           {r.fromUrl && (
             <a href={r.fromUrl} target="_blank" rel="noopener">
@@ -231,7 +220,6 @@ export function Roles() {
 
 function RolesInner({ p }: { p: MotionValue<number> }) {
   const mobile = useMobile();
-  /* desktop: two sub-beats; mobile: three, two cards max, full text */
   const groups: Array<{ at: number; until: number; slugs: string[] }> = mobile
     ? [
         { at: 0, until: 0.34, slugs: ["alpen-capital", "datastealth"] },
@@ -246,6 +234,7 @@ function RolesInner({ p }: { p: MotionValue<number> }) {
     <>
       <Lines
         p={p}
+        at="bl"
         lines={[
           [0, <>At sixteen I was the youngest intern at Alpen Capital, doing M&amp;A in Dubai.</>],
           [0.25, <>Then product at DataStealth. Then AI at Sagard, building tools for lawyers.</>],
@@ -253,7 +242,7 @@ function RolesInner({ p }: { p: MotionValue<number> }) {
           [0.75, <>I help run Tech Week and Hack the North. September is not a sleeping month.</>],
         ]}
       />
-      <div className="sv-stage-area">
+      <Surface plate="polson" name="wall" w={mobile ? 340 : 760} h={mobile ? 560 : 470} className="sv-led">
         {groups.map((g, gi) => (
           <Cut key={gi} p={p} at={g.at} until={g.until} className={`sv-row sv-row-${g.slugs.length}`}>
             {g.slugs.map((s, i) => (
@@ -261,19 +250,20 @@ function RolesInner({ p }: { p: MotionValue<number> }) {
             ))}
           </Cut>
         ))}
-      </div>
+      </Surface>
     </>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* 4. The big one: the city dims to a spotlight                          */
+/* 4. The big one: one face lit by a searchlight, a smaller sign below   */
 
 export function Spotlight() {
   return <Scene id="spotlight" render={(p) => <SpotlightInner p={p} />} />;
 }
 
 function SpotlightInner({ p }: { p: MotionValue<number> }) {
+  const mobile = useMobile();
   return (
     <>
       <Lines
@@ -283,21 +273,27 @@ function SpotlightInner({ p }: { p: MotionValue<number> }) {
           [0.25, <>Pear VC made me a fellow. I still don&rsquo;t fully believe either sentence.</>],
         ]}
       />
-      <div className="sv-stage-area sv-spot">
-        <Cut p={p} at={0} className="sv-spot-main">
-          <RoleCard slug="openai" big eager />
+      <Surface plate="night-unsplash" name="face" w={mobile ? 340 : 620} h={mobile ? 280 : 420}>
+        <Cut p={p} at={0}>
+          <div className="sv-led sv-lit sv-fill">
+            <RoleCard slug="openai" big eager />
+          </div>
           <Onoma color="cyan" size="md" className="sv-corner-onoma">KA-CHUNK</Onoma>
         </Cut>
-        <Cut p={p} at={0.25} className="sv-spot-side" tilt={1}>
-          <RoleCard slug="pear-vc" big />
+      </Surface>
+      <Surface plate="night-unsplash" name="sign" w={mobile ? 300 : 420} h={mobile ? 190 : 250}>
+        <Cut p={p} at={0.25}>
+          <div className="sv-led sv-fill">
+            <RoleCard slug="pear-vc" big />
+          </div>
         </Cut>
-      </div>
+      </Surface>
     </>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* 5. Projects: the 2am rooftop, four lit screens                        */
+/* 5. Projects: one at a time on the Dundas screen, four sub-beats       */
 
 const PROJECT_LINES: Record<string, { line: string; onoma?: { word: string; color: "red" | "magenta" } }> = {
   rocketship: { line: "Equity research with a 5-agent LLM debate. Then I built honest walk-forward evals and a plain momentum baseline won.", onoma: { word: "FWOOSH", color: "red" } },
@@ -311,71 +307,52 @@ export function Projects() {
 }
 
 function ProjectsInner({ p }: { p: MotionValue<number> }) {
-  const mobile = useMobile();
   return (
     <>
-      <Lines p={p} lines={[[0, <>Things I built when I should&rsquo;ve been asleep.</>]]} />
-      <div className="sv-stage-area">
-        <div className="sv-grid-2">
-          {projects.map((pr, i) => {
-            const meta = PROJECT_LINES[pr.slug];
-            const clip = pr.slug === "canadaclip";
-            const shot = clip ? "https://img.youtube.com/vi/JzYwfPrcPtM/maxresdefault.jpg" : pr.screenshot;
-            const at = mobile ? i * 0.25 : 0.06 + i * 0.12;
-            const until = mobile ? (i === 3 ? Infinity : (i + 1) * 0.25) : Infinity;
-            return (
-              <Cut key={pr.slug} p={p} at={at} until={until} className="sv-proj" tilt={i % 2 ? 0.6 : -0.6}>
-                <article className={`sv-panel sv-board sv-proj-panel ${clip ? "sv-proj-clip" : ""}`}>
-                  <div className="sv-proj-img">
-                    <img src={shot} alt={`${pr.name} screenshot`} loading="lazy" width={900} height={520} />
-                    <div className="sv-ht" />
+      <Lines p={p} at="bl" lines={[[0, <>Things I built when I should&rsquo;ve been asleep.</>]]} />
+      <Surface plate="dundas" name="screen" w={300} h={640} className="sv-led sv-screen-surface">
+        {projects.map((pr, i) => {
+          const meta = PROJECT_LINES[pr.slug];
+          const clip = pr.slug === "canadaclip";
+          const shot = clip ? "https://img.youtube.com/vi/JzYwfPrcPtM/maxresdefault.jpg" : pr.screenshot;
+          return (
+            <Cut key={pr.slug} p={p} at={i * 0.25} until={i === 3 ? Infinity : (i + 1) * 0.25} className="sv-proj">
+              <article className={`sv-card sv-proj-card ${clip ? "sv-proj-clip" : ""}`}>
+                <div className="sv-proj-img">
+                  <img src={shot} alt={`${pr.name} screenshot`} loading="lazy" width={900} height={520} />
+                </div>
+                <div className="sv-card-body">
+                  <h3 className="sv-card-name">
+                    {pr.name} <span className="sv-year">{pr.year}</span>
+                  </h3>
+                  <p className="sv-card-title">{pr.routeName}</p>
+                  <p className="sv-card-line">{meta.line}</p>
+                  <div className="sv-links">
+                    {pr.seats[0].links?.map((l) => (
+                      <a key={l.url} href={l.url} target="_blank" rel="noopener">
+                        {l.label} ↗
+                      </a>
+                    ))}
                   </div>
-                  <div className="sv-proj-body">
-                    <h3 className="sv-proj-name">
-                      {pr.name} <span className="sv-year">{pr.year}</span>
-                    </h3>
-                    <p className="sv-proj-route">{pr.routeName}</p>
-                    <p className="sv-proj-line">{meta.line}</p>
-                    <div className="sv-links">
-                      {pr.seats[0].links?.map((l) => (
-                        <a key={l.url} href={l.url} target="_blank" rel="noopener">
-                          {l.label} ↗
-                        </a>
-                      ))}
-                    </div>
-                  </div>
-                </article>
-                {meta.onoma && <Onoma color={meta.onoma.color} size="md" className={`sv-corner-onoma ${i % 2 ? "sv-corner-r" : ""}`}>{meta.onoma.word}</Onoma>}
-              </Cut>
-            );
-          })}
-        </div>
-      </div>
-      <Laptop />
+                </div>
+                <div className="sv-screen-count">
+                  {i + 1} / {projects.length}
+                </div>
+              </article>
+              {meta.onoma && <Onoma color={meta.onoma.color} size="md" className="sv-corner-onoma">{meta.onoma.word}</Onoma>}
+            </Cut>
+          );
+        })}
+      </Surface>
     </>
   );
 }
 
-function Laptop() {
-  return (
-    <svg className="sv-laptop" viewBox="0 0 120 70" aria-hidden="true">
-      <rect x="20" y="4" width="80" height="50" rx="4" fill="var(--ink)" />
-      <rect x="26" y="10" width="68" height="38" fill="#3aa6c9" />
-      <rect x="30" y="16" width="40" height="4" fill="var(--ink)" />
-      <rect x="30" y="24" width="56" height="4" fill="var(--ink)" />
-      <rect x="30" y="32" width="28" height="4" fill="var(--ink)" />
-      <rect x="6" y="54" width="108" height="10" rx="3" fill="var(--ink)" />
-      <text x="60" y="68" fontSize="7" fontFamily="var(--font-mono)" fill="var(--paper)" textAnchor="middle">
-        02:14
-      </text>
-    </svg>
-  );
-}
-
 /* ------------------------------------------------------------------ */
-/* 6. Photos: a filmstrip the camera dollies along the Dundas screens     */
+/* 6. Photos: prints pegged on a line across the rooftop                 */
 
 const PHOTO_PICK = [6, 22, 21, 1, 12, 24, 25, 11, 27, 13, 2, 7, 19];
+const ROT = [-2, 1.5, -1, 2, -1.5, 1, -2, 1.5, -1, 2, -1.5, 1, -2];
 
 export function Photos() {
   return <Scene id="photos" render={(p) => <PhotosInner p={p} />} />;
@@ -384,19 +361,22 @@ export function Photos() {
 function PhotosInner({ p }: { p: MotionValue<number> }) {
   const all = loungeRoomContent.photos.items;
   const picked = PHOTO_PICK.map((n) => all.find((x) => x.src === `/ABOUT${n}.jpg`)).filter(Boolean) as Array<{ src: string; caption: string }>;
-  /* desktop: 13 frames of 30vw, 3 in view; the strip slides as the dwell progresses */
-  const x = useTransform(p, (v) => `${-v * (picked.length * 30 - 94)}vw`);
+  const x = useTransform(p, (v) => `${-v * (picked.length * 25 - 90)}vw`);
   return (
     <>
       <Lines p={p} lines={[[0, <>The people. Also an unreasonable number of sunsets.</>]]} />
-      <div className="sv-stage-area sv-strip-area">
-        <div className="sv-screens-sign">DUNDAS SQ.</div>
-        <motion.div className="sv-filmstrip" style={{ x }}>
-          {picked.map((ph) => (
-            <figure key={ph.src} className="sv-panel sv-photo-panel">
+      <div className="sv-line-area">
+        <motion.div className="sv-clothesline" style={{ x }}>
+          <svg className="sv-line-svg" viewBox="0 0 1000 40" preserveAspectRatio="none">
+            <path d="M 0 6 Q 500 34 1000 6" fill="none" stroke="#0b0a16" strokeWidth="3" />
+          </svg>
+          {picked.map((ph, i) => (
+            <figure key={ph.src} className="sv-print" style={{ transform: `rotate(${ROT[i]}deg)`, left: `${i * 25}vw` }}>
+              <span className="sv-peg" />
               <img src={ph.src.replace("/ABOUT", "/thumbs/ABOUT")} alt={ph.caption} loading="lazy" width={520} height={390} />
-              <div className="sv-ht" />
               <figcaption>{ph.caption}</figcaption>
+              <span className="sv-tape sv-tape-l" />
+              <span className="sv-tape sv-tape-r" />
             </figure>
           ))}
         </motion.div>
@@ -406,50 +386,54 @@ function PhotosInner({ p }: { p: MotionValue<number> }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* 7. Off the clock: one frame, one line, five stickers on a rooftop      */
+/* 7. Off the clock: die-cut stickers on the wall by the lamp post       */
 
 const OFF = [
-  { word: "YNWA", line: "It has not been relaxing.", color: "red" },
-  { word: "PADDINGTON 2", line: "Not up for debate.", color: "cyan" },
-  { word: "LOAD FACTOR", line: "Ask me. Actually, don't.", color: "amber" },
-  { word: "MANGO MATCHA", line: "The correct matcha.", color: "magenta" },
-  { word: "SHAWARMA", line: "GTA ranking in progress.", color: "paper" },
+  { word: "YNWA", line: "It has not been relaxing.", rot: -6 },
+  { word: "Paddington 2", line: "Not up for debate.", rot: 5 },
+  { word: "Load factor", line: "Ask me. Actually, don't.", rot: -4 },
+  { word: "Mango matcha", line: "The correct matcha.", rot: 7 },
+  { word: "Shawarma", line: "GTA ranking in progress.", rot: -8 },
 ] as const;
 
 export function OffClock() {
   return (
     <Scene id="offclock">
-      <div className="sv-scene-head">
+      <div className="sv-narr sv-narr-tl">
         <Caption>Off the clock: Liverpool since I was ten, Paddington 2 is the best film ever made, and I&rsquo;ll talk airline economics until you stop me.</Caption>
       </div>
-      <div className="sv-stage-area">
-        <div className="sv-off">
-          {OFF.map((o, i) => (
-            <motion.div
-              key={o.word}
-              className="sv-sticker"
-              initial={{ opacity: 0, scale: 0.6, rotate: i % 2 ? 8 : -8 }}
-              whileInView={{ opacity: 1, scale: 1, rotate: i % 2 ? 2 : -2 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.01, delay: i * 0.08 }}
-            >
-              <Onoma color={o.color} size="sm">{o.word}</Onoma>
-              <p>{o.line}</p>
-            </motion.div>
-          ))}
-          <div className="sv-parapet" />
-        </div>
-      </div>
+      <Surface plate="by-night" name="wall" w={300} h={760} className="sv-stickers">
+        {OFF.map((o, i) => (
+          <motion.div
+            key={o.word}
+            className="sv-sticker"
+            style={{ rotate: o.rot }}
+            initial={{ opacity: 0, scale: 0.7 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.01, delay: i * 0.08 }}
+          >
+            <strong>{o.word}</strong>
+            <p>{o.line}</p>
+          </motion.div>
+        ))}
+      </Surface>
     </Scene>
   );
 }
 
 /* ------------------------------------------------------------------ */
-/* 8. Landing: Union Station at night                                     */
+/* 8. Landing: on the rooftop, the title steps in                         */
 
 export function Landing() {
+  return <Scene id="landing" render={(p) => <LandingInner p={p} />} />;
+}
+
+function LandingInner({ p }: { p: MotionValue<number> }) {
   const [thwip, setThwip] = useState<{ x: number; y: number } | null>(null);
   const btn = useRef<HTMLButtonElement>(null);
+  const cin = useContext(Cinema)!;
+  const mobile = useMobile();
   const fire = () => {
     const r = btn.current?.getBoundingClientRect();
     if (r) setThwip({ x: r.left + r.width / 2, y: r.top + r.height / 2 });
@@ -459,47 +443,63 @@ export function Landing() {
     }, 520);
   };
   const s = siteConfig.socialLinks;
+  /* the title steps in at 8fps after the landing */
+  const step = useTransform(p, (v) => Math.min(3, Math.floor(Math.max(0, v - 0.1) * 24)));
+  const titleOp = useTransform(step, (v) => (v >= 1 ? 1 : 0));
+  const titleScale = useTransform(step, (v) => [1.3, 1.12, 1.04, 1][v]);
+  const restOp = useTransform(step, (v) => (v >= 3 ? 1 : 0));
+  const hand = useTransform(cin.state, (st) => {
+    const shot = plateForBeat(st, mobile);
+    const perch = shot.plate.perch;
+    if (!perch) return { x: 0, y: 0 };
+    const [px, py] = project(perch.uv, perch.depth, { shot, vw: cin.vw, vh: cin.vh, plateAspect: ASPECT[shot.plate.id] ?? 1.5 });
+    const figH = (mobile ? 30 : 42) * 0.01 * cin.vh;
+    return { x: px - figH * 0.1, y: py - figH * 0.5 };
+  });
   return (
-    <Scene id="landing">
+    <>
+      <Lines p={p} at="bl" lines={[[0.05, <>That&rsquo;s the story so far.</>, true]]} />
       <div className="sv-landing">
-        <Caption>That&rsquo;s the story so far.</Caption>
-        <Cmyk as="h2" className="sv-landing-title">SEE YOU OUT THERE.</Cmyk>
-        <div className="sv-landing-actions">
-          <button ref={btn} type="button" className="sv-btn" onClick={fire}>
-            RESUME
-          </button>
-          <a className="sv-btn sv-btn-quiet" href="/Ammar_Adam.pdf" target="_blank" rel="noopener">
-            PDF, no theatrics
-          </a>
-        </div>
-        <ul className="sv-contact">
-          <li><a href={s.email}>ammar.adam@uwaterloo.ca</a></li>
-          <li><a href={s.github} target="_blank" rel="noopener">GitHub</a></li>
-          <li><a href={s.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
-          <li><a href={s.x} target="_blank" rel="noopener">X</a></li>
-          <li><a href="https://uwaterloo.network" target="_blank" rel="noopener">uwaterloo.network</a></li>
-        </ul>
-        <p className="sv-colophon">Drawn in Toronto. No Spider-Men were harmed.</p>
+        <motion.h2 className="sv-title-card" style={{ opacity: titleOp, scale: titleScale }}>
+          <span className="sv-mis sv-mis-r" aria-hidden="true">See you out there.</span>
+          <span className="sv-mis sv-mis-c" aria-hidden="true">See you out there.</span>
+          <span className="sv-mis-k">See you out there.</span>
+        </motion.h2>
+        <motion.div className="sv-landing-rest" style={{ opacity: restOp }}>
+          <div className="sv-landing-actions">
+            <button ref={btn} type="button" className="sv-btn" onClick={fire}>
+              Resume
+            </button>
+            <a className="sv-btn sv-btn-quiet" href="/Ammar_Adam.pdf" target="_blank" rel="noopener">
+              PDF, no theatrics
+            </a>
+          </div>
+          <ul className="sv-contact">
+            <li><a href={s.email}>ammar.adam@uwaterloo.ca</a></li>
+            <li><a href={s.github} target="_blank" rel="noopener">GitHub</a></li>
+            <li><a href={s.linkedin} target="_blank" rel="noopener">LinkedIn</a></li>
+            <li><a href={s.x} target="_blank" rel="noopener">X</a></li>
+            <li><a href="https://uwaterloo.network" target="_blank" rel="noopener">uwaterloo.network</a></li>
+          </ul>
+          <p className="sv-colophon">
+            Drawn in Toronto. No Spider-Men were harmed. <a href="/credits">Plate credits</a>
+          </p>
+        </motion.div>
       </div>
-      {thwip && <Thwip to={thwip} />}
-    </Scene>
+      {thwip && <Thwip to={thwip} from={hand.get()} />}
+    </>
   );
 }
 
-/** A web shot from the figure's hand (bottom-left, on the cornice) to the button, drawn in two steps. */
-function Thwip({ to }: { to: { x: number; y: number } }) {
-  const mobile = useMobile();
-  const vh = typeof window !== "undefined" ? window.innerHeight : 900;
-  const vw = typeof window !== "undefined" ? window.innerWidth : 1440;
-  const hx = vw * 0.22 + (mobile ? 8 : 14);
-  const hy = vh * (mobile ? 0.78 : 0.72) - (mobile ? 0.11 : 0.16) * vh;
+/** A web shot from the figure's hand on the rooftop to the button, drawn in two steps. */
+function Thwip({ to, from }: { to: { x: number; y: number }; from: { x: number; y: number } }) {
   return (
     <div className="sv-thwip" aria-hidden="true">
       <svg className="sv-thwip-svg">
-        <line x1={hx} y1={hy} x2={to.x} y2={to.y} className="sv-thwip-line" pathLength={1} />
+        <line x1={from.x} y1={from.y} x2={to.x} y2={to.y} className="sv-thwip-line" pathLength={1} />
         <circle cx={to.x} cy={to.y} r={10} className="sv-thwip-dot" />
       </svg>
-      <div className="sv-thwip-word" style={{ left: Math.max(8, hx - 210), top: Math.max(10, hy - 160) }}>
+      <div className="sv-thwip-word" style={{ left: Math.max(8, from.x - 190), top: Math.max(10, from.y - 150) }}>
         <Burst color="var(--magenta)" />
         <Onoma color="paper" size="md">THWIP</Onoma>
       </div>
