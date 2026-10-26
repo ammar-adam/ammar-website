@@ -15,7 +15,7 @@ export function createRoomVisibility(scene: THREE.Scene) {
       : progress < .841 ? [-88, -48] : progress < .86 ? [-150, -48] : [-300, -80];
     for (const object of scene.children) {
       // Architecture batches span rooms; the traveler moves through them.
-      if (!object.visible || object instanceof THREE.Light || object instanceof THREE.InstancedMesh || object instanceof THREE.Line || object.name === "articulated-traveler") continue;
+      if (!object.visible || object instanceof THREE.Light || object instanceof THREE.InstancedMesh || object instanceof THREE.Line || (object.name === "articulated-traveler" || object.name === "film-traveler-3d")) continue;
       let box = bounds.get(object);
       if (!box) { box = new THREE.Box3().setFromObject(object); bounds.set(object, box); }
       if (box.isEmpty()) continue;

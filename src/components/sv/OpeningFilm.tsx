@@ -21,9 +21,9 @@ export function OpeningFilm({ onFinish }: { onFinish: () => void }) {
   }, []);
 
   return <motion.section className="opening-film" aria-label="Introduction" initial={false} exit={{ opacity: 0 }} transition={{ duration: .2 }}>
-    <video className="of-video" autoPlay muted playsInline preload="auto" poster="/film/arrival-desktop.webp?v=painted-v4" onEnded={onFinish} onError={onFinish} aria-hidden="true" tabIndex={-1}>
-      <source src="/film/arrival-portrait.mp4?v=painted-v4" type="video/mp4" media="(max-width: 720px)" />
-      <source src="/film/arrival-desktop.mp4?v=painted-v4" type="video/mp4" />
+    <video className="of-video" autoPlay muted playsInline preload="auto" poster="/film/arrival-desktop.webp?v=film-3d-final" onEnded={onFinish} onError={onFinish} aria-hidden="true" tabIndex={-1}>
+      <source src="/film/arrival-portrait.mp4?v=film-3d-final" type="video/mp4" media="(max-width: 720px)" />
+      <source src="/film/arrival-desktop.mp4?v=film-3d-final" type="video/mp4" />
     </video>
     <div className="of-shade" />
     <header className="of-header"><span className="of-mark">a<span>/</span>a</span><div className="of-header-links"><nav><Link href="/short">Short version</Link><button onClick={onFinish}>Skip intro <span aria-hidden="true">→</span></button></nav><SocialLinks /></div></header>

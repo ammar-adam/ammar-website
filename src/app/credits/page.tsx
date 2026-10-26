@@ -13,7 +13,7 @@ export default function CreditsPage() {
         </p>
         <h1 style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: "clamp(40px, 8vw, 64px)", fontWeight: 400, textTransform: "uppercase", margin: "16px 0 18px", lineHeight: 1.1 }}>Artwork & credits</h1>
         <p style={{ margin: "0 0 30px", color: "#cdd2d4" }}>
-          The terminal combines layered environment paintings, shallow depth meshes and camera motion. An original illustrated traveler moves through the opening, animated with changing poses and mesh deformation. A WebGL print pass adds restrained ink, shadow halftone and colour separation.
+          The terminal is a real-time 3D scene with curved architecture, physical lighting and shadows, animated luggage belts, security trays, people and a departing aircraft. The traveler uses an articulated 3D rig with painted surface detail. The opening film is recorded from the same world. A WebGL print pass adds restrained ink, shadow halftone and colour separation.
         </p>
         <h2 style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Photographic plate archive</h2>
         <p style={{ margin: "0 0 20px", color: "#cdd2d4", fontSize: 14 }}>
@@ -33,7 +33,7 @@ export default function CreditsPage() {
         <section aria-labelledby="character-credit" style={{ marginTop: 40, borderTop: "1px solid #34404b", paddingTop: 30 }}>
           <h2 id="character-credit" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Illustration & animation</h2>
           <p style={{ margin: 0, color: "#cdd2d4", fontSize: 14 }}>
-            The cityscape, atrium, check-in, security, concourse and gate paintings, traveler poses, aircraft and paint texture were created for this site with AI image generation. Passengers, shops and furnishings are part of the environment paintings. Earlier generated prop artwork includes an original Paddington fan-art vignette. The personal gallery uses Ammar’s own photographs.
+            The 3D airport, props, aircraft and articulated character were built for this site. AI-generated artwork supplies the distant cityscape, painted material detail, original traveler reference and an original Paddington fan-art vignette on the café television. Earlier environment paintings remain archived in the project. The personal gallery uses Ammar’s own photographs.
           </p>
         </section>
         <p style={{ marginTop: 32, fontSize: 14, color: "#aeb8c1" }}>

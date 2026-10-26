@@ -145,8 +145,12 @@ Style and lighting: high-end feature-animation production painting, dimensional 
 Constraints: 16:9 landscape, opaque image, no television frame or bezel because the website provides it; no written title, lettering, subtitles, film studio marks, logos, watermark or decorative border. No photographic movie still, no collage.
 ```
 
-## Painted terminal revision
+## Painted terminal revision (archived)
 
 The original illustrated traveler is retained. The crude procedural character and box environments are replaced by layered production paintings. New atrium, check-in, security, concourse and gate images were generated with built-in image_gen. Exact prompts, selected sources and output paths: [atrium/check-in/security](./painted-v4-provenance.json) and [concourse/gate](./environment-v4-provenance.json). These are original illustrated scenes, not film stills.
 
 Saved project assets: [atrium](./terminal-atrium-v4.webp), [check-in](./checkin-v4.webp), [security](./security-v4.webp), [concourse](./concourse-v4.webp), and [gate](./gate-v4.webp).
+
+## Current 3D terminal
+
+The live terminal uses film-terminal.ts, film-architecture.ts, film-materials.ts, film-traveler-3d.ts and film-aircraft.ts. The rooms, character, moving objects and aircraft are real geometry. The original traveler image is sampled as painted albedo on the articulated model’s rear surfaces; it is not an image plane. The city is a distant exterior backdrop. Full-room v4 paintings are archived and are not used as live rooms. The opening MP4s are recordings of the live 3D world.

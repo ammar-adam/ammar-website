@@ -3,7 +3,8 @@
 import {useEffect,useRef} from "react";
 import type {MotionValue} from "framer-motion";
 import * as THREE from "three";
-import {createPaintedTerminal} from "./painted-terminal";
+import {createFilmTerminal} from "./film-terminal";
+import {createRoomVisibility} from "./room-visibility";
 import {TERMINAL_POST_FRAGMENT,TERMINAL_POST_VERTEX} from "./terminal-post";
 
 type Props={active?:boolean;t:MotionValue<number>;reduced:boolean;experienceIndex:number;projectIndex:number;departure:MotionValue<number>;onPhoto:(index:number)=>void;onReady?:()=>void};
@@ -27,9 +28,10 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
   try{renderer=new THREE.WebGLRenderer({canvas:surface,antialias:false,alpha:false,powerPreference:"high-performance"});}
   catch{element.dataset.fallback="1";view.current.onReady?.();return;}
   renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,1.35));renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.NoToneMapping;
-  renderer.shadowMap.enabled=false;renderer.shadowMap.type=THREE.PCFSoftShadowMap;
+  renderer.shadowMap.enabled=true;renderer.shadowMap.type=THREE.PCFShadowMap;
   const schedule=()=>{dirty=true;if(!dead&&!lost&&!document.hidden&&!frame)frame=requestAnimationFrame(draw);};scheduleRef.current=schedule;
-  const world=createPaintedTerminal(schedule);
+  const world=createFilmTerminal(schedule);
+  const roomVisibility=createRoomVisibility(world.scene);
   const target=new THREE.WebGLRenderTarget(1,1,{depthBuffer:true});target.depthTexture=new THREE.DepthTexture(1,1,THREE.UnsignedIntType);
   target.samples=4;
   const postScene=new THREE.Scene(),postCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
@@ -39,8 +41,10 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
   function draw(){frame=0;dirty=false;if(dead||lost||document.hidden)return;
    const w=Math.max(1,element!.clientWidth),h=Math.max(1,element!.clientHeight);
    if(w!==width||h!==height){width=w;height=h;renderer.setSize(w,h,false);const size=renderer.getDrawingBufferSize(new THREE.Vector2());target.setSize(size.x,size.y);postMaterial.uniforms.uResolution.value.copy(size);}
+   roomVisibility.restore();
    const state=view.current;world.update({t:motionValues.current.t.get(),departure:motionValues.current.departure.get(),reduced:state.reduced,experienceIndex:state.experienceIndex,projectIndex:state.projectIndex,aspect:w/h,time:(performance.now()-started)/1000});
 
+   roomVisibility.apply(motionValues.current.t.get());
    const progress=motionValues.current.t.get(),moving=Math.abs(progress-lastProgress)>.000015;
    const rush=Math.exp(-Math.pow((progress-.055)/.027,2))*.75+Math.exp(-Math.pow((progress-.145)/.026,2))*.9;
    postMaterial.uniforms.uMotion.value=state.reduced||!moving||progress>=.24?0:Math.min(1,rush);postMaterial.uniforms.uTime.value=state.reduced?0:(performance.now()-started)/1000;lastProgress=progress;
@@ -75,5 +79,5 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
   const resize=new ResizeObserver(schedule);resize.observe(element);schedule();
   return()=>{dead=true;scheduleRef.current=()=>{};cancelAnimationFrame(frame);resize.disconnect();surface.removeEventListener("click",click);surface.removeEventListener("pointermove",hover);surface.removeEventListener("webglcontextlost",lose);surface.removeEventListener("webglcontextrestored",restore);document.removeEventListener("visibilitychange",visibility);world.dispose();quadGeometry.dispose();postMaterial.dispose();target.depthTexture?.dispose();target.dispose();renderer.dispose();if(!lost&&!surface.isConnected)renderer.forceContextLoss();};
  },[]);
- return <div ref={root} className="terminal-world" data-fallback="1" style={{position:"absolute",inset:0,overflow:"hidden",background:"#112c43 url('/art/terminal-atrium-v4.webp') center / cover"}}><canvas ref={canvas} aria-label="A continuous illustrated airport terminal" style={{display:"block",width:"100%",height:"100%",opacity:0}} /></div>;
+ return <div ref={root} className="terminal-world" data-fallback="1" style={{position:"absolute",inset:0,overflow:"hidden",background:"#112c43 url('/art/terminal-atrium-v4.webp') center / cover"}}><canvas ref={canvas} aria-label="A continuous three-dimensional airport terminal" style={{display:"block",width:"100%",height:"100%",opacity:0}} /></div>;
 }
