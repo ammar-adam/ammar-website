@@ -3,6 +3,8 @@
 import "./terminal-journey.css";
 
 import dynamic from "next/dynamic";
+import Link from "next/link";
+import "./film-type.css";
 import { SocialLinks } from "./SocialLinks";
 import { OpeningFilm } from "./OpeningFilm";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
@@ -10,7 +12,6 @@ import { AnimatePresence, animate, motion, useMotionValue, useScroll, useSpring,
 const TerminalWorld = dynamic(() => import("./TerminalWorld").then(module => module.TerminalWorld), { ssr: false });
 import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
-import { ShortVersion } from "./ShortVersion";
 import { JourneyNavigation } from "./JourneyNavigation";
 import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
 
@@ -82,9 +83,6 @@ export function SpiderVerse() {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previous; };
   }, [intro, reduced]);
-  const [shortOpen, setShortOpen] = useState(false);
-  const openShort = useCallback(() => setShortOpen(true), []);
-  const closeShort = useCallback(() => setShortOpen(false), []);
   const onReady = useCallback(() => setReady(true), []);
 
   // Keep the same story position when rotation or a resized window changes svh.
@@ -150,20 +148,20 @@ export function SpiderVerse() {
 
   return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready} data-intro-playing={intro && !reduced}>
     <h1 className="tj-sr-only">Ammar Adam — CS & Finance at Waterloo</h1>
-    <button className="tj-skip" onClick={() => { finishIntro(); openShort(); }}>Skip to the short version</button>
+    <Link className="tj-skip" href="/short">Skip to the short version</Link>
     <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">
-        {(!intro || reduced || warmWorld) && <TerminalWorld t={t} reduced={reduced} active={!intro && !shortOpen && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} />}
+        {(!intro || reduced || warmWorld) && <TerminalWorld t={t} reduced={reduced} active={!intro && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} />}
         <div className="tj-screen-shade" aria-hidden="true" />
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
-          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onOpenChange={setDetailsOpen} onShort={openShort} />}
-          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onOpenChange={setDetailsOpen} onShort={openShort} />}
+          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onOpenChange={setDetailsOpen} />}
+          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onOpenChange={setDetailsOpen} />}
           {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
         <header className="tj-header">
           <div className="tj-header-left"><button className="tj-brand" onClick={() => { jump(0); if (!reduced) setIntro(true); }} aria-label="Replay introduction"><span aria-hidden="true">a<span>/</span>a</span></button><JourneyNavigation chapter={chapter} onNavigate={index => { jump(index); if (index === 0 && !reduced) setIntro(true); }} /></div>
-          <div className="tj-header-links"><nav aria-label="Portfolio shortcuts"><button className="tj-short-button" onClick={openShort} aria-haspopup="dialog">Short version <span aria-hidden="true">↗</span></button></nav><SocialLinks /></div>
+          <div className="tj-header-links"><nav aria-label="Portfolio shortcuts"><Link className="tj-short-button" href="/short">Short version <span aria-hidden="true">↗</span></Link></nav><SocialLinks /></div>
         </header>
         <footer className="tj-footer">
           <p className="tj-scroll-cue">{!ready ? "Loading the terminal…" : chapter === 4 ? "Let’s make something happen." : <>Scroll to continue <span aria-hidden="true">↓</span></>}</p>
@@ -172,7 +170,6 @@ export function SpiderVerse() {
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>
     </div>
-    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} onShort={() => { finishIntro(); openShort(); }} />}</AnimatePresence>
-    <ShortVersion open={shortOpen} onClose={closeShort} />
+    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} />}</AnimatePresence>
   </main>;
 }

@@ -1,8 +1,55 @@
-.sp-standalone{min-height:100svh;background:#101b27;padding:40px 24px;line-height:1.7}
-.short-sheet{width:min(900px,100%);margin:0 auto;background:var(--sp-paper);box-shadow:3px 0 0 #d33d4a}
-.short-return{display:inline-flex;align-items:center;gap:13px;min-height:44px;color:var(--sp-paper);font-size:14px;text-decoration:none}
-.short-return:hover{color:#ffafa4}
-.short-skip{position:fixed;z-index:10;left:20px;top:12px;padding:8px 15px;background:var(--sp-paper);color:var(--sp-ink);transform:translateY(-180%)}
+.short-page{min-height:100svh;background:#fefefd;color:#191a18;font:400 15px/1.75 var(--font-inter),Arial,sans-serif;letter-spacing:-.015em;color-scheme:light;isolation:isolate}
+.short-page *{box-sizing:border-box}
+.short-page::selection{background:#dfe9d4;color:#191a18}
+.short-color-field{position:fixed;z-index:-1;inset:0;width:100%;height:100%;pointer-events:none;background:#fefefd;opacity:1}
+.short-content{position:relative;width:min(660px,calc(100% - 48px));margin:0 auto;padding:69px 0 39px}
+.short-page a{color:inherit;text-decoration:underline;text-decoration-color:#74776b70;text-underline-offset:3px;text-decoration-thickness:1px;transition:text-decoration-color .15s}
+.short-page a:hover{text-decoration-color:#191a18}
+.short-page :is(a,button):focus-visible{outline:2px solid #303c32;outline-offset:4px;border-radius:1px}
+.short-page :is(section,h2):focus{outline:none}
+.short-header{display:flex;align-items:baseline;justify-content:space-between;gap:25px;margin-bottom:32px}
+.short-header h1{margin:0;font-size:22px;font-weight:550;line-height:1.4;letter-spacing:-.045em;white-space:nowrap}
+.short-header nav{display:flex;align-items:center;gap:23px;color:#737670}
+.short-header nav a{display:inline-flex;align-items:center;gap:5px;min-height:44px;font-size:13px;text-decoration:none}
+.short-header nav a:hover{color:#191a18}
+.short-header nav a span{font-size:12px}
+.short-intro{scroll-margin-top:32px}
+.short-intro>p{margin:0 0 18px;font-size:16px;line-height:1.8;color:#30332e;max-width:65ch}
+.short-intro>p a{font-weight:500;color:#171a17}
+.short-socials{display:flex;align-items:center;gap:23px;margin:0 0 10px}
+.short-socials a{display:inline-flex;align-items:center;justify-content:center;min-width:24px;min-height:44px;font-size:13px;color:#666b62;text-decoration-color:#9ca09580}
+.short-socials a:hover{color:#191a18}
+.short-section{margin-top:43px;scroll-margin-top:34px}
+.short-section>h2{margin:0 0 25px;color:#6c7068;font-size:14px;font-weight:500;line-height:1.6;letter-spacing:-.015em}
+.short-entries{display:flex;flex-direction:column;gap:28px;list-style:none;margin:0;padding:0}
+.short-entries>li{display:grid;grid-template-columns:157px minmax(0,1fr);gap:27px}
+.short-entry-meta{min-width:0;padding-top:1px}
+.short-entry-meta h3{margin:0;font-size:14px;line-height:1.6;font-weight:550;letter-spacing:-.025em}
+.short-entry-meta h3 a{text-decoration:none}
+.short-entry-meta h3 a:hover{text-decoration:underline;text-underline-offset:4px;text-decoration-color:#74776b70}
+.short-entry-meta h3 a>span{font-size:11px;margin-left:6px;color:#92958e;white-space:nowrap}
+.short-entry-meta p{margin:4px 0 4px;color:#73776e;font-size:12px;line-height:1.65;letter-spacing:-.01em}
+.short-location{display:block;font-size:11px;color:#858980;line-height:1.65;letter-spacing:.005em}
+.short-description{margin:0;color:#454a42;font-size:14px;line-height:1.8;letter-spacing:-.01em}
+.short-project-links{display:flex;align-items:center;flex-wrap:wrap;gap:0 22px;margin-top:1px}
+.short-project-links a{display:inline-flex;align-items:center;gap:5px;min-height:44px;font-size:12px;color:#73776f;text-decoration-color:#9ca09580}
+.short-project-links a>span{font-size:11px;color:#8b9185}
+.short-section+.short-section{margin-top:48px}
+.short-footer{margin-top:53px;padding-top:24px;border-top:1px solid #32392e20;color:#74786f;font-size:13px;line-height:1.7}
+.short-footer p{margin:0 0 9px}
+.short-footer>a,.short-footer>button{display:inline-flex;align-items:center;gap:9px;min-height:44px;font:400 12px/1.5 var(--font-inter),Arial,sans-serif;color:#73776e;background:none;border:0;padding:0;text-decoration:none;cursor:pointer}
+.short-footer>a:hover,.short-footer>button:hover{color:#191a18}
+.short-motion{display:flex;align-items:center;gap:8px;padding:0;min-height:44px;border:0;background:none;color:#8a8d84;font:400 11px/1.5 var(--font-inter),Arial,sans-serif;cursor:pointer;margin-top:10px}
+.short-motion:hover{color:#191a18}.short-motion span{font-size:13px}
+.short-skip{position:fixed;z-index:5;left:20px;top:10px;padding:9px 15px;background:#fff;color:#191a18;transform:translateY(-180%)}
 .short-skip:focus{transform:translateY(0)}
-@media(max-width:720px){.sp-standalone{padding:12px 10px}.short-return{font-size:13px;gap:8px}}
-@media(max-width:360px){.sp-standalone{padding:0}.short-sheet{box-shadow:none}}
+@media(max-width:760px){
+ .short-content{width:calc(100% - 48px);max-width:560px;padding-top:35px;padding-bottom:26px}
+ .short-header{gap:16px;align-items:baseline;margin-bottom:27px}.short-header h1{font-size:21px}.short-header nav{gap:17px}.short-header nav a{font-size:12px}
+ .short-intro>p{font-size:15px;line-height:1.8;margin-bottom:17px}.short-socials{gap:24px}.short-socials a{font-size:13px}
+ .short-section{margin-top:34px}.short-section>h2{margin-bottom:22px;font-size:13px}.short-entries{gap:28px}.short-entries>li{grid-template-columns:1fr;gap:7px}.short-entry-meta h3{font-size:15px}.short-entry-meta p{margin:3px 0;font-size:12px}.short-location{font-size:11px}.short-description{font-size:14px;line-height:1.8}.short-entry-meta .short-location{display:none}.short-entries>li[data-short-project] .short-location{display:none}.short-project-links a{font-size:12px}
+ .short-section+.short-section{margin-top:40px}.short-footer{margin-top:38px;padding-top:23px}.short-color-field{opacity:.75}
+}
+@media(max-width:420px){.short-header{display:block;margin-bottom:24px}.short-header nav{gap:25px;margin-top:6px}.short-header h1{font-size:22px}.short-content{padding-top:30px}.short-color-field{opacity:.7}.short-intro>p{font-size:15px}}
+@media(max-width:360px){.short-content{width:calc(100% - 40px);padding-top:24px}.short-header{margin-bottom:20px}.short-header nav{gap:23px}.short-intro>p{font-size:15px}.short-socials{gap:22px}.short-description{font-size:14px}}
+@media(prefers-reduced-motion:reduce){.short-page a{transition:none}}

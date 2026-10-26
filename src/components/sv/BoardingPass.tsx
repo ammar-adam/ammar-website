@@ -93,8 +93,8 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
   return <div className={`bp-scene${reduced ? " bp-reduced" : ""}`} data-scan-status={status} data-scan-duration={SCAN_MS} data-departure-delay={DEPARTURE_MS} data-open-delay={OPEN_MS}>
     <div className="bp-layout">
       <div className="bp-introduction">
-        <p className="bp-eyebrow">AMMAR ADAM / GET IN TOUCH</p>
-        <h2 className="bp-title">That’s the story<br /> so far.</h2>
+        <p className="bp-eyebrow">And that’s me.</p>
+        <h2 className="bp-title">The story’s<br />still going.</h2>
       </div>
 
       <motion.article className="bp-ticket" aria-label="Ammar Adam’s resume boarding pass" data-scan-status={status} data-stub-detached={detached} style={{ y, rotate }}>

@@ -40,20 +40,86 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
  const paint=new THREE.MeshStandardMaterial({color:0xffffff,vertexColors:true,roughness:.88,metalness:0,flatShading:false});
  paint.onBeforeCompile=shader=>{
   shader.uniforms.originalTravelerPaint=originalPaint;shader.uniforms.originalTravelerReady=paintReady;
-  shader.vertexShader=shader.vertexShader.replace("#include <common>","#include <common>\nvarying vec3 clothPoint;\nattribute vec3 paintProjection;\nvarying vec3 originalPaintUV;").replace("#include <begin_vertex>","#include <begin_vertex>\nclothPoint=position;\noriginalPaintUV=paintProjection;");
-  shader.fragmentShader=shader.fragmentShader.replace("#include <common>","#include <common>\nvarying vec3 clothPoint;\nvarying vec3 originalPaintUV;\nuniform sampler2D originalTravelerPaint;\nuniform float originalTravelerReady;").replace("#include <color_fragment>",`#include <color_fragment>
+  shader.vertexShader=shader.vertexShader.replace("#include <common>",`#include <common>
+   varying vec3 clothPoint;
+   attribute vec3 paintProjection;
+   attribute float clothRegion;
+   varying vec3 originalPaintUV;
+   varying float drawnRegion;
+   varying vec3 clothRestNormal;`).replace("#include <begin_vertex>",`#include <begin_vertex>
+   clothPoint=position;originalPaintUV=paintProjection;drawnRegion=clothRegion;clothRestNormal=normal;`);
+  shader.fragmentShader=shader.fragmentShader.replace("#include <common>",`#include <common>
+   varying vec3 clothPoint;
+   varying vec3 originalPaintUV;
+   varying float drawnRegion;
+   varying vec3 clothRestNormal;
+   uniform sampler2D originalTravelerPaint;
+   uniform float originalTravelerReady;
+   float drawnStroke(vec2 p,vec2 a,vec2 b,float width){
+    vec2 axis=b-a;float along=clamp(dot(p-a,axis)/dot(axis,axis),0.0,1.0);
+    float distanceToStroke=length(p-a-along*axis);
+    float irregularWidth=width*1.65*(0.78+0.22*sin(along*17.0));
+    float aa=max(fwidth(distanceToStroke)*0.7,0.00035);
+    float broken=1.0-smoothstep(0.42,0.47,along)* (1.0-smoothstep(0.53,0.57,along));
+    return (1.0-smoothstep(irregularWidth-aa,irregularWidth+aa,distanceToStroke))*broken;
+   }
+   float garmentInk(vec2 p,float region){
+    float ink=0.0;
+    if(region>0.5&&region<1.5){
+     ink=max(drawnStroke(p,vec2(-.15,.16),vec2(-.055,.115),.0022),drawnStroke(p,vec2(.03,.29),vec2(.15,.315),.0021));
+     ink=max(ink,drawnStroke(p,vec2(-.19,.42),vec2(-.14,.34),.0018));
+    }else if(region>1.5&&region<2.5){
+     ink=max(drawnStroke(p,vec2(-.13,.23),vec2(.055,.325),.0025),drawnStroke(p,vec2(.035,.12),vec2(.145,.20),.0022));
+     ink=max(ink,drawnStroke(p,vec2(-.12,.035),vec2(.02,.085),.002));
+    }else if(region>2.5&&region<3.5){
+     ink=max(drawnStroke(p,vec2(-.064,-.205),vec2(.028,-.235),.002),drawnStroke(p,vec2(.01,-.315),vec2(.063,-.35),.0024));
+     ink=max(ink,drawnStroke(p,vec2(-.045,-.445),vec2(.034,-.405),.002));
+    }else if(region>3.5&&region<4.5){
+     ink=max(drawnStroke(p,vec2(-.06,-.36),vec2(.045,-.415),.0027),drawnStroke(p,vec2(-.045,-.46),vec2(.05,-.45),.0019));
+     ink=max(ink,drawnStroke(p,vec2(-.04,-.72),vec2(.045,-.765),.0021));
+    }else if(region>4.5){
+     ink=max(drawnStroke(p,vec2(-.145,.09),vec2(-.135,.26),.0024),drawnStroke(p,vec2(-.135,.26),vec2(.105,.29),.0024));
+     ink=max(ink,drawnStroke(p,vec2(.105,.10),vec2(.12,.19),.002));
+    }
+    return ink;
+   }`).replace("#include <color_fragment>",`#include <color_fragment>
    vec3 brushCell=floor(clothPoint*vec3(110.0,175.0,95.0));
    float pigment=fract(sin(dot(brushCell,vec3(13.13,67.71,41.9)))*43758.5453);
    float stroke=sin(clothPoint.y*173.0+sin(clothPoint.x*41.0)*3.0);
    diffuseColor.rgb*=0.88+0.10*pigment+0.025*stroke;
-   if(originalTravelerReady>0.5 && originalPaintUV.z>0.001){
+   if(originalTravelerReady>0.5&&originalPaintUV.z>0.001){
     vec4 originalPigment=texture2D(originalTravelerPaint,originalPaintUV.xy);
     float inside=step(0.0,originalPaintUV.x)*step(originalPaintUV.x,1.0)*step(0.0,originalPaintUV.y)*step(originalPaintUV.y,1.0);
     float cover=smoothstep(0.7,0.9,originalPigment.a)*inside;
-    diffuseColor.rgb=mix(diffuseColor.rgb,originalPigment.rgb,0.5*originalPaintUV.z*cover);
-   }`).replace("#include <opaque_fragment>","outgoingLight=mix(outgoingLight,diffuseColor.rgb,0.19);\n#include <opaque_fragment>");
+    diffuseColor.rgb=mix(diffuseColor.rgb,originalPigment.rgb,0.60*originalPaintUV.z*cover);
+   }
+   // Deliberately placed creases use bind coordinates, so they bend with the real cloth.
+   float rearSurface=smoothstep(-0.08,0.25,clothRestNormal.z);
+   float creaseInk=garmentInk(clothPoint.xy,drawnRegion)*rearSurface;
+   diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.006,.010,.019),creaseInk*.76);
+   `).replace("#include <opaque_fragment>",`
+   outgoingLight=mix(outgoingLight,diffuseColor.rgb,0.19);
+   if(drawnRegion>0.5){
+    // Lighting bands use real scene illumination; a fixed paint edge breaks each transition.
+    float baseValue=max(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722)),.014);
+    float lightValue=dot(outgoingLight,vec3(.2126,.7152,.0722))/baseValue;
+    float edgePaint=.025*sin(clothPoint.y*97.0+sin(clothPoint.x*71.0)*2.0);
+    float band=mix(.34,.78,smoothstep(.43+edgePaint,.49+edgePaint,lightValue));
+    band=mix(band,1.22,smoothstep(.95+edgePaint,1.01+edgePaint,lightValue));
+    band+=max(0.0,lightValue-1.6)*.55;
+    vec3 graphicLight=outgoingLight/max(lightValue,.12)*band;
+    outgoingLight=mix(outgoingLight,graphicLight,.74);
+    float edge=1.0-clamp(dot(normal,normalize(vViewPosition)),0.0,1.0);
+    float brokenEdge=smoothstep(-.15,.45,sin(clothPoint.y*43.0+clothPoint.x*31.0));
+    float inkEdge=smoothstep(.91,.995,edge)*brokenEdge*rearSurface;
+    outgoingLight=mix(outgoingLight,vec3(.004,.008,.015),inkEdge*.72);
+    vec3 rimPigment=mix(vec3(.025,.28,.49),vec3(.58,.085,.026),smoothstep(-.14,.14,clothRestNormal.x));
+    float rimEdge=smoothstep(.67,.92,edge)*(1.0-smoothstep(.95,1.0,edge));
+    outgoingLight+=rimPigment*rimEdge*brokenEdge*rearSurface*.23;
+   }
+   #include <opaque_fragment>`);
  };
- paint.customProgramCacheKey=()=>"traveler-painted-cloth-v2-original-albedo";materials.add(paint);
+ paint.customProgramCacheKey=()=>"traveler-film-language-v3";materials.add(paint);
  const palette={navy:"#24365d",light:"#3a527f",dark:"#131d36",black:"#121722",red:"#c52e29",coral:"#eb5636",cyan:"#237db1",cream:"#ded2b6",sole:"#a79b82",skin:"#793e2b",metal:"#65717b"};
  const color=new THREE.Color();
  function finish(source:THREE.BufferGeometry,base:string,variance=.025){
@@ -185,7 +251,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
  const temp=new THREE.Vector3(),gripRotation=new THREE.Quaternion(),rootRotation=new THREE.Quaternion(),caseRotation=new THREE.Quaternion(),caseEuler=new THREE.Euler();
  function update(hero:number,time:number,grounded:number){
   if(dead)return;
-  const h=clamp(hero),ground=clamp(grounded);let index=0;while(index<POSES.length-2&&h>POSES[index+1].at)index++;
+  const actualHero=clamp(hero),h=Math.floor(actualHero*72)/72,poseTime=Math.floor(time*12)/12,ground=clamp(grounded);let index=0;while(index<POSES.length-2&&h>POSES[index+1].at)index++;
   const a=POSES[index],b=POSES[index+1],t=smooth(clamp((h-a.at)/(b.at-a.at))),pose={} as Pose;
   for(const key of Object.keys(a) as (keyof Pose)[])pose[key]=mix(a[key],b[key],t);
   body.position.set(0,1-pose.drop,0);body.rotation.set(pose.pitch,pose.twist,pose.bank);
@@ -200,12 +266,12 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
   caseRotation.setFromEuler(caseEuler.set(pose.casePitch*.55,Math.sin(h*Math.PI*2-.8)*.1*(1-ground),pose.caseRoll));
   suitcase.quaternion.copy(gripRotation.invert()).multiply(rootRotation).multiply(caseRotation);
   pack.rotation.x=.025*Math.sin(h*Math.PI*3-.7)*(1-ground);
-  body.position.y+=.002*Math.sin(time*2.3)*ground;
+  body.position.y+=.002*Math.sin(poseTime*2.3)*ground;
   // Solve foot contact in root-local space so the parent can freely place/rotate the actor.
   body.updateMatrixWorld(true);const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert();let lowest=Infinity;
   for(const sole of soles){sole.getWorldPosition(temp).applyMatrix4(inverse);lowest=Math.min(lowest,temp.y);}
   body.position.y-=lowest*ground;
-  root.userData.hero=h;root.userData.pose=h<.45?"swing":h<.78?"release":h<.98?"landing":"standing";
+  root.userData.hero=actualHero;root.userData.poseFrame=Math.floor(actualHero*72);root.userData.pose=h<.45?"swing":h<.78?"release":h<.98?"landing":"standing";
  }
  update(1,0,1);
  // Bake projection coordinates once in the standing bind pose. They then travel with each joint.
@@ -214,10 +280,14 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
  root.traverse(object=>{
   if(!(object instanceof THREE.Mesh))return;
   const position=object.geometry.getAttribute("position"),normal=object.geometry.getAttribute("normal"),projection=new Float32Array(position.count*3);
-  let cloth=!(object instanceof THREE.InstancedMesh),backpack=false;
+  let cloth=!(object instanceof THREE.InstancedMesh),backpack=false,region=0;
   for(let node:THREE.Object3D|null=object;node&&node!==root;node=node.parent){
    if(/ankle|wrist|finger|suitcase|grip/.test(node.name))cloth=false;
-   if(node.name==="backpack")backpack=true;
+   if(node.name==="backpack"){backpack=true;region=5;}
+   else if(node.name==="hood-and-head"&&region===0)region=2;
+   else if(/shoulder/.test(node.name)&&region===0)region=3;
+   else if(/hip/.test(node.name)&&region===0)region=4;
+   else if(node.name==="torso"&&region===0)region=1;
   }
   bindMatrix.multiplyMatrices(bindInverse,object.matrixWorld);bindNormal.getNormalMatrix(bindMatrix);
   for(let i=0;i<position.count;i++){
@@ -228,6 +298,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
    projection[i*3+2]=cloth?smooth(clamp((normalPoint.z-.20)/.50)):0;
   }
   object.geometry.setAttribute("paintProjection",new THREE.BufferAttribute(projection,3));
+  object.geometry.setAttribute("clothRegion",new THREE.BufferAttribute(new Float32Array(position.count).fill(cloth?region:0),1));
  });
  return{root,raisedHand:leftArm.grip,update,dispose(){if(dead)return;dead=true;originalPaint.value?.dispose();hair.dispose();for(const skeleton of skeletons)skeleton.dispose();for(const geometry of geometries)geometry.dispose();for(const material of materials)material.dispose();root.clear();}};
 }

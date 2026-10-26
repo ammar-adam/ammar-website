@@ -3,15 +3,17 @@
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
+import { FilmTitle } from "./FilmTitle";
 import { careerArrivals, getArrivalBySlug } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import "./manifest.css";
 
 const VOICE = [
   { pre: "", lines: ["Alright."], aside: "Let’s do this one more time." },
-  { pre: "My name’s", lines: ["Ammar", "Adam."], aside: "I study CS and finance at Waterloo." },
-  { pre: "And outside of class,", lines: ["I build", "things."], aside: "AI tools. Waze voices.\nFive agents arguing about stocks." },
-  { pre: "I also bring", lines: ["People", "together."], aside: "Student builders. Founders. People with an idea.\nCome on. I’ll show you." },
+  { pre: "My name’s", lines: ["Ammar", "Adam."], aside: "CS & Finance at Waterloo." },
+  { pre: "Most days, I’m", lines: ["Making", "things."], aside: "AI tools. Character voices.\nThe occasional five-agent argument." },
+  { pre: "And finding", lines: ["My", "people."], aside: "Builders, founders, friends.\nCome on. I’ll show you." },
 ];
 const BEATS = [0, .055, .112, .175, .24];
 
@@ -26,32 +28,31 @@ function IntroBeat({ t, beat, reduced }: { t: MotionValue<number>; beat: number;
   const voice = VOICE[beat];
   const local = useTransform(t, [BEATS[beat], BEATS[beat + 1]], [0, 1]);
   const opacity = useTransform(local, [0, .07, .85, 1], [beat === 0 || reduced ? 1 : .15, 1, 1, reduced ? 1 : .1]);
-  const y = useTransform(local, [0, .13, .82, 1], [reduced ? 0 : 12, 0, 0, reduced ? 0 : -12]);
-  const skewX = useTransform(local, [0, .22, 1], [reduced ? 0 : -5, -2, -2]);
+  const y = useTransform(local, [0, 1], [0, 0]);
   return <motion.section className={`tj-intro tj-intro-${beat}`} data-intro-beat={beat} style={{ opacity, y }} aria-label="Introduction">
     {voice.pre && <p className="tj-voice-lead">{voice.pre}</p>}
-    <motion.h2 style={{ skewX }}>{voice.lines.map((line, index) => <span key={line} className={index === 1 ? "tj-red-word" : undefined}>{line}</span>)}</motion.h2>
+    <h2><FilmTitle words={voice.lines} /></h2>
     <p className="tj-voice-aside">{voice.aside}</p>
     {beat === 0 && <p className="tj-start-cue"><span aria-hidden="true">↓</span> Scroll to continue</p>}
   </motion.section>;
 }
 
 const WORK = [
-  { line: "I started in finance.", role: "M&A Summer Analyst", result: "$50M+", label: "in buy- and sell-side deal flow supported.", body: "At 16, I became Alpen’s youngest intern, working in equity advisory and learning financial modelling and investment research." },
-  { line: "Then I started building.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
-  { line: "Now, I build AI tools.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
-  { line: "And find other builders.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
-  { line: "I’m learning to back them.", role: "Pear VC Fellow", result: "~50 / 650+", label: "fellows selected / applicants across 17 campuses.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
+  { line: "I was sixteen when I started.", role: "M&A Summer Analyst", result: "$50M+", label: "in buy- and sell-side deal flow supported.", body: "At 16, I became Alpen’s youngest intern, working in equity advisory and learning financial modelling and investment research." },
+  { line: "Next, I put code to work.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
+  { line: "Turns out, I like the useful stuff.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
+  { line: "Building gets better with people.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
+  { line: "Good ideas deserve a shot.", role: "Pear VC Fellow", result: "~50 / 650+", label: "fellows selected / applicants across 17 campuses.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
 ];
 
 const PROJECT_VOICE = [
-  { line: "I gave my GPS a new voice.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
-  { line: "Then I tested the idea.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
-  { line: "I also build communities.", role: "Managing Director", result: "1,300+ members", label: "30+ students placed into startups.", body: "I run Waterloo’s student venture community and support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
-  { line: "And bring people together.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
+  { line: "Yes, I made my GPS talk.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
+  { line: "Five agents. I checked their work.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
+  { line: "Some projects aren’t code.", role: "Managing Director", result: "1,300+ members", label: "30+ students placed into startups.", body: "I run Waterloo’s student venture community and support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
+  { line: "Get everyone in the same room.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
 ];
 
-type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void; onShort?: () => void };
+type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void };
 type DetailLink = { label: string; url: string };
 type DetailContent = { name: string; role: string; location?: string; result: string; body: string; image?: string; links: DetailLink[] };
 
@@ -69,9 +70,9 @@ const PROJECT_RESULTS = [
   "70 events. $6K+ raised.",
 ];
 
-function SceneReadout({ kind, selected, select, names, role, result, detail, slug, onOpenChange, onShort }: {
+function SceneReadout({ kind, selected, select, names, role, result, detail, slug, onOpenChange }: {
   onOpenChange?: (open: boolean) => void; kind: "experience" | "project"; selected: number; select: (index: number) => void;
-  names: string[]; role: string; result: string; detail: DetailContent; slug: string; onShort?: () => void;
+  names: string[]; role: string; result: string; detail: DetailContent; slug: string;
 }) {
   const [open, setOpen] = useState(false);
   useEffect(() => { onOpenChange?.(open); return () => onOpenChange?.(false); }, [open, onOpenChange]);
@@ -79,7 +80,7 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
   const dialogId = useId();
   return <section className={`mf-scene mf-${section}`} aria-label={section}>
     <div className="mf-panel" data-experience-detail={kind === "experience" ? slug : undefined} data-project-detail={kind === "project" ? slug : undefined}>
-      <div className="mf-caption">
+      <div className="mf-caption" key={slug}>
       <div className="mf-readout-label"><span>{kind === "experience" ? WORK[selected].line : PROJECT_VOICE[selected].line}</span><span className="mf-item-number">{selected + 1} <i>/ {names.length}</i></span></div>
       <div className="mf-identity">
         <h2 className="mf-sr-only">{detail.name}</h2>
@@ -93,14 +94,14 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
       <div className="mf-controls">
         <div className="mf-stepper"><button type="button" aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button><button type="button" aria-label={`Next ${kind}`} disabled={selected === names.length - 1} onClick={() => select(selected + 1)}>→</button></div>
         <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpen(true)}>Details <span aria-hidden="true">↗</span></button>
-        <button type="button" className="mf-short-link" onClick={onShort} aria-haspopup="dialog">Short version <span aria-hidden="true">↗</span></button>
+        <Link className="mf-short-link" href={`/short#${section === "experience" ? "short-work" : "short-projects"}`}>Short version <span aria-hidden="true">↗</span></Link>
       </div>
     </div>
-    <StoryDetails id={dialogId} open={open} onClose={() => setOpen(false)} item={detail} section={section} onShort={() => { setOpen(false); requestAnimationFrame(() => onShort?.()); }} />
+    <StoryDetails id={dialogId} open={open} onClose={() => setOpen(false)} item={detail} section={section} />
   </section>;
 }
 
-function StoryDetails({ id, open, onClose, item, section, onShort }: { id: string; open: boolean; onClose: () => void; item: DetailContent; section: "experience" | "projects"; onShort: () => void }) {
+function StoryDetails({ id, open, onClose, item, section }: { id: string; open: boolean; onClose: () => void; item: DetailContent; section: "experience" | "projects" }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   useEffect(() => {
@@ -124,17 +125,17 @@ function StoryDetails({ id, open, onClose, item, section, onShort }: { id: strin
       {item.image && <div className="mf-dialog-image"><Image src={item.image} alt={item.name} fill unoptimized sizes="(max-width: 700px) 90vw, 440px" /></div>}
       <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={`${item.name} links`}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</nav></article>
     </div>
-    <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><button type="button" onClick={onShort} aria-haspopup="dialog">Short version <span aria-hidden="true">↗</span></button></footer>
+    <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><Link href={`/short#${section === "experience" ? "short-work" : "short-projects"}`}>Short version <span aria-hidden="true">↗</span></Link></footer>
   </dialog>;
 }
 
-export function ExperienceStory({ selected, select, onOpenChange, onShort }: StorySelection) {
+export function ExperienceStory({ selected, select, onOpenChange }: StorySelection) {
   const current = careerArrivals[selected];
-  return <SceneReadout onShort={onShort} onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={careerArrivals.map(item => item.from)} role={WORK[selected].role} result={WORK_RESULTS[selected]} slug={current.slug} detail={{ name: current.from, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
+  return <SceneReadout onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={careerArrivals.map(item => item.from)} role={WORK[selected].role} result={WORK_RESULTS[selected]} slug={current.slug} detail={{ name: current.from, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
 }
 
-export function ProjectStory({ selected, select, onOpenChange, onShort }: StorySelection) {
+export function ProjectStory({ selected, select, onOpenChange }: StorySelection) {
   const current = projects[selected];
   const community = getArrivalBySlug(current.slug === "waterloo-tech-week" ? "hack-the-north" : current.slug);
-  return <SceneReadout onShort={onShort} onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / HTN" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
+  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / HTN" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
 }

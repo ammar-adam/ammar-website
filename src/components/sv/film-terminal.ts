@@ -80,8 +80,8 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
  const toon=(color:string)=>keepMaterial(new THREE.MeshStandardMaterial({color,roughness:.82,metalness:.08}));
  const architecture=createFilmArchitecture(palette.materials);scene.add(architecture.root);
  const outline=keepMaterial(new THREE.LineBasicMaterial({color:"#091122",transparent:true,opacity:.72}));
- scene.add(new THREE.HemisphereLight("#b7d9e8","#997656",.5));
- const key=new THREE.DirectionalLight("#ffd0a0",3.2);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(1536,1536);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00035;key.shadow.normalBias=.025;scene.add(key,key.target);
+ scene.add(new THREE.HemisphereLight("#b7d9e8","#685471",.42));
+ const key=new THREE.DirectionalLight("#ffe0b5",3.8);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(1536,1536);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00035;key.shadow.normalBias=.025;scene.add(key,key.target);
  const cool=new THREE.DirectionalLight("#80cfe5",.55);cool.position.set(-12,7,10);scene.add(cool);
  const pink=new THREE.DirectionalLight("#edc7a1",.18);pink.position.set(-18,5,-70);scene.add(pink);
  const unitBox=keepGeometry(new RoundedBoxGeometry(1,1,1,2,.035));
@@ -342,7 +342,7 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
    const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=travelerKey.visible=travelerRim.visible=visible;
    if(visible){
     camera.getWorldDirection(forward);right.setFromMatrixColumn(camera.matrixWorld,0);up.setFromMatrixColumn(camera.matrixWorld,1);
-    const distance=4.4+.4*Math.sin(hero*Math.PI),lateral=state.aspect<.8?.1+Math.sin(hero*Math.PI*2)*.55:1.35+Math.sin(hero*Math.PI*2)*1.25;
+    const distance=4.4+.4*Math.sin(hero*Math.PI),lateral=state.aspect<.8?-.12+Math.sin(hero*Math.PI*2)*.44:1.35+Math.sin(hero*Math.PI*2)*1.25;
     temp.copy(camera.position).addScaledVector(forward,distance).addScaledVector(right,lateral).addScaledVector(up,-.95+Math.sin(hero*Math.PI)*.6);
     temp.lerp(new THREE.Vector3(1.7,.035,-24.1-clamp((p-.24)/.035)*.5),landing);temp.y=Math.max(.035,temp.y);
     traveler.root.position.copy(temp);traveler.root.rotation.set(0,Math.atan2(-forward.x,-forward.z)+Math.sin(hero*Math.PI*2)*.32*(1-landing),0);
