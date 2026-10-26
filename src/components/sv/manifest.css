@@ -42,3 +42,5 @@
 @media(max-height:500px) and (min-width:721px){
  .mf-panel{left:3%;bottom:75px;width:360px;max-width:44vw}.mf-caption{padding:8px 14px 10px}.mf-readout-label{font-size:13px}.mf-identity select{font-size:21px;height:44px}.mf-role{font-size:12px}.mf-result{font-size:14px;margin-top:5px}.mf-controls{gap:10px;margin-top:4px}.mf-controls a,.mf-controls button{font-size:12px}.mf-stepper button{font-size:22px}.mf-details-button{gap:8px}.mf-dialog-image{min-height:210px}.mf-dialog-header{padding-block:5px}.mf-dialog-copy{padding:20px}.mf-dialog-copy h2{font-size:26px}.mf-dialog-footer{padding-block:5px}.mf-dialog-result{font-size:17px}.mf-dialog-description{font-size:15px}
 }
+
+.mf-short-link,.mf-dialog-footer button{border:0;background:none;color:inherit;font:inherit;cursor:pointer;min-height:44px;padding:6px 0}.mf-dialog-footer button{font-size:12px;text-decoration:underline;text-underline-offset:4px}

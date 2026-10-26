@@ -1,16 +1,17 @@
 "use client";
 
 import "./terminal-journey.css";
-import Link from "next/link";
+
 import dynamic from "next/dynamic";
 import { SocialLinks } from "./SocialLinks";
 import { OpeningFilm } from "./OpeningFilm";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
 const TerminalWorld = dynamic(() => import("./TerminalWorld").then(module => module.TerminalWorld), { ssr: false });
-import { SpokenIntro, ExperienceStory, ProjectStory, MemoryStory } from "./TerminalStory";
+import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
-import { PhotoGallery } from "./PhotoGallery";
+import { ShortVersion } from "./ShortVersion";
+import { JourneyNavigation } from "./JourneyNavigation";
 import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
@@ -60,7 +61,6 @@ export function SpiderVerse() {
     return () => clearTimeout(timer);
   }, []);
   const finishIntro = useCallback((seek = true) => {
-    try { sessionStorage.setItem("ammar-intro-seen", "1"); } catch {}
     setIntro(false);
     if (seek) {
       const progress = .2405;
@@ -70,10 +70,8 @@ export function SpiderVerse() {
     }
   }, [scrollYProgress, smooth]);
   useEffect(() => {
-    let seen = false;
-    try { seen = sessionStorage.getItem("ammar-intro-seen") === "1"; } catch {}
     const linked = !!window.location.hash;
-    if (reduced || seen || linked) {
+    if (reduced || linked) {
       const frame = requestAnimationFrame(() => finishIntro(!linked));
       return () => cancelAnimationFrame(frame);
     }
@@ -84,9 +82,9 @@ export function SpiderVerse() {
     document.body.style.overflow = "hidden";
     return () => { document.body.style.overflow = previous; };
   }, [intro, reduced]);
-  const [gallery, setGallery] = useState({ open: false, index: 0 });
-  const openGallery = useCallback((index = 0) => setGallery({ open: true, index }), []);
-  const closeGallery = useCallback(() => setGallery(value => ({ ...value, open: false })), []);
+  const [shortOpen, setShortOpen] = useState(false);
+  const openShort = useCallback(() => setShortOpen(true), []);
+  const closeShort = useCallback(() => setShortOpen(false), []);
   const onReady = useCallback(() => setReady(true), []);
 
   // Keep the same story position when rotation or a resized window changes svh.
@@ -152,31 +150,29 @@ export function SpiderVerse() {
 
   return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready} data-intro-playing={intro && !reduced}>
     <h1 className="tj-sr-only">Ammar Adam — CS & Finance at Waterloo</h1>
-    <Link className="tj-skip" href="/short">Skip to the short version</Link>
+    <button className="tj-skip" onClick={() => { finishIntro(); openShort(); }}>Skip to the short version</button>
     <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">
-        {(!intro || reduced || warmWorld) && <TerminalWorld t={t} reduced={reduced} active={!intro && !gallery.open && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onPhoto={openGallery} onReady={onReady} />}
+        {(!intro || reduced || warmWorld) && <TerminalWorld t={t} reduced={reduced} active={!intro && !shortOpen && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} />}
         <div className="tj-screen-shade" aria-hidden="true" />
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
-          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onOpenChange={setDetailsOpen} />}
-          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onOpenChange={setDetailsOpen} />}
-          {chapter === 3 && <MemoryStory t={t} onGallery={openGallery} />}
+          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onOpenChange={setDetailsOpen} onShort={openShort} />}
+          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onOpenChange={setDetailsOpen} onShort={openShort} />}
           {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
         <header className="tj-header">
-          <button className="tj-brand" onClick={() => { jump(0); if (!reduced) setIntro(true); }} aria-label="Replay introduction"><span aria-hidden="true">a<span>/</span>a</span><b>AMMAR ADAM</b></button>
-          <div className="tj-header-links"><nav aria-label="Portfolio shortcuts"><button onClick={() => openGallery()} aria-haspopup="dialog">Photos <span>25</span></button><Link href="/short">Short version <span aria-hidden="true">↗</span></Link></nav><SocialLinks /></div>
+          <div className="tj-header-left"><button className="tj-brand" onClick={() => { jump(0); if (!reduced) setIntro(true); }} aria-label="Replay introduction"><span aria-hidden="true">a<span>/</span>a</span></button><JourneyNavigation chapter={chapter} onNavigate={index => { jump(index); if (index === 0 && !reduced) setIntro(true); }} /></div>
+          <div className="tj-header-links"><nav aria-label="Portfolio shortcuts"><button className="tj-short-button" onClick={openShort} aria-haspopup="dialog">Short version <span aria-hidden="true">↗</span></button></nav><SocialLinks /></div>
         </header>
         <footer className="tj-footer">
-          <p className="tj-location"><b>0{chapter + 1}</b> {CHAPTERS[chapter].label}</p>
-          <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => { jump(index); if (index === 0 && !reduced) setIntro(true); }} aria-label={`Go to ${["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}</b></button>)}</nav>
-          <p className="tj-scroll">{!ready ? "Loading the terminal…" : chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>Scroll to continue <span aria-hidden="true">↓</span></>}</p>
+          <p className="tj-scroll-cue">{!ready ? "Loading the terminal…" : chapter === 4 ? "Let’s make something happen." : <>Scroll to continue <span aria-hidden="true">↓</span></>}</p>
+          {chapter < 4 ? <button className="tj-next" onClick={() => jump(chapter + 1)}>{["Experience", "Projects", "Concourse", "Résumé"][chapter]}<span aria-hidden="true">→</span></button> : <a className="tj-credits" href="/credits">Visual credits ↗</a>}
         </footer>
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>
     </div>
-    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} />}</AnimatePresence>
-    <PhotoGallery open={gallery.open} initialIndex={gallery.index} onClose={closeGallery} />
+    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} onShort={() => { finishIntro(); openShort(); }} />}</AnimatePresence>
+    <ShortVersion open={shortOpen} onClose={closeShort} />
   </main>;
 }

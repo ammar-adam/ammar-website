@@ -2,11 +2,9 @@
 
 import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
-import Link from "next/link";
 import Image from "next/image";
 import { careerArrivals, getArrivalBySlug } from "@/data/arrivals";
 import { projects } from "@/data/departures";
-import { memoryGroups, memorySequence } from "./memorySequence";
 import "./manifest.css";
 
 const VOICE = [
@@ -53,7 +51,7 @@ const PROJECT_VOICE = [
   { line: "And bring people together.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
 ];
 
-type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void };
+type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void; onShort?: () => void };
 type DetailLink = { label: string; url: string };
 type DetailContent = { name: string; role: string; location?: string; result: string; body: string; image?: string; links: DetailLink[] };
 
@@ -71,9 +69,9 @@ const PROJECT_RESULTS = [
   "70 events. $6K+ raised.",
 ];
 
-function SceneReadout({ kind, selected, select, names, role, result, detail, slug, onOpenChange }: {
+function SceneReadout({ kind, selected, select, names, role, result, detail, slug, onOpenChange, onShort }: {
   onOpenChange?: (open: boolean) => void; kind: "experience" | "project"; selected: number; select: (index: number) => void;
-  names: string[]; role: string; result: string; detail: DetailContent; slug: string;
+  names: string[]; role: string; result: string; detail: DetailContent; slug: string; onShort?: () => void;
 }) {
   const [open, setOpen] = useState(false);
   useEffect(() => { onOpenChange?.(open); return () => onOpenChange?.(false); }, [open, onOpenChange]);
@@ -95,14 +93,14 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
       <div className="mf-controls">
         <div className="mf-stepper"><button type="button" aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button><button type="button" aria-label={`Next ${kind}`} disabled={selected === names.length - 1} onClick={() => select(selected + 1)}>→</button></div>
         <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpen(true)}>Details <span aria-hidden="true">↗</span></button>
-        <Link href={`/short#${section}`} className="mf-short-link">Short version <span aria-hidden="true">↗</span></Link>
+        <button type="button" className="mf-short-link" onClick={onShort} aria-haspopup="dialog">Short version <span aria-hidden="true">↗</span></button>
       </div>
     </div>
-    <StoryDetails id={dialogId} open={open} onClose={() => setOpen(false)} item={detail} section={section} />
+    <StoryDetails id={dialogId} open={open} onClose={() => setOpen(false)} item={detail} section={section} onShort={() => { setOpen(false); requestAnimationFrame(() => onShort?.()); }} />
   </section>;
 }
 
-function StoryDetails({ id, open, onClose, item, section }: { id: string; open: boolean; onClose: () => void; item: DetailContent; section: "experience" | "projects" }) {
+function StoryDetails({ id, open, onClose, item, section, onShort }: { id: string; open: boolean; onClose: () => void; item: DetailContent; section: "experience" | "projects"; onShort: () => void }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
   useEffect(() => {
@@ -126,31 +124,17 @@ function StoryDetails({ id, open, onClose, item, section }: { id: string; open: 
       {item.image && <div className="mf-dialog-image"><Image src={item.image} alt={item.name} fill unoptimized sizes="(max-width: 700px) 90vw, 440px" /></div>}
       <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={`${item.name} links`}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</nav></article>
     </div>
-    <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><Link href={`/short#${section}`}>Short version <span aria-hidden="true">↗</span></Link></footer>
+    <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><button type="button" onClick={onShort} aria-haspopup="dialog">Short version <span aria-hidden="true">↗</span></button></footer>
   </dialog>;
 }
 
-export function ExperienceStory({ selected, select, onOpenChange }: StorySelection) {
+export function ExperienceStory({ selected, select, onOpenChange, onShort }: StorySelection) {
   const current = careerArrivals[selected];
-  return <SceneReadout onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={careerArrivals.map(item => item.from)} role={WORK[selected].role} result={WORK_RESULTS[selected]} slug={current.slug} detail={{ name: current.from, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
+  return <SceneReadout onShort={onShort} onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={careerArrivals.map(item => item.from)} role={WORK[selected].role} result={WORK_RESULTS[selected]} slug={current.slug} detail={{ name: current.from, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
 }
 
-export function ProjectStory({ selected, select, onOpenChange }: StorySelection) {
+export function ProjectStory({ selected, select, onOpenChange, onShort }: StorySelection) {
   const current = projects[selected];
   const community = getArrivalBySlug(current.slug === "waterloo-tech-week" ? "hack-the-north" : current.slug);
-  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / HTN" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
-}
-
-
-export function MemoryStory({ t, onGallery }: { t: MotionValue<number>; onGallery: (index?: number) => void }) {
-  const subscribe = useCallback((update: () => void) => t.on("change", update), [t]);
-  const read = useCallback(() => Math.min(2, Math.max(0, Math.floor((t.get() - .65) / .21 * 3))), [t]);
-  const group = useSyncExternalStore(subscribe, read, () => 0);
-  const current = memoryGroups[group];
-  const photo = memorySequence.find(memory => memory.group === group);
-  return <section className="mf-memory" aria-label="Life outside work">
-    <h2>{current.title}</h2>
-    <p>{current.copy}</p>
-    <button type="button" onClick={() => onGallery(photo?.photoIndex ?? 0)} aria-haspopup="dialog">Camera roll <span>25 photos <i aria-hidden="true">↗</i></span></button>
-  </section>;
+  return <SceneReadout onShort={onShort} onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / HTN" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
 }

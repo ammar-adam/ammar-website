@@ -1,7 +1,7 @@
 import { loungeRoomContent } from "@/data/loungeRoom";
 
 export type MemoryPhoto = {
-  /** Index in the complete, canonical camera roll; used by PhotoGallery. */
+  /** Index in the original photo collection. */
   photoIndex: number;
   group: number;
   src: string;

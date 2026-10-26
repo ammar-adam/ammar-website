@@ -79,10 +79,10 @@ const PIGMENT = /* glsl */`
 vec2 filmPaint = filmPigment(vFilmPosition, vFilmNormal);
 float filmFine = filmPaint.x - 0.75;
 float filmBroad = filmPaint.y - 0.75;
-float filmPigmentValue = clamp(1.0 + (filmFine * 2.3 + filmBroad * 0.9) * uFilmPaintStrength, 0.72, 1.22);
+float filmPigmentValue = clamp(1.0 + (filmFine * 2.8 + filmBroad * 0.65) * uFilmPaintStrength, 0.73, 1.20);
 diffuseColor.rgb *= filmPigmentValue;
 // Slight temperature shifts sit inside the paint, rather than over the image.
-diffuseColor.rgb *= vec3(1.0 + filmBroad * 0.30, 1.0, 1.0 - filmBroad * 0.35);
+diffuseColor.rgb *= vec3(1.0 + filmBroad * 0.55, 1.0 - filmFine * 0.12, 1.0 - filmBroad * 0.65);
 `;
 
 const LIGHTING = /* glsl */`
@@ -90,17 +90,20 @@ const LIGHTING = /* glsl */`
 float filmAlbedo = max(dot(diffuseColor.rgb, vec3(0.2126, 0.7152, 0.0722)), 0.025);
 float filmDirect = dot(reflectedLight.directDiffuse, vec3(0.2126, 0.7152, 0.0722));
 float filmExposure = filmDirect / filmAlbedo;
-float filmSteps = filmExposure * 4.0;
-float filmBanded = (floor(filmSteps) + smoothstep(0.25, 0.75, fract(filmSteps))) * 0.25;
+// Broad painted planes retain soft boundaries and the actual shadow mask.
+float filmBanded = 0.12 * smoothstep(0.015, 0.075, filmExposure)
+  + 0.34 * smoothstep(0.18, 0.31, filmExposure)
+  + 0.56 * smoothstep(0.53, 0.72, filmExposure)
+  + 0.64 * smoothstep(1.04, 1.30, filmExposure);
 float filmBandGain = mix(filmExposure, filmBanded, uFilmBands) / max(filmExposure, 0.0001);
 reflectedLight.directDiffuse *= filmBandGain;
-float filmLit = smoothstep(0.06, 0.65, filmExposure);
-reflectedLight.directDiffuse *= mix(vec3(0.84, 0.88, 1.03), vec3(1.025, 1.0, 0.96), filmLit);
-reflectedLight.indirectDiffuse *= mix(vec3(0.74, 0.82, 1.08), vec3(1.0), filmLit);
+float filmLit = smoothstep(0.09, 0.72, filmExposure);
+reflectedLight.directDiffuse *= mix(vec3(0.68, 0.73, 1.12), vec3(1.055, 1.0, 0.87), filmLit);
+reflectedLight.indirectDiffuse *= mix(vec3(0.66, 0.67, 1.18), vec3(0.98, 1.0, 1.02), filmLit);
 float filmFacing = clamp(abs(dot(normal, normalize(vViewPosition))), 0.0, 1.0);
 float filmContour = 1.0 - smoothstep(0.035, 0.22, filmFacing);
-reflectedLight.directDiffuse *= 1.0 - filmContour * 0.075;
-reflectedLight.indirectDiffuse *= 1.0 - filmContour * 0.075;
+reflectedLight.directDiffuse *= 1.0 - filmContour * 0.13;
+reflectedLight.indirectDiffuse *= 1.0 - filmContour * 0.13;
 `;
 
 const RIM = /* glsl */`
@@ -147,12 +150,12 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
       uFilmPaint: paintUniform,
       uFilmPaintStrength: { value: surface.paint ?? 0.75 },
       uFilmScale: { value: surface.scale ?? 0.40 },
-      uFilmBands: { value: surface.bands ?? 0.22 },
-      uFilmRim: { value: surface.rim ?? 0.20 },
+      uFilmBands: { value: surface.bands ?? 0.52 },
+      uFilmRim: { value: surface.rim ?? 0.27 },
     };
     // These uniform objects may be adjusted without creating shader variants.
     material.userData.film = uniforms;
-    material.customProgramCacheKey = () => "film-painted-standard-v1";
+    material.customProgramCacheKey = () => "film-painted-standard-v2";
     material.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, uniforms);
       shader.vertexShader = shader.vertexShader
@@ -171,15 +174,15 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
 
   const materials: FilmMaterialPalette = {
     ink: painted("ink", { color: "#111c2d", roughness: 0.84, paint: 0.45, rim: 0.10 }),
-    steel: painted("steel", { color: "#334960", roughness: 0.46, metalness: 0.42, paint: 0.56, rim: 0.32 }),
-    ivory: painted("ivory", { color: "#e4d5bc", roughness: 0.75, paint: 0.78 }),
+    steel: painted("steel", { color: "#385472", roughness: 0.61, metalness: 0.24, paint: 0.72, rim: 0.38 }),
+    ivory: painted("ivory", { color: "#edddc3", roughness: 0.78, paint: 0.78 }),
     coral: painted("coral", { color: "#ac5548", roughness: 0.64, paint: 0.65 }),
     cyan: painted("cyan", { color: "#79a9ad", roughness: 0.48, metalness: 0.12, paint: 0.55 }),
-    gold: painted("gold", { color: "#b38a52", roughness: 0.38, metalness: 0.62, paint: 0.42, rim: 0.24 }),
-    floor: painted("floor", { color: "#68727a", roughness: 0.35, metalness: 0.10, paint: 0.55, scale: 0.32, rim: 0.08 }),
-    wall: painted("wall", { color: "#c8c4b6", roughness: 0.83, paint: 0.90, bands: 0.26 }),
-    dark: painted("dark", { color: "#223246", roughness: 0.68, paint: 0.52, rim: 0.15 }),
-    walnut: painted("walnut", { color: "#73503b", roughness: 0.66, paint: 0.84, scale: 0.55, rim: 0.12 }),
+    gold: painted("gold", { color: "#bd9259", roughness: 0.48, metalness: 0.40, paint: 0.52, rim: 0.24 }),
+    floor: painted("floor", { color: "#5f728b", roughness: 0.55, metalness: 0.04, paint: 0.64, scale: 0.32, rim: 0.08 }),
+    wall: painted("wall", { color: "#ded8cb", roughness: 0.86, paint: 0.82, bands: 0.58 }),
+    dark: painted("dark", { color: "#253853", roughness: 0.72, paint: 0.62, rim: 0.19 }),
+    walnut: painted("walnut", { color: "#83533c", roughness: 0.75, paint: 0.78, scale: 0.55, rim: 0.12 }),
     sage: painted("sage", { color: "#7e8b77", roughness: 0.89, paint: 0.68, rim: 0.12 }),
     skin: painted("skin", { color: "#b98466", roughness: 0.82, paint: 0.12, scale: 0.8, bands: 0.16, rim: 0.10 }),
     glass: new THREE.MeshPhysicalMaterial({ color: "#aacacc", roughness: 0.13, metalness: 0, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.DoubleSide, ior: 1.45, clearcoat: 0.35, clearcoatRoughness: 0.18 }),

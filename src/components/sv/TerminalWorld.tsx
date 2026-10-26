@@ -7,13 +7,13 @@ import {createFilmTerminal} from "./film-terminal";
 import {createRoomVisibility} from "./room-visibility";
 import {TERMINAL_POST_FRAGMENT,TERMINAL_POST_VERTEX} from "./terminal-post";
 
-type Props={active?:boolean;t:MotionValue<number>;reduced:boolean;experienceIndex:number;projectIndex:number;departure:MotionValue<number>;onPhoto:(index:number)=>void;onReady?:()=>void};
+type Props={active?:boolean;t:MotionValue<number>;reduced:boolean;experienceIndex:number;projectIndex:number;departure:MotionValue<number>;onReady?:()=>void};
 
-export function TerminalWorld({active=true,t,reduced,experienceIndex,projectIndex,departure,onPhoto,onReady}:Props){
+export function TerminalWorld({active=true,t,reduced,experienceIndex,projectIndex,departure,onReady}:Props){
  const root=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null);
- const view=useRef({active,reduced,experienceIndex,projectIndex,onPhoto,onReady}),scheduleRef=useRef<()=>void>(()=>{});
+ const view=useRef({active,reduced,experienceIndex,projectIndex,onReady}),scheduleRef=useRef<()=>void>(()=>{});
  const motionValues=useRef({t,departure});
- useEffect(()=>{view.current={active,reduced,experienceIndex,projectIndex,onPhoto,onReady};scheduleRef.current();},[active,reduced,experienceIndex,projectIndex,onPhoto,onReady]);
+ useEffect(()=>{view.current={active,reduced,experienceIndex,projectIndex,onReady};scheduleRef.current();},[active,reduced,experienceIndex,projectIndex,onReady]);
  // Motion preference can replace t; the renderer must keep its live canvas/context.
  useEffect(()=>{
   motionValues.current={t,departure};
@@ -55,29 +55,12 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    if(state.active&&!state.reduced&&motionValues.current.t.get()<.86)frame=requestAnimationFrame(ambient);
   }
   function ambient(now:number){frame=0;if(dead||lost||document.hidden)return;if(dirty){lastAmbient=now;draw();return;}if(!view.current.active||view.current.reduced)return;if(now-lastAmbient>=1000/30){lastAmbient=now;draw();}else frame=requestAnimationFrame(ambient);}
-  const raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2();
-  const hit=(event:PointerEvent|MouseEvent)=>{const progress=motionValues.current.t.get();if(lost||progress<.65||progress>=.86)return;const rect=surface.getBoundingClientRect();pointer.set((event.clientX-rect.left)/rect.width*2-1,-((event.clientY-rect.top)/rect.height)*2+1);raycaster.setFromCamera(pointer,world.camera);return raycaster.intersectObjects(world.photos.filter(photo=>photo.visible),false)[0];};
-  const click=(event:MouseEvent)=>{
-   const photo=hit(event);if(!photo)return;
-   // Only a click needs the full occlusion check; hover stays inexpensive.
-   const blocked=raycaster.intersectObjects(world.scene.children,true).some(intersection=>{
-    if(intersection.distance>=photo.distance-.015)return false;
-    let node:THREE.Object3D|null=intersection.object;
-    while(node){if(!node.visible)return false;node=node.parent;}
-    const mesh=intersection.object as THREE.Mesh;
-    if(!mesh.isMesh)return false;
-    const materials=Array.isArray(mesh.material)?mesh.material:[mesh.material];
-    return materials.some(material=>material.visible&&!material.transparent);
-   });
-   if(!blocked)view.current.onPhoto(photo.object.userData.photoIndex);
-  };
-  const hover=(event:PointerEvent)=>{surface.style.cursor=hit(event)?"pointer":"default";};
   const lose=(event:Event)=>{event.preventDefault();lost=true;cancelAnimationFrame(frame);frame=0;element.dataset.fallback="1";surface.style.opacity="0";};
   const restore=()=>{lost=false;schedule();};
   const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else schedule();};
-  surface.addEventListener("click",click);surface.addEventListener("pointermove",hover);surface.addEventListener("webglcontextlost",lose);surface.addEventListener("webglcontextrestored",restore);document.addEventListener("visibilitychange",visibility);
+  surface.addEventListener("webglcontextlost",lose);surface.addEventListener("webglcontextrestored",restore);document.addEventListener("visibilitychange",visibility);
   const resize=new ResizeObserver(schedule);resize.observe(element);schedule();
-  return()=>{dead=true;scheduleRef.current=()=>{};cancelAnimationFrame(frame);resize.disconnect();surface.removeEventListener("click",click);surface.removeEventListener("pointermove",hover);surface.removeEventListener("webglcontextlost",lose);surface.removeEventListener("webglcontextrestored",restore);document.removeEventListener("visibilitychange",visibility);world.dispose();quadGeometry.dispose();postMaterial.dispose();target.depthTexture?.dispose();target.dispose();renderer.dispose();if(!lost&&!surface.isConnected)renderer.forceContextLoss();};
+  return()=>{dead=true;scheduleRef.current=()=>{};cancelAnimationFrame(frame);resize.disconnect();surface.removeEventListener("webglcontextlost",lose);surface.removeEventListener("webglcontextrestored",restore);document.removeEventListener("visibilitychange",visibility);world.dispose();quadGeometry.dispose();postMaterial.dispose();target.depthTexture?.dispose();target.dispose();renderer.dispose();if(!lost&&!surface.isConnected)renderer.forceContextLoss();};
  },[]);
  return <div ref={root} className="terminal-world" data-fallback="1" style={{position:"absolute",inset:0,overflow:"hidden",background:"#112c43 url('/art/terminal-atrium-v4.webp') center / cover"}}><canvas ref={canvas} aria-label="A continuous three-dimensional airport terminal" style={{display:"block",width:"100%",height:"100%",opacity:0}} /></div>;
 }
