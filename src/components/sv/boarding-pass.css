@@ -10,7 +10,8 @@
 .bp-main { display:flex;flex-direction:column;min-height:0;border-radius:3px 0 0 3px;mask-image:radial-gradient(circle at 100% 0,transparent 7px,#000 7.6px),radial-gradient(circle at 100% 100%,transparent 7px,#000 7.6px);mask-composite:intersect; }
 .bp-airline { display:flex;align-items:center;justify-content:space-between;gap:14px;min-height:34px;padding:7px 20px;background:var(--bp-coral);color:#fff1d7; }
 .bp-airline > strong { display:flex;align-items:center;gap:10px;font:600 8px/1.4 var(--font-inter),sans-serif;letter-spacing:.09em; }
-.bp-airline i { font:italic 700 17px/1 var(--font-inter),sans-serif;letter-spacing:-.13em;margin-right:2px; }
+.bp-airline i { font:800 18px/1 var(--font-inter),sans-serif;letter-spacing:-.08em;margin-right:2px; }
+.bp-monogram > span { color:#162f40; }
 .bp-airline > span { font:8px/1 var(--font-jb),monospace;letter-spacing:.1em; }
 .bp-main-content { flex:1;min-height:0;display:flex;flex-direction:column;justify-content:space-between;padding:15px 22px 10px;gap:10px; }
 .bp-passenger > span,.bp-route > div > span,.bp-details dt { display:block;font:7px/1.25 var(--font-jb),monospace;letter-spacing:.09em;color:#596b70; }

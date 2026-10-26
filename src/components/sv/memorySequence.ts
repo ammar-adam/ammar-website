@@ -22,8 +22,8 @@ export const memoryGroups = [
     copy: "Big events. Small afternoons. I try to remember both.",
   },
   {
-    title: "And then there’s this.",
-    copy: "The cone is a longer story.",
+    title: "The little things, too.",
+    copy: "A good trip. A matcha stop. Being up for the sunrise.",
   },
 ] as const;
 
@@ -45,6 +45,6 @@ export const memorySequence: MemoryPhoto[] = [
   memory(20, 1, 1100, 1632), // HTN: retain the building and every row of faces.
   memory(24, 1, 1100, 732), // Pottery: close action after the two larger groups.
   memory(15, 2, 900, 675),  // Grad trip: the final group opens with people again.
-  memory(17, 2, 900, 1200), // The cone: a tall, unexpected visual beat.
+  memory(10, 2, 900, 1200), // Matcha: a quieter still-life among the group photographs.
   memory(18, 2, 1100, 1196), // Sunrise: a quiet frame to finish the sequence.
 ];

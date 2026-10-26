@@ -2,34 +2,38 @@ import * as THREE from "three";
 import { careerArrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { memorySequence } from "./memorySequence";
+import { createTravelerRig } from "./traveler-rig";
 
 type V3 = [number,number,number];
 type CameraKey = {at:number;position:V3;target:V3;roll:number;fov:number};
 const CAMERA:CameraKey[] = [
- {at:0,position:[6,7.8,11],target:[-1,2,-25],roll:-.20,fov:67},
+ {at:0,position:[7,7.8,16],target:[1,3,-8],roll:-.26,fov:61},
+ {at:.035,position:[5.2,5.2,5],target:[0,4,-13],roll:.20,fov:73},
  {at:.055,position:[4,6.8,0],target:[-1,2,-25],roll:.13,fov:68},
+ {at:.075,position:[-1,6.4,-2],target:[3,4,-18],roll:.08,fov:72},
  {at:.112,position:[-3,5,-7],target:[1,1.7,-29],roll:-.12,fov:72},
  {at:.175,position:[4,2.7,-12],target:[-2,1.7,-28],roll:.09,fov:64},
+ {at:.21,position:[2.2,1.35,-17],target:[1.7,1.5,-24.5],roll:-.045,fov:62},
  {at:.24,position:[1.6,1.9,-18.6],target:[1.5,1.7,-27],roll:0,fov:58},
  {at:.39,position:[2.8,1.9,-21.4],target:[2.8,1.65,-27],roll:0,fov:58},
  {at:.433,position:[2.8,1.9,-21.4],target:[2.8,1.65,-27],roll:0,fov:58},
- {at:.436,position:[10.3,1.9,-21.6],target:[10.3,2,-31],roll:.025,fov:61},
- {at:.440,position:[10.3,1.9,-27.4],target:[10.3,2,-35],roll:.045,fov:63},
- {at:.445,position:[10.3,1.9,-35.2],target:[2.7,1.8,-41],roll:-.035,fov:63},
+ {at:.436,position:[12.7,1.9,-20.5],target:[12.7,2,-31],roll:.025,fov:61},
+ {at:.440,position:[12.7,1.9,-27.4],target:[12.7,2,-35],roll:.045,fov:63},
+ {at:.445,position:[12.7,1.9,-35.2],target:[2.7,1.8,-41],roll:-.035,fov:63},
  {at:.45,position:[1.3,1.75,-33.5],target:[2.7,1.8,-43],roll:-.025,fov:62},
  {at:.635,position:[1.3,1.75,-35.5],target:[2.7,1.8,-43],roll:0,fov:62},
  {at:.641,position:[1.3,1.75,-44.6],target:[-5.5,1.8,-47.5],roll:.015,fov:65},
  {at:.646,position:[-7,1.85,-46.4],target:[-7,2,-53],roll:-.035,fov:65},
- {at:.649,position:[-7,2.3,-51],target:[-11.9,3.1,-55.5],roll:0,fov:65},
- {at:.65,position:[-4,2.6,-53.5],target:[-11.9,3.1,-54.5],roll:0,fov:65},
- {at:.675,position:[-4,2.6,-53.5],target:[-11.9,3.1,-54.5],roll:0,fov:65},
- {at:.705,position:[-4,2.6,-58.2],target:[-11.9,3.1,-59.2],roll:-.015,fov:65},
- {at:.72,position:[-4,2.6,-64.5],target:[-11.9,3.1,-65.5],roll:0,fov:65},
- {at:.745,position:[-4,2.6,-64.5],target:[-11.9,3.1,-65.5],roll:0,fov:65},
- {at:.775,position:[-4,2.6,-69.2],target:[-11.9,3.1,-70.2],roll:.015,fov:65},
- {at:.79,position:[-4,2.6,-75.5],target:[-11.9,3.1,-76.5],roll:0,fov:65},
- {at:.815,position:[-4,2.6,-75.5],target:[-11.9,3.1,-76.5],roll:0,fov:65},
- {at:.836,position:[-4,2.6,-79.4],target:[-11.9,3.1,-80.4],roll:0,fov:65},
+ {at:.649,position:[-7,2.3,-51],target:[-8,2.8,-60],roll:0,fov:65},
+ {at:.65,position:[.8,2.2,-52.6],target:[-3,2.9,-71],roll:0,fov:69},
+ {at:.675,position:[.5,2.2,-54.3],target:[-3.5,2.8,-72],roll:0,fov:69},
+ {at:.705,position:[.8,2.2,-60],target:[-3,2.8,-77],roll:-.015,fov:70},
+ {at:.72,position:[.8,2.2,-63.6],target:[-3,2.9,-81],roll:0,fov:69},
+ {at:.745,position:[.5,2.2,-65.3],target:[-3.5,2.8,-82],roll:0,fov:69},
+ {at:.775,position:[.8,2.2,-71],target:[-3,2.8,-86],roll:.015,fov:70},
+ {at:.79,position:[.8,2.2,-74.6],target:[-3,2.9,-90],roll:0,fov:69},
+ {at:.815,position:[.5,2.2,-76.3],target:[-3.5,2.8,-90],roll:0,fov:69},
+ {at:.836,position:[.8,2.2,-79.4],target:[1.5,2.7,-88],roll:0,fov:70},
  {at:.841,position:[-4,1.9,-83],target:[-1,2,-82.5],roll:.015,fov:65},
  {at:.846,position:[2,1.9,-82.6],target:[9.4,2,-83],roll:.035,fov:65},
  {at:.850,position:[9.4,1.9,-81.5],target:[9.4,2.3,-90],roll:0,fov:63},
@@ -42,7 +46,7 @@ const clamp=(v:number,a=0,b=1)=>Math.max(a,Math.min(b,v));
 const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
 const smooth=(v:number)=>v*v*(3-2*v);
 
-export interface TerminalWorldState { t:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number }
+export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number }
 export interface TerminalModel {
  scene:THREE.Scene; camera:THREE.PerspectiveCamera; photos:THREE.Object3D[];
  update:(state:TerminalWorldState)=>void; dispose:()=>void;
@@ -140,13 +144,21 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  for(let z=12;z>=-107;z-=4)block(28,.015,.025,0,.006,z,ink);
  for(let z=8;z>=-105;z-=3){block(.1,.02,1.55,4.2,.02,z,gold);block(.07,.02,1.55,4.45,.02,z,cyan);}
  // The photographic world sits outside real glazing, behind the geometry.
- const outside=plane(500,180,texture("/plates/dawn-paint-2000.webp"));outside.position.set(70,35,-75);outside.rotation.y=-Math.PI/2;
+ const outside=plane(500,281.4,texture("/art/terminal-city-v3.webp"));outside.position.set(70,55,-75);outside.rotation.y=-Math.PI/2;
  const runway=plane(500,180,texture("/plates/runway-paint-2000.webp"));runway.position.set(0,35,-224);
  (outside.material as THREE.MeshBasicMaterial).fog=false;(runway.material as THREE.MeshBasicMaterial).fog=false;
  // Projected pools of coloured window light are laid onto the floor in perspective.
  for(let z=-5;z>-105;z-=12){block(14,.013,4,6.8,.025,z,keepMaterial(new THREE.MeshBasicMaterial({color:"#ff8b6f",transparent:true,opacity:.17,depthWrite:false})),[0,.32,0]);block(11,.014,.14,7.7,.028,z+2.4,lightWarm,[0,.32,0]);}
  sign("DEPARTURES  /  A01—A09","TERMINAL A",0,6.5,0,10,1.6);
  sign("CHECK-IN","01  /  EXPERIENCE",-4,5.6,-24,11,1.5);
+ // The opening flight enters through an open, full-height atrium portal.
+ // Glazing flanks the route; neither the camera nor traveller crosses a pane.
+ block(58,.3,38,0,-.28,32,concrete);
+ block(17,12,.12,-5.5,6,14.1,glass);block(2,12,.12,13,6,14.1,glass);
+ for(const x of [-14,-9,-4,3,12,14]){block(.27,12.7,.4,x,6.35,14,steel,[0,0,0],true);block(.04,11.7,.06,x+.19,6,14.25,lightCyan);}
+ for(const y of [3.5,7,11.7]){block(17,.15,.25,-5.5,y,14,steel);block(2,.15,.25,13,y,14,steel);}
+ block(10.2,.3,6.8,7.5,11.9,16.4,dark,[0,0,0],true);block(10.2,.08,.12,7.5,11.7,19.8,lightWarm);
+ const entrance=plane(10.6,1.3,label("TERMINAL A","DEPARTURES","#f6d6a2"));entrance.position.set(-5.3,9.3,14.3);
 
  // Offset vestibules break every long sightline. The route bends around these
  // actual walls; the next room cannot be seen through the current station.
@@ -166,12 +178,13 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  block(17,.16,.07,5.3,1.15,-48.65,lightCyan);
  for(const x of [0,4,8,12]){block(.07,5.4,.08,x,3.4,-48.64,ink);block(2.8,.1,.09,x,5.8,-48.6,lightWarm);}
  sign("←  A1—A12","DEPARTURES",-8.7,3.65,-48.55,6,1);
- block(21,9.7,.65,-3.5,4.85,-84,wallMaterial,[0,0,0],true);
+ block(21,9.7,.65,-3.5,4.85,-84,steel,[0,0,0],true);
  block(2,9.7,.65,13,4.85,-84,steel);
  block(5,5.25,.75,9.5,7.1,-84,ink);
  block(.55,4.6,3.8,6.95,2.3,-85.55,magenta,[0,0,0],true);
  block(20,.18,.08,-3.5,1.15,-83.62,cyan);
  sign("GATE 05  →","BOARDING",9.5,3.75,-83.5,4.1,.95);
+ sign("GATES 04—06  →","DEPARTURES",.5,4.6,-83.5,8,1.25);
 
  // Five actual check-in stations: plinth, front fascia, countertop, luggage
  // scale and a desk monitor, backed by distinct airline-style display boards.
@@ -202,13 +215,12 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  for(const x of [1.1,5.8])rod([x,1.22,-26.2],[x,2.32,-26.2],.045,steel);
  const counterMonitor=new THREE.Group();counterMonitor.position.set(4.5,1.67,-25.7);scene.add(counterMonitor);meshBlock(.1,.55,.12,steel,counterMonitor,0,-.33,0);meshBlock(1.05,.66,.12,ink,counterMonitor);
  const counterScreens=careerArrivals.map((entry,i)=>{const image=plane(.94,.54,label(String(i+1).padStart(2,"0"),entry.from.toUpperCase(),"#65dbed",512,256),counterMonitor);image.position.z=.08;return image;});
- // Baggage moves away from the passenger along a real, roller-lined feed.
- block(1.65,.28,8.1,7.3,.59,-25.9,ink,[0,0,0],true);
- for(let n=0;n<39;n++)rod([6.54,.77,-22.1-n*.2],[8.06,.77,-22.1-n*.2],.055,n%4?steel:cyan);
- for(const x of [6.45,8.15])block(.12,.18,8.2,x,.79,-25.9,steel);
- for(const z of [-22.4,-25.8,-29.4])for(const x of [6.7,7.9])block(.1,.52,.13,x,.26,z,steel);
+ // An oval luggage carousel turns continuously while this room is visible.
+ const carouselBase=new THREE.Mesh(cylinderGeometry,ink);carouselBase.scale.set(3,.65,3.7);carouselBase.position.set(9.4,.35,-25.2);scene.add(carouselBase);
+ const carouselCore=new THREE.Mesh(cylinderGeometry,steel);carouselCore.scale.set(1.9,.68,2.5);carouselCore.position.set(9.4,.8,-25.2);scene.add(carouselCore);
+ for(let n=0;n<56;n++){const angle=n/56*Math.PI*2;block(.85,.12,.47,9.4+Math.cos(angle)*2.45,.76,-25.2+Math.sin(angle)*3.1,n%4===0?steel:dark,[0,Math.atan2(-2.45*Math.sin(angle),3.1*Math.cos(angle)),0]);}
  const checkinCases:THREE.Group[]=[];
- for(let i=0;i<3;i++){const luggage=new THREE.Group();scene.add(luggage);meshBlock(.9,1.05,.58,i===0?coral:i===1?gold:magenta,luggage,0,.58,0);for(const x of [-.4,.4])meshBlock(.055,.98,.61,ink,luggage,x,.58,0);for(const x of [-.27,.27])meshBlock(.1,.14,.18,ink,luggage,x,.03,0);meshBlock(.35,.06,.12,ink,luggage,0,1.16,0);meshBlock(.13,.3,.015,cream,luggage,.14,.95,.31).rotation.z=.2;checkinCases.push(luggage);}
+ for(let i=0;i<6;i++){const luggage=new THREE.Group();scene.add(luggage);meshBlock(.9,1.05,.58,i%3===0?coral:i%3===1?gold:magenta,luggage,0,.58,0);for(const x of [-.4,.4])meshBlock(.055,.98,.61,ink,luggage,x,.58,0);for(const x of [-.27,.27])meshBlock(.1,.14,.18,ink,luggage,x,.03,0);meshBlock(.35,.06,.12,ink,luggage,0,1.16,0);meshBlock(.13,.3,.015,cream,luggage,.14,.95,.31).rotation.z=.2;checkinCases.push(luggage);}
  // Queue stanchions and the escape lane stay outside the walking route.
  for(let n=0;n<5;n++){const z=-18-n*1.5;for(const x of [-11,-6]){rod([x,0,z],[x,1.02,z],.045,steel);block(.4,.06,.4,x,.03,z,ink);}
   block(4.9,.055,.035,-8.5,.96,z,magenta);
@@ -246,53 +258,85 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  const scanPlane=new THREE.Mesh(planeGeometry,scanMaterial);scanPlane.scale.set(2.5,2.72,1);scene.add(scanPlane);
  const scanBar=new THREE.Group();scene.add(scanBar);meshBlock(2.48,.045,.045,lightCyan,scanBar);meshBlock(.045,2.72,.045,lightCyan,scanBar,-1.24,-1.34,0);meshBlock(.045,2.72,.045,lightCyan,scanBar,1.24,-1.34,0);
 
- // Nine photographs belong to the terminal wall; their physical frames cast
- // readable silhouettes and vanish behind foreground columns as we walk by.
+ // Three inhabited retail bays replace the former continuous photo wall.
+ const walnut=toon("#684638"),sage=toon("#94ad80"),tile=toon("#ddcbb0"),terracotta=toon("#b76b45"),skin=toon("#b98360",false),paleSkin=toon("#d9aa84",false),hair=toon("#171d27",false);
+ const round=keepGeometry(new THREE.SphereGeometry(1,10,7));
+ const solid=(geometry:THREE.BufferGeometry,mat:THREE.Material,x:number,y:number,z:number,sx=1,sy=1,sz=1,parent:THREE.Object3D=scene)=>{const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);parent.add(mesh);return mesh;};
  const photos:THREE.Object3D[]=[];
- memorySequence.forEach((memory,i)=>{
-  const slot=i%3,aspect=memory.width/memory.height,anchor=slot===0;
-  const w=anchor?(memory.group===1?4.9:4.7):(aspect<1?1.72:2.65),h=w/aspect;
-  // Author the support positions independently of aspect ratio: the final pair are both portraits.
-  const upperSupport=memory.group===0?2:1;
-  const z=-57-memory.group*11-(anchor?0:4.2),y=anchor?3.1:(slot===upperSupport?4.45:1.95);
-  const group=new THREE.Group();group.position.set(-11.9,y,z);group.rotation.y=Math.PI/2;scene.add(group);
-  meshBlock(w+.24,h+.24,.13,cream,group);meshBlock(w+.38,h+.38,.12,ink,group,0,0,-.12);
-  if(anchor){meshBlock(w+.24,.05,.09,lightWarm,group,0,h*.5+.13,.09);meshBlock(w+.24,.04,.09,lightCyan,group,0,-h*.5-.13,.09);}
-  const image=plane(w,h,texture(memory.src),group);image.position.z=.075;image.userData.photoIndex=memory.photoIndex;photos.push(image);
-  const plaque=plane(w,.3,label(String(i+1).padStart(2,"0"),memory.caption.toUpperCase(),"#ffc978",1024,128),group);plaque.position.set(0,-h*.5-.32,.08);
-  if(anchor){rod([-13.5,6.15,z],[-10.8,6.15,z],.045,ink);block(1.5,.09,.3,-11.7,6.13,z,lightWarm);const gateNumber=plane(1.22,1.58,label(`A0${memory.group+1}`,"CONCOURSE A","#63e3e8",512,640));gateNumber.position.set(-11.6,3.2,z+3.8);gateNumber.rotation.y=Math.PI/2;}
+ const shops=[{code:"DXB",name:"SHAWARMA",finish:terracotta},{code:"KHI",name:"MATCHA & CHAI",finish:sage},{code:"YYZ",name:"NEWS & SOUVENIRS",finish:walnut}];
+ shops.forEach((shop,i)=>{
+  const z=-57-i*11;
+  block(8.9,.12,10.4,-9.3,.065,z,tile);block(.35,6.7,10.5,-13.55,3.35,z,shop.finish);
+  block(8.8,6.7,.3,-9.3,3.35,z-4.5,shop.finish);block(8.9,.25,10.5,-9.3,6.7,z,walnut);
+  block(.28,5.8,.35,-4.9,2.9,z+4.7,walnut,[0,0,0],true);block(.28,5.8,.35,-4.9,2.9,z-4.7,walnut,[0,0,0],true);
+  block(.36,1.15,9.8,-4.9,5.8,z,shop.finish,[0,0,0],true);block(.4,.08,9.8,-4.85,5.18,z,lightWarm);
+  const fascia=plane(8.5,.88,label(shop.name,shop.code+"  /  DEPARTURES","#ffe1a1",1536,256));fascia.position.set(-4.65,5.78,z);fascia.rotation.y=Math.PI/2;
+  for(let n=0;n<16;n++)block(.055,1.2,.065,-4.63,4.55,z-4.5+n*.6,walnut);
+  for(let n=0;n<7;n++){block(.035,.025,9.7,-12.5+n*1.1,.14,z,walnut);block(8.2,.025,.035,-9.3,.14,z-4+n*1.3,walnut);}
+  for(const x of [-11.5,-8]){rod([x,6.5,z],[x,4.55,z],.025,ink);solid(cylinderGeometry,walnut,x,4.5,z,.38,.22,.38);solid(round,lightWarm,x,4.36,z,.28,.08,.28);}
+  block(5.1,1.12,1.3,-9.4,.6,z+.4,shop.finish,[0,0,0],true);block(5.4,.16,1.48,-9.4,1.23,z+.4,walnut,[0,0,0],true);block(5.1,.07,.08,-9.4,1.1,z+1.08,lightWarm);
+  for(let n=0;n<14;n++)block(.08,1.0,.08,-11.75+n*.36,.58,z+1.1,walnut);
+  // Three frames share an intentional display rail; supports never overlap.
+  memorySequence.filter(memory=>memory.group===i).forEach((memory,slot)=>{
+   const aspect=memory.width/memory.height,w=slot===0?3.75:1.55,h=w/aspect,x=slot===0?-10.15:-6.95,y=slot===0?3.3:slot===1?4.35:1.95;
+   const frame=new THREE.Group();frame.position.set(x,y,z-4.28);scene.add(frame);meshBlock(w+.18,h+.18,.12,walnut,frame);meshBlock(w+.27,h+.27,.06,cream,frame,0,0,-.05);
+   const picture=plane(w,h,texture(memory.src),frame);picture.position.z=.075;picture.userData.photoIndex=memory.photoIndex;photos.push(picture);
+   const caption=plane(w,.18,label(String(memory.photoIndex+1).padStart(2,"0"),memory.caption.toUpperCase(),"#f3d6a2",1024,128),frame);caption.position.set(0,-h*.5-.2,.08);
+  });
+  // Gate seating lives opposite each shop, behind the open walking lane.
+  block(.22,4.0,.22,4.7,2,z,steel);const gate=plane(2.6,1.0,label(shop.code,"GATE "+String(i+1).padStart(2,"0"),"#7bdce9",768,256));gate.position.set(4.7,3.5,z+.15);
+  for(let seat=0;seat<4;seat++){const x=6.4+seat*1.6;block(1.25,.18,.92,x,.66,z,dark,[0,0,0],true);block(1.25,.95,.18,x,1.2,z-.45,dark,[-.12,0,0]);rod([x-.4,0,z],[x-.4,.6,z],.04,steel);rod([x+.4,0,z],[x+.4,.6,z],.04,steel);}
  });
- sign("GATES  A1—A12","CONCOURSE A",3.5,6.8,-55,7,1.15);
- // A travelator carries the eye alongside the photo wall. Its glass rails,
- // ribs and passing gate piers keep this room recognisably an airside concourse.
- block(5.2,.14,30,-4.9,.08,-67.5,ink,[0,0,0],true);
- for(const x of [-7.5,-5,-2.3]){
-  block(.13,.16,30,x,.19,-67.5,steel);block(.1,.1,29.6,x,1.03,-67.5,ink);
-  block(.045,.68,29.2,x,.63,-67.5,glass);block(.055,.035,29.7,x+.045,1.08,-67.5,lightCyan);
-  for(let z=-53;z>=-82;z-=2.4)block(.055,.85,.065,x,.61,z,steel);
- }
- for(const z of [-52.35,-82.65]){block(5.2,.08,.55,-4.9,.18,z,gold);block(5.2,.025,.055,-4.9,.23,z+.1,ink);}
- const travelatorTreads=new THREE.InstancedMesh(unitBox,steel,74);scene.add(travelatorTreads);const treadMatrix=new THREE.Matrix4();
- for(let i=0;i<3;i++){
-  const z=-58-i*11;block(1.05,4.25,.9,6.3,2.12,z,concrete,[0,0,0],true);block(.065,3.4,1.0,5.74,2.4,z,cyan);
-  const gate=plane(2.1,1.1,label(`A${String(i*2+3).padStart(2,"0")}`,"DEPARTURES","#79dbe5",512,256));gate.position.set(6.3,4.0,z+.5);
-  block(3.4,.18,.55,8.35,2.95,z,ink);block(5,.04,.1,9,3.1,z,lightWarm);
-  for(let seat=0;seat<3;seat++){const x=8+seat*1.35;block(1.12,.16,.9,x,.7,z+1.6,dark,[0,0,0],true);block(1.12,.9,.14,x,1.17,z+1.2,dark,[-.1,0,0]);rod([x,0,z+1.65],[x,.6,z+1.65],.055,steel);}
- }
- // Furniture is a repeated bent-shell seat, with steel legs and a shared rail.
- for(const z of [-77,-91])for(const side of [-1,1]){
-  const center=side*8.4;block(5.8,.12,.14,center,.54,z,steel);
-  for(let i=0;i<4;i++){const x=center-2.1+i*1.4;block(1.12,.16,.94,x,.72,z,side<0?magenta:dark,[.06,0,0],true);block(1.12,1,.16,x,1.21,z-.47,side<0?magenta:dark,[-.11,0,0],true);block(1.05,.04,.045,x,1.72,z-.56,cyan);for(const dx of [-.45,.45]){rod([x+dx,0,z+.3],[x+dx,.65,z+.25],.035,steel);rod([x+dx,0,z-.32],[x+dx,.65,z-.25],.035,steel);}}
- }
- // Personal objects are small things left on real furniture, not UI cards.
- block(1.3,.14,4.6,-11.25,1.05,-66,cream,[0,0,0],true);
- for(const z of [-64.1,-67.9])block(.12,1.0,.12,-11.15,.5,z,steel);
- const matcha=plane(.5,.75,texture("/art/matcha-v1.webp"),scene,true);matcha.position.set(-10.9,1.45,-64.5);matcha.rotation.y=Math.PI/2;
- const shawarma=plane(.83,.76,texture("/art/shawarma-v1.webp"),scene,true);shawarma.position.set(-10.9,1.46,-65.6);shawarma.rotation.y=Math.PI/2;
- const nihari=plane(.85,.57,texture("/art/nihari.webp"),scene,true);nihari.position.set(-10.9,1.36,-66.9);nihari.rotation.y=Math.PI/2;
- const carryon=plane(1.55,1.42,texture("/art/carryon-easter-eggs.webp"),scene,true);carryon.position.set(-7.8,1.5,-76.6);
- block(2.4,.12,1.2,8.1,1.1,-81.7,cream,[0,0,0],true);rod([8.1,0,-81.7],[8.1,1.1,-81.7],.1,steel);
- const television=plane(2.1,1.92,texture("/art/film-v1.webp"),scene,true);television.position.set(8.1,2.1,-81.7);
+ // The rotating spit is real stacked geometry, in front of glowing grill bars.
+ block(1.7,3.8,.22,-12.1,2.3,-56.2,ink,[0,0,0],true);
+ for(const x of [-12.65,-12.1,-11.55])block(.1,2.8,.1,x,2.35,-56.0,lightWarm);
+ const spit=new THREE.Group();spit.position.set(-12.1,2.3,-55.55);scene.add(spit);
+ for(let n=0;n<15;n++){const radius=.59+Math.sin(n/14*Math.PI)*.23;const meat=solid(cylinderGeometry,n%3===0?walnut:terracotta,0,-1.1+n*.16,0,radius,.2,radius,spit);meat.rotation.y=n*.31;}
+ rod([-12.1,.55,-55.55],[-12.1,4.1,-55.55],.045,steel);solid(cylinderGeometry,steel,-12.1,.65,-55.55,.92,.09,.92);
+ // Café equipment, matcha cups and a low simmering nihari pot.
+ block(1.3,.8,.75,-10.7,1.72,-67,steel,[0,0,0],true);block(1.18,.16,.86,-10.7,2.15,-67,ink);block(.9,.12,.3,-10.7,1.47,-66.65,lightWarm);
+ for(let n=0;n<5;n++){solid(cylinderGeometry,cream,-8.8+n*.28,1.45,-67,.10,.26,.10);solid(cylinderGeometry,sage,-8.8+n*.28,1.585,-67,.085,.018,.085);}
+ solid(cylinderGeometry,steel,-12,1.47,-67.1,.56,.38,.56);solid(cylinderGeometry,terracotta,-12,1.67,-67.1,.49,.025,.49);
+ const menu=plane(1.55,1.8,label("NIHARI","KHI  /  SLOW COOKED","#e4c27d",512,640));menu.position.set(-12.1,3,-68.9);
+ const steam=Array.from({length:4},(_,i)=>solid(round,keepMaterial(new THREE.MeshBasicMaterial({color:"#efdfc4",transparent:true,opacity:.14,depthWrite:false})),-12,2.05+i*.26,-67.1,.1,.18,.1));
+ // Warm café furniture and a small screen playing the station vignette.
+ for(const [x,z] of [[6.1,-66.5],[6.4,-70.5],[5.8,-63.3]]){solid(cylinderGeometry,walnut,x,1.02,z,.67,.12,.67);rod([x,.04,z],[x,.98,z],.08,steel);for(const dx of [-.95,.95]){block(.62,.12,.65,x+dx,.57,z,sage);block(.62,.65,.12,x+dx,.94,z-.3,sage);rod([x+dx,.05,z],[x+dx,.52,z],.04,steel);}}
+ block(2.8,1.65,.17,4.4,3.2,-71.8,ink,[0,-.2,0],true);rod([4.4,4.1,-71.8],[4.4,6.7,-71.8],.045,steel);const television=plane(2.6,1.462,texture("/art/paddington-screen-v3.webp"));television.position.set(4.38,3.2,-71.68);television.rotation.y=-.2;
+ // Books, tiny skyline models and luggage tags fill the Toronto shop.
+ for(const shelfY of [1.8,2.55,3.3]){block(.8,.1,6.1,-13,shelfY,-78.8,walnut);for(let n=0;n<12;n++)block(.23,.42,.15,-12.75,shelfY+.26,-81.4+n*.46,n%3===0?coral:n%3===1?sage:cream);}
+ for(let n=0;n<5;n++){solid(cylinderGeometry,steel,-11+n*.7,1.7,-78,.035,.8,.035);solid(cylinderGeometry,cream,-11+n*.7,1.77,-78,.14,.1,.14);}
+ for(const [i,city] of ["TORONTO","MISSISSAUGA"].entries()){block(.84,.42,.045,-8.4+i*1.05,1.52,-77.75,cream);const postcard=plane(.76,.34,label(city,"POSTCARDS","#e4c79c",512,192));postcard.position.set(-8.4+i*1.05,1.52,-77.72);}
+ // An off-side recreation corner keeps the basketball reference incidental.
+ block(6.2,.035,8,9.6,.07,-75.7,terracotta);for(const x of [6.6,12.6])block(.055,.025,7.8,x,.1,-75.7,cream);for(const z of [-71.8,-79.6])block(6,.025,.055,9.6,.1,z,cream);
+ rod([12.5,0,-77.8],[12.5,4.1,-77.8],.065,steel);block(.1,1.25,1.9,12.4,3.7,-77.8,cream);const hoop=solid(keepGeometry(new THREE.TorusGeometry(.36,.025,6,18)),coral,11.95,3.25,-77.8);hoop.rotation.x=Math.PI/2;
+ // Small articulated background people are actual volumes with separate limbs.
+ const limbGeometry=keepGeometry(new THREE.CapsuleGeometry(.075,.46,3,6));
+ const person=(shirt:THREE.Material,x:number,z:number,yaw=0,tone:THREE.Material=skin)=>{
+  const root=new THREE.Group();root.position.set(x,.035,z);root.rotation.y=yaw;scene.add(root);
+  solid(cylinderGeometry,shirt,0,1.15,0,.25,.63,.17,root);solid(round,tone,0,1.68,0,.165,.205,.16,root);solid(round,hair,0,1.82,-.025,.17,.09,.16,root);solid(round,tone,0,1.66,.155,.055,.045,.055,root);
+  const arms=[-1,1].map(side=>{const pivot=new THREE.Group();pivot.position.set(side*.3,1.43,0);root.add(pivot);solid(limbGeometry,shirt,0,-.27,0,1,1,1,pivot);solid(round,tone,0,-.59,0,.085,.09,.08,pivot);return pivot;});
+  const legs=[-1,1].map(side=>{const pivot=new THREE.Group();pivot.position.set(side*.14,.83,0);root.add(pivot);solid(limbGeometry,dark,0,-.32,0,1.15,1.18,1.15,pivot);meshBlock(.19,.10,.33,cream,pivot,0,-.77,.08);return pivot;});
+  return {root,arms,legs};
+ };
+ const cook=person(cream,-9.4,-57.7,.3);const barista=person(sage,-10,-68.6,.1);const customer=person(coral,6.2,-65.5,-.5,paleSkin);
+ const loader=person(gold,7.6,-38.7,-Math.PI/2);const queueGuest=person(sage,-1.1,-40.8,.3,paleSkin);
+ const loadBag=new THREE.Group();scene.add(loadBag);meshBlock(.6,.65,.4,coral,loadBag,0,.33,0);meshBlock(.27,.05,.12,ink,loadBag,0,.72,0);
+ const pusher=person(coral,1.8,-59,Math.PI);const jersey=plane(.42,.5,label("66","", "#ffffff",256,256),pusher.root);jersey.position.set(0,1.18,-.18);jersey.rotation.y=Math.PI;
+ const cart=new THREE.Group();scene.add(cart);meshBlock(.95,.1,1.3,steel,cart,0,.3,0);for(const x of [-.5,.5])for(const z of [-.65,.65]){meshBlock(.045,.85,.045,steel,cart,x,.72,z);solid(cylinderGeometry,ink,x,.15,z,.12,.08,.12,cart).rotation.z=Math.PI/2;}meshBlock(1.05,.045,.045,steel,cart,0,1.15,.65);meshBlock(.65,.8,.47,gold,cart,0,.75,-.1);meshBlock(.55,.5,.44,magenta,cart,0,1.39,-.1);
+ const player=person(coral,9.1,-75.2,.8,paleSkin);const defender=person(dark,10.6,-77.4,-1.5);const ball=solid(round,terracotta,9,1,-75,.16,.16,.16);
+ const walkers=[person(dark,2.7,-57,Math.PI),person(sage,3.5,-72,0,paleSkin)];
+ const animateAirport=(time:number,reduced:boolean)=>{
+  const t=reduced?0:time;spit.rotation.y=t*.55;
+  steam.forEach((puff,i)=>{const phase=(t*.3+i*.25)%1;puff.position.y=1.9+phase*1.2;puff.position.x=-12+Math.sin(t+i)*.08;(puff.material as THREE.MeshBasicMaterial).opacity=(1-phase)*.14;});
+  cook.arms[1].rotation.x=-.7+Math.sin(t*1.6)*.25;barista.arms[0].rotation.x=-.9+Math.sin(t*1.4)*.2;customer.root.rotation.y=-.5+Math.sin(t*.35)*.15;
+  const lift=(Math.sin(t*.9)+1)*.5;loader.arms[0].rotation.x=loader.arms[1].rotation.x=-.35-lift*1.05;loadBag.position.set(7.1-lift*.8,.8+Math.sin(lift*Math.PI)*.55,-38.7);queueGuest.arms[1].rotation.x=-.3+Math.sin(t*.7)*.2;
+  pusher.root.position.z=-61-Math.sin(t*.16)*4;pusher.root.rotation.y=Math.cos(t*.16)>0?Math.PI:0;pusher.arms.forEach(arm=>arm.rotation.x=-1.05);pusher.legs.forEach((leg,i)=>leg.rotation.x=Math.sin(t*3+i*Math.PI)*.3);cart.position.copy(pusher.root.position);cart.position.z+=Math.cos(t*.16)>0?-1.05:1.05;cart.rotation.y=pusher.root.rotation.y;
+  walkers.forEach((walker,i)=>{walker.root.position.z=-57-i*14-Math.sin(t*.12+i)*3;walker.legs.forEach((leg,j)=>leg.rotation.x=Math.sin(t*2.8+i+j*Math.PI)*.28);walker.arms.forEach((arm,j)=>arm.rotation.x=Math.sin(t*2.8+i-j*Math.PI)*.25);});
+  const bounce=Math.abs(Math.sin(t*2.8));ball.position.set(9.3,.25+bounce*1.2,-75.0);player.arms[1].rotation.x=-.4-bounce*.7;defender.arms.forEach((arm,i)=>arm.rotation.z=(i?1:-1)*(.5+Math.sin(t)*.12));
+  (television.material as THREE.MeshBasicMaterial).color.setScalar(.97+Math.sin(t*.4)*.03);
+ };
+ for(const side of [-1,1])for(let i=0;i<4;i++){const x=side*8.4-2.1+i*1.4;block(1.12,.16,.94,x,.72,-91,dark);block(1.12,1,.16,x,1.21,-91.47,dark,[-.11,0,0]);rod([x,0,-91],[x,.6,-91],.05,steel);}
+
  // Final gate desk, glazing, and an actual jetway leading out to the aircraft.
  sign("GATE 05  /  STILL BOARDING","05  /  NEXT CHAPTER",3.2,4.8,-102,7.4,1.2);
  block(3.4,1.1,1.1,-5,.56,-95,concrete,[0,0,0],true);block(3.6,.14,1.4,-5,1.17,-95,ink,[0,0,0],true);block(3.2,.6,.08,-5,.7,-94.42,coral);
@@ -305,9 +349,9 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  (aircraft.material as THREE.MeshBasicMaterial).fog=false;
  aircraft.position.set(-8,5.8,-134);
 
- // The traveller is a world-space billboard: it can pass behind trusses and
- // in front of the counters, then lands before the camera takes their place.
- const travelerFrames=["reach","tuck","release","ground"].map(name=>{const src=name==="ground"?"/art/traveler-v2.webp":`/art/traveler-swing-${name}.webp`;const frame=plane(2,3,texture(src),scene,true);return frame;});
+ // Fully articulated mesh traveller: the raised grip is the rope anchor.
+ const traveler=createTravelerRig();scene.add(traveler.root);
+ const travelerKey=new THREE.PointLight("#ffd1a3",38,13,2),travelerRim=new THREE.PointLight("#58dfff",28,11,2);scene.add(travelerKey,travelerRim);
  const tetherGeometry=keepGeometry(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]));
  const tether=new THREE.Line(tetherGeometry,keepMaterial(new THREE.LineBasicMaterial({color:"#b7f8f3"})));scene.add(tether);
  const landingShadow=new THREE.Mesh(keepGeometry(new THREE.CircleGeometry(1.1,32)),keepMaterial(new THREE.MeshBasicMaterial({color:"#071728",transparent:true,opacity:.35,depthWrite:false})));landingShadow.rotation.x=-Math.PI/2;landingShadow.position.y=.035;scene.add(landingShadow);
@@ -324,42 +368,35 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
    camera.position.set(...a.position).lerp(temp.set(...b.position),f);look.set(...a.target).lerp(temp.set(...b.target),f);camera.fov=mix(a.fov,b.fov,f)+(state.aspect<.8?9:0);camera.aspect=state.aspect;
    if(state.aspect<.8&&p>=.24&&p<=.440){const enter=smooth(clamp((p-.24)/.012)),exit=smooth(clamp((p-.433)/.007)),weight=enter*(1-exit);camera.position.lerp(temp.set(3.45,1.9,mix(-16.8,-17.8,clamp((p-.24)/.193))),weight);look.lerp(temp.set(3.8,-1.3,-26.1),weight);camera.fov=mix(camera.fov,74,weight);}
    if(state.aspect<.8&&p>=.445&&p<=.641){const enter=smooth(clamp((p-.445)/.01)),travel=clamp((p-.45)/.185),exit=smooth(clamp((p-.635)/.006));temp.set(5.05,1.85,mix(-33.5,-34.4,travel)).lerp(new THREE.Vector3(1.3,1.75,-44.6),exit);camera.position.lerp(temp,enter);temp.set(5.05,-.05,-40.6).lerp(new THREE.Vector3(-5.5,1.8,-47.5),exit);look.lerp(temp,enter);}
-   if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.831)/.01));camera.position.z-=2*enter*exit;look.z-=2.2*enter*exit;}
+   if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.831)/.01)),weight=enter*exit;camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;camera.fov=mix(camera.fov,100,weight);}
    const flight=clamp(state.departure);if(flight&&!state.reduced){camera.position.lerp(temp.set(1,2.5,-90.5),smooth(flight));look.lerp(temp.set(5,4,-126),flight);}
    camera.up.set(0,1,0);camera.lookAt(look);camera.rotateZ(state.reduced?0:mix(a.roll,b.roll,f)*(state.aspect<.8?.65:1));camera.updateProjectionMatrix();camera.updateMatrixWorld();
    key.position.set(20,24,camera.position.z+15);key.target.position.set(0,0,camera.position.z-20);key.target.updateMatrixWorld();
-   const checkin=clamp((p-.24)/.193),security=clamp((p-.45)/.185),concourse=clamp((p-.65)/.19);
+   const checkin=clamp((p-.24)/.193),security=clamp((p-.45)/.185);
    deskLights.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});activeCompanyBoards.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});counterScreens.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});
    activeBoard.rotation.y=state.reduced?0:Math.sin(checkin*Math.PI)*-.09;counterMonitor.rotation.y=state.reduced?0:Math.sin(checkin*Math.PI*2)*.22;
-   checkinCases.forEach((group,i)=>{group.position.set(7.3,.82,-22.35-((i*2.45+checkin*7.4)%7.35));group.rotation.y=Math.sin((checkin+i*.2)*Math.PI)*.08;});
+   checkinCases.forEach((group,i)=>{const angle=i/checkinCases.length*Math.PI*2+(state.reduced?0:(state.time??0)*.17)+checkin*.6;group.position.set(9.4+Math.cos(angle)*2.45,.84,-25.2+Math.sin(angle)*3.1);group.rotation.y=-angle;});
    projectScreens.forEach((mesh,i)=>{mesh.visible=i===state.projectIndex;const image=(mesh.material as THREE.MeshBasicMaterial).map?.image as {width?:number;height?:number}|undefined;if(image?.width&&image?.height){const aspect=image.width/image.height;mesh.scale.set(Math.min(2.8,1.8*aspect),Math.min(1.8,2.8/aspect),1);}});
    projectMonitor.rotation.y=state.reduced?0:Math.sin(security*Math.PI*2)*.07;
    trays.forEach((group,i)=>{const itemTravel=clamp((p-.45)/.20*projects.length-state.projectIndex);group.visible=i===state.projectIndex;group.position.z=-38-itemTravel*3.6;group.rotation.y=state.reduced?0:Math.sin(itemTravel*Math.PI)*.055;});
    const scan=state.reduced?.5:(security*4)%1;scanPlane.position.set(archX,1.65,-42.55-scan*.9);scanBar.position.set(archX,3,-42.55-scan*.9);scanPlane.visible=scanBar.visible=p>=.45&&p<.64;
-   for(let i=0;i<74;i++){treadMatrix.makeScale(5.05,.025,.32);treadMatrix.setPosition(-4.9,.17,-52.6-((i*.4+concourse*12)%29.6));travelatorTreads.setMatrixAt(i,treadMatrix);}travelatorTreads.instanceMatrix.needsUpdate=true;travelatorTreads.computeBoundingSphere();
+   animateAirport(state.time??0,state.reduced);
    aircraft.position.set(-8+flight*32,5.8+flight*15,-134-flight*22);aircraft.quaternion.copy(camera.quaternion);aircraft.rotateZ(Math.sin(flight*Math.PI)*.035);
-   const hero=clamp(p/.24),landing=clamp((hero-.80)/.2);const visible=p<.275&&!state.reduced;
-   const frameIndex=hero<.22?0:hero<.48?1:hero<.78?2:3;
-   travelerFrames.forEach((mesh,i)=>{mesh.visible=visible&&i===frameIndex;(mesh.material as THREE.MeshBasicMaterial).opacity=1-clamp((p-.252)/.023);});
+   const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=travelerKey.visible=travelerRim.visible=visible;
    if(visible){
-    // Flight is in world coordinates relative to the moving camera, at varying
-    // depth. The last fifth converges on a fixed floor landing point.
     camera.getWorldDirection(forward);right.setFromMatrixColumn(camera.matrixWorld,0);up.setFromMatrixColumn(camera.matrixWorld,1);
-    const distance=8.5-2.8*Math.sin(hero*Math.PI),lateral=state.aspect<.8?1.15:3.5;
-    temp.copy(camera.position).addScaledVector(forward,distance).addScaledVector(right,lateral+Math.sin(hero*Math.PI*2)*.8).addScaledVector(up,Math.sin(hero*Math.PI*2)*1.1-.6);
-    temp.lerp(new THREE.Vector3(1.7,.94,-24.1-clamp((p-.24)/.035)*.5),smooth(landing));
-    const mesh=travelerFrames[frameIndex];mesh.position.copy(temp);mesh.quaternion.copy(camera.quaternion);mesh.rotateZ(state.reduced?0:Math.sin(hero*Math.PI*2)*.45*(1-landing));mesh.scale.set(mix(2.2,1.2,smooth(landing)),mix(3.3,1.8,smooth(landing)),1);
-    // An upright foot anchor is essential: matching the camera's downward
-    // pitch tilts a billboard through the floor during the landing.
-    if(frameIndex===3)mesh.rotation.set(0,Math.atan2(camera.position.x-mesh.position.x,camera.position.z-mesh.position.z),0);
-    const verticalHalf=mesh.scale.y*.5*Math.abs(up.set(0,1,0).applyQuaternion(mesh.quaternion).y)+mesh.scale.x*.5*Math.abs(right.set(1,0,0).applyQuaternion(mesh.quaternion).y);
-    mesh.position.y=Math.max(mesh.position.y,verticalHalf+.035);
-    const hand=new THREE.Vector3(-.72,1.5,0).applyQuaternion(mesh.quaternion).add(mesh.position);
-    const rope=tetherGeometry.getAttribute("position") as THREE.BufferAttribute;rope.setXYZ(0,2,11.8,-8-hero*17);rope.setXYZ(1,hand.x,hand.y,hand.z);rope.needsUpdate=true;tether.visible=frameIndex<2;
-    landingShadow.position.set(mesh.position.x,.035,mesh.position.z);landingShadow.visible=true;landingShadow.scale.setScalar(.5+landing*.6);(landingShadow.material as THREE.MeshBasicMaterial).opacity=.35*(1-clamp((p-.252)/.023));
+    const distance=4.4+.4*Math.sin(hero*Math.PI),lateral=state.aspect<.8?.1+Math.sin(hero*Math.PI*2)*.55:1.35+Math.sin(hero*Math.PI*2)*1.25;
+    temp.copy(camera.position).addScaledVector(forward,distance).addScaledVector(right,lateral).addScaledVector(up,-.95+Math.sin(hero*Math.PI)*.6);
+    temp.lerp(new THREE.Vector3(1.7,.035,-24.1-clamp((p-.24)/.035)*.5),landing);temp.y=Math.max(.035,temp.y);
+    traveler.root.position.copy(temp);traveler.root.rotation.set(0,Math.atan2(-forward.x,-forward.z)+Math.sin(hero*Math.PI*2)*.32*(1-landing),0);
+    traveler.update(hero,state.time??hero*6,landing);traveler.root.updateMatrixWorld(true);
+    travelerKey.position.copy(traveler.root.position).addScaledVector(right,2).addScaledVector(up,2.8).addScaledVector(forward,-1.7);travelerRim.position.copy(traveler.root.position).addScaledVector(right,-1.8).addScaledVector(up,2).addScaledVector(forward,1.4);
+    traveler.raisedHand.getWorldPosition(temp);
+    const rope=tetherGeometry.getAttribute("position") as THREE.BufferAttribute;rope.setXYZ(0,2,11.8,4-hero*28);rope.setXYZ(1,temp.x,temp.y,temp.z);rope.needsUpdate=true;tetherGeometry.computeBoundingSphere();tether.visible=hero<.54;
+    landingShadow.position.set(traveler.root.position.x,.035,traveler.root.position.z);landingShadow.visible=true;landingShadow.scale.setScalar(.45+landing*.35);
    }else{tether.visible=false;landingShadow.visible=false;}
   },
-  dispose(){dead=true;scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
+  dispose(){dead=true;traveler.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
  };
 }
 

@@ -103,3 +103,44 @@ Change only its base paint color and edge continuity. Preserve the same scumbled
 Ensure this is a seamless tileable image: left/right and top/bottom edges should meet without a visible line or brightness jump when repeated in a grid. No border, no edge darkening, no distinct focal shape.
 Remain an orthographic, uniformly illuminated, unlit albedo material, not a scene. No cast shadows, baked light, vignette, gradient, perspective, panel seams, grid, woodgrain, dots, text, labels, objects, or extra elements. Output a 1024×1024 opaque square.
 ```
+
+
+### public/art/terminal-city-v3.webp and public/art/paddington-screen-v3.webp
+
+Generated on 2026-10-25 with the built-in image_gen tool. These are original generated illustrations, not film frames or fetched movie footage. The Paddington image is an original fan-art vignette. No API/CLI fallback or external movie image was used. Original generated PNGs remain in C:/Users/aaamm/.codex/generated_images/01a174af-f971-7e82-a75b-c64b1f8384f5. Runtime files were converted with Sharp to opaque WebP without cropping, resizing, compositing or pixel edits: city 1672 × 941 at quality 90, Paddington 1672 × 940 at quality 88.
+
+City initial source: exec-7ce9b921-894e-4e81-8346-fe5794d40d7a.png. Final painted city source: exec-411fe277-3bd7-427b-83e5-12b9640fb257.png. Paddington source: exec-f834d73a-5b9f-422f-a56a-3c3aec7a86c0.png.
+
+Exact city generation prompt:
+
+```text
+Use case: stylized-concept.
+Asset type: original wide cinematic outdoor city panorama, used as the view through a large 3D airport terminal window and as an opening film background.
+Primary request: a luminous near-future Toronto-inspired city and airport district in the visual language of the animated FILM Spider-Man: Into the Spider-Verse: dimensional painted 3D environments, volumetric architectural depth, sculpted hard light, expressive hand-painted surfaces, selective ink accents and very sparse halftone only in shadow transitions. Create an original environment, not a recreated film frame.
+Scene: distant metropolitan skyline with a slender CN Tower-like observation spire, layered glass towers, translucent cylindrical water-tower architecture, sweeping white airport roofs and elevated rail lines curving into depth. The white airport architecture and layered rail give a grounded sense of scale. Water and distant low city structures below a wide sky. No mountains.
+Composition: wide landscape 16:9, horizon approximately 55 percent down the image. Eye level from an elevated terminal, looking outward; buildings and tracks recede far into atmospheric depth. Keep all main architectural silhouettes comfortably inside frame with generous horizontal continuation. This is the outdoor vista only: no window frame, interior, foreground traveler, text, signage or logos.
+Lighting and color: bright cyan sky, cool turquoise glass, luminous warm ivory architecture, deep blue-violet shadows, warm golden lateral sunlight. High cinematic dynamic range with tangible sunlit material planes and atmospheric perspective; no neon magenta wash. Painterly light haze between distant layers, rich color and substantial geometric depth. Warm sunlight grazes architecture, not a central lens flare.
+Avoid: flat vector illustration, printed-comic panel, flat paper cutout city, outlines around everything, uniform dot screen, synthwave grid, futuristic hologram UI, cartoon stickers, fake typography, watermark, film logo. No borrowed movie imagery. Opaque image.
+```
+
+Exact city refinement prompt (reference: initial generated city image):
+
+```text
+Use case: style-transfer.
+Edit target: the supplied original Toronto-inspired airport city panorama.
+Preserve the same wide 16:9 framing, skyline, CN-like observation tower, rail curves, airport roofs, water, horizon height, and warm lateral sunlight. Preserve all architecture and composition, and keep the complete image opaque.
+Change only the visual treatment into a strongly recognizable high-end Spider-Man: Into the Spider-Verse animated-film environment painting: sculpted dimensional 3D volumes shaded in deliberate, large angular color planes; dry-brush pigment along building planes and clouds; a few painterly broken contours; carefully selective stipple confined to transition shadows. Simplify the tiny photographic windows into confident grouped architectural marks. This should feel like a fully lit hand-painted 3D feature-animation city, never a photograph, flat vector, or printed comic.
+Make the sky distinctly luminous turquoise-cyan, with layered hand-painted ivory clouds and teal atmospheric depth. Sunlit airport architecture becomes warm pale ivory and golden cream, contrasted against strong blue-violet shadow planes. Use expressive warm-cool color separation and physically believable volume. Maintain dense foreground/midground/background depth; no global posterise filter or uniform dot overlay.
+No additional objects, people, text, logos, signs, panels, borders, lens flare, mountains, synthwave grid, or reproduced movie frame. Keep every element of the original composition; the change is only painterly film shading, confident forms, and brighter cyan color design.
+```
+
+Exact Paddington generation prompt:
+
+```text
+Use case: stylized-concept.
+Asset type: an original 16:9 painted cinematic vignette displayed on a small television in an airport gate scene.
+Primary request: recognizable Paddington Bear wearing his deep blue duffle coat and soft red hat, holding a marmalade sandwich in a warm London railway station. Original fan-art illustration, not an actual film frame or a recreation of a shot.
+Scene and framing: medium-wide cinema composition, the small brown bear seated on a wooden station bench with the sandwich held in his paws; tender, curious expression, soft realistically dimensional fur and tactile coat cloth. An elegant arched London station interior recedes behind him in warm amber light, softly painted travelers far in the distance for scale. Keep the bear and red hat fully visible and legible even on a small background screen.
+Style and lighting: high-end feature-animation production painting, dimensional 3D forms with selective hand-painted hard-edge light planes and gentle brush texture. Warm golden station light on tawny fur and red felt hat; deep blue duffle coat contrasts with amber architecture. Cinematic atmospheric depth, restrained ink accents, material detail, no flat vector shapes or printed-comic panel.
+Constraints: 16:9 landscape, opaque image, no television frame or bezel because the website provides it; no written title, lettering, subtitles, film studio marks, logos, watermark or decorative border. No photographic movie still, no collage.
+```

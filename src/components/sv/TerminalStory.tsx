@@ -1,10 +1,13 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useId, useRef, useState, useSyncExternalStore } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
-import { careerArrivals } from "@/data/arrivals";
+import Link from "next/link";
+import Image from "next/image";
+import { careerArrivals, getArrivalBySlug } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { memoryGroups, memorySequence } from "./memorySequence";
+import "./manifest.css";
 
 const VOICE = [
   { pre: "", lines: ["Alright."], aside: "Let’s do this one more time." },
@@ -36,78 +39,106 @@ function IntroBeat({ t, beat, reduced }: { t: MotionValue<number>; beat: number;
 }
 
 const WORK = [
-  { line: "I started in finance.", result: "$50M+", label: "in deal flow supported", body: "At sixteen, I was Alpen’s youngest intern. I worked on buy- and sell-side equity advisory, learning financial modelling and investment research." },
-  { line: "Then I started building the tools.", result: "Months → hours", label: "to set up a product demo", body: "I built a demo environment covering eight product capabilities. I also automated competitor comparisons, cutting product research time by about 40%." },
-  { line: "I like AI that has a job to do.", result: "Weeks → hours", label: "to prepare a KYC package", body: "Now I’m rolling out a six-tool Legal AI Hub and extending a local-LLM computer-use agent for the Legal & Compliance team." },
-  { line: "And finding other people who build.", result: "1 of 5", label: "Founding Builder Leads in North America", body: "I scout student builders and help them get started with OpenAI’s developer tools. A good idea gets a lot further with the right people around it." },
-  { line: "Sometimes, before they’ve even started.", result: "~50 / 650+", label: "fellows selected / applicants", body: "At Pear, I source and evaluate early-stage startups and founder talent as part of a fellowship spanning 17 campuses." },
+  { line: "I started in finance.", role: "M&A Summer Analyst", result: "$50M+", label: "in buy- and sell-side deal flow supported.", body: "At 16, I became Alpen’s youngest intern, working in equity advisory and learning financial modelling and investment research." },
+  { line: "Then I started building the tools.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
+  { line: "I like AI that has a job to do.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
+  { line: "Finding other people who build.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
+  { line: "And backing them early.", role: "Pear VC Fellow", result: "~50 / 650+", label: "fellows selected / applicants across 17 campuses.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
 ];
-
-function ItemControls({ kind, labels, selected, select }: { kind: "experience" | "project"; labels: string[]; selected: number; select: (index: number) => void }) {
-  return <div className="tj-item-controls">
-    <label className="tj-item-select"><span>Choose {kind === "experience" ? "a role" : "a project"}</span>
-      <select aria-label={`Choose ${kind}`} value={selected} onChange={event => select(Number(event.target.value))}>
-        {labels.map((label, index) => <option key={label} value={index}>{label}</option>)}
-      </select>
-    </label>
-    <nav className="tj-item-pager" aria-label={`Browse ${kind === "experience" ? "experience" : "projects"}`}>
-      <button aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button>
-      <span aria-label={`${selected + 1} of ${labels.length}`}>{String(selected + 1).padStart(2, "0")}<i>/</i>{String(labels.length).padStart(2, "0")}</span>
-      <button aria-label={`Next ${kind}`} disabled={selected === labels.length - 1} onClick={() => select(selected + 1)}>→</button>
-    </nav>
-  </div>;
-}
-
-export function ExperienceStory({ selected, select, onDirectory }: { selected: number; select: (index: number) => void; onDirectory: () => void }) {
-  const reader = useRef<HTMLDivElement>(null);
-  useEffect(() => { if (reader.current) reader.current.scrollTop = 0; }, [selected]);
-  const current = careerArrivals[selected];
-  const copy = WORK[selected];
-  return <section className="tj-work-scene" aria-label="Experience">
-    <div className="tj-reader" ref={reader}>
-      <p className="tj-kicker"><span>01 / CHECK-IN</span><span>EXPERIENCE</span></p>
-      <ItemControls kind="experience" labels={careerArrivals.map(arrival => arrival.from)} selected={selected} select={select} />
-      <article className="tj-story-copy" data-experience-detail={current.slug}>
-        <p className="tj-spoken-line">{copy.line}</p>
-        <h2>{current.from}</h2>
-        <p className="tj-role">{current.detailTitle ?? current.title}<span>{current.origin}</span></p>
-        <p className="tj-result"><strong>{copy.result}</strong><span>{copy.label}</span></p>
-        <p className="tj-detail">{copy.body}</p>
-        <div className="tj-links"><button onClick={onDirectory} aria-haspopup="dialog">Read all experience <span aria-hidden="true">≡</span></button>{current.fromUrl && <a href={current.fromUrl} target="_blank" rel="noreferrer">Company website <span aria-hidden="true">↗</span></a>}</div>
-      </article>
-      <p className="tj-browse-hint">Scroll to continue, or choose any role above.</p>
-    </div>
-  </section>;
-}
 
 const PROJECT_VOICE = [
-  { line: "Your GPS could use a better voice.", result: "43 prompts. One tap.", label: "Character voices, straight into Waze", detail: "I reverse-engineered Waze’s undocumented voice format, wrote an open-source SDK, and built a way to install character voice packs in one tap.", type: "SOFTWARE / VOICE" },
-  { line: "This one made me question my own idea.", result: "5 agents. Real tests.", label: "A stock-research system with honest evaluations", detail: "I built five agents to debate stocks. Then a simple momentum baseline beat my LLM ranker. The evaluations became the most useful thing I built.", type: "SOFTWARE / AI & FINANCE" },
-  { line: "Some projects are made of people.", result: "1,300+ members", label: "30+ students placed into startups", detail: "I run Waterloo’s student venture community. Alongside connecting builders, I help founders with market research and partner introductions.", type: "COMMUNITY / VENTURE" },
-  { line: "And sometimes, a whole city shows up.", result: "70 events", label: "$6K+ raised in sponsorship", detail: "I organized Waterloo Tech Week and hosted founder conversations. At Hack the North, I designed the application and selection rubric.", type: "COMMUNITY / EVENTS" },
+  { line: "Your GPS could use a better voice.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
+  { line: "Then I tested my own assumptions.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
+  { line: "Some projects are made of people.", role: "Managing Director", result: "1,300+ members", label: "30+ students placed into startups.", body: "I run Waterloo’s student venture community and support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
+  { line: "And sometimes, a whole city shows up.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
 ];
 
-export function ProjectStory({ selected, select, onDirectory }: { selected: number; select: (index: number) => void; onDirectory: () => void }) {
-  const reader = useRef<HTMLDivElement>(null);
-  useEffect(() => { if (reader.current) reader.current.scrollTop = 0; }, [selected]);
-  const current = projects[selected];
-  const copy = PROJECT_VOICE[selected];
-  return <section className="tj-work-scene tj-projects" aria-label="Projects">
-    <div className="tj-reader" ref={reader}>
-      <p className="tj-kicker"><span>02 / SECURITY</span><span>PROJECTS</span></p>
-      <ItemControls kind="project" labels={projects.map(project => project.name)} selected={selected} select={select} />
-      <article className="tj-story-copy" data-project-detail={current.slug}>
-        <p className="tj-spoken-line">{copy.line}</p>
-        <h2>{current.name}</h2>
-        <p className="tj-role">{copy.type}</p>
-        <p className="tj-result"><strong>{copy.result}</strong><span>{copy.label}</span></p>
-        <p className="tj-detail">{copy.detail}</p>
-        <div className="tj-links">{current.seats.flatMap(seat => seat.links ?? []).slice(0, 2).map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span></a>)}<button onClick={onDirectory} aria-haspopup="dialog">All details <span aria-hidden="true">≡</span></button></div>
-      </article>
-      <p className="tj-browse-hint">Scroll to continue, or choose any project above.</p>
+type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void };
+type DetailLink = { label: string; url: string };
+type DetailContent = { name: string; role: string; location?: string; result: string; body: string; image?: string; links: DetailLink[] };
+
+const WORK_RESULTS = [
+  "$50M+ in deal flow supported.",
+  "Sales demos: months → hours.",
+  "KYC prep: weeks → hours.",
+  "1 of 5 leads in North America.",
+  "~50 selected from 650+ applicants.",
+];
+const PROJECT_RESULTS = [
+  "43 Waze prompts. One-tap install.",
+  "5-agent research. Honest evals.",
+  "1,300+ members. 30+ placements.",
+  "70 events. $6K+ raised.",
+];
+
+function SceneReadout({ kind, selected, select, names, role, result, detail, slug, onOpenChange }: {
+  onOpenChange?: (open: boolean) => void; kind: "experience" | "project"; selected: number; select: (index: number) => void;
+  names: string[]; role: string; result: string; detail: DetailContent; slug: string;
+}) {
+  const [open, setOpen] = useState(false);
+  useEffect(() => { onOpenChange?.(open); return () => onOpenChange?.(false); }, [open, onOpenChange]);
+  const section = kind === "experience" ? "experience" : "projects";
+  const dialogId = useId();
+  return <section className={`mf-scene mf-${section}`} aria-label={section}>
+    <div className="mf-panel" data-experience-detail={kind === "experience" ? slug : undefined} data-project-detail={kind === "project" ? slug : undefined}>
+      <div className="mf-readout-label"><span>{kind === "experience" ? "Check-in / Experience" : "Inspection / Projects"}</span><span>{String(selected + 1).padStart(2, "0")} <i>/ {String(names.length).padStart(2, "0")}</i></span></div>
+      <div className="mf-identity">
+        <h2 className="mf-sr-only">{detail.name}</h2>
+        <select aria-label={`Choose ${kind}`} value={selected} onChange={event => select(Number(event.target.value))}>
+          {names.map((name, index) => <option key={name} value={index}>{name}</option>)}
+        </select>
+        <p className="mf-role">{role}</p>
+      </div>
+      <p className="mf-result">{result}</p>
+      <div className="mf-controls">
+        <div className="mf-stepper"><button type="button" aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button><button type="button" aria-label={`Next ${kind}`} disabled={selected === names.length - 1} onClick={() => select(selected + 1)}>→</button></div>
+        <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpen(true)}>Details <span aria-hidden="true">↗</span></button>
+        <Link href={`/short#${section}`} className="mf-short-link">Short version <span aria-hidden="true">↗</span></Link>
+      </div>
     </div>
+    <StoryDetails id={dialogId} open={open} onClose={() => setOpen(false)} item={detail} section={section} />
   </section>;
 }
+
+function StoryDetails({ id, open, onClose, item, section }: { id: string; open: boolean; onClose: () => void; item: DetailContent; section: "experience" | "projects" }) {
+  const dialog = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+  useEffect(() => {
+    const element = dialog.current;
+    if (!element) return;
+    if (!open) { if (element.open) element.close(); return; }
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const previousOverflow = document.body.style.overflow;
+    element.showModal();
+    element.querySelector(".mf-dialog-scroll")?.scrollTo({ top: 0, behavior: "instant" });
+    document.body.style.overflow = "hidden";
+    return () => {
+      if (element.open) element.close();
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus({ preventScroll: true });
+    };
+  }, [open]);
+  return <dialog ref={dialog} id={id} className="mf-dialog" aria-labelledby={titleId} onCancel={event => { event.preventDefault(); onClose(); }}>
+    <header className="mf-dialog-header"><span>{section === "experience" ? "Experience" : "Projects"}</span><button type="button" onClick={onClose} aria-label="Close details">Close <span aria-hidden="true">×</span></button></header>
+    <div className="mf-dialog-scroll">
+      {item.image && <div className="mf-dialog-image"><Image src={item.image} alt={item.name} fill unoptimized sizes="(max-width: 700px) 90vw, 440px" /></div>}
+      <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={`${item.name} links`}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</nav></article>
+    </div>
+    <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><Link href={`/short#${section}`}>Short version <span aria-hidden="true">↗</span></Link></footer>
+  </dialog>;
+}
+
+export function ExperienceStory({ selected, select, onOpenChange }: StorySelection) {
+  const current = careerArrivals[selected];
+  return <SceneReadout onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={careerArrivals.map(item => item.from)} role={WORK[selected].role} result={WORK_RESULTS[selected]} slug={current.slug} detail={{ name: current.from, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
+}
+
+export function ProjectStory({ selected, select, onOpenChange }: StorySelection) {
+  const current = projects[selected];
+  const community = getArrivalBySlug(current.slug === "waterloo-tech-week" ? "hack-the-north" : current.slug);
+  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / Hack the North" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
+}
+
 
 export function MemoryStory({ t, onGallery }: { t: MotionValue<number>; onGallery: (index?: number) => void }) {
   const subscribe = useCallback((update: () => void) => t.on("change", update), [t]);
@@ -115,11 +146,9 @@ export function MemoryStory({ t, onGallery }: { t: MotionValue<number>; onGaller
   const group = useSyncExternalStore(subscribe, read, () => 0);
   const current = memoryGroups[group];
   const photo = memorySequence.find(memory => memory.group === group);
-  return <section className="tj-memory-copy" aria-label="Life outside work">
-    <p className="tj-kicker">03 / CONCOURSE A</p>
+  return <section className="mf-memory" aria-label="Life outside work">
     <h2>{current.title}</h2>
     <p>{current.copy}</p>
-    <button onClick={() => onGallery(photo?.photoIndex ?? 0)} aria-haspopup="dialog">View all 25 photos <span aria-hidden="true">↗</span></button>
-    <small>Tap a photograph to take a closer look.</small>
+    <button type="button" onClick={() => onGallery(photo?.photoIndex ?? 0)} aria-haspopup="dialog">Camera roll <span>25 photos <i aria-hidden="true">↗</i></span></button>
   </section>;
 }

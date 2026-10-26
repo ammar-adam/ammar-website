@@ -99,19 +99,19 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
 
       <motion.article className="bp-ticket" aria-label="Ammar Adam’s resume boarding pass" data-scan-status={status} data-stub-detached={detached} style={{ y, rotate }}>
         <div className="bp-main">
-          <div className="bp-airline"><strong><i aria-hidden="true">AA</i> AMMAR ADAM</strong><span>BOARDING PASS</span></div>
+          <div className="bp-airline"><strong><i className="bp-monogram" aria-hidden="true">a<span>/</span>a</i> AMMAR ADAM</strong><span>BOARDING PASS</span></div>
           <div className="bp-main-content">
             <div className="bp-passenger"><span>PASSENGER</span><strong>ADAM / AMMAR</strong><small>Computer Science &amp; Finance · Waterloo</small></div>
             <div className="bp-route"><div><span>FROM</span><strong>YKF</strong><small>WATERLOO</small></div><div className="bp-route-line" aria-hidden="true"><i /><svg viewBox="0 0 24 24"><path d="M21 12 3 3l2 7 10 2-10 2-2 7z" fill="currentColor" /></svg><i /></div><div><span>TO</span><strong>NEXT</strong><small>WHAT’S NEXT</small></div></div>
-            <dl className="bp-details"><div><dt>FLIGHT</dt><dd>AA 001</dd></div><div><dt>GATE</dt><dd>05</dd></div><div><dt>SEAT</dt><dd>01A</dd></div><div><dt>DOCUMENT</dt><dd>RESUME</dd></div></dl>
+            <dl className="bp-details"><div><dt>FLIGHT</dt><dd>AMM01</dd></div><div><dt>GATE</dt><dd>05</dd></div><div><dt>SEAT</dt><dd>01A</dd></div><div><dt>DOCUMENT</dt><dd>RESUME</dd></div></dl>
             <div className="bp-paper-footer"><span>AMMARADAM.COM</span><span>KEEP THIS PART</span></div>
           </div>
         </div>
         <div className="bp-stub">
-          <div className="bp-stub-header"><span>RESUME / PDF</span><strong>AA 001</strong></div>
+          <div className="bp-stub-header"><span>RESUME / PDF</span><strong>AMM01</strong></div>
           <div className="bp-stub-passenger"><span>ADAM / AMMAR</span><strong>YKF <i aria-hidden="true">→</i> NEXT</strong></div>
           <a ref={scanner} className="bp-scanner" data-scan-trigger="true" data-scan-status={status} href={RESUME} target="_blank" rel="noreferrer" aria-label="Scan boarding pass and open Ammar Adam’s resume PDF after two seconds" aria-busy={status !== "ready"} onClick={scan}>
-            <span className="bp-barcode" aria-hidden="true"><span className="bp-code-bars" />{status === "scanning" && <span key={scanNumber} className="bp-scan-line" style={{ animationDuration: `${SCAN_MS}ms` }} />}<span className="bp-code-number">001 / AMMAR-ADAM / 01A</span></span>
+            <span className="bp-barcode" aria-hidden="true"><span className="bp-code-bars" />{status === "scanning" && <span key={scanNumber} className="bp-scan-line" style={{ animationDuration: `${SCAN_MS}ms` }} />}<span className="bp-code-number">AMM01 / AMMAR-ADAM / 01A</span></span>
             <span className="bp-scan-label">{label}<b aria-hidden="true">↗</b></span>
           </a>
           <div className="bp-clearance" aria-hidden="true"><i /><span>{status === "scanning" ? "READING BARCODE" : status === "tearing" ? "PASS ACCEPTED" : status === "departing" || status === "opening" ? "CLEARED FOR DEPARTURE" : "TWO SECONDS TO DEPARTURE"}</span></div>

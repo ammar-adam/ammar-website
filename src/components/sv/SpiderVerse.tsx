@@ -1,12 +1,15 @@
 "use client";
 
 import "./terminal-journey.css";
+import Link from "next/link";
+import dynamic from "next/dynamic";
+import { SocialLinks } from "./SocialLinks";
+import { OpeningFilm } from "./OpeningFilm";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
-import { animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
-import { TerminalWorld } from "./TerminalWorld";
+import { AnimatePresence, animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
+const TerminalWorld = dynamic(() => import("./TerminalWorld").then(module => module.TerminalWorld), { ssr: false });
 import { SpokenIntro, ExperienceStory, ProjectStory, MemoryStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
-import { TerminalDirectory } from "./TerminalDirectory";
 import { PhotoGallery } from "./PhotoGallery";
 import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
 
@@ -48,14 +51,42 @@ export function SpiderVerse() {
     if (chapter !== 4) { departureAnimation.current?.stop(); departure.set(0); }
     return () => departureAnimation.current?.stop();
   }, [chapter, departure]);
-  const [directory, setDirectory] = useState(false);
-  const [directorySection, setDirectorySection] = useState<"experience" | "projects" | "contact">("experience");
-  const openDirectory = useCallback((section: "experience" | "projects" | "contact" = "experience") => { setDirectorySection(section); setDirectory(true); }, []);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [ready, setReady] = useState(false);
+  const [intro, setIntro] = useState(true);
+  const [warmWorld, setWarmWorld] = useState(false);
+  useEffect(() => {
+    const timer = window.setTimeout(() => setWarmWorld(true), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+  const finishIntro = useCallback((seek = true) => {
+    try { sessionStorage.setItem("ammar-intro-seen", "1"); } catch {}
+    setIntro(false);
+    if (seek) {
+      const progress = .2405;
+      scrollYProgress.set(progress);
+      smooth.jump(progress);
+      requestAnimationFrame(() => window.scrollTo({ top: (document.documentElement.scrollHeight - innerHeight) * progress, behavior: "instant" }));
+    }
+  }, [scrollYProgress, smooth]);
+  useEffect(() => {
+    let seen = false;
+    try { seen = sessionStorage.getItem("ammar-intro-seen") === "1"; } catch {}
+    const linked = !!window.location.hash;
+    if (reduced || seen || linked) {
+      const frame = requestAnimationFrame(() => finishIntro(!linked));
+      return () => cancelAnimationFrame(frame);
+    }
+  }, [reduced, finishIntro]);
+  useEffect(() => {
+    if (!intro || reduced) return;
+    const previous = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = previous; };
+  }, [intro, reduced]);
   const [gallery, setGallery] = useState({ open: false, index: 0 });
   const openGallery = useCallback((index = 0) => setGallery({ open: true, index }), []);
   const closeGallery = useCallback(() => setGallery(value => ({ ...value, open: false })), []);
-  const closeDirectory = useCallback(() => setDirectory(false), []);
   const onReady = useCallback(() => setReady(true), []);
 
   // Keep the same story position when rotation or a resized window changes svh.
@@ -119,33 +150,33 @@ export function SpiderVerse() {
     return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", navigate); };
   }, [jump]);
 
-  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready}>
+  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready} data-intro-playing={intro && !reduced}>
     <h1 className="tj-sr-only">Ammar Adam — CS & Finance at Waterloo</h1>
-    <a className="tj-skip" href="#directory" onClick={event => { event.preventDefault(); setDirectory(true); }}>Skip to portfolio directory</a>
-    <div className="tj-track" ref={track}>
+    <Link className="tj-skip" href="/short">Skip to the short version</Link>
+    <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">
-        <TerminalWorld t={t} reduced={reduced} experienceIndex={experience} projectIndex={project} departure={departure} onPhoto={openGallery} onReady={onReady} />
+        {(!intro || reduced || warmWorld) && <TerminalWorld t={t} reduced={reduced} active={!intro && !gallery.open && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onPhoto={openGallery} onReady={onReady} />}
         <div className="tj-screen-shade" aria-hidden="true" />
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
-          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onDirectory={() => openDirectory("experience")} />}
-          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onDirectory={() => openDirectory("projects")} />}
+          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onOpenChange={setDetailsOpen} />}
+          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onOpenChange={setDetailsOpen} />}
           {chapter === 3 && <MemoryStory t={t} onGallery={openGallery} />}
           {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
         <header className="tj-header">
-          <button className="tj-brand" onClick={() => jump(0)} aria-label="Ammar Adam, back to start"><span aria-hidden="true">a<span>/</span>a</span><b>AMMAR ADAM</b></button>
-          <nav aria-label="Portfolio shortcuts"><button onClick={() => openGallery()} aria-haspopup="dialog">Photos <span>25</span></button><button onClick={() => openDirectory(chapter === 2 ? "projects" : "experience")} aria-haspopup="dialog">Read portfolio <span aria-hidden="true">≡</span></button></nav>
+          <button className="tj-brand" onClick={() => { jump(0); if (!reduced) setIntro(true); }} aria-label="Replay introduction"><span aria-hidden="true">a<span>/</span>a</span><b>AMMAR ADAM</b></button>
+          <div className="tj-header-links"><nav aria-label="Portfolio shortcuts"><button onClick={() => openGallery()} aria-haspopup="dialog">Photos <span>25</span></button><Link href="/short">Short version <span aria-hidden="true">↗</span></Link></nav><SocialLinks /></div>
         </header>
         <footer className="tj-footer">
           <p className="tj-location"><b>0{chapter + 1}</b> {CHAPTERS[chapter].label}</p>
-          <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => jump(index)} aria-label={`Go to ${["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}</b></button>)}</nav>
+          <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => { jump(index); if (index === 0 && !reduced) setIntro(true); }} aria-label={`Go to ${["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}</b></button>)}</nav>
           <p className="tj-scroll">{!ready ? "Loading the terminal…" : chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>KEEP SCROLLING <span aria-hidden="true">↓</span></>}</p>
         </footer>
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>
     </div>
-    <TerminalDirectory key={directorySection} initialTab={directorySection} open={directory} onClose={closeDirectory} />
+    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} />}</AnimatePresence>
     <PhotoGallery open={gallery.open} initialIndex={gallery.index} onClose={closeGallery} />
   </main>;
 }
