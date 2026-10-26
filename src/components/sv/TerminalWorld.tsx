@@ -5,6 +5,7 @@ import "./terminal-look.css";
 import type {MotionValue} from "framer-motion";
 import * as THREE from "three";
 import {createFilmTerminal} from "./film-terminal";
+export {prepareTerminalSetGeometry} from "./film-set-assets";
 import {createRoomVisibility} from "./room-visibility";
 import {TERMINAL_POST_FRAGMENT,TERMINAL_POST_VERTEX} from "./terminal-post";
 
@@ -94,7 +95,7 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    const rush=Math.exp(-Math.pow((progress-.055)/.027,2))*.75+Math.exp(-Math.pow((progress-.145)/.026,2))*.9;
    postMaterial.uniforms.uMotion.value=state.reduced||!moving||progress>=.24?0:Math.min(1,rush);postMaterial.uniforms.uTime.value=state.reduced?0:(performance.now()-started)/1000;lastProgress=progress;
    postMaterial.uniforms.uProjectionInverse.value.copy(world.camera.projectionMatrixInverse);
-   if(!compiled){warmPrograms();return;}
+   if(!compiled){if(world.scene.userData.ready)warmPrograms();return;}
    renderer.setRenderTarget(target);renderer.render(world.scene,world.camera);const calls=renderer.info.render.calls;renderer.setRenderTarget(null);renderer.render(postScene,postCamera);
    element!.dataset.fallback=world.scene.userData.ready?"0":"1";element!.dataset.stage=world.scene.userData.stage;element!.dataset.progress=motionValues.current.t.get().toFixed(4);element!.dataset.camera=world.camera.position.toArray().map(n=>n.toFixed(2)).join(",");element!.dataset.drawCalls=String(calls);surface!.style.opacity=world.scene.userData.ready?"1":"0";
    element!.dataset.looking=String(Math.abs(look.yaw)+Math.abs(look.pitch)>.03);element!.dataset.lookYaw=look.yaw.toFixed(3);element!.dataset.lookPitch=look.pitch.toFixed(3);

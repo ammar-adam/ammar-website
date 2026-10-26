@@ -6,10 +6,11 @@
     "dev": "concurrently -k -n tw,next \"npm:tw:watch\" \"next dev\"",
     "tw": "tailwindcss -i src/app/tailwind.css -o src/app/tw.generated.css --minify",
     "tw:watch": "tailwindcss -i src/app/tailwind.css -o src/app/tw.generated.css --watch",
-    "prebuild": "npm run tw",
+    "prebuild": "npm run bake:sets && npm run tw",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "bake:sets": "node scripts/bake-terminal-sets.cjs"
   },
   "dependencies": {
     "@vercel/analytics": "^1.6.1",

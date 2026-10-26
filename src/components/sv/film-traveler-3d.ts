@@ -271,7 +271,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
   const count=pieces.reduce((sum,piece)=>sum+piece.geometry.getAttribute("position").count,0);
   const attributes={position:new Float32Array(count*3),normal:new Float32Array(count*3),color:new Float32Array(count*3),uv:new Float32Array(count*2)};
   const keys=Object.keys(attributes) as (keyof typeof attributes)[];let offset=0;
-  for(const piece of pieces){piece.updateMatrix();const geometry=piece.geometry.clone().applyMatrix4(piece.matrix);for(const key of keys)attributes[key].set(geometry.getAttribute(key).array,offset*(key==="uv"?2:3));offset+=geometry.getAttribute("position").count;geometry.dispose();group.remove(piece);}
+  for(const piece of pieces){piece.updateMatrix();const geometry=new THREE.BufferGeometry().copy(piece.geometry).applyMatrix4(piece.matrix);for(const key of keys)attributes[key].set(geometry.getAttribute(key).array,offset*(key==="uv"?2:3));offset+=geometry.getAttribute("position").count;geometry.dispose();group.remove(piece);}
   const geometry=new THREE.BufferGeometry();for(const key of keys)geometry.setAttribute(key,new THREE.BufferAttribute(attributes[key],key==="uv"?2:3));geometries.add(geometry);
   const combined=new THREE.Mesh(geometry,paint);combined.castShadow=true;combined.receiveShadow=true;group.add(combined);
  }

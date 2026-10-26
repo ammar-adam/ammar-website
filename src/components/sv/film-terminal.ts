@@ -6,6 +6,8 @@ import { createFilmTraveler3D } from "./film-traveler-3d";
 import { createFilmMaterials } from "./film-materials";
 import { protectFilmRegistration } from "./terminal-post";
 import { createFilmArchitecture } from "./film-architecture";
+import { loadFilmSet } from "./film-set-assets";
+import type { FilmSet } from "./film-set-builder";
 import { createFilmWallArt } from "./film-wall-art";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { createFilmAircraft } from "./film-aircraft";
@@ -449,9 +451,28 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   if(group===scene||group===architecture.root||group===traveler.root||group===checkinIsland.root)return;
   const buckets=new Map<THREE.Material,THREE.Mesh[]>();
   for(const child of group.children)if(child instanceof THREE.Mesh&&!(child instanceof THREE.InstancedMesh)&&child.material instanceof THREE.MeshStandardMaterial){const pieces=buckets.get(child.material)??[];pieces.push(child);buckets.set(child.material,pieces);}
-  for(const [material,pieces]of buckets){if(pieces.length<2)continue;const sources=pieces.map(piece=>{piece.updateMatrix();const source=piece.geometry.index?piece.geometry.toNonIndexed():piece.geometry.clone();return source.applyMatrix4(piece.matrix);});const geometry=mergeGeometries(sources,false);sources.forEach(source=>source.dispose());if(!geometry)continue;keepGeometry(geometry);const mesh=new THREE.Mesh(geometry,material);mesh.receiveShadow=true;mesh.castShadow=pieces.some(piece=>piece.castShadow);pieces.forEach(piece=>group.remove(piece));group.add(mesh);}
+  for(const [material,pieces]of buckets){if(pieces.length<2)continue;const sources=pieces.map(piece=>{piece.updateMatrix();const source=piece.geometry.index?piece.geometry.toNonIndexed():new THREE.BufferGeometry().copy(piece.geometry);return source.applyMatrix4(piece.matrix);});const geometry=mergeGeometries(sources,false);sources.forEach(source=>source.dispose());if(!geometry)continue;keepGeometry(geometry);const mesh=new THREE.Mesh(geometry,material);mesh.receiveShadow=true;mesh.castShadow=pieces.some(piece=>piece.castShadow);pieces.forEach(piece=>group.remove(piece));group.add(mesh);}
  }
  for(const child of scene.children)if(child instanceof THREE.Group&&child!==architecture.root&&child!==traveler.root&&child!==aircraft&&child!==checkinIsland.root)batchProp(child);
+ // Each set is already merged by material. Keep its animated children intact
+ // and let the normal room culler hide these independent room groups.
+ const setDressing:FilmSet[]=[];
+ const pendingSets=new Set<string>(),settledSets=new Set<string>();
+ let setTime=0,setReduced=false;
+ function requestSet(name:Parameters<typeof loadFilmSet>[0]){
+  if(pendingSets.has(name))return;
+  pendingSets.add(name);
+  void loadFilmSet(name,palette.materials).then(set=>{
+   if(dead){set.dispose();return;}
+   set.update(setTime,setReduced);setDressing.push(set);scene.add(...set.groups);
+   settledSets.add(name);invalidate();
+  }).catch(error=>{
+   if(dead)return;
+   console.warn(`Terminal ${name} furnishings unavailable.`,error);
+   settledSets.add(name);invalidate();
+  });
+ }
+ requestSet("atrium");
  const travelerBounds=new THREE.Box3();
  const temp=new THREE.Vector3(),look=new THREE.Vector3(),right=new THREE.Vector3(),up=new THREE.Vector3(),forward=new THREE.Vector3();
  return {scene,camera,photos,
@@ -485,7 +506,11 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    trays.forEach((group,i)=>{const travel=state.reduced?i*1.7:((state.time??0)*.34+i*1.9+security*2.2)%7.5;group.visible=p>=.43&&p<.65;group.position.z=-37.9-travel;group.rotation.y=0;});
    const scan=state.reduced?.5:(security*4)%1;scanPlane.position.set(archX,1.65,-42.55-scan*.9);scanBar.position.set(archX,3,-42.55-scan*.9);scanPlane.visible=scanBar.visible=p>=.45&&p<.64;
    animateAirport(state.time??0,state.reduced);updateBelt(state.reduced?0:state.time??0);
-   scene.userData.ready=Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=p<.24?"atrium":p<.45?"checkin":p<.65?"security":p<.86?"concourse":"gate";
+   setTime=state.time??0;setReduced=state.reduced;
+   if(p>=.34)requestSet("airside");
+   if(p>=.52)requestSet("concourse");
+   for(const set of setDressing)set.update(setTime,setReduced);
+   scene.userData.ready=(Boolean(scene.userData.ready)||settledSets.has(p<.45?"atrium":p<.65?"airside":p<.86?"concourse":"airside"))&&Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=p<.24?"atrium":p<.45?"checkin":p<.65?"security":p<.86?"concourse":"gate";
    aircraft.position.set(-8+flight*38,3.5+flight*15,-128-flight*22);aircraft.rotation.set(0,flight*-.08,flight*.14);
    const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=travelerKey.visible=travelerRim.visible=visible;
    if(visible){
@@ -505,6 +530,6 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    // must not drag the character around with the camera.
    camera.rotateY(state.lookYaw??0);camera.rotateX(state.lookPitch??0);camera.updateMatrixWorld();
   },
-  dispose(){dead=true;traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();wallArt.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
+  dispose(){dead=true;setDressing.forEach(set=>set.dispose());traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();wallArt.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
  };
 }

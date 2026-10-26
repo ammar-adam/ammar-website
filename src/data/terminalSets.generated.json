@@ -1,0 +1,14 @@
+{
+  "atrium": {
+    "url": "/geometry/atrium.set.gz",
+    "hash": "f5b5382f2f114bf8"
+  },
+  "concourse": {
+    "url": "/geometry/concourse.set.gz",
+    "hash": "a0d170e3a7948817"
+  },
+  "airside": {
+    "url": "/geometry/airside.set.gz",
+    "hash": "137a9ffa385a70b4"
+  }
+}

@@ -9,14 +9,14 @@ import { SocialLinks } from "./SocialLinks";
 import { OpeningFilm } from "./OpeningFilm";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
-// Warm only the module while a buffered film is playing. World construction and
+// Warm the module and baked atrium bytes while the buffered film plays. World construction and
 // GPU setup remain inside TerminalWorld's effect after the intro has finished.
 let terminalWorldModule: Promise<typeof import("./TerminalWorld")> | undefined;
 const loadTerminalWorld = () => terminalWorldModule ??= import("./TerminalWorld").catch(error => {
   terminalWorldModule = undefined;
   throw error;
 });
-const prepareTerminalWorld = () => { void loadTerminalWorld().catch(() => {}); };
+const prepareTerminalWorld = () => { void loadTerminalWorld().then(module => module.prepareTerminalSetGeometry()).catch(() => {}); };
 const TerminalWorld = dynamic(() => loadTerminalWorld().then(module => module.TerminalWorld), { ssr: false });
 import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
