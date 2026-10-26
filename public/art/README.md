@@ -154,3 +154,11 @@ Saved project assets: [atrium](./terminal-atrium-v4.webp), [check-in](./checkin-
 ## Current 3D terminal
 
 The live terminal uses film-terminal.ts, film-architecture.ts, film-materials.ts, film-traveler-3d.ts and film-aircraft.ts. The rooms, character, moving objects and aircraft are real geometry. The original traveler image is sampled as painted albedo on the articulated model’s rear surfaces; it is not an image plane. The city is a distant exterior backdrop. Full-room v4 paintings are archived and are not used as live rooms. The opening MP4s are recordings of the live 3D world.
+
+
+## Liverpool concourse fan mural
+
+- Runtime artwork: [liverpool-wall-graffiti.svg](./liverpool-wall-graffiti.svg), a transparent vector paint decal on the first concourse kitchen bay's physical side wall. No AI imagery.
+- Emblem source: [Liverpool FC's official Liverbird and L.F.C. SVG](https://stadion-edge.liverpoolfc.com/images/lfc.svg), linked by [Liverpool FC](https://www.liverpoolfc.com/), retrieved 2026-10-26. The unmodified source is retained as [liverpool-official-source.svg](./liverpool-official-source.svg). Emblem copyright and trademark belong to Liverpool Football Club; no open licence is claimed.
+- Original treatment for Ammar Adam: red stencil layers, cream registration offset, deterministic paint overspray (seed 6601892), small dry-brush cutouts and painted drips. The underlying bird and lettering geometry is retained from the official emblem. This is an independent fan mural, not a club endorsement.
+- The decal is a 3 × 4 metre transparent, lit, shadow-receiving mesh; its SVG is 1200 × 1600. It is not a room image or a freestanding sign.

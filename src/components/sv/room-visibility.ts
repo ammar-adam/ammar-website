@@ -9,8 +9,8 @@ export function createRoomVisibility(scene: THREE.Scene) {
     for (const object of hidden) object.visible = true;
     hidden.length = 0;
   }
-  function apply(progress: number) {
-    const [near, far] = progress < .433 ? [-33, 25] : progress < .45 ? [-51, 25]
+  function apply(progress: number, lookingAround = false) {
+    const [near, far] = lookingAround ? (progress < .24 ? [-33,25] : progress < .45 ? [-51,25] : progress < .65 ? [-88,-17] : progress < .86 ? [-150,-32] : [-300,-50]) : progress < .433 ? [-33, 25] : progress < .45 ? [-51, 25]
       : progress < .635 ? [-51, -29] : progress < .65 ? [-88, -29]
       : progress < .841 ? [-88, -48] : progress < .86 ? [-150, -48] : [-300, -80];
     for (const object of scene.children) {

@@ -8,8 +8,8 @@ import "./security-projects.css";
 
 const ORDER = ["backseat", "rocketship", "waterloo-venture", "waterloo-tech-week"];
 const COPY: Record<string, { title: string; line: string; type: string }> = {
-  "waterloo-venture": { title: "1,300+ students. 30+ startup placements.", line: "I run Waterloo’s student venture community, connect students with startups, and help founders with market research and partner introductions.", type: "COMMUNITY / VENTURE" },
-  "waterloo-tech-week": { title: "70 events. A week of builders.", line: "I organized Waterloo Tech Week, raised $6K+ in sponsorship, and hosted founder conversations. At Hack the North, I designed the application and selection rubric.", type: "COMMUNITY / EVENTS" },
+  "waterloo-venture": { title: "1,300+ students. 30+ startup placements.", line: "I run Waterloo’s student venture community, connect students with startups, and help founders with market research and partner introductions. WVG has helped founders raise $13.9M.", type: "COMMUNITY / VENTURE" },
+  "waterloo-tech-week": { title: "70 events. A week of builders.", line: "I organized Waterloo Tech Week, raised $6K+ in sponsorship, and hosted founder conversations.", type: "COMMUNITY / EVENTS" },
   backseat: { title: "Your GPS. A better voice.", line: "I reverse-engineered Waze’s voice format, built an open-source SDK, and made character voice packs install in one tap.", type: "VOICE / OPEN SOURCE" },
   rocketship: { title: "Five agents. One reality check.", line: "I built five agents to research stocks. Then a simple momentum baseline beat my LLM ranker. The evaluation turned out to be the most useful part.", type: "AI / FINANCE / EVALS" },
 };

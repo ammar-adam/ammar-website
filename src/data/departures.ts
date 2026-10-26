@@ -138,14 +138,14 @@ export const projects: Project[] = [
   {
     slug: "waterloo-venture", name: "Waterloo Venture Group", year: "", destination: "Student founders",
     flightCode: "WVG01", routeName: "A community for student builders", gate: "C", status: "Boarding",
-    shortDesc: "I run a 1,300+ member student venture community that has placed 30+ students into startups. I support founders with market research and partner introductions, including Smoov's expansion beyond the US.",
+    shortDesc: "I run a 1,300+ member student venture community that has placed 30+ students into startups. WVG has helped founders raise $13.9M. I support founders with market research and partner introductions, including Smoov's expansion beyond the US.",
     screenshot: "/WATERLOOVG.jpg", stackTag: "COMMUNITY / VENTURE",
     seats: [{ id: "main", label: "Links", content: "", links: [{ label: "Visit WVG", url: "https://www.waterloovg.com/" }] }],
   },
   {
     slug: "waterloo-tech-week", name: "Waterloo Tech Week / Hack the North", year: "", destination: "A week of builders",
     flightCode: "WTW70", routeName: "Bringing student builders together", gate: "D", status: "Boarding",
-    shortDesc: "I organized Waterloo Tech Week across 70 events, raised $6K+ in sponsorship, and moderated founder conversations. At Hack the North, I designed the application and selection rubric.",
+    shortDesc: "I organized Waterloo Tech Week across 70 events, raised $6K+ in sponsorship, and moderated founder conversations.",
     screenshot: "/HTN_ORGANIZER.jpg", stackTag: "COMMUNITY / EVENTS",
     seats: [{ id: "main", label: "Links", content: "", links: [{ label: "Tech Week", url: "https://waterlootechweek.ca/" }, { label: "Hack the North", url: "https://hackthenorth.com/" }, { label: "Techyon", url: "https://techyon.org/" }] }],
   },

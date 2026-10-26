@@ -10,7 +10,7 @@ const EXPERIENCE_ORDER = ["alpen-capital", "datastealth", "sagard", "openai", "p
 const WORK: Record<string, { name: string; result: string; detail: string }> = {
   sagard: { name: "Sagard", result: "6 tools. One Legal AI Hub.", detail: "I build AI tools for Legal & Compliance and work on a local-LLM computer-use agent. As an intern, I cut KYC preparation from weeks to hours." },
   openai: { name: "OpenAI", result: "One of five across North America.", detail: "I scout student builders and help grow adoption of OpenAI’s developer tools as a Founding Builder Lead." },
-  "pear-vc": { name: "Pear VC", result: "Finding founders early.", detail: "I source and evaluate early-stage startups and founder talent. Selected as one of roughly 50 fellows from 650+ applicants." },
+  "pear-vc": { name: "Pear VC", result: "Finding founders early.", detail: "I source and evaluate early-stage startups and founder talent." },
   datastealth: { name: "DataStealth", result: "Demo setup: months → hours.", detail: "I built a demo environment across eight product capabilities and automated competitor research." },
   "alpen-capital": { name: "Alpen Capital", result: "$50M+ in deal flow. At sixteen.", detail: "I supported buy- and sell-side equity advisory, learning financial modelling and investment research as the firm’s youngest intern." },
 };

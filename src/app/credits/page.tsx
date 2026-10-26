@@ -35,6 +35,9 @@ export default function CreditsPage() {
           <p style={{ margin: 0, color: "#cdd2d4", fontSize: 14 }}>
             The 3D airport, props, aircraft and articulated character were built for this site. AI-generated artwork supplies the distant cityscape, painted material detail, original traveler reference and an original Paddington fan-art vignette on the café television. Earlier environment paintings remain archived in the project. The personal gallery uses Ammar’s own photographs.
           </p>
+          <p style={{ margin: "16px 0 0", color: "#cdd2d4", fontSize: 14 }}>
+            Liverpool’s Liverbird and L.F.C. emblem © Liverpool Football Club, sourced from its <a href="https://stadion-edge.liverpoolfc.com/images/lfc.svg" target="_blank" rel="noreferrer" style={{ color: "#efb550", textUnderlineOffset: 4 }}>official website</a>. The concourse mural uses an original spray-paint treatment for this independent fan artwork.
+          </p>
         </section>
         <p style={{ marginTop: 32, fontSize: 14, color: "#aeb8c1" }}>
           Resume: <a href="/Ammar_Adam.pdf" target="_blank" rel="noreferrer" style={{ color: "#efb550", textUnderlineOffset: 4 }}>Ammar_Adam.pdf</a>

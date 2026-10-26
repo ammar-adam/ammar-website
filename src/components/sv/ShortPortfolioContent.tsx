@@ -9,15 +9,15 @@ const roles = [...careerArrivals].reverse();
 const roleStories: Record<string, string> = {
   sagard: "Building a six-tool Legal AI Hub and extending Doppel, a local-LLM computer-use agent, at a $46B AUM asset manager. Earlier, I cut KYC preparation from weeks to hours.",
   openai: "One of five Founding Builder Leads selected across North America. I scout student builders and help them use OpenAI’s developer tools.",
-  "pear-vc": "One of ~50 fellows selected from 650+ applicants across 17 campuses. I source and evaluate early-stage startups and founder talent.",
+  "pear-vc": "I source and evaluate early-stage startups and founder talent.",
   datastealth: "I built demos across eight product capabilities, cutting setup from months to hours. Automating competitor comparisons cut product research time by ~40%.",
   "alpen-capital": "Alpen’s youngest intern at 16. I supported $50M+ in buy- and sell-side equity advisory while learning financial modelling and investment research.",
 };
 const projectStories: Record<string, string> = {
   backseat: "Character voices for Waze, installed in one tap. I reverse-engineered Waze’s undocumented format and built an open-source SDK covering all 43 prompts.",
   rocketship: "Five-agent equity research, live news and portfolio optimization. Walk-forward testing showed a simple momentum baseline beat the LLM ranker, exposing inflated backtests.",
-  "waterloo-venture": "I run a 1,300+ member student venture community that has placed 30+ students into startups. I also help founders with research and partner introductions.",
-  "waterloo-tech-week": "I organized Waterloo Tech Week across 70 events and raised $6K+ in sponsorship. At Hack the North, I designed the application and selection rubric.",
+  "waterloo-venture": "I run a 1,300+ member student venture community that has placed 30+ students into startups. WVG has helped founders raise $13.9M. I also help founders with research and partner introductions.",
+  "waterloo-tech-week": "I organized Waterloo Tech Week across 70 events and raised $6K+ in sponsorship.",
 };
 
 export function ShortPortfolioContent({ idPrefix = "short" }: { idPrefix?: string }) {

@@ -5,6 +5,7 @@ import { motion, useTransform, type MotionValue } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { FilmTitle } from "./FilmTitle";
+import { CityMuralBackground } from "./CityMuralBackground";
 import { careerArrivals, getArrivalBySlug } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import "./manifest.css";
@@ -42,14 +43,14 @@ const WORK = [
   { line: "Next, I put code to work.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
   { line: "Turns out, I like the useful stuff.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
   { line: "Building gets better with people.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
-  { line: "Good ideas deserve a shot.", role: "Pear VC Fellow", result: "~50 / 650+", label: "fellows selected / applicants across 17 campuses.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
+  { line: "Good ideas deserve a shot.", role: "Pear VC Fellow", result: "Early-stage founders", label: "sourcing startups and founder talent.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
 ];
 
 const PROJECT_VOICE = [
   { line: "Yes, I made my GPS talk.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
   { line: "Five agents. I checked their work.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
-  { line: "Some projects aren’t code.", role: "Managing Director", result: "1,300+ members", label: "30+ students placed into startups.", body: "I run Waterloo’s student venture community and support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
-  { line: "Get everyone in the same room.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
+  { line: "Some projects aren’t code.", role: "Managing Director", result: "$13.9M", label: "raised by founders WVG has helped.", body: "I run a 1,300+ member student venture community with 30+ student startup placements. WVG has helped founders raise $13.9M. I support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
+  { line: "Get everyone in the same room.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations." },
 ];
 
 type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void };
@@ -61,12 +62,12 @@ const WORK_RESULTS = [
   "Sales demos: months → hours.",
   "KYC prep: weeks → hours.",
   "1 of 5 leads in North America.",
-  "~50 selected from 650+ applicants.",
+  "Finding founders early.",
 ];
 const PROJECT_RESULTS = [
   "43 Waze prompts. One-tap install.",
   "5-agent research. Honest evals.",
-  "1,300+ members. 30+ placements.",
+  "Helped founders raise $13.9M.",
   "70 events. $6K+ raised.",
 ];
 
@@ -103,6 +104,7 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
 
 function StoryDetails({ id, open, onClose, item, section }: { id: string; open: boolean; onClose: () => void; item: DetailContent; section: "experience" | "projects" }) {
   const dialog = useRef<HTMLDialogElement>(null);
+  const closeButton = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   useEffect(() => {
     const element = dialog.current;
@@ -113,19 +115,37 @@ function StoryDetails({ id, open, onClose, item, section }: { id: string; open: 
     element.showModal();
     element.querySelector(".mf-dialog-scroll")?.scrollTo({ top: 0, behavior: "instant" });
     document.body.style.overflow = "hidden";
+    closeButton.current?.focus({ preventScroll: true });
     return () => {
       if (element.open) element.close();
       document.body.style.overflow = previousOverflow;
-      previousFocus?.focus({ preventScroll: true });
+      if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true });
     };
   }, [open]);
-  return <dialog ref={dialog} id={id} className="mf-dialog" aria-labelledby={titleId} onCancel={event => { event.preventDefault(); onClose(); }}>
-    <header className="mf-dialog-header"><span>{section === "experience" ? "Experience" : "Projects"}</span><button type="button" onClick={onClose} aria-label="Close details">Close <span aria-hidden="true">×</span></button></header>
-    <div className="mf-dialog-scroll">
-      {item.image && <div className="mf-dialog-image"><Image src={item.image} alt={item.name} fill unoptimized sizes="(max-width: 700px) 90vw, 440px" /></div>}
-      <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={`${item.name} links`}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</nav></article>
+  return <dialog ref={dialog} id={id} className="mf-dialog" aria-labelledby={titleId}
+    onCancel={event => { event.preventDefault(); onClose(); }}
+    onClick={event => {
+      if (event.target !== event.currentTarget) return;
+      const bounds = event.currentTarget.getBoundingClientRect();
+      if (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom) onClose();
+    }}
+    onKeyDown={event => {
+      if (event.key !== "Tab") return;
+      const targets = Array.from(event.currentTarget.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex="0"]')).filter(element => element.getClientRects().length > 0);
+      const first = targets[0];
+      const last = targets.at(-1);
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+      else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
+    }}>
+    {open && <CityMuralBackground className="mf-dialog-mural" />}
+    <div className="mf-dialog-panel">
+      <header className="mf-dialog-header"><span>{section === "experience" ? "Experience" : "Projects"}</span><button ref={closeButton} type="button" onClick={onClose} aria-label="Close details">Close <span aria-hidden="true">×</span></button></header>
+      <div className="mf-dialog-scroll">
+        {item.image && <div className="mf-dialog-image"><Image src={item.image} alt={item.name} fill unoptimized sizes="(max-width: 700px) 90vw, 440px" /></div>}
+        <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={item.name + " links"}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</nav></article>
+      </div>
+      <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><Link href={"/short#" + (section === "experience" ? "short-work" : "short-projects")}>Short version <span aria-hidden="true">↗</span></Link></footer>
     </div>
-    <footer className="mf-dialog-footer"><span>Prefer to read everything together?</span><Link href={`/short#${section === "experience" ? "short-work" : "short-projects"}`}>Short version <span aria-hidden="true">↗</span></Link></footer>
   </dialog>;
 }
 

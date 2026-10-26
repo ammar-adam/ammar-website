@@ -97,8 +97,58 @@ export function createFilmCheckin(materials: FilmMaterialPalette): FilmCheckin {
   const reader = roundBox(.43, .08, .30, .025);
   reader.rotateX(-.20); reader.translate(-.75, 1.24, .61); add(reader, materials.dark);
   box(.27, .015, .17, materials.glass, -.75, 1.29, .59, .008);
-  box(.38, .012, .23, materials.ivory, -.15, 1.23, .49, .006);
-  box(.04, .018, .20, materials.coral, .025, 1.244, .49, .005);
+  // A recently handled passport and tagging supplies make this a working desk.
+  // Every piece joins the existing material batches, including the printed marks.
+  const passportTransform = new THREE.Matrix4().makeRotationY(-.22);
+  passportTransform.setPosition(-1.40, 1.236, .62);
+  const passportPart = (w: number, h: number, d: number, x: number, y: number, z: number, material: THREE.Material, lifted = false) => {
+    const geometry = roundBox(w, h, d, .005);
+    geometry.translate(x, y, z);
+    if (lifted) geometry.rotateZ(.38);
+    geometry.applyMatrix4(passportTransform); add(geometry, material);
+  };
+  passportPart(.32, .018, .45, -.16, 0, 0, materials.ink);
+  passportPart(.32, .018, .45, .16, 0, 0, materials.ink, true);
+  passportPart(.29, .017, .415, -.155, .017, 0, materials.ivory);
+  passportPart(.29, .017, .415, .155, .017, 0, materials.ivory, true);
+  passportPart(.025, .022, .44, 0, .008, 0, materials.walnut);
+  // A photo block, ruled fields and page edges; no invented identity text.
+  passportPart(.075, .003, .096, -.218, .027, .060, materials.steel);
+  for (let i = 0; i < 4; i++) {
+    passportPart(.115 - i * .010, .003, .007, -.105, .027, .085 - i * .035, materials.gold);
+    passportPart(.20, .003, .005, .155, .027, .135 - i * .045, materials.gold, true);
+  }
+  passportPart(.27, .003, .008, -.155, .027, -.165, materials.dark);
+  passportPart(.27, .003, .008, .155, .027, -.165, materials.dark, true);
+
+  // A hollow paper roll with a short loose tail curling toward the customer.
+  const rollCenter = new THREE.Vector3(.30, 1.343, .48);
+  const roll = new THREE.CylinderGeometry(.112, .112, .19, 24);
+  roll.rotateZ(Math.PI / 2); roll.translate(rollCenter.x, rollCenter.y, rollCenter.z); add(roll, materials.ivory);
+  for (const side of [-1, 1]) {
+    const core = new THREE.CylinderGeometry(.036, .036, .003, 16);
+    core.rotateZ(Math.PI / 2); core.translate(.30 + side * .097, 1.343, .48); add(core, materials.dark);
+    for (const radius of [.064, .091]) {
+      const edge = new THREE.TorusGeometry(radius, .0018, 3, 24);
+      edge.rotateY(Math.PI / 2); edge.translate(.30 + side * .097, 1.343, .48); add(edge, materials.gold);
+    }
+  }
+  const paperStrip = (points: readonly (readonly [number, number, number])[], width: number, material: THREE.Material) => {
+    const vertices: number[] = [], indices: number[] = [];
+    points.forEach(([x, y, z]) => vertices.push(x - width / 2, y, z, x + width / 2, y, z));
+    for (let i = 0; i < points.length - 1; i++) { const a = i * 2; indices.push(a, a + 2, a + 1, a + 1, a + 2, a + 3); }
+    const geometry = new THREE.BufferGeometry(); geometry.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3)); geometry.setIndex(indices); geometry.computeVertexNormals(); add(geometry, material);
+  };
+  paperStrip([[.30, 1.236, .49], [.30, 1.239, .63], [.30, 1.244, .79], [.30, 1.28, .85]], .18, materials.ivory);
+  for (let i = 0; i < 7; i++) box(.009 + (i % 2) * .005, .003, .055, materials.ink, .242 + i * .018, 1.247, .75, .001);
+
+  // One folded tag beside the reader, with a raised perforated end and coral tab.
+  paperStrip([[-.17, 1.237, .43], [-.17, 1.24, .65], [-.17, 1.30, .72]], .25, materials.ivory);
+  box(.045, .004, .15, materials.coral, -.268, 1.243, .53, .001);
+  for (let i = 0; i < 5; i++) box(.008, .003, .047, materials.ink, -.20 + i * .019, 1.245, .56, .001);
+  // Polished corners at the reader's contact edge, rather than all-over dirt.
+  box(.072, .004, .012, materials.steel, -.88, 1.253, .757, .002);
+  box(.030, .004, .012, materials.steel, -.63, 1.253, .757, .002);
 
   // A stepped sign housing grows from two curved structural masts.
   for (const x of [-1.58, 1.58]) {

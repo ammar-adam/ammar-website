@@ -33,6 +33,7 @@ type Surface = {
   scale?: number;
   bands?: number;
   rim?: number;
+  drawing?: number;
 };
 
 const VERTEX_FIELDS = /* glsl */`
@@ -62,6 +63,7 @@ uniform float uFilmPaintStrength;
 uniform float uFilmScale;
 uniform float uFilmBands;
 uniform float uFilmRim;
+uniform float uFilmDrawing;
 
 float filmRandom(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
 vec2 filmSurfaceUV(vec3 point, vec3 surfaceNormal) {
@@ -85,6 +87,39 @@ float filmBroad = filmBrush(filmUV, 0.17, 0.0) + filmBrush(filmUV, 0.43, 19.0) *
 float filmPigmentValue = 1.0 + (filmBroad * 0.105 + filmFine * 0.22) * uFilmPaintStrength;
 diffuseColor.rgb *= filmPigmentValue;
 diffuseColor.rgb *= vec3(1.0 + filmBroad * 0.028, 1.0, 1.0 - filmBroad * 0.04);
+`;
+
+const PRINT_SHADOW = /* glsl */`
+#if defined(USE_SHADOWMAP) && defined(SHADOWMAP_TYPE_PCF)
+// Five deterministic hardware-PCF taps replace the stock per-pixel random disk.
+// A small object-bound screen tone carries the transition. Both its density and
+// the shadow test are antialiased; distant marks collapse to their mean value.
+float filmPrintShadow(sampler2DShadow shadowMap, vec2 shadowMapSize, float intensity, float bias, float radius, vec4 coord) {
+  coord.xyz /= coord.w;
+  coord.z += bias;
+  if (coord.x < 0.0 || coord.x > 1.0 || coord.y < 0.0 || coord.y > 1.0 || coord.z > 1.0) return 1.0;
+  vec2 texel = vec2(1.0) / shadowMapSize;
+  vec2 paperUV = filmSurfaceUV(vFilmPosition, vFilmNormal);
+  float dryEdge = filmBrush(paperUV, 0.43, 19.0) * 0.22;
+  vec2 at = coord.xy + texel * vec2(dryEdge, dryEdge * 0.6);
+  vec2 spread = texel * max(radius, 1.0) * 1.7;
+  float coverage = texture(shadowMap, vec3(at, coord.z)) * 0.40
+    + texture(shadowMap, vec3(at + vec2(spread.x, 0.0), coord.z)) * 0.15
+    + texture(shadowMap, vec3(at - vec2(spread.x, 0.0), coord.z)) * 0.15
+    + texture(shadowMap, vec3(at + vec2(0.0, spread.y), coord.z)) * 0.15
+    + texture(shadowMap, vec3(at - vec2(0.0, spread.y), coord.z)) * 0.15;
+  vec2 grid = mat2(0.819, -0.574, 0.574, 0.819) * paperUV * 20.0;
+  float gridAA = max(length(fwidth(grid)) * 0.56, 0.018);
+  float distanceToDot = length(fract(grid) - 0.5);
+  float dotRadius = sqrt(max(0.0, 1.0 - coverage)) * 0.59;
+  float printLight = smoothstep(dotRadius - gridAA, dotRadius + gridAA, distanceToDot);
+  float transition = smoothstep(0.04, 0.22, coverage) * (1.0 - smoothstep(0.78, 0.96, coverage));
+  float resolvable = 1.0 - smoothstep(0.28, 0.72, length(fwidth(grid)));
+  float selectedMark = smoothstep(-0.045, 0.09, filmBrush(paperUV, 0.21, 43.0));
+  float drawn = mix(smoothstep(0.18, 0.82, coverage), printLight, transition * resolvable * selectedMark * uFilmDrawing * 0.72);
+  return mix(1.0, drawn, intensity);
+}
+#endif
 `;
 
 const LIGHTING = /* glsl */`
@@ -117,13 +152,23 @@ float filmHatchInk = filmHatch * filmHatchPatch * filmTransition * filmLightVari
 reflectedLight.directDiffuse *= 1.0 - filmHatchInk * 0.35;
 reflectedLight.indirectDiffuse *= 1.0 - filmHatchInk * 0.26;
 float filmFacing = clamp(abs(dot(normal, normalize(vViewPosition))), 0.0, 1.0);
-float filmContour = (1.0 - smoothstep(0.035, 0.24, filmFacing)) * (0.35 + 0.65 * smoothstep(-0.05, 0.28, filmBroad));
-reflectedLight.directDiffuse *= 1.0 - filmContour * 0.25;
-reflectedLight.indirectDiffuse *= 1.0 - filmContour * 0.25;
-// Paint highlights into a grouped mark instead of leaving a plastic PBR lobe.
+float filmContour = (1.0 - smoothstep(0.035, 0.19, filmFacing)) * (0.55 + 0.45 * smoothstep(-0.05, 0.28, filmBroad));
+reflectedLight.directDiffuse *= 1.0 - filmContour * 0.43 * uFilmDrawing;
+reflectedLight.indirectDiffuse *= 1.0 - filmContour * 0.43 * uFilmDrawing;
+// Each curved lit form has a deliberate secondary pencil crease just inside
+// the silhouette. Pigment breaks its length; floors never acquire a hatch grid.
+float filmCrease = smoothstep(0.19, 0.23, filmFacing) * (1.0 - smoothstep(0.25, 0.29, filmFacing));
+filmCrease *= smoothstep(0.015, 0.11, filmBroad) * uFilmDrawing;
+reflectedLight.directDiffuse *= 1.0 - filmCrease * 0.22;
+reflectedLight.indirectDiffuse *= 1.0 - filmCrease * 0.22;
+// A highlight is a painted value shape, not the smooth center of a plastic
+// microfacet lobe. Only its boundary gets dry-brush breakup, never the floor.
 float filmSpecular = dot(reflectedLight.directSpecular, vec3(0.2126, 0.7152, 0.0722));
-float filmSpecularShape = smoothstep(0.018 + filmBroad * 0.005, 0.065, filmSpecular);
-reflectedLight.directSpecular *= mix(0.48, 1.0, filmSpecularShape);
+float filmSpecularEdge = filmBroad * 0.004 * uFilmPaintStrength;
+float filmSpecularPaint = 0.024 * smoothstep(0.012 + filmSpecularEdge, 0.018 + filmSpecularEdge, filmSpecular)
+  + 0.068 * smoothstep(0.052 + filmSpecularEdge, 0.063 + filmSpecularEdge, filmSpecular)
+  + 0.15 * smoothstep(0.14, 0.16, filmSpecular);
+reflectedLight.directSpecular *= mix(filmSpecular, filmSpecularPaint, 0.76 * uFilmDrawing) / max(filmSpecular, 0.0001);
 `;
 
 const RIM = /* glsl */`
@@ -208,10 +253,11 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
       uFilmScale: { value: surface.scale ?? 0.40 },
       uFilmBands: { value: surface.bands ?? 0.82 },
       uFilmRim: { value: surface.rim ?? 0.27 },
+      uFilmDrawing: { value: surface.drawing ?? 0.85 },
     };
     // These uniform objects may be adjusted without creating shader variants.
     material.userData.film = uniforms;
-    material.customProgramCacheKey = () => "film-painted-standard-v3.3";
+    material.customProgramCacheKey = () => "film-painted-standard-v4.1";
     material.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, uniforms);
       shader.vertexShader = shader.vertexShader
@@ -220,6 +266,11 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
         .replace("#include <project_vertex>", `${VERTEX_POSITION}\n#include <project_vertex>`);
       shader.fragmentShader = shader.fragmentShader
         .replace("#include <common>", `#include <common>\n${FRAGMENT_FIELDS}`)
+        .replace("#include <shadowmap_pars_fragment>", `#include <shadowmap_pars_fragment>\n${PRINT_SHADOW}`)
+        .replace("#include <lights_fragment_begin>", THREE.ShaderChunk.lights_fragment_begin.replace(
+          "getShadow( directionalShadowMap[ i ]",
+          `\n#if defined(SHADOWMAP_TYPE_PCF)\nfilmPrintShadow( directionalShadowMap[ i ]\n#else\ngetShadow( directionalShadowMap[ i ]\n#endif\n`,
+        ))
         .replace("#include <map_fragment>", `#include <map_fragment>\n${PIGMENT}`)
         .replace("#include <roughnessmap_fragment>", "#include <roughnessmap_fragment>\nroughnessFactor = clamp(roughnessFactor + filmFine * uFilmPaintStrength * 0.35, 0.16, 1.0);")
         .replace("#include <aomap_fragment>", `#include <aomap_fragment>\n${LIGHTING}`)
@@ -235,12 +286,12 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
     coral: painted("coral", { color: "#ac5548", roughness: 0.64, paint: 0.65 }),
     cyan: painted("cyan", { color: "#79a9ad", roughness: 0.48, metalness: 0.12, paint: 0.55 }),
     gold: painted("gold", { color: "#bd9259", roughness: 0.48, metalness: 0.40, paint: 0.52, rim: 0.24 }),
-    floor: painted("floor", { color: "#5f728b", roughness: 0.60, metalness: 0.04, paint: 0.30, scale: 0.32, bands: 0.62, rim: 0.08 }),
+    floor: painted("floor", { color: "#8b918e", roughness: 0.60, metalness: 0.04, paint: 0.30, scale: 0.32, bands: 0.62, rim: 0.08, drawing: 0.15 }),
     wall: painted("wall", { color: "#e4dcd0", roughness: 0.86, paint: 0.48, bands: 0.80 }),
     dark: painted("dark", { color: "#253853", roughness: 0.72, paint: 0.62, rim: 0.19 }),
     walnut: painted("walnut", { color: "#83533c", roughness: 0.75, paint: 0.78, scale: 0.55, rim: 0.12 }),
     sage: painted("sage", { color: "#7e8b77", roughness: 0.89, paint: 0.68, rim: 0.12 }),
-    skin: painted("skin", { color: "#b98466", roughness: 0.82, paint: 0.12, scale: 0.8, bands: 0.16, rim: 0.10 }),
+    skin: painted("skin", { color: "#b98466", roughness: 0.82, paint: 0.12, scale: 0.8, bands: 0.16, rim: 0.10, drawing: 0.35 }),
     glass: new THREE.MeshPhysicalMaterial({ color: "#aacacc", roughness: 0.13, metalness: 0, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.DoubleSide, ior: 1.45, clearcoat: 0.35, clearcoatRoughness: 0.18 }),
     warmLight: new THREE.MeshBasicMaterial({ color: "#ffe0ad", toneMapped: false }),
     coolLight: new THREE.MeshBasicMaterial({ color: "#c4e2e0", toneMapped: false }),

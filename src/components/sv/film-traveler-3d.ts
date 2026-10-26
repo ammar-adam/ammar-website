@@ -11,11 +11,12 @@ export interface FilmTraveler3D {
 type Ring = readonly [y: number, width: number, depth: number, x?: number, z?: number, turn?: number];
 type Pose = { at:number; pitch:number; bank:number; twist:number; drop:number; leftShoulder:number; leftSpread:number; leftElbow:number; rightShoulder:number; rightSpread:number; rightElbow:number; leftHip:number; leftKnee:number; rightHip:number; rightKnee:number; leftAnkle:number; rightAnkle:number; casePitch:number; caseRoll:number };
 const POSES:Pose[]=[
- {at:0,pitch:-.18,bank:-.12,twist:-.1,drop:0,leftShoulder:.02,leftSpread:-2.91,leftElbow:.10,rightShoulder:-.45,rightSpread:.26,rightElbow:.20,leftHip:.48,leftKnee:-.76,rightHip:-.40,rightKnee:-.45,leftAnkle:.18,rightAnkle:-.12,casePitch:-.32,caseRoll:-.11},
- {at:.22,pitch:-.32,bank:.14,twist:.15,drop:0,leftShoulder:.10,leftSpread:-3.01,leftElbow:.14,rightShoulder:-.75,rightSpread:.34,rightElbow:.30,leftHip:1.02,leftKnee:-1.70,rightHip:.73,rightKnee:-1.62,leftAnkle:.30,rightAnkle:.28,casePitch:-.65,caseRoll:.18},
- {at:.39,pitch:-.49,bank:.22,twist:.22,drop:0,leftShoulder:.08,leftSpread:-3.03,leftElbow:.06,rightShoulder:-.95,rightSpread:.4,rightElbow:.26,leftHip:1.36,leftKnee:-2.05,rightHip:1.18,rightKnee:-1.92,leftAnkle:.4,rightAnkle:.32,casePitch:-.86,caseRoll:.26},
- {at:.58,pitch:-.27,bank:-.16,twist:-.13,drop:0,leftShoulder:-.55,leftSpread:-2.05,leftElbow:.10,rightShoulder:-1.10,rightSpread:.35,rightElbow:.18,leftHip:.94,leftKnee:-.23,rightHip:-.84,rightKnee:-.34,leftAnkle:-.12,rightAnkle:-.26,casePitch:-.25,caseRoll:-.18},
- {at:.77,pitch:-.10,bank:-.06,twist:-.04,drop:.02,leftShoulder:-.25,leftSpread:-1.42,leftElbow:.40,rightShoulder:-.45,rightSpread:.24,rightElbow:.33,leftHip:.36,leftKnee:-.50,rightHip:-.13,rightKnee:-.40,leftAnkle:.08,rightAnkle:-.08,casePitch:-.30,caseRoll:-.12},
+ {at:0,pitch:-.82,bank:-.11,twist:-.08,drop:0,leftShoulder:-.12,leftSpread:-1.43,leftElbow:.08,rightShoulder:-.12,rightSpread:1.38,rightElbow:.12,leftHip:.15,leftKnee:-.22,rightHip:-.20,rightKnee:-.16,leftAnkle:.10,rightAnkle:-.13,casePitch:-.30,caseRoll:-.12},
+ {at:.10,pitch:-.73,bank:-.18,twist:-.15,drop:0,leftShoulder:-.19,leftSpread:-1.91,leftElbow:.16,rightShoulder:-.34,rightSpread:1.03,rightElbow:.27,leftHip:.45,leftKnee:-.70,rightHip:-.22,rightKnee:-.26,leftAnkle:.18,rightAnkle:-.12,casePitch:-.42,caseRoll:-.16},
+ {at:.20,pitch:-.36,bank:.17,twist:.19,drop:0,leftShoulder:.12,leftSpread:-2.99,leftElbow:.09,rightShoulder:-.62,rightSpread:.39,rightElbow:.37,leftHip:1.02,leftKnee:-1.65,rightHip:.46,rightKnee:-1.20,leftAnkle:.31,rightAnkle:.19,casePitch:-.63,caseRoll:.16},
+ {at:.40,pitch:-.96,bank:.37,twist:.38,drop:0,leftShoulder:.16,leftSpread:-3.02,leftElbow:.06,rightShoulder:-.74,rightSpread:.32,rightElbow:.47,leftHip:1.51,leftKnee:-2.10,rightHip:.89,rightKnee:-1.56,leftAnkle:.41,rightAnkle:.27,casePitch:-.90,caseRoll:.27},
+ {at:.60,pitch:-.20,bank:-.24,twist:-.24,drop:0,leftShoulder:-.73,leftSpread:-2.12,leftElbow:.08,rightShoulder:-1.04,rightSpread:.39,rightElbow:.21,leftHip:1.05,leftKnee:-.16,rightHip:-1.02,rightKnee:-.54,leftAnkle:-.15,rightAnkle:-.30,casePitch:-.27,caseRoll:-.20},
+ {at:.77,pitch:-.10,bank:-.06,twist:-.04,drop:.02,leftShoulder:-.25,leftSpread:-1.42,leftElbow:.40,rightShoulder:-.45,rightSpread:.24,rightElbow:.33,leftHip:.46,leftKnee:-.58,rightHip:-.10,rightKnee:-.48,leftAnkle:.08,rightAnkle:-.08,casePitch:-.30,caseRoll:-.12},
  {at:.87,pitch:-.16,bank:.02,twist:0,drop:.10,leftShoulder:.43,leftSpread:-.22,leftElbow:.50,rightShoulder:-.16,rightSpread:.20,rightElbow:.20,leftHip:.54,leftKnee:-.89,rightHip:.4,rightKnee:-.77,leftAnkle:.20,rightAnkle:.20,casePitch:.22,caseRoll:.08},
  {at:.94,pitch:-.26,bank:0,twist:0,drop:.20,leftShoulder:.65,leftSpread:-.20,leftElbow:.66,rightShoulder:-.03,rightSpread:.22,rightElbow:.38,leftHip:.76,leftKnee:-1.26,rightHip:.72,rightKnee:-1.20,leftAnkle:.26,rightAnkle:.26,casePitch:-.10,caseRoll:-.04},
  {at:1,pitch:0,bank:0,twist:0,drop:0,leftShoulder:.03,leftSpread:-.09,leftElbow:.10,rightShoulder:-.02,rightSpread:.15,rightElbow:.06,leftHip:.02,leftKnee:-.04,rightHip:-.02,rightKnee:-.025,leftAnkle:.02,rightAnkle:.04,casePitch:.03,caseRoll:0},
@@ -86,12 +87,12 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
    vec3 brushCell=floor(clothPoint*vec3(110.0,175.0,95.0));
    float pigment=fract(sin(dot(brushCell,vec3(13.13,67.71,41.9)))*43758.5453);
    float stroke=sin(clothPoint.y*173.0+sin(clothPoint.x*41.0)*3.0);
-   diffuseColor.rgb*=0.88+0.10*pigment+0.025*stroke;
+   diffuseColor.rgb*=0.96+0.035*pigment+0.008*stroke;
    if(originalTravelerReady>0.5&&originalPaintUV.z>0.001){
     vec4 originalPigment=texture2D(originalTravelerPaint,originalPaintUV.xy);
     float inside=step(0.0,originalPaintUV.x)*step(originalPaintUV.x,1.0)*step(0.0,originalPaintUV.y)*step(originalPaintUV.y,1.0);
     float cover=smoothstep(0.7,0.9,originalPigment.a)*inside;
-    diffuseColor.rgb=mix(diffuseColor.rgb,originalPigment.rgb,0.60*originalPaintUV.z*cover);
+    diffuseColor.rgb=mix(diffuseColor.rgb,originalPigment.rgb,0.13*originalPaintUV.z*cover);
    }
    // Deliberately placed creases use bind coordinates, so they bend with the real cloth.
    float rearSurface=smoothstep(-0.08,0.25,clothRestNormal.z);
@@ -119,7 +120,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
    }
    #include <opaque_fragment>`);
  };
- paint.customProgramCacheKey=()=>"traveler-film-language-v3";materials.add(paint);
+ paint.customProgramCacheKey=()=>"traveler-film-language-v4";materials.add(paint);
  const palette={navy:"#24365d",light:"#3a527f",dark:"#131d36",black:"#121722",red:"#c52e29",coral:"#eb5636",cyan:"#237db1",cream:"#ded2b6",sole:"#a79b82",skin:"#793e2b",metal:"#65717b"};
  const color=new THREE.Color();
  function finish(source:THREE.BufferGeometry,base:string,variance=.025){
@@ -249,24 +250,30 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
  }
  batch(root);
  const temp=new THREE.Vector3(),gripRotation=new THREE.Quaternion(),rootRotation=new THREE.Quaternion(),caseRotation=new THREE.Quaternion(),caseEuler=new THREE.Euler();
+ const pose={...POSES[0]},carrier={...POSES[0]},poseKeys=Object.keys(POSES[0]) as (keyof Pose)[];
+ function samplePose(progress:number,target:Pose){
+  let index=0;while(index<POSES.length-2&&progress>POSES[index+1].at)index++;
+  const a=POSES[index],b=POSES[index+1],t=smooth(clamp((progress-a.at)/(b.at-a.at)));
+  for(const key of poseKeys)target[key]=mix(a[key],b[key],t);
+ }
  function update(hero:number,time:number,grounded:number){
   if(dead)return;
-  const actualHero=clamp(hero),h=Math.floor(actualHero*72)/72,poseTime=Math.floor(time*12)/12,ground=clamp(grounded);let index=0;while(index<POSES.length-2&&h>POSES[index+1].at)index++;
-  const a=POSES[index],b=POSES[index+1],t=smooth(clamp((h-a.at)/(b.at-a.at))),pose={} as Pose;
-  for(const key of Object.keys(a) as (keyof Pose)[])pose[key]=mix(a[key],b[key],t);
-  body.position.set(0,1-pose.drop,0);body.rotation.set(pose.pitch,pose.twist,pose.bank);
+  const actualHero=clamp(hero),h=Math.floor(actualHero*72)/72,ground=clamp(grounded);
+  samplePose(h,pose);samplePose(actualHero,carrier);
+  // The moving body frame follows the unquantized arc; only the performed joint poses hold on twos.
+  body.position.set(0,1-carrier.drop,0);body.rotation.set(carrier.pitch,carrier.twist,carrier.bank);
   torso.rotation.x=-pose.pitch*.18;head.rotation.set(-pose.pitch*.24,Math.sin(h*Math.PI)*-.12,0);
   leftArm.shoulder.rotation.set(pose.leftShoulder,0,pose.leftSpread);leftArm.elbow.rotation.x=-pose.leftElbow;
   rightArm.shoulder.rotation.set(pose.rightShoulder,0,pose.rightSpread);rightArm.elbow.rotation.x=-pose.rightElbow;
-  leftLeg.hip.rotation.set(pose.leftHip,0,-.035);leftLeg.knee.rotation.x=pose.leftKnee;leftLeg.ankle.rotation.x=pose.leftAnkle;
-  rightLeg.hip.rotation.set(pose.rightHip,0,.035);rightLeg.knee.rotation.x=pose.rightKnee;rightLeg.ankle.rotation.x=pose.rightAnkle;
-  const release=smooth(clamp((h-.44)/.12))*(1-smooth(clamp((h-.76)/.13)));
+  leftLeg.hip.rotation.set(mix(pose.leftHip,carrier.leftHip,ground),0,-.035);leftLeg.knee.rotation.x=mix(pose.leftKnee,carrier.leftKnee,ground);leftLeg.ankle.rotation.x=mix(pose.leftAnkle,carrier.leftAnkle,ground);
+  rightLeg.hip.rotation.set(mix(pose.rightHip,carrier.rightHip,ground),0,.035);rightLeg.knee.rotation.x=mix(pose.rightKnee,carrier.rightKnee,ground);rightLeg.ankle.rotation.x=mix(pose.rightAnkle,carrier.rightAnkle,ground);
+  const release=smooth(clamp((h-.51)/.065))*(1-smooth(clamp((h-.76)/.13)));
   fingers.forEach((finger,i)=>{finger.rotation.x=mix(-1.0,.12+i*.035,release);finger.rotation.z=(i-1.5)*.06*release;});
   body.updateMatrixWorld(true);rightArm.grip.getWorldQuaternion(gripRotation);root.getWorldQuaternion(rootRotation);
-  caseRotation.setFromEuler(caseEuler.set(pose.casePitch*.55,Math.sin(h*Math.PI*2-.8)*.1*(1-ground),pose.caseRoll));
+  caseRotation.setFromEuler(caseEuler.set(carrier.casePitch*.55,Math.sin(actualHero*Math.PI*2-.8)*.1*(1-ground),carrier.caseRoll));
   suitcase.quaternion.copy(gripRotation.invert()).multiply(rootRotation).multiply(caseRotation);
-  pack.rotation.x=.025*Math.sin(h*Math.PI*3-.7)*(1-ground);
-  body.position.y+=.002*Math.sin(poseTime*2.3)*ground;
+  pack.rotation.x=.025*Math.sin(actualHero*Math.PI*3-.7)*(1-ground);
+  body.position.y+=.002*Math.sin(time*2.3)*ground;
   // Solve foot contact in root-local space so the parent can freely place/rotate the actor.
   body.updateMatrixWorld(true);const inverse=new THREE.Matrix4().copy(root.matrixWorld).invert();let lowest=Infinity;
   for(const sole of soles){sole.getWorldPosition(temp).applyMatrix4(inverse);lowest=Math.min(lowest,temp.y);}

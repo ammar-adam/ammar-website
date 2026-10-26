@@ -56,11 +56,8 @@ export function SpiderVerse() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const [intro, setIntro] = useState(true);
-  const [warmWorld, setWarmWorld] = useState(false);
-  useEffect(() => {
-    const timer = window.setTimeout(() => setWarmWorld(true), 2000);
-    return () => clearTimeout(timer);
-  }, []);
+  // Constructing the WebGL world during video playback competed for the GPU.
+  // Keep it dormant until the film ends; preserve the instance on later replays.
   const finishIntro = useCallback((seek = true) => {
     setIntro(false);
     if (seek) {
@@ -151,7 +148,7 @@ export function SpiderVerse() {
     <Link className="tj-skip" href="/short">Skip to the short version</Link>
     <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">
-        {(!intro || reduced || warmWorld) && <TerminalWorld t={t} reduced={reduced} active={!intro && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} />}
+        {(!intro || reduced || ready) && <TerminalWorld t={t} reduced={reduced} active={!intro && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} />}
         <div className="tj-screen-shade" aria-hidden="true" />
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}

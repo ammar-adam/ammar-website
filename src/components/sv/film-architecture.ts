@@ -16,6 +16,7 @@ type Batch = {
   receive: boolean;
   placements: Placement[];
 };
+type InkBatch = { positions: number[]; normals: number[]; indices: number[]; strokes: number };
 const ZONES = [
   { name: "arrival-hall", near: 14, far: -17 },
   { name: "check-in-hall", near: -17, far: -32 },
@@ -35,7 +36,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     group.name = zone.name;
     group.userData = { near: zone.near, far: zone.far };
     root.add(group);
-    return { group, batches: new Map<string, Batch>() };
+    return { group, batches: new Map<string, Batch>(), drawing: new Map<MaterialName, InkBatch>() };
   });
   const owned = <T extends THREE.BufferGeometry>(geometry: T) => { geometries.add(geometry); return geometry; };
   const box = owned(new THREE.BoxGeometry(1, 1, 1));
@@ -86,15 +87,39 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     return geometry;
   }
 
+  // Authored surface drawing, not an all-edges wireframe. Each tapered ribbon
+  // rests on its actual architectural face, receives depth occlusion, and is
+  // batched with the other strokes in its room. The broken ends are deliberate.
+  function stroke(points: V3[], width: number, zone: number, material: MaterialName = "ink", face: V3 = [0, 0, 1]) {
+    const curve = new THREE.CatmullRomCurve3(points.map(point => new THREE.Vector3(...point)), false, "centripetal");
+    const steps = Math.max(6, Math.ceil(curve.getLength() * 5));
+    let batch = rooms[zone].drawing.get(material);
+    if (!batch) { batch = { positions: [], normals: [], indices: [], strokes: 0 }; rooms[zone].drawing.set(material, batch); }
+    const offset = batch.positions.length / 3, normal = new THREE.Vector3(...face).normalize();
+    const side = new THREE.Vector3();
+    for (let sample = 0; sample <= steps; sample++) {
+      const t = sample / steps, point = curve.getPoint(t);
+      side.crossVectors(curve.getTangent(t), normal).normalize();
+      const pressure = (.12 + .88 * Math.sin(Math.PI * t) ** .38) * (.92 + .08 * Math.sin(t * 23 + points[0][1]));
+      for (const sign of [-1, 1]) {
+        const edge = point.clone().addScaledVector(side, width * pressure * sign * .5);
+        batch.positions.push(edge.x, edge.y, edge.z); batch.normals.push(normal.x, normal.y, normal.z);
+      }
+      if (sample < steps) { const i = offset + sample * 2; batch.indices.push(i, i + 1, i + 2, i + 1, i + 3, i + 2); }
+    }
+    batch.strokes++;
+  }
+
   // Each rib is an extruded curved beam, with a small bevel that catches the key.
   // The parabolic soffit reaches 11.6m, while the glazed eaves are 8m high.
   const roofY = (x: number) => 8 + 3.6 * (1 - (x / 14) ** 2);
+  const ribThickness = (x: number) => .38 + .48 * (Math.abs(x) / 14) ** 5;
   const archShape = new THREE.Shape();
   archShape.moveTo(-14, roofY(-14));
   for (let step = 1; step <= 64; step++) { const x = -14 + step * 28 / 64; archShape.lineTo(x, roofY(x)); }
-  for (let step = 64; step >= 0; step--) { const x = -14 + step * 28 / 64; archShape.lineTo(x, roofY(x) - .27); }
+  for (let step = 64; step >= 0; step--) { const x = -14 + step * 28 / 64; archShape.lineTo(x, roofY(x) - ribThickness(x)); }
   archShape.closePath();
-  const arch = extrude(archShape, .32, .035);
+  const arch = extrude(archShape, .64, .045);
   const pillar = extrude(roundedProfile(.43, 7.95, .16), .54, .035);
 
   function roofPanel(left: number, right: number, length: number) {
@@ -116,6 +141,19 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     const zone = zoneAt(z);
     place(arch, "ivory", [0, 0, z], [1, 1, 1], [0, 0, 0], true, undefined, zone);
     place(pillar, "ivory", [-13.66, 3.975, z], [1, 1, 1], [0, 0, 0], true, undefined, zone);
+    // Pressure varies along the underside of each beam; the broad cream face
+    // remains quiet. A few double marks describe the thickness of the casting.
+    for (const [left, right] of [[-13.4, -9.6], [-8.9, -2.8], [-1.9, 4.7], [5.5, 10.8], [11.5, 13.5]]) {
+      const points: V3[] = Array.from({ length: 10 }, (_, index) => {
+        const x = left + (right - left) * index / 9;
+        return [x, roofY(x) - ribThickness(x) + .044, z + .373];
+      });
+      stroke(points, .049, zone);
+    }
+    stroke([[-10.9, roofY(-10.9) - .13, z + .373], [-9.8, roofY(-9.8) - .13, z + .373], [-8.9, roofY(-8.9) - .13, z + .373]], .022, zone, "steel");
+    for (const [low, high] of [[.35, 2.35], [2.65, 5.2], [5.65, 7.5]]) {
+      stroke([[-13.79, low, z + .307], [-13.785, (low + high) / 2, z + .309], [-13.79, high, z + .307]], .033, zone);
+    }
     // The splayed right column forms a proper knee below the roof rib.
     rod("steel", [12.90, .15, z], [13.72, 7.90, z], .115, true, zone);
     rod("steel", [13.42, 5.75, z], [11.72, 8.72, z], .065, false, zone);
@@ -166,6 +204,34 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     }
   });
 
+  // Individually cast plaster reliefs give the large arrival wall an authored
+  // rhythm. Their bowed tops, deep bevels and quiet tints are physical surfaces,
+  // so the moving camera sees their thickness and the sun draws contact shadows.
+  function plasterPanel(width: number, height: number, rise: number) {
+    const shape = new THREE.Shape();
+    shape.moveTo(-width / 2 + .16, .78);
+    shape.quadraticCurveTo(-width / 2, .78, -width / 2, .96);
+    shape.lineTo(-width / 2, height - rise);
+    shape.quadraticCurveTo(-width * .38, height + .12, -width * .17, height);
+    shape.lineTo(width / 2 - .16, height - .22);
+    shape.quadraticCurveTo(width / 2, height - .23, width / 2, height - .40);
+    shape.lineTo(width / 2, .96);
+    shape.quadraticCurveTo(width / 2, .78, width / 2 - .16, .78);
+    shape.closePath();
+    return extrude(shape, .23, .055);
+  }
+  const widePanel = plasterPanel(7.5, 6.15, .36), narrowPanel = plasterPanel(5.9, 6.42, .51);
+  for (const [index, z] of [8.8, -.3, -9.5, -23.4, -40.0].entries()) {
+    const zone = zoneAt(z), width = index % 2 ? 5.9 : 7.5;
+    place(index % 2 ? narrowPanel : widePanel, "ivory", [-13.72, 0, z], [1, 1, 1], [0, Math.PI / 2, 0], true,
+      new THREE.Color(index % 2 ? .93 : 1.0, index % 2 ? .965 : .98, index % 2 ? .99 : .94), zone);
+    // The shadow-side edge is drawn twice only in short, separated stretches.
+    for (const [low, high] of [[1.08, 2.67], [3.0, 5.35]]) {
+      stroke([[-13.542, low, z + width / 2 - .13], [-13.541, (low + high) / 2, z + width / 2 - .12], [-13.542, high, z + width / 2 - .13]], .033, zone, "ink", [1, 0, 0]);
+    }
+    stroke([[-13.54, .89, z - width * .40], [-13.54, .88, z], [-13.54, .89, z + width * .40]], .027, zone, "steel", [1, 0, 0]);
+  }
+
   // Proper vaulted vestibules separate the spaces. Openings follow the authored camera.
   // The wall has thickness; the curved reveal, return jambs and floor threshold are geometry.
   for (const portal of [{ z: -31, left: 8, right: 13, zone: 1 }, { z: -49, left: -13, right: -4, zone: 2 }, { z: -84, left: 7, right: 12, zone: 3 }]) {
@@ -183,10 +249,22 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     place(extrude(reveal, .80, .02), "ivory", [0, 0, portal.z], [1, 1, 1], [0, 0, 0], false, undefined, portal.zone);
     for (const x of [left - .16, right + .16]) block("wall", [.30, 3.82, 2.4], [x, 1.91, portal.z - .55], false, portal.zone);
     block("gold", [right - left, .014, .035], [(right + left) / 2, .011, portal.z + .40], false, portal.zone);
+    for (const x of [left - .115, right + .115]) {
+      stroke([[x, .12, portal.z + .426], [x + .006, 1.55, portal.z + .427], [x, 3.79, portal.z + .426]], .035, portal.zone);
+    }
+    const doorHead = (from: number, to: number): V3[] => Array.from({ length: 15 }, (_, index) => {
+      const t = from + (to - from) * index / 14;
+      return [(left - .115) * (1 - t) ** 2 + (left + right) * t * (1 - t) + (right + .115) * t ** 2,
+        3.94 * (1 - t) ** 2 + 10.8 * t * (1 - t) + 3.94 * t ** 2, portal.z + .426];
+    });
+    stroke(doorHead(.015, .43), .040, portal.zone);
+    stroke(doorHead(.49, .985), .040, portal.zone);
     // The broad wall receives scale from a low ledge and widely spaced stone reveals.
     for (let x = -13.5; x < 13.5; x += 3.45) {
       if (x > left - .4 && x < right + .4) continue;
       block("ivory", [.055, 6.85, .045], [x, 3.44, portal.z + .385], false, portal.zone);
+      stroke([[x + .044, .42, portal.z + .410], [x + .049, 1.62, portal.z + .410], [x + .044, 2.62, portal.z + .410]], .023, portal.zone, "steel");
+      stroke([[x + .045, 3.04, portal.z + .410], [x + .049, 4.95, portal.z + .410], [x + .043, 6.58, portal.z + .410]], .023, portal.zone, "steel");
     }
   }
 
@@ -213,6 +291,8 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     for (let index = -1; index <= 1; index++) {
       const z = bank.z + index * .84;
       place(seat, index === 0 ? "sage" : "dark", [bank.x, 0, z], [1, 1, 1], [0, facing, 0], false, undefined, zone);
+      const direction = bank.x < 0 ? -1 : 1;
+      stroke([[bank.x + direction * -.40, .542, z + .346], [bank.x + direction * .12, .548, z + .346], [bank.x + direction * .27, .68, z + .346], [bank.x + direction * .37, 1.23, z + .346]], .021, zone);
       for (const side of [-.36, .36]) place(arm, "steel", [bank.x, 0, z + side], [1, 1, 1], [0, facing, 0], false, undefined, zone);
     }
     block("steel", [.11, .12, 2.5], [bank.x, .34, bank.z], false, zone);
@@ -243,9 +323,9 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     }
   }
 
-  // Room-sized batches have independent bounds. The caller may hide distant rooms;
-  // each active+next pair remains below fifty architecture draw calls.
-  rooms.forEach(({ group, batches }) => {
+  // Two small drawing batches per room share the existing palette. These add
+  // actual surface linework without an extra render pass or per-frame work.
+  rooms.forEach(({ group, batches, drawing }) => {
     for (const batch of batches.values()) {
       const instance = new THREE.InstancedMesh(batch.geometry, batch.material, batch.placements.length);
       batch.placements.forEach((placement, index) => {
@@ -257,16 +337,28 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
       instance.computeBoundingBox(); instance.computeBoundingSphere();
       group.add(instance); instances.push(instance);
     }
-    group.userData.drawCalls = batches.size;
+    let strokeCount = 0;
+    for (const [material, batch] of drawing) {
+      const geometry = owned(new THREE.BufferGeometry());
+      geometry.setAttribute("position", new THREE.Float32BufferAttribute(batch.positions, 3));
+      geometry.setAttribute("normal", new THREE.Float32BufferAttribute(batch.normals, 3));
+      geometry.setIndex(batch.indices); geometry.computeBoundingSphere();
+      const mesh = new THREE.Mesh(geometry, materials[material]);
+      mesh.name = `${group.name}-authored-${material}`;
+      group.add(mesh); strokeCount += batch.strokes;
+    }
+    group.userData.drawCalls = batches.size + drawing.size;
+    group.userData.authoredStrokes = strokeCount;
   });
   let activeRoom = -1;
-  const update = (progress: number) => {
+  const update = (progress: number, lookingAround = false) => {
     const index = progress < .24 ? 0 : progress < .45 ? 1 : progress < .65 ? 2 : progress < .86 ? 3 : 4;
-    if (index === activeRoom) return;
-    activeRoom = index;
-    rooms.forEach((room, roomIndex) => { room.group.visible = roomIndex === index || roomIndex === index + 1; });
+    const viewKey = index * 2 + Number(lookingAround);
+    if (viewKey === activeRoom) return;
+    activeRoom = viewKey;
+    rooms.forEach((room, roomIndex) => { room.group.visible = roomIndex === index || roomIndex === index + 1 || (lookingAround && roomIndex === index - 1); });
   };
-  root.userData.rooms = rooms.map(room => ({ name: room.group.name, drawCalls: room.batches.size }));
+  root.userData.rooms = rooms.map(room => ({ name: room.group.name, drawCalls: room.group.userData.drawCalls, authoredStrokes: room.group.userData.authoredStrokes }));
   invalidate?.();
   return {
     root, update,

@@ -5,6 +5,7 @@ import { memorySequence } from "./memorySequence";
 import { createFilmTraveler3D } from "./film-traveler-3d";
 import { createFilmMaterials } from "./film-materials";
 import { createFilmArchitecture } from "./film-architecture";
+import { createFilmWallArt } from "./film-wall-art";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { createFilmAircraft } from "./film-aircraft";
 import { createFilmCheckin } from "./film-checkin";
@@ -14,10 +15,10 @@ type V3 = [number,number,number];
 type CameraKey = {at:number;position:V3;target:V3;roll:number;fov:number};
 const CAMERA:CameraKey[] = [
  {at:0,position:[7,7.8,16],target:[1,3,-8],roll:-.26,fov:61},
- {at:.035,position:[5.2,5.2,5],target:[0,4,-13],roll:.20,fov:73},
- {at:.055,position:[4,6.8,0],target:[-1,2,-25],roll:.13,fov:68},
- {at:.075,position:[-1,6.4,-2],target:[3,4,-18],roll:.08,fov:72},
- {at:.112,position:[-3,5,-7],target:[1,1.7,-29],roll:-.12,fov:72},
+ {at:.035,position:[5.2,4.4,5],target:[0,3,-13],roll:.25,fov:73},
+ {at:.055,position:[4,3.9,0],target:[-1,4,-25],roll:.32,fov:68},
+ {at:.075,position:[-1,5.9,-2],target:[3,5,-18],roll:.16,fov:72},
+ {at:.112,position:[-3,6.2,-7],target:[1,2,-29],roll:-.22,fov:72},
  {at:.175,position:[4,2.7,-12],target:[-2,1.7,-28],roll:.09,fov:64},
  {at:.21,position:[2.2,1.35,-17],target:[1.7,1.5,-24.5],roll:-.045,fov:62},
  {at:.24,position:[1.6,1.9,-18.6],target:[1.5,1.7,-27],roll:0,fov:58},
@@ -55,13 +56,34 @@ const clamp=(v:number,a=0,b=1)=>Math.max(a,Math.min(b,v));
 const mix=(a:number,b:number,t:number)=>a+(b-a)*t;
 const smooth=(v:number)=>v*v*(3-2*v);
 
-export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number }
+// A continuous, shape-preserving camera rail. Easing each shot independently
+// brought the camera to a complete stop at every key, which read as dropped frames.
+const FLIGHT_KEYS=CAMERA.filter(key=>key.at<=.24);
+function flightValue(progress:number,read:(key:CameraKey)=>number){
+ const end=FLIGHT_KEYS.length-1;
+ let j=FLIGHT_KEYS.findIndex(key=>key.at>=progress);if(j<0)j=end;
+ const i=Math.max(0,j-1),a=FLIGHT_KEYS[i],b=FLIGHT_KEYS[j];if(i===j)return read(a);
+ const slope=(n:number)=>{
+  if(n===end)return 0;
+  if(n===0)return (read(FLIGHT_KEYS[1])-read(FLIGHT_KEYS[0]))/(FLIGHT_KEYS[1].at-FLIGHT_KEYS[0].at);
+  const left=FLIGHT_KEYS[n-1],here=FLIGHT_KEYS[n],right=FLIGHT_KEYS[n+1];
+  const dl=(read(here)-read(left))/(here.at-left.at),dr=(read(right)-read(here))/(right.at-here.at);
+  if(dl*dr<=0)return 0;
+  const h0=here.at-left.at,h1=right.at-here.at,w0=2*h1+h0,w1=h1+2*h0;
+  return (w0+w1)/(w0/dl+w1/dr);
+ };
+ const span=b.at-a.at,t=clamp((progress-a.at)/span),t2=t*t,t3=t2*t;
+ return (2*t3-3*t2+1)*read(a)+(t3-2*t2+t)*span*slope(i)+(-2*t3+3*t2)*read(b)+(t3-t2)*span*slope(j);
+}
+
+
+export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number; lookYaw?:number; lookPitch?:number }
 export interface TerminalModel {
  scene:THREE.Scene; camera:THREE.PerspectiveCamera; photos:THREE.Object3D[];
  update:(state:TerminalWorldState)=>void; dispose:()=>void;
 }
 
-export function createFilmTerminal(invalidate:()=>void):TerminalModel {
+export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{shadowMapSize?:number}={}):TerminalModel {
  const scene=new THREE.Scene();scene.background=new THREE.Color("#526d83");scene.fog=new THREE.Fog("#617387",42,155);
  const camera=new THREE.PerspectiveCamera(63,1,.08,650);
  const textures=new Set<THREE.Texture>(),materials=new Set<THREE.Material>(),geometries=new Set<THREE.BufferGeometry>();
@@ -79,9 +101,10 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
  const concrete=palette.materials.ivory,cream=palette.materials.ivory,magenta=palette.materials.walnut;
  const toon=(color:string)=>keepMaterial(new THREE.MeshStandardMaterial({color,roughness:.82,metalness:.08}));
  const architecture=createFilmArchitecture(palette.materials);scene.add(architecture.root);
+ const wallArt=createFilmWallArt(invalidate);scene.add(wallArt.root);
  const outline=keepMaterial(new THREE.LineBasicMaterial({color:"#091122",transparent:true,opacity:.72}));
  scene.add(new THREE.HemisphereLight("#b7d9e8","#685471",.42));
- const key=new THREE.DirectionalLight("#ffe0b5",3.8);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(1536,1536);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00035;key.shadow.normalBias=.025;scene.add(key,key.target);
+ const key=new THREE.DirectionalLight("#ffe0b5",3.8);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(shadowMapSize,shadowMapSize);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00035;key.shadow.normalBias=.025;scene.add(key,key.target);
  const cool=new THREE.DirectionalLight("#80cfe5",.55);cool.position.set(-12,7,10);scene.add(cool);
  const pink=new THREE.DirectionalLight("#edc7a1",.18);pink.position.set(-18,5,-70);scene.add(pink);
  const unitBox=keepGeometry(new RoundedBoxGeometry(1,1,1,2,.035));
@@ -105,6 +128,12 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
  const outside=plane(620,348.75,texture("/art/terminal-city-v3.webp"));outside.position.set(220,88,-75);outside.rotation.y=-Math.PI/2;
  (outside.material as THREE.MeshBasicMaterial).fog=false;
  const runway=plane(500,281.4,texture("/art/terminal-city-v3.webp"));runway.position.set(0,45,-224);(runway.material as THREE.MeshBasicMaterial).fog=false;
+ // The exterior also continues behind the arrival hall for a full reverse view.
+ // Reuse the city texture; this plane is behind the opening flight camera.
+ const entryCity=plane(620,348.75,(outside.material as THREE.MeshBasicMaterial).map!);
+ entryCity.name="arrival-exterior-city";entryCity.position.set(0,58,160);entryCity.rotation.y=Math.PI;
+ (entryCity.material as THREE.MeshBasicMaterial).fog=false;
+ block(120,.30,90,0,-.285,96,concrete);
  block(280,.20,175,20,-.55,-191,concrete);
  for(let z=-115;z>-220;z-=12){block(.16,.015,6,-12,-.435,z,gold);block(.13,.015,6,-11.4,-.434,z,cream);}
  sign("DEPARTURES  →","TERMINAL A",-7,7.7,5,7.2,1.1);
@@ -114,6 +143,33 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
  sign("GATES 04—06","DEPARTURES  →",9.4,5.6,-83.4,4.7,.95);
  block(58,.3,38,0,-.28,32,concrete);
  const entrance=plane(10.6,1.3,label("TERMINAL A","DEPARTURES","#f6d6a2"));entrance.position.set(-5.3,9.3,14.3);
+ // Entry frontage is real glazing and steel. The full-height x4.0–10.5 span
+ // stays open for the authored flight. These additions never cast shadows.
+ const entryRoof=(x:number)=>8+3.6*(1-(x/14)**2);
+ for(const [left,right]of [[-13.85,-10.58],[-10.42,-7.08],[-6.92,-3.58],[-3.42,-.08],[.08,3.80],[10.70,13.85]]){
+  const paneGeometry=keepGeometry(new THREE.BufferGeometry());
+  paneGeometry.setAttribute("position",new THREE.Float32BufferAttribute([left,.14,14.05,right,.14,14.05,right,entryRoof(right)-.16,14.05,left,entryRoof(left)-.16,14.05],3));
+  paneGeometry.setIndex([0,2,1,0,3,2]);paneGeometry.computeVertexNormals();
+  const pane=new THREE.Mesh(paneGeometry,glass);pane.name="arrival-entry-glazing";scene.add(pane);
+ }
+ for(const x of [-14,-10.5,-7,-3.5,0,3.88,10.62,14]){
+  const height=entryRoof(x)-.13;block(.13,height,.16,x,height*.5,14.02,steel);
+ }
+ for(const y of [2.95,5.75,7.85]){
+  block(17.8,.075,.14,-5.1,y,14.01,steel);block(3.30,.075,.14,12.35,y,14.01,steel);
+ }
+ for(let step=0;step<20;step++){
+  const x0=-14+step*1.4,x1=x0+1.4;rod([x0,entryRoof(x0)-.06,14.02],[x1,entryRoof(x1)-.06,14.02],.085,steel);
+ }
+ // Open sliding leaves stack beside, rather than across, the flight portal.
+ for(const x of [3.05,11.50]){
+  block(1.45,2.78,.035,x,1.51,13.91,glass);
+  for(const edge of [-.74,.74])block(.045,2.90,.075,x+edge,1.5,13.89,steel);
+  for(const y of [.07,2.95])block(1.53,.055,.075,x,y,13.89,steel);
+  block(.038,.43,.10,x+(x<4?.59:-.59),1.40,13.83,steel);
+ }
+ const entryReverse=plane(10.6,1.3,label("ENTRY","","#f6d6a2"));
+ entryReverse.name="arrival-entry-interior-sign";entryReverse.position.set(-5.3,9.3,14.285);entryReverse.rotation.y=Math.PI;
 
  // Five actual check-in stations: plinth, front fascia, countertop, luggage
  // scale and a desk monitor, backed by distinct airline-style display boards.
@@ -252,7 +308,7 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
  };
  const agent=person(dark,-10.5,-28.0,.9);const clerk=person(dark,-7.8,-27.7,.7);
  const cook=person(cream,-9.4,-57.7,.3);const barista=person(sage,-10,-68.6,.1);const customer=person(coral,6.2,-65.5,-.5,paleSkin);
- const loader=person(gold,7.6,-38.7,-Math.PI/2);const queueGuest=person(sage,-1.1,-40.8,.3,paleSkin);
+ const loader=person(gold,7.7,-45.3,-Math.PI/2);const queueGuest=person(sage,-1.1,-40.8,.3,paleSkin);
  const loadBag=new THREE.Group();scene.add(loadBag);meshBlock(.6,.65,.4,coral,loadBag,0,.33,0);meshBlock(.27,.05,.12,ink,loadBag,0,.72,0);
  // A folded Liverpool shirt and a ball belong to a parked bag, not a mascot.
  const cart=new THREE.Group();cart.position.set(10.8,0,-65.5);scene.add(cart);
@@ -275,7 +331,7 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
   steam.forEach((puff,i)=>{const phase=(t*.3+i*.25)%1;puff.position.y=1.9+phase*1.2;puff.position.x=-12+Math.sin(t+i)*.08;(puff.material as THREE.MeshBasicMaterial).opacity=(1-phase)*.14;});
   agent.arms[0].rotation.x=-.8+Math.sin(t*1.2)*.12;agent.arms[1].rotation.x=-.65;clerk.arms[1].rotation.x=-.7+Math.sin(t)*.18;
   cook.arms[1].rotation.x=-.7+Math.sin(t*1.6)*.25;barista.arms[0].rotation.x=-.9+Math.sin(t*1.4)*.2;customer.root.rotation.y=-.5+Math.sin(t*.35)*.15;
-  const lift=(Math.sin(t*.9)+1)*.5;loader.arms[0].rotation.x=loader.arms[1].rotation.x=-.35-lift*1.05;loadBag.position.set(7.1-lift*.8,.8+Math.sin(lift*Math.PI)*.55,-38.7);queueGuest.arms[1].rotation.x=-.3+Math.sin(t*.7)*.2;
+  const lift=(Math.sin(t*.9)+1)*.5,reach=.38+lift*1.49;loader.arms[0].rotation.x=loader.arms[1].rotation.x=-reach;loadBag.position.set(7.7-.59*Math.sin(reach),.745-.59*Math.cos(reach),-45.3);queueGuest.arms[1].rotation.x=-.3+Math.sin(t*.7)*.2;
   walkers.forEach((walker,i)=>{walker.root.position.z=-60-i*19-Math.sin(t*.12+i)*2;walker.legs.forEach((leg,j)=>leg.rotation.x=Math.sin(t*2.8+i+j*Math.PI)*.28);walker.arms.forEach((arm,j)=>arm.rotation.x=Math.sin(t*2.8+i-j*Math.PI)*.25);});
   (television.material as THREE.MeshBasicMaterial).color.setScalar(.97+Math.sin(t*.4)*.03);
  };
@@ -293,7 +349,7 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
 
  // Fully articulated mesh traveller: the raised grip is the rope anchor.
  const traveler=createFilmTraveler3D({invalidate});scene.add(traveler.root);
- const travelerKey=new THREE.PointLight("#ffd1a3",0,13,2),travelerRim=new THREE.PointLight("#58dfff",0,11,2);scene.add(travelerKey,travelerRim);
+ const travelerKey=new THREE.PointLight("#ffd1a3",11,13,2),travelerRim=new THREE.PointLight("#8bdbe3",7,11,2);scene.add(travelerKey,travelerRim);
  const tetherGeometry=keepGeometry(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]));
  const tether=new THREE.Line(tetherGeometry,keepMaterial(new THREE.LineBasicMaterial({color:"#b7f8f3"})));scene.add(tether);
  const landingShadow=new THREE.Mesh(keepGeometry(new THREE.CircleGeometry(1.1,32)),keepMaterial(new THREE.MeshBasicMaterial({color:"#071728",transparent:true,opacity:.35,depthWrite:false})));landingShadow.rotation.x=-Math.PI/2;landingShadow.position.y=.035;scene.add(landingShadow);
@@ -318,15 +374,21 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
  const temp=new THREE.Vector3(),look=new THREE.Vector3(),right=new THREE.Vector3(),up=new THREE.Vector3(),forward=new THREE.Vector3();
  return {scene,camera,photos,
   update(state){
-   architecture.update(state.t);
+   architecture.update(state.t,Math.abs(state.lookYaw??0)>.12);
    let p=clamp(state.t);if(state.reduced)p=p<.24?.20:p<.45?.30:p<.65?.49:p<.72?.665:p<.79?.735:p<.86?.805:.94;
    const next=CAMERA.findIndex(key=>key.at>=p),b=CAMERA[next<0?CAMERA.length-1:next],a=CAMERA[Math.max(0,(next<0?CAMERA.length-1:next)-1)];const f=a===b?0:smooth((p-a.at)/(b.at-a.at));
    camera.position.set(...a.position).lerp(temp.set(...b.position),f);look.set(...a.target).lerp(temp.set(...b.target),f);camera.fov=mix(a.fov,b.fov,f)+(state.aspect<.8?9:0);camera.aspect=state.aspect;
-   if(state.aspect<.8&&p>=.24&&p<=.440){const enter=smooth(clamp((p-.24)/.012)),exit=smooth(clamp((p-.433)/.007)),weight=enter*(1-exit);camera.position.lerp(temp.set(3.45,1.9,mix(-16.8,-17.8,clamp((p-.24)/.193))),weight);look.lerp(temp.set(3.8,-1.3,-26.1),weight);camera.fov=mix(camera.fov,74,weight);}
+   let cameraRoll=mix(a.roll,b.roll,f);
+   if(p<.24&&!state.reduced){
+    camera.position.set(flightValue(p,k=>k.position[0]),flightValue(p,k=>k.position[1]),flightValue(p,k=>k.position[2]));
+    look.set(flightValue(p,k=>k.target[0]),flightValue(p,k=>k.target[1]),flightValue(p,k=>k.target[2]));
+    camera.fov=flightValue(p,k=>k.fov)+(state.aspect<.8?9:0);cameraRoll=flightValue(p,k=>k.roll);
+   }
+   if(state.aspect<.8&&p>=.24&&p<=.440){const enter=smooth(clamp((p-.24)/.012)),exit=smooth(clamp((p-.433)/.007)),weight=enter*(1-exit);camera.position.lerp(temp.set(3.45,1.9,mix(-16.8,-17.8,clamp((p-.24)/.193))),weight);look.lerp(temp.set(3.8,.3,-26.1),weight);camera.fov=mix(camera.fov,74,weight);}
    if(state.aspect<.8&&p>=.445&&p<=.641){const enter=smooth(clamp((p-.445)/.01)),travel=clamp((p-.45)/.185),exit=smooth(clamp((p-.635)/.006));temp.set(5.05,1.85,mix(-33.5,-34.4,travel)).lerp(new THREE.Vector3(1.3,1.75,-44.6),exit);camera.position.lerp(temp,enter);temp.set(5.05,-.05,-40.6).lerp(new THREE.Vector3(-5.5,1.8,-47.5),exit);look.lerp(temp,enter);}
    if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.816)/.01)),weight=enter*exit;camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;look.y-=.9*weight;camera.fov=mix(camera.fov,92,weight);}
    const flight=clamp(state.departure);if(flight&&!state.reduced){camera.position.lerp(temp.set(1,2.5,-90.5),smooth(flight));look.lerp(temp.set(5,4,-126),flight);}
-   camera.up.set(0,1,0);camera.lookAt(look);camera.rotateZ(state.reduced?0:mix(a.roll,b.roll,f)*(state.aspect<.8?.65:1));camera.updateProjectionMatrix();camera.updateMatrixWorld();
+   camera.up.set(0,1,0);camera.lookAt(look);camera.rotateZ(state.reduced?0:cameraRoll*(state.aspect<.8?.65:1));camera.updateProjectionMatrix();camera.updateMatrixWorld();
    key.position.set(32,16,camera.position.z+12);key.target.position.set(0,0,camera.position.z-20);key.target.updateMatrixWorld();
    const checkin=clamp((p-.24)/.193),security=clamp((p-.45)/.185);
    deskLights.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});activeCompanyBoards.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});counterScreens.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});
@@ -350,10 +412,13 @@ export function createFilmTerminal(invalidate:()=>void):TerminalModel {
     if(hero>.72){travelerBounds.setFromObject(traveler.root);traveler.root.position.y+=Math.max(0,.035-travelerBounds.min.y);traveler.root.updateMatrixWorld(true);}
     travelerKey.position.copy(traveler.root.position).addScaledVector(right,2).addScaledVector(up,2.8).addScaledVector(forward,-1.7);travelerRim.position.copy(traveler.root.position).addScaledVector(right,-1.8).addScaledVector(up,2).addScaledVector(forward,1.4);
     traveler.raisedHand.getWorldPosition(temp);
-    const rope=tetherGeometry.getAttribute("position") as THREE.BufferAttribute;rope.setXYZ(0,2,11.8,4-hero*28);rope.setXYZ(1,temp.x,temp.y,temp.z);rope.needsUpdate=true;tetherGeometry.computeBoundingSphere();tether.visible=hero<.54;
+    const rope=tetherGeometry.getAttribute("position") as THREE.BufferAttribute;rope.setXYZ(0,2,11.8,-6);rope.setXYZ(1,temp.x,temp.y,temp.z);rope.needsUpdate=true;tetherGeometry.computeBoundingSphere();tether.visible=hero>=.20&&hero<.54;
     landingShadow.position.set(traveler.root.position.x,.035,traveler.root.position.z);landingShadow.visible=true;landingShadow.scale.setScalar(.45+landing*.35);
    }else{tether.visible=false;landingShadow.visible=false;}
+   // Apply user orientation after choreographing the traveler: looking behind
+   // must not drag the character around with the camera.
+   camera.rotateY(state.lookYaw??0);camera.rotateX(state.lookPitch??0);camera.updateMatrixWorld();
   },
-  dispose(){dead=true;traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
+  dispose(){dead=true;traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();wallArt.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
  };
 }
