@@ -112,33 +112,30 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
     outgoingLight=mix(outgoingLight,graphicLight,.74);
     float edge=1.0-clamp(dot(normal,normalize(vViewPosition)),0.0,1.0);
     float brokenEdge=smoothstep(-.15,.45,sin(clothPoint.y*43.0+clothPoint.x*31.0));
-    float inkEdge=smoothstep(.91,.995,edge)*brokenEdge*rearSurface;
-    outgoingLight=mix(outgoingLight,vec3(.004,.008,.015),inkEdge*.72);
+    // Silhouette ink comes from the same 1.5px depth/normal pass as the room.
+    // Keep only the authored cloth creases and reflected pigment here.
     vec3 rimPigment=mix(vec3(.025,.28,.49),vec3(.58,.085,.026),smoothstep(-.14,.14,clothRestNormal.x));
     float rimEdge=smoothstep(.67,.92,edge)*(1.0-smoothstep(.95,1.0,edge));
     outgoingLight+=rimPigment*rimEdge*brokenEdge*rearSurface*.23;
    }
    #include <opaque_fragment>`);
  };
- paint.customProgramCacheKey=()=>"traveler-film-language-v4";materials.add(paint);
+ paint.customProgramCacheKey=()=>"traveler-film-language-v5";materials.add(paint);
  const palette={navy:"#24365d",light:"#3a527f",dark:"#131d36",black:"#121722",red:"#c52e29",coral:"#eb5636",cyan:"#237db1",cream:"#ded2b6",sole:"#a79b82",skin:"#793e2b",metal:"#65717b"};
  const color=new THREE.Color();
  function finish(source:THREE.BufferGeometry,base:string,variance=.025){
   source.computeVertexNormals();
   const geometry=source.index?source.toNonIndexed():source;
-  const softNormals=geometry.getAttribute("normal").clone();
-  if(geometry!==source)source.dispose();geometry.computeVertexNormals();
-  const blendedNormals=geometry.getAttribute("normal"),blend=new THREE.Vector3();
-  for(let i=0;i<blendedNormals.count;i++){
-   blend.set(mix(blendedNormals.getX(i),softNormals.getX(i),1),mix(blendedNormals.getY(i),softNormals.getY(i),1),mix(blendedNormals.getZ(i),softNormals.getZ(i),1)).normalize();
-   blendedNormals.setXYZ(i,blend.x,blend.y,blend.z);
-  }
-  const position=geometry.getAttribute("position");
+  if(geometry!==source)source.dispose();
+  // The final normal blend was 100% smooth: keep those normals directly instead
+  // of calculating flat normals only to discard them. Preserve normalization.
+  geometry.normalizeNormals();
+  const position=geometry.getAttribute("position"),baseColor=new THREE.Color(base);
   const colors=new Float32Array(position.count*3),uvs=new Float32Array(position.count*2);
   for(let i=0;i<position.count;i+=3){
    const face=i/3,grain=Math.sin(face*52.31+position.getY(i)*93.7)*.5+.5;
    const light=.94+grain*variance;
-   color.set(base).multiplyScalar(light);
+   color.copy(baseColor).multiplyScalar(light);
    for(let j=0;j<3;j++){colors[(i+j)*3]=color.r;colors[(i+j)*3+1]=color.g;colors[(i+j)*3+2]=color.b;uvs[(i+j)*2]=position.getX(i+j);uvs[(i+j)*2+1]=position.getY(i+j);}
   }
   geometry.setAttribute("color",new THREE.BufferAttribute(colors,3));
@@ -243,9 +240,11 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
   for(const child of [...group.children])if(!(child instanceof THREE.Mesh)&&child.children.length)batch(child);
   const pieces=group.children.filter((child):child is THREE.Mesh=>child instanceof THREE.Mesh&&!(child instanceof THREE.InstancedMesh)&&!(child instanceof THREE.SkinnedMesh)&&child.material===paint);
   if(pieces.length<2)return;
-  const attributes={position:[] as number[],normal:[] as number[],color:[] as number[],uv:[] as number[]};
-  for(const piece of pieces){piece.updateMatrix();const geometry=piece.geometry.clone().applyMatrix4(piece.matrix);for(const key of Object.keys(attributes) as (keyof typeof attributes)[]){const values=geometry.getAttribute(key);for(let i=0;i<values.array.length;i++)attributes[key].push(values.array[i]);}geometry.dispose();group.remove(piece);}
-  const geometry=new THREE.BufferGeometry();for(const key of Object.keys(attributes) as (keyof typeof attributes)[])geometry.setAttribute(key,new THREE.Float32BufferAttribute(attributes[key],key==="uv"?2:3));geometries.add(geometry);
+  const count=pieces.reduce((sum,piece)=>sum+piece.geometry.getAttribute("position").count,0);
+  const attributes={position:new Float32Array(count*3),normal:new Float32Array(count*3),color:new Float32Array(count*3),uv:new Float32Array(count*2)};
+  const keys=Object.keys(attributes) as (keyof typeof attributes)[];let offset=0;
+  for(const piece of pieces){piece.updateMatrix();const geometry=piece.geometry.clone().applyMatrix4(piece.matrix);for(const key of keys)attributes[key].set(geometry.getAttribute(key).array,offset*(key==="uv"?2:3));offset+=geometry.getAttribute("position").count;geometry.dispose();group.remove(piece);}
+  const geometry=new THREE.BufferGeometry();for(const key of keys)geometry.setAttribute(key,new THREE.BufferAttribute(attributes[key],key==="uv"?2:3));geometries.add(geometry);
   const combined=new THREE.Mesh(geometry,paint);combined.castShadow=true;combined.receiveShadow=true;group.add(combined);
  }
  batch(root);

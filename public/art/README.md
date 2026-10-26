@@ -162,3 +162,14 @@ The live terminal uses film-terminal.ts, film-architecture.ts, film-materials.ts
 - Emblem source: [Liverpool FC's official Liverbird and L.F.C. SVG](https://stadion-edge.liverpoolfc.com/images/lfc.svg), linked by [Liverpool FC](https://www.liverpoolfc.com/), retrieved 2026-10-26. The unmodified source is retained as [liverpool-official-source.svg](./liverpool-official-source.svg). Emblem copyright and trademark belong to Liverpool Football Club; no open licence is claimed.
 - Original treatment for Ammar Adam: red stencil layers, cream registration offset, deterministic paint overspray (seed 6601892), small dry-brush cutouts and painted drips. The underlying bird and lettering geometry is retained from the official emblem. This is an independent fan mural, not a club endorsement.
 - The decal is a 3 × 4 metre transparent, lit, shadow-receiving mesh; its SVG is 1200 × 1600. It is not a room image or a freestanding sign.
+
+
+## Interior paint and startup pass
+
+The interior uses four light values in the shared custom material ramp, a warm window key with distance across the hall, cool teal/violet fill, and a low-strength object-bound brush atlas. Tile borrows the existing skyline texture for a soft projected reflection; it does not render the scene again. Timber, plaster, laminate and metal have distinct pigment and roughness settings. Large surfaces retain real seams and a darker base course.
+
+`terminal-post.ts` is the single print composite: depth-reconstructed normal/depth ink fades with distance, a single 45-degree halftone screen appears only in shadow transitions, and off-focus R/B registration excludes opaque signs and the hero using the existing colour target's alpha. The character keeps its authored cloth creases, with the same post silhouette width as the room. No full-screen blur is used.
+
+Gate 05's painted wall wayfinding and the shawarma roast are code-authored, not generated imagery. The roast is one continuously shaped mesh with painted vertex colours, replacing separate cylinders. Existing concourse objects and photos remain in the 3D world.
+
+First-visit loading keeps WebGL dormant during the film. Once playback is buffered, critical texture prefetch and a memoized module import can warm the handoff. Later project and concourse images load one room ahead, shader linking is asynchronous, and the last film frame remains visible until the core textures have settled. The opening films are deterministic 60 fps renders of the same world, with AV1 selected only when hardware decoding is reported as smooth and power-efficient; H.264 remains the fallback.

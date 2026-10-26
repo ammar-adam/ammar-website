@@ -31,6 +31,8 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   root.name = "film-airport-architecture";
   const geometries = new Set<THREE.BufferGeometry>();
   const instances: THREE.InstancedMesh[] = [];
+  const finishTextures: THREE.Texture[] = [];
+  const finishMaterials: THREE.Material[] = [];
   const rooms = ZONES.map(zone => {
     const group = new THREE.Group();
     group.name = zone.name;
@@ -176,7 +178,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   // Large quiet stone slabs use tiny staggered joints, rather than a high-contrast grid.
   ZONES.forEach((zone, index) => {
     const length = zone.near - zone.far, center = (zone.near + zone.far) / 2;
-    block("floor", [28, .18, length], [0, -.135, center], false, index);
+    block("dark", [28, .18, length], [0, -.135, center], false, index);
     const slabLength = 5.75, rows = Math.ceil(length / slabLength);
     for (let lane = 0; lane < 7; lane++) for (let row = -1; row < rows; row++) {
       const start = zone.near - row * slabLength - (lane % 2) * slabLength / 2;
@@ -184,7 +186,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
       const far = Math.max(zone.far, start - slabLength);
       if (near - far < .02) continue;
       const tone = .965 + ((lane * 13 + row * 7) % 9) * .004;
-      place(box, "floor", [-12 + lane * 4, -.027, (near + far) / 2], [3.989, .045, near - far - .012], [0, 0, 0], false, new THREE.Color(tone, tone, tone), index);
+      place(box, "floor", [-12 + lane * 4, -.027, (near + far) / 2], [3.976, .045, near - far - .026], [0, 0, 0], false, new THREE.Color(tone, tone, tone), index);
     }
     // Brass expansion joints quietly carry the eye along the route.
     for (const x of [-5.92, 5.92]) block("gold", [.014, .009, length], [x, .001, center], false, index);
@@ -193,8 +195,8 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     for (const y of [2.05, 5.25, 7.87]) block("steel", [.075, .065, length], [13.90, y, center], false, index);
     // Neutral perimeter walls sit behind the shop fronts, with a walnut dado.
     block("wall", [.26, 7.82, length], [-14.02, 3.91, center], false, index);
-    block("walnut", [.08, .56, length], [-13.84, .28, center], false, index);
-    block("steel", [.05, .035, length], [-13.78, .59, center], false, index);
+    block("dark", [.08, .76, length], [-13.84, .38, center], false, index);
+    block("steel", [.05, .035, length], [-13.78, .79, center], false, index);
     // Recessed ceiling practicals have visible housings, diffusers, and suspension.
     for (let z = zone.near - 3.3; z > zone.far + 1; z -= 7.7) {
       const y = 8.55;
@@ -259,14 +261,49 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     });
     stroke(doorHead(.015, .43), .040, portal.zone);
     stroke(doorHead(.49, .985), .040, portal.zone);
+    // A glazed blue-green base course carries through each hall, while the
+    // narrow warm-metal cap catches the window key. Stop it at the real doorway.
+    for (const [from, to] of [[-14, left - .18], [right + .18, 14]]) {
+      const width = to - from;
+      block("dark", [width, .76, .045], [(from + to) / 2, .38, portal.z + .383], false, portal.zone);
+      block("gold", [width, .022, .055], [(from + to) / 2, .77, portal.z + .390], false, portal.zone);
+    }
     // The broad wall receives scale from a low ledge and widely spaced stone reveals.
     for (let x = -13.5; x < 13.5; x += 3.45) {
       if (x > left - .4 && x < right + .4) continue;
-      block("ivory", [.055, 6.85, .045], [x, 3.44, portal.z + .385], false, portal.zone);
+      block("steel", [.025, 6.85, .018], [x, 3.44, portal.z + .385], false, portal.zone);
       stroke([[x + .044, .42, portal.z + .410], [x + .049, 1.62, portal.z + .410], [x + .044, 2.62, portal.z + .410]], .023, portal.zone, "steel");
       stroke([[x + .045, 3.04, portal.z + .410], [x + .049, 4.95, portal.z + .410], [x + .043, 6.58, portal.z + .410]], .023, portal.zone, "steel");
     }
   }
+
+  // Oversized painted gate wayfinding gives the turn a visible destination.
+  // It belongs to the existing wall and shares its cast shadows, rather than
+  // becoming another UI caption or a new object in the walking lane.
+  const gateCanvas = document.createElement("canvas");
+  gateCanvas.width = 1536; gateCanvas.height = 640;
+  const gatePaint = gateCanvas.getContext("2d");
+  if (gatePaint) {
+    gatePaint.fillStyle = "#587a83";
+    gatePaint.beginPath(); gatePaint.moveTo(28, 135); gatePaint.lineTo(1410, 81);
+    gatePaint.lineTo(1506, 494); gatePaint.lineTo(50, 561); gatePaint.closePath(); gatePaint.fill();
+    gatePaint.fillStyle = "#f4dfb0"; gatePaint.font = "700 370px Arial";
+    gatePaint.fillText("05", 115, 465);
+    gatePaint.lineWidth = 41; gatePaint.lineCap = "square"; gatePaint.strokeStyle = "#f4dfb0";
+    gatePaint.beginPath(); gatePaint.moveTo(769, 328); gatePaint.lineTo(1310, 328);
+    gatePaint.moveTo(1150, 178); gatePaint.lineTo(1310, 328); gatePaint.lineTo(1150, 478); gatePaint.stroke();
+    // Short dragged-brush gaps follow the painted shapes; no large scratch grid.
+    gatePaint.globalCompositeOperation = "destination-out";
+    let seed = 1405;
+    const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
+    for (let i = 0; i < 280; i++) { gatePaint.globalAlpha = .04 + random() * .10; gatePaint.fillRect(random() * 1536, random() * 640, 7 + random() * 69, 1 + random() * 3); }
+  }
+  const gateTexture = new THREE.CanvasTexture(gateCanvas); gateTexture.colorSpace = THREE.SRGBColorSpace;
+  const gateMaterial = new THREE.MeshStandardMaterial({ map: gateTexture, transparent: true, alphaTest: .06, roughness: 1, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
+  finishTextures.push(gateTexture); finishMaterials.push(gateMaterial);
+  const paintedGate = new THREE.Mesh(owned(new THREE.PlaneGeometry(10.8, 4.5)), gateMaterial);
+  paintedGate.name = "painted-gate-05-wayfinding"; paintedGate.position.set(-1.5, 3.1, -83.604);
+  paintedGate.receiveShadow = true; rooms[3].group.add(paintedGate);
 
   // A deep, curved shopfront soffit gives the concourse a human-scaled left edge.
   const soffit = extrude(roundedProfile(1.35, .36, .16), 9.3, .025);
@@ -365,6 +402,8 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     dispose() {
       for (const instance of instances) instance.dispose();
       for (const geometry of geometries) geometry.dispose();
+      finishTextures.forEach(texture => texture.dispose());
+      finishMaterials.forEach(material => material.dispose());
       root.clear();
     },
   };

@@ -9,7 +9,15 @@ import { SocialLinks } from "./SocialLinks";
 import { OpeningFilm } from "./OpeningFilm";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
-const TerminalWorld = dynamic(() => import("./TerminalWorld").then(module => module.TerminalWorld), { ssr: false });
+// Warm only the module while a buffered film is playing. World construction and
+// GPU setup remain inside TerminalWorld's effect after the intro has finished.
+let terminalWorldModule: Promise<typeof import("./TerminalWorld")> | undefined;
+const loadTerminalWorld = () => terminalWorldModule ??= import("./TerminalWorld").catch(error => {
+  terminalWorldModule = undefined;
+  throw error;
+});
+const prepareTerminalWorld = () => { void loadTerminalWorld().catch(() => {}); };
+const TerminalWorld = dynamic(() => loadTerminalWorld().then(module => module.TerminalWorld), { ssr: false });
 import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
 import { JourneyNavigation } from "./JourneyNavigation";
@@ -167,6 +175,6 @@ export function SpiderVerse() {
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>
     </div>
-    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} />}</AnimatePresence>
+    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} onPrepareWorld={prepareTerminalWorld} />}</AnimatePresence>
   </main>;
 }

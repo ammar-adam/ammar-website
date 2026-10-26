@@ -95,7 +95,6 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
       <div className="mf-controls">
         <div className="mf-stepper"><button type="button" aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button><button type="button" aria-label={`Next ${kind}`} disabled={selected === names.length - 1} onClick={() => select(selected + 1)}>→</button></div>
         <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpen(true)}>Details <span aria-hidden="true">↗</span></button>
-        <Link className="mf-short-link" href={`/short#${section === "experience" ? "short-work" : "short-projects"}`}>Short version <span aria-hidden="true">↗</span></Link>
       </div>
     </div>
     <StoryDetails id={dialogId} open={open} onClose={() => setOpen(false)} item={detail} section={section} />

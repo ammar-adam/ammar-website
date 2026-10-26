@@ -1,70 +1,113 @@
+import type { Material } from "three";
+
+/** Keep readable signs and the hero out of off-focus colour registration.
+ * The existing colour target carries the mask in alpha; no extra render pass.
+ */
+export function protectFilmRegistration(material: Material) {
+ if (material.transparent || material.userData.filmRegistrationProtected) return;
+ material.userData.filmRegistrationProtected = true;
+ const compile = material.onBeforeCompile;
+ const key = material.customProgramCacheKey();
+ material.onBeforeCompile = (shader, renderer) => {
+  compile.call(material, shader, renderer);
+  shader.fragmentShader = shader.fragmentShader.replace("#include <dithering_fragment>", "#include <dithering_fragment>\ngl_FragColor.a = 0.0;");
+ };
+ material.customProgramCacheKey = () => `${key}-registration-protected`;
+ material.needsUpdate = true;
+}
+
 export const TERMINAL_POST_VERTEX = `varying vec2 vUv; void main(){vUv=uv;gl_Position=vec4(position.xy,0.,1.);}`;
 
-// Sharp illustrative compositing: broken ink, selective print transitions and
-// off-focus registration. Fast motion adds drawn traces, never averaged blur.
+// One colour/depth composite. View normals come from the same depth buffer, so
+// ink, print and grading do not need a second scene render on a phone.
 export const TERMINAL_POST_FRAGMENT = `
 precision highp float;
 varying vec2 vUv;
 uniform sampler2D uScene,uDepth;
 uniform vec2 uResolution;
+uniform mat4 uProjectionInverse;
 uniform float uIntensity,uMotion,uTime;
 float filmLuma(vec3 c){return dot(c,vec3(.2126,.7152,.0722));}
 float filmHash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+vec3 filmView(vec2 uv,float depth){
+ vec4 projected=uProjectionInverse*vec4(uv*2.-1.,depth*2.-1.,1.);
+ if(abs(projected.w)>.00001)return projected.xyz/projected.w;
+ // Old offline proof harnesses can omit the matrix; the live renderer supplies
+ // the exact current projection, including the existing animated field of view.
+ float z=(.08*650.)/(650.-depth*(650.-.08));
+ return vec3((uv*2.-1.)*vec2(uResolution.x/uResolution.y,1.)*z*.6128,-z);
+}
+vec3 filmNormal(vec3 a,vec3 b){return normalize(cross(a,b)+vec3(0.,0.,.0000001));}
 void main(){
  vec2 px=1.0/uResolution;
  vec2 pixel=vUv*uResolution;
+ vec2 dx=vec2(px.x*1.5,0.),dy=vec2(0.,px.y*1.5);
  float d=texture2D(uDepth,vUv).r;
- float distant=smoothstep(.9942,.9982,d);
- vec3 original=texture2D(uScene,vUv).rgb;
- vec3 c=original;
- float L=filmLuma(original);
- vec3 left=texture2D(uScene,vUv-vec2(px.x*1.25,0.)).rgb;
- vec3 right=texture2D(uScene,vUv+vec2(px.x*1.25,0.)).rgb;
- vec3 above=texture2D(uScene,vUv+vec2(0.,px.y*1.25)).rgb;
- vec3 below=texture2D(uScene,vUv-vec2(0.,px.y*1.25)).rgb;
- vec2 lightGradient=vec2(filmLuma(right)-filmLuma(left),filmLuma(above)-filmLuma(below));
- float gradient=length(lightGradient);
- float dl=texture2D(uDepth,vUv-vec2(px.x*1.25,0.)).r;
- float dr=texture2D(uDepth,vUv+vec2(px.x*1.25,0.)).r;
- float du=texture2D(uDepth,vUv+vec2(0.,px.y*1.25)).r;
- float dd=texture2D(uDepth,vUv-vec2(0.,px.y*1.25)).r;
- float depthEdge=length(vec2(dl-dr,du-dd))/max(1.-d,.0002);
- // Vary contour pressure and leave gaps; avoid a uniform vector-like outline.
+ float dl=texture2D(uDepth,vUv-dx).r,dr=texture2D(uDepth,vUv+dx).r;
+ float du=texture2D(uDepth,vUv+dy).r,dd=texture2D(uDepth,vUv-dy).r;
+ vec3 center=filmView(vUv,d);
+ vec3 vpLeft=filmView(vUv-dx,dl),vpRight=filmView(vUv+dx,dr);
+ vec3 vpUp=filmView(vUv+dy,du),vpDown=filmView(vUv-dy,dd);
+ float distanceToCamera=max(.08,-center.z);
+ float nearInk=1.-smoothstep(16.,43.,distanceToCamera);
+ // Four local triangles agree on a plane and separate at a modelled crease.
+ // A depth discontinuity supplies the silhouette; both use the same 1.5px pen.
+ vec3 n0=filmNormal(vpRight-center,vpUp-center);
+ vec3 n1=filmNormal(vpUp-center,vpLeft-center);
+ vec3 n2=filmNormal(vpLeft-center,vpDown-center);
+ vec3 n3=filmNormal(vpDown-center,vpRight-center);
+ float crease=max(max(1.-dot(n0,n1),1.-dot(n1,n2)),max(1.-dot(n2,n3),1.-dot(n3,n0)));
+ float depthEdge=max(abs(vpLeft.z-vpRight.z),abs(vpUp.z-vpDown.z))/distanceToCamera;
+ float contour=max(smoothstep(.035,.16,depthEdge),smoothstep(.20,.72,crease)*.72)*nearInk;
+ vec4 original=texture2D(uScene,vUv);
+ vec3 c=original.rgb;
+ float L=filmLuma(c);
+ vec3 left=texture2D(uScene,vUv-dx).rgb,right=texture2D(uScene,vUv+dx).rgb;
+ vec3 above=texture2D(uScene,vUv+dy).rgb,below=texture2D(uScene,vUv-dy).rgb;
+ float gradient=length(vec2(filmLuma(right)-filmLuma(left),filmLuma(above)-filmLuma(below)));
  float strokePhase=(pixel.x*.37+pixel.y*.74+sin(pixel.y*.061)*3.)/31.;
- float pressure=.38+.62*smoothstep(.12,.34,fract(strokePhase));
- float contour=smoothstep(.13,.38,gradient)*.11+smoothstep(.028,.16,depthEdge)*.53;
- c=mix(c,vec3(.016,.024,.057),min(.63,contour)*pressure*uIntensity);
+ float pressure=.72+.28*smoothstep(.12,.34,fract(strokePhase));
+ vec3 shadowInk=vec3(.012,.027,.047);
+ c=mix(c,shadowInk,clamp(contour*pressure*1.3*uIntensity,0.,.82));
 
- // Dots are a transition medium at a shaded edge, not surface dirt.
- float shadow=1.-smoothstep(.045,.32,L);
- float transition=smoothstep(.035,.10,L)*(1.-smoothstep(.25,.40,L));
- transition*=smoothstep(.008,.035,gradient)*(1.-smoothstep(.20,.38,gradient));
- vec2 printGrid=mat2(.819,-.574,.574,.819)*pixel/5.4;
- float radius=mix(.10,.29,shadow);
- float dotInk=1.-smoothstep(radius,radius+.065,length(fract(printGrid)-.5));
- c=mix(c,vec3(.025,.039,.087),dotInk*transition*.43*uIntensity);
+ // One 45-degree screen, 4.5px at a 1080px image height. It lives only inside
+ // shadow transitions: no dots on a flat wall, solid black or bright lettering.
+ float shadow=1.-smoothstep(.03,.45,L);
+ float transition=smoothstep(.03,.085,L)*(1.-smoothstep(.31,.45,L));
+ transition*=smoothstep(.004,.022,gradient)*(1.-smoothstep(.12,.26,gradient));
+ transition*=1.-smoothstep(.12,.35,depthEdge);
+ float printPitch=max(3.,4.5*uResolution.y/1080.);
+ vec2 printGrid=mat2(.7071068,-.7071068,.7071068,.7071068)*pixel/printPitch;
+ float radius=mix(.11,.34,shadow);
+ float dotAA=max(fwidth(length(fract(printGrid)-.5)),.055);
+ float dotInk=1.-smoothstep(radius-dotAA*.5,radius+dotAA*.5,length(fract(printGrid)-.5));
+ vec3 printHue=mix(c*.46,shadowInk,.25);
+ c=mix(c,printHue,dotInk*transition*.72*uIntensity);
 
- // Crisp cyan/red separation substitutes for lens blur outside the focal area.
- float offFocus=distant*smoothstep(.055,.25,gradient);
+ // The colour target's alpha is a registration mask. Characters and signage
+ // write zero there; their ink remains intact but their R/B never separate.
+ float distant=smoothstep(24.,56.,distanceToCamera);
+ float markedSurface=smoothstep(.75,.98,original.a);
+ float luminousProtection=1.-smoothstep(.56,.85,max(c.r,max(c.g,c.b)));
+ float offFocus=distant*markedSurface*luminousProtection*smoothstep(.035,.15,gradient);
  vec2 radial=normalize(vUv-vec2(.50,.52)+.0001);
- vec2 offset=radial*px*(1.45+uMotion*5.5);
- vec3 separated=vec3(texture2D(uScene,vUv+offset).r,c.g,texture2D(uScene,vUv-offset).b);
- c=mix(c,separated,offFocus*.70*uIntensity);
+ vec2 offset=radial*px*mix(2.,4.,clamp(uMotion,0.,1.));
+ vec4 redSample=texture2D(uScene,vUv+offset),blueSample=texture2D(uScene,vUv-offset);
+ offFocus*=smoothstep(.75,.98,min(redSample.a,blueSample.a));
+ vec3 separated=vec3(redSample.r,c.g,blueSample.b);
+ c=mix(c,separated,offFocus*.72*uIntensity);
 
- // Sparse, sharp, broken speed strokes confined to the outer field of motion.
- vec2 centered=(vUv-vec2(.48,.54))*vec2(uResolution.x/uResolution.y,1.);
- float angle=atan(centered.y,centered.x);
- float angular=angle*47.;
- float rayId=floor(angular);
- float distanceToRay=abs(fract(angular)-.5);
- float lineWidth=max(fwidth(angular),.008);
- float ray=1.-smoothstep(.018,.018+lineWidth,distanceToRay);
- float radiusFromFocus=length(centered);
- float choice=filmHash(vec2(rayId,17.));
- float start=.35+choice*.20;
- float trace=ray*step(.88,choice)*smoothstep(start,start+.025,radiusFromFocus)*(1.-smoothstep(start+.18,start+.22,radiusFromFocus));
- c=mix(c,vec3(.68,.82,.85),trace*uMotion*distant*.20*uIntensity);
- c*=1.-dot(vUv-.5,vUv-.5)*.10;
+ // Keep the authored skyline's palette. Interior shadows receive its teal;
+ // lit pigment keeps the warm window key. Haze is subtle and depth-dependent.
+ float interior=1.-smoothstep(60.,115.,distanceToCamera);
+ vec3 grade=mix(vec3(.94,1.015,1.045),vec3(1.035,1.006,.975),smoothstep(.09,.55,L));
+ c*=mix(vec3(1.),grade,interior*uIntensity);
+ float haze=smoothstep(20.,95.,distanceToCamera)*interior*.085*uIntensity;
+ c=mix(c,vec3(.29,.46,.48),haze);
+ // Stationary fine paper grain: four percent peak-to-peak, never animated noise.
+ float grain=filmHash(floor(pixel))-.5;
+ c*=1.+grain*.04;
+ c*=1.-dot(vUv-.5,vUv-.5)*.055;
  gl_FragColor=vec4(max(c,vec3(0.)),1.);
  #include <colorspace_fragment>
 }`;
