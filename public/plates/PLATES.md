@@ -1,18 +1,24 @@
-# Plates
+# Photographic plate archive
 
-Environment plates for the intro. Each plate ships as a paint-baked colour
+Photographic environment plates from earlier versions of the terminal, retained
+with their source attribution. The current terminal uses original generated
+environment paintings on shallow depth meshes (`painted-stages.ts`), composed
+with an illustrated traveler (`painted-terminal.ts`). See `/art/README.md` and
+its linked provenance records for those assets.
+
+Each archived photographic plate ships as a paint-baked colour
 texture (`<id>-paint-2000.webp`, `<id>-paint-1600.webp`: sharp median(5) +
 blur(0.6), WebP q80) and a hand-authored feathered depth matte
-(`<id>-depth.webp`, 1024px wide, 0 = sky/far, 1 = near). The site
-colour-grades, posterises, halftones and chromatic-splits them in real time
-(`src/components/sv/Film.tsx`); the originals are untouched. No airline
+(`<id>-depth.webp`, 1024px wide, 0 = sky/far, 1 = near). The earlier renderer
+(`src/components/sv/Film.tsx`) colour-graded, posterised, halftoned and
+chromatic-split these plates in real time; the originals are untouched. No airline
 livery or name is visible in any plate.
 
 Unsplash License and Pexels License both allow commercial use and
 modification without attribution; credit is given anyway, here and at
 `/credits`. No Creative Commons / Wikimedia material is used.
 
-| id     | title                                                                 | photographer    | source                                  | licence          | used for            |
+| id     | title                                                                 | photographer    | source                                  | licence          | originally used for |
 |--------|-----------------------------------------------------------------------|-----------------|-----------------------------------------|------------------|---------------------|
 | hero   | Modern plane parking on stand near its gate at night                  | Arthouse Studio | https://www.pexels.com/photo/4530192/   | Pexels License   | hero                |
 | ramp   | Airplanes with red beacon parked on an airfield at night              | Arthouse Studio | https://www.pexels.com/photo/4530190/   | Pexels License   | the three gates     |

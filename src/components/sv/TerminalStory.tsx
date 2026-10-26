@@ -34,23 +34,23 @@ function IntroBeat({ t, beat, reduced }: { t: MotionValue<number>; beat: number;
     {voice.pre && <p className="tj-voice-lead">{voice.pre}</p>}
     <motion.h2 style={{ skewX }}>{voice.lines.map((line, index) => <span key={line} className={index === 1 ? "tj-red-word" : undefined}>{line}</span>)}</motion.h2>
     <p className="tj-voice-aside">{voice.aside}</p>
-    {beat === 0 && <p className="tj-start-cue"><span aria-hidden="true">↓</span> Scroll. I’ll show you.</p>}
+    {beat === 0 && <p className="tj-start-cue"><span aria-hidden="true">↓</span> Scroll to continue</p>}
   </motion.section>;
 }
 
 const WORK = [
   { line: "I started in finance.", role: "M&A Summer Analyst", result: "$50M+", label: "in buy- and sell-side deal flow supported.", body: "At 16, I became Alpen’s youngest intern, working in equity advisory and learning financial modelling and investment research." },
-  { line: "Then I started building the tools.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
-  { line: "I like AI that has a job to do.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
-  { line: "Finding other people who build.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
-  { line: "And backing them early.", role: "Pear VC Fellow", result: "~50 / 650+", label: "fellows selected / applicants across 17 campuses.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
+  { line: "Then I started building.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
+  { line: "Now, I build AI tools.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
+  { line: "And find other builders.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
+  { line: "I’m learning to back them.", role: "Pear VC Fellow", result: "~50 / 650+", label: "fellows selected / applicants across 17 campuses.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
 ];
 
 const PROJECT_VOICE = [
-  { line: "Your GPS could use a better voice.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
-  { line: "Then I tested my own assumptions.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
-  { line: "Some projects are made of people.", role: "Managing Director", result: "1,300+ members", label: "30+ students placed into startups.", body: "I run Waterloo’s student venture community and support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
-  { line: "And sometimes, a whole city shows up.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
+  { line: "I gave my GPS a new voice.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
+  { line: "Then I tested the idea.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
+  { line: "I also build communities.", role: "Managing Director", result: "1,300+ members", label: "30+ students placed into startups.", body: "I run Waterloo’s student venture community and support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
+  { line: "And bring people together.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations. At Hack the North, I designed the application and selection rubric." },
 ];
 
 type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void };
@@ -81,7 +81,8 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
   const dialogId = useId();
   return <section className={`mf-scene mf-${section}`} aria-label={section}>
     <div className="mf-panel" data-experience-detail={kind === "experience" ? slug : undefined} data-project-detail={kind === "project" ? slug : undefined}>
-      <div className="mf-readout-label"><span>{kind === "experience" ? "Check-in / Experience" : "Inspection / Projects"}</span><span>{String(selected + 1).padStart(2, "0")} <i>/ {String(names.length).padStart(2, "0")}</i></span></div>
+      <div className="mf-caption">
+      <div className="mf-readout-label"><span>{kind === "experience" ? WORK[selected].line : PROJECT_VOICE[selected].line}</span><span className="mf-item-number">{selected + 1} <i>/ {names.length}</i></span></div>
       <div className="mf-identity">
         <h2 className="mf-sr-only">{detail.name}</h2>
         <select aria-label={`Choose ${kind}`} value={selected} onChange={event => select(Number(event.target.value))}>
@@ -90,6 +91,7 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
         <p className="mf-role">{role}</p>
       </div>
       <p className="mf-result">{result}</p>
+      </div>
       <div className="mf-controls">
         <div className="mf-stepper"><button type="button" aria-label={`Previous ${kind}`} disabled={selected === 0} onClick={() => select(selected - 1)}>←</button><button type="button" aria-label={`Next ${kind}`} disabled={selected === names.length - 1} onClick={() => select(selected + 1)}>→</button></div>
         <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpen(true)}>Details <span aria-hidden="true">↗</span></button>
@@ -136,7 +138,7 @@ export function ExperienceStory({ selected, select, onOpenChange }: StorySelecti
 export function ProjectStory({ selected, select, onOpenChange }: StorySelection) {
   const current = projects[selected];
   const community = getArrivalBySlug(current.slug === "waterloo-tech-week" ? "hack-the-north" : current.slug);
-  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / Hack the North" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
+  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / HTN" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
 }
 
 

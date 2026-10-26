@@ -80,7 +80,7 @@ Constraints: two arms, two legs, anatomically clear fingers and wrists. No actua
 
 ### public/art/terminal-paint-material.webp
 
-Generated with the built-in image-generation tool on 2026-10-25. New original material; no external reference image, photograph, API, or CLI fallback was used. Initial source: `exec-49bc50ab-842d-4e9a-9c7f-7d4b749a590e.png`; final color/edge revision: `exec-6a261e7f-fcfa-45cb-8e8f-01512ed63be7.png`. Both outputs are in the built-in generation directory `01a174af-55b6-7460-acac-7c5c2c6ed5ce`. Converted to a 1024 × 1024 opaque WebP for runtime tinting on terminal architecture. Lighting remains supplied by the 3D scene.
+Generated with the built-in image-generation tool on 2026-10-25. New original material; no external reference image, photograph, API, or CLI fallback was used. Initial source: `exec-49bc50ab-842d-4e9a-9c7f-7d4b749a590e.png`; final color/edge revision: `exec-6a261e7f-fcfa-45cb-8e8f-01512ed63be7.png`. Both outputs are in the built-in generation directory `01a174af-55b6-7460-acac-7c5c2c6ed5ce`. Converted to a 1024 × 1024 opaque WebP for the earlier procedural terminal's runtime material tinting and lighting. The current painted terminal retains this texture on its foreground transition beam; the environment paintings already contain their lighting.
 
 Exact initial prompt:
 
@@ -144,3 +144,9 @@ Scene and framing: medium-wide cinema composition, the small brown bear seated o
 Style and lighting: high-end feature-animation production painting, dimensional 3D forms with selective hand-painted hard-edge light planes and gentle brush texture. Warm golden station light on tawny fur and red felt hat; deep blue duffle coat contrasts with amber architecture. Cinematic atmospheric depth, restrained ink accents, material detail, no flat vector shapes or printed-comic panel.
 Constraints: 16:9 landscape, opaque image, no television frame or bezel because the website provides it; no written title, lettering, subtitles, film studio marks, logos, watermark or decorative border. No photographic movie still, no collage.
 ```
+
+## Painted terminal revision
+
+The original illustrated traveler is retained. The crude procedural character and box environments are replaced by layered production paintings. New atrium, check-in, security, concourse and gate images were generated with built-in image_gen. Exact prompts, selected sources and output paths: [atrium/check-in/security](./painted-v4-provenance.json) and [concourse/gate](./environment-v4-provenance.json). These are original illustrated scenes, not film stills.
+
+Saved project assets: [atrium](./terminal-atrium-v4.webp), [check-in](./checkin-v4.webp), [security](./security-v4.webp), [concourse](./concourse-v4.webp), and [gate](./gate-v4.webp).

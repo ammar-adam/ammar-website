@@ -171,7 +171,7 @@ export function SpiderVerse() {
         <footer className="tj-footer">
           <p className="tj-location"><b>0{chapter + 1}</b> {CHAPTERS[chapter].label}</p>
           <nav aria-label="Story chapters">{CHAPTERS.map((c, index) => <button key={c.id} onClick={() => { jump(index); if (index === 0 && !reduced) setIntro(true); }} aria-label={`Go to ${["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}`} aria-current={chapter === index ? "step" : undefined}><span>0{index + 1}</span><b>{["Intro", "Experience", "Projects", "Photos", "Résumé"][index]}</b></button>)}</nav>
-          <p className="tj-scroll">{!ready ? "Loading the terminal…" : chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>KEEP SCROLLING <span aria-hidden="true">↓</span></>}</p>
+          <p className="tj-scroll">{!ready ? "Loading the terminal…" : chapter === 4 ? <a href="/credits">Visual credits ↗</a> : <>Scroll to continue <span aria-hidden="true">↓</span></>}</p>
         </footer>
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
       </div>

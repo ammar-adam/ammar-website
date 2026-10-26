@@ -1,5 +1,5 @@
-/* Plate credits, shown at /credits and listed in public/plates/PLATES.md.
-   Every plate is colour-graded, posterised and halftoned in real time. */
+/* Archived photographic plate credits, retained at /credits and in
+   public/plates/PLATES.md. The current environment uses generated paintings. */
 
 import type { PlateCredit } from "./plates";
 
