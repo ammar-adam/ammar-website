@@ -82,9 +82,24 @@ export function createFilmCheckin(materials: FilmMaterialPalette): FilmCheckin {
   // A curved stone shell over an inset plinth gives the island a continuous silhouette.
   plan(footprint(), .04, .12, .025, materials.ink, .94);
   plan(footprint(), .20, .82, .065, materials.ivory);
-  plan(frontRibbon(), .25, .64, .025, materials.walnut);
+  plan(frontRibbon(), .25, .64, .025, materials.cyan);
+  // The curved fascia is glazed petrol enamel with hand-finished oak fins.
+  // These follow the actual shell instead of drawing a flat stripe over it.
+  const fasciaCurve = new THREE.CubicBezierCurve3(
+    new THREE.Vector3(-2.85, .56, 1.145), new THREE.Vector3(-1.45, .56, 1.525),
+    new THREE.Vector3(.45, .56, 1.035), new THREE.Vector3(1.55, .56, .845),
+  );
+  for (let i = 0; i < 35; i++) {
+    const t = i / 34, point = fasciaCurve.getPoint(t), tangent = fasciaCurve.getTangent(t);
+    const fin = roundBox(i % 7 === 0 ? .055 : .032, .53, .055, .009);
+    fin.rotateY(-Math.atan2(tangent.z, tangent.x));
+    fin.translate(point.x, point.y, point.z + .025);
+    add(fin, i % 7 === 0 ? materials.gold : materials.walnut);
+  }
+  const faceAccent = fasciaCurve.getPoints(46).map(point => new THREE.Vector3(point.x, .78, point.z + .045));
+  tube(faceAccent, .014, materials.ivory, 46);
   plan(frontRibbon(), .93, .025, .010, materials.gold);
-  plan(frontRibbon(), .18, .018, .006, materials.warmLight);
+  plan(frontRibbon(), .18, .028, .006, materials.gold);
   plan(footprint(), 1.055, .115, .055, materials.ivory, 1.035);
 
   // Recessed employee worktop, service drawer, and a small accessible concierge ledge.
@@ -154,7 +169,11 @@ export function createFilmCheckin(materials: FilmMaterialPalette): FilmCheckin {
   for (const x of [-1.58, 1.58]) {
     tube([new THREE.Vector3(x, .92, -.68), new THREE.Vector3(x, 1.85, -.83), new THREE.Vector3(x, 2.70, -1.10), new THREE.Vector3(x, 3.31, -1.15)], .046, materials.steel, 28);
   }
+  box(3.94, 1.28, .25, materials.ivory, 0, 3.30, -1.20, .07);
   box(3.84, 1.18, .23, materials.dark, 0, 3.30, -1.15, .07);
+  // Enamel face, worn brass shoulders and a painted reverse, all real thickness.
+  for (const x of [-1.99, 1.99]) box(.075, 1.05, .30, materials.gold, x, 3.30, -1.17, .022);
+  box(3.68, .055, .30, materials.cyan, 0, 2.64, -1.18, .018);
   box(3.89, .07, .25, materials.ivory, 0, 3.94, -1.17, .025);
   box(3.63, .025, .04, materials.gold, 0, 3.87, -1.015, .008);
   box(1.42, .16, .16, materials.steel, 1.08, 4.04, -1.17, .045);

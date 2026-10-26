@@ -112,6 +112,20 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     batch.strokes++;
   }
 
+  // Thin enamel and terrazzo inlays are geometry on the architectural surface.
+  // They share the per-room paint batches and catch the same mullion shadows.
+  function inlay(shape: THREE.Shape, material: MaterialName, zone: number, position: V3, rotation: V3 = [0, 0, 0]) {
+    const geometry = new THREE.ShapeGeometry(shape, 28);
+    geometry.applyMatrix4(new THREE.Matrix4().compose(new THREE.Vector3(...position), new THREE.Quaternion().setFromEuler(new THREE.Euler(...rotation)), new THREE.Vector3(1, 1, 1)));
+    let batch = rooms[zone].drawing.get(material);
+    if (!batch) { batch = { positions: [], normals: [], indices: [], strokes: 0 }; rooms[zone].drawing.set(material, batch); }
+    const offset = batch.positions.length / 3;
+    const positions = geometry.getAttribute("position"), normals = geometry.getAttribute("normal");
+    for (let i = 0; i < positions.count; i++) { batch.positions.push(positions.getX(i), positions.getY(i), positions.getZ(i)); batch.normals.push(normals.getX(i), normals.getY(i), normals.getZ(i)); }
+    if (geometry.index) for (let i = 0; i < geometry.index.count; i++) batch.indices.push(offset + geometry.index.getX(i));
+    batch.strokes++; geometry.dispose();
+  }
+
   // Each rib is an extruded curved beam, with a small bevel that catches the key.
   // The parabolic soffit reaches 11.6m, while the glazed eaves are 8m high.
   const roofY = (x: number) => 8 + 3.6 * (1 - (x / 14) ** 2);
@@ -122,6 +136,14 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   for (let step = 64; step >= 0; step--) { const x = -14 + step * 28 / 64; archShape.lineTo(x, roofY(x) - ribThickness(x)); }
   archShape.closePath();
   const arch = extrude(archShape, .64, .045);
+  const archUnderPositions: number[] = [], archUnderIndices: number[] = [];
+  for (let row = 0; row < 2; row++) for (let step = 0; step <= 64; step++) {
+    const x = -13.96 + step * 27.92 / 64;
+    archUnderPositions.push(x, roofY(x) - ribThickness(x) - .006, (row - .5) * .57);
+  }
+  for (let step = 0; step < 64; step++) { const a = step, b = step + 65; archUnderIndices.push(a, a + 1, b, a + 1, b + 1, b); }
+  const archUnderside = owned(new THREE.BufferGeometry());
+  archUnderside.setAttribute("position", new THREE.Float32BufferAttribute(archUnderPositions, 3)); archUnderside.setIndex(archUnderIndices); archUnderside.computeVertexNormals();
   const pillar = extrude(roundedProfile(.43, 7.95, .16), .54, .035);
 
   function roofPanel(left: number, right: number, length: number) {
@@ -142,6 +164,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   for (let z = 12.8; z > -104; z -= 6.4) {
     const zone = zoneAt(z);
     place(arch, "ivory", [0, 0, z], [1, 1, 1], [0, 0, 0], true, undefined, zone);
+    place(archUnderside, "cyan", [0, 0, z], [1, 1, 1], [0, 0, 0], false, undefined, zone);
     place(pillar, "ivory", [-13.66, 3.975, z], [1, 1, 1], [0, 0, 0], true, undefined, zone);
     // Pressure varies along the underside of each beam; the broad cream face
     // remains quiet. A few double marks describe the thickness of the casting.
@@ -162,8 +185,8 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     block("steel", [.60, .08, .70], [12.91, .045, z], false, zone);
     if (z - 3.2 < -104) continue;
     const panelZ = z - 3.2, panelZone = zoneAt(panelZ);
-    place(timberCeiling, "ivory", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
-    place(leftCeiling, "ivory", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
+    place(timberCeiling, "cyan", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
+    place(leftCeiling, "dark", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
     place(clerestory, "glass", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
     // Ceiling seams and slender cross bars; no luminous neon outlines.
     for (const x of [-9.7, -5.1, -.5, 4.1, 8.7, 12.2]) {
@@ -185,16 +208,23 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
       const near = Math.min(zone.near, start);
       const far = Math.max(zone.far, start - slabLength);
       if (near - far < .02) continue;
-      const tone = .965 + ((lane * 13 + row * 7) % 9) * .004;
-      place(box, "floor", [-12 + lane * 4, -.027, (near + far) / 2], [3.976, .045, near - far - .026], [0, 0, 0], false, new THREE.Color(tone, tone, tone), index);
+      const tone = .95 + ((lane * 13 + row * 7 + 21) % 9) * .009;
+      // Broad slate, warm-stone and sea-glass runs make a designed floor plan.
+      const laneTint = [[.54,.82,.94],[.67,.98,1.08],[1.42,1.31,1.05],[1.68,1.49,1.12],[1.68,1.49,1.12],[1.12,1.31,1.18],[.72,1.13,1.18]][lane];
+      place(box, "floor", [-12 + lane * 4, -.027, (near + far) / 2], [3.976, .045, near - far - .026], [0, 0, 0], false, new THREE.Color(...laneTint as [number,number,number]).multiplyScalar(tone), index);
     }
+    // A single sweeping terrazzo fan per hall echoes the aviation wall inlays.
+    const fan = new THREE.Shape();
+    fan.moveTo(-8.8, -zone.far - 2.4); fan.bezierCurveTo(-5.6, -zone.far - 5.7, -.6, -zone.far - 7.0, 6.3, -zone.far - 6.0);
+    fan.lineTo(6.3, -zone.far - 5.70); fan.bezierCurveTo(-.6, -zone.far - 6.64, -5.5, -zone.far - 5.34, -8.5, -zone.far - 2.2); fan.closePath();
+    inlay(fan, "gold", index, [0, .006, 0], [-Math.PI / 2, 0, 0]);
     // Brass expansion joints quietly carry the eye along the route.
     for (const x of [-5.92, 5.92]) block("gold", [.014, .009, length], [x, .001, center], false, index);
     // A low stone sill and three horizontal window rails give the glazing thickness.
     block("ivory", [.38, .22, length], [13.80, .11, center], false, index);
     for (const y of [2.05, 5.25, 7.87]) block("steel", [.075, .065, length], [13.90, y, center], false, index);
-    // Neutral perimeter walls sit behind the shop fronts, with a walnut dado.
-    block("wall", [.26, 7.82, length], [-14.02, 3.91, center], false, index);
+    // Sea-glass plaster, a navy base and warm metal replace the blank beige shell.
+    block("cyan", [.26, 7.82, length], [-14.02, 3.91, center], false, index);
     block("dark", [.08, .76, length], [-13.84, .38, center], false, index);
     block("steel", [.05, .035, length], [-13.78, .79, center], false, index);
     // Recessed ceiling practicals have visible housings, diffusers, and suspension.
@@ -225,8 +255,9 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   const widePanel = plasterPanel(7.5, 6.15, .36), narrowPanel = plasterPanel(5.9, 6.42, .51);
   for (const [index, z] of [8.8, -.3, -9.5, -23.4, -40.0].entries()) {
     const zone = zoneAt(z), width = index % 2 ? 5.9 : 7.5;
-    place(index % 2 ? narrowPanel : widePanel, "ivory", [-13.72, 0, z], [1, 1, 1], [0, Math.PI / 2, 0], true,
-      new THREE.Color(index % 2 ? .93 : 1.0, index % 2 ? .965 : .98, index % 2 ? .99 : .94), zone);
+    const panelFinish: MaterialName = index % 3 === 0 ? "ivory" : index % 3 === 1 ? "steel" : "gold";
+    place(index % 2 ? narrowPanel : widePanel, panelFinish, [-13.72, 0, z], [1, 1, 1], [0, Math.PI / 2, 0], true,
+      new THREE.Color(.98, 1.0, 1.0), zone);
     // The shadow-side edge is drawn twice only in short, separated stretches.
     for (const [low, high] of [[1.08, 2.67], [3.0, 5.35]]) {
       stroke([[-13.542, low, z + width / 2 - .13], [-13.541, (low + high) / 2, z + width / 2 - .12], [-13.542, high, z + width / 2 - .13]], .033, zone, "ink", [1, 0, 0]);
@@ -246,6 +277,35 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     wall.holes.push(opening);
     const wallGeometry = extrude(wall, .68, .035);
     place(wallGeometry, "wall", [0, 0, portal.z], [1, 1, 1], [0, 0, 0], true, undefined, portal.zone);
+    // An integrated aviation composition gives each hall its own visible face.
+    // The large colour planes stop before the real opening, preserving every
+    // approach and doorway. They are lit enamel surfaces, not a pasted poster.
+    const fieldLeft = left > 0 ? -13.7 : right + .4, fieldRight = left > 0 ? left - .4 : 13.7;
+    const span = fieldRight - fieldLeft, x = (u: number) => fieldLeft + span * u;
+    const lower = new THREE.Shape();
+    lower.moveTo(x(0), .81); lower.lineTo(x(1), .81); lower.lineTo(x(1), 6.08);
+    lower.bezierCurveTo(x(.79), 6.48, x(.43), 4.98, x(0), 5.77); lower.closePath();
+    inlay(lower, "cyan", portal.zone, [0, 0, portal.z + .407]);
+    const upper = new THREE.Shape();
+    upper.moveTo(x(0), 5.83); upper.bezierCurveTo(x(.37), 5.10, x(.76), 6.67, x(1), 6.18);
+    upper.lineTo(x(1), 7.74); upper.bezierCurveTo(x(.68), 8.33, x(.31), 7.72, x(0), 7.90); upper.closePath();
+    inlay(upper, "dark", portal.zone, [0, 0, portal.z + .410]);
+    const rising = new THREE.Shape();
+    rising.moveTo(x(0), 1.06); rising.bezierCurveTo(x(.35), 1.83, x(.29), 5.22, x(.77), 7.02);
+    rising.bezierCurveTo(x(.86), 7.34, x(.94), 7.43, x(1), 7.38);
+    rising.lineTo(x(1), 6.85); rising.bezierCurveTo(x(.61), 6.80, x(.36), 2.10, x(0), 1.44); rising.closePath();
+    inlay(rising, "ivory", portal.zone, [0, 0, portal.z + .416]);
+    const ochre = new THREE.Shape();
+    ochre.moveTo(x(0), 1.63); ochre.bezierCurveTo(x(.31), 2.30, x(.36), 5.27, x(.78), 6.43);
+    ochre.bezierCurveTo(x(.86), 6.64, x(.95), 6.67, x(1), 6.53);
+    ochre.lineTo(x(1), 6.28); ochre.bezierCurveTo(x(.63), 6.65, x(.35), 2.43, x(0), 1.85); ochre.closePath();
+    inlay(ochre, "gold", portal.zone, [0, 0, portal.z + .423]);
+    const tail = new THREE.Shape();
+    tail.moveTo(x(.03), 7.55); tail.lineTo(x(.08), 7.62); tail.lineTo(x(.26), 4.90);
+    tail.bezierCurveTo(x(.18), 4.88, x(.09), 5.05, x(.03), 5.18); tail.closePath();
+    inlay(tail, "coral", portal.zone, [0, 0, portal.z + .426]);
+    // A narrow warm-metal datum makes the sweeping paint belong to the building.
+    block("gold", [span, .042, .03], [(fieldLeft + fieldRight) / 2, .91, portal.z + .435], false, portal.zone);
     const reveal = new THREE.Shape();
     reveal.moveTo(left - .13, 0); reveal.lineTo(left - .13, 3.93); reveal.quadraticCurveTo((left + right) / 2, 5.40, right + .13, 3.93); reveal.lineTo(right + .13, 0); reveal.lineTo(right, 0); reveal.lineTo(right, 3.85); reveal.quadraticCurveTo((left + right) / 2, 5.20, left, 3.85); reveal.lineTo(left, 0); reveal.closePath();
     place(extrude(reveal, .80, .02), "ivory", [0, 0, portal.z], [1, 1, 1], [0, 0, 0], false, undefined, portal.zone);
@@ -271,9 +331,9 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     // The broad wall receives scale from a low ledge and widely spaced stone reveals.
     for (let x = -13.5; x < 13.5; x += 3.45) {
       if (x > left - .4 && x < right + .4) continue;
-      block("steel", [.025, 6.85, .018], [x, 3.44, portal.z + .385], false, portal.zone);
-      stroke([[x + .044, .42, portal.z + .410], [x + .049, 1.62, portal.z + .410], [x + .044, 2.62, portal.z + .410]], .023, portal.zone, "steel");
-      stroke([[x + .045, 3.04, portal.z + .410], [x + .049, 4.95, portal.z + .410], [x + .043, 6.58, portal.z + .410]], .023, portal.zone, "steel");
+      block("steel", [.025, 6.85, .018], [x, 3.44, portal.z + .440], false, portal.zone);
+      stroke([[x + .044, .42, portal.z + .449], [x + .049, 1.62, portal.z + .449], [x + .044, 2.62, portal.z + .410]], .023, portal.zone, "steel");
+      stroke([[x + .045, 3.04, portal.z + .449], [x + .049, 4.95, portal.z + .410], [x + .043, 6.58, portal.z + .410]], .023, portal.zone, "steel");
     }
   }
 
@@ -302,7 +362,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   const gateMaterial = new THREE.MeshStandardMaterial({ map: gateTexture, transparent: true, alphaTest: .06, roughness: 1, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
   finishTextures.push(gateTexture); finishMaterials.push(gateMaterial);
   const paintedGate = new THREE.Mesh(owned(new THREE.PlaneGeometry(10.8, 4.5)), gateMaterial);
-  paintedGate.name = "painted-gate-05-wayfinding"; paintedGate.position.set(-1.5, 3.1, -83.604);
+  paintedGate.name = "painted-gate-05-wayfinding"; paintedGate.position.set(-1.5, 3.1, -83.50);
   paintedGate.receiveShadow = true; rooms[3].group.add(paintedGate);
 
   // A deep, curved shopfront soffit gives the concourse a human-scaled left edge.
@@ -382,6 +442,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
       geometry.setIndex(batch.indices); geometry.computeBoundingSphere();
       const mesh = new THREE.Mesh(geometry, materials[material]);
       mesh.name = `${group.name}-authored-${material}`;
+      mesh.receiveShadow = true;
       group.add(mesh); strokeCount += batch.strokes;
     }
     group.userData.drawCalls = batches.size + drawing.size;

@@ -2,20 +2,20 @@ import * as THREE from "three";
 
 /** One closed, layered roast for the existing vertical spit. Caller owns geometry.
  * Vertex colours need a white painted material with vertexColors enabled.
- * 1,320 triangles, fewer than the fifteen cylinders this replaces; no textures.
+ * 1,960 triangles, fewer than the fifteen cylinders this replaces; no textures.
  */
 export function createShawarmaGeometry(): THREE.BufferGeometry {
-  const rows = 32, sides = 20;
+  const rows = 48, sides = 20;
   const positions: number[] = [], colours: number[] = [], indices: number[] = [];
-  const roast = new THREE.Color("#a97548"), char = new THREE.Color("#51311f");
-  const carved = new THREE.Color("#d5b583"), pigment = new THREE.Color();
+  const roast = new THREE.Color("#b7753c"), char = new THREE.Color("#4d2515");
+  const carved = new THREE.Color("#edc789"), pigment = new THREE.Color();
   const smooth = (low: number, high: number, value: number) => THREE.MathUtils.smoothstep(value, low, high);
   for (let row = 0; row <= rows; row++) {
     const t = row / rows;
     // Broader at the shoulder and narrower at the shaved lower end. Closely
     // spaced alternating ridges describe compressed slices, not separate disks.
     const profile = .32 + .43 * Math.sin(t * Math.PI * .62) ** .85;
-    const layer = (row % 2 === 0 ? .019 : -.015) * Math.sin(Math.PI * t);
+    const layer = (row % 2 === 0 ? .026 : -.019) * Math.sin(Math.PI * t);
     for (let side = 0; side <= sides; side++) {
       const theta = side / sides * Math.PI * 2;
       const shoulder = Math.sin(theta * 3 + t * 4) * .033 + Math.sin(theta * 7 - t * 9) * .013;
@@ -26,8 +26,8 @@ export function createShawarmaGeometry(): THREE.BufferGeometry {
       // Uneven roasting and pale newly carved meat are broad pigment patches,
       // while thin browned slice edges remain irregular around the circumference.
       const toasted = smooth(-.20, .74, Math.sin(theta * 4.0 + t * 12.0) * .53 + Math.cos(theta * 7.0 - t * 16.0) * .30);
-      const slice = (row % 2 === 0 ? .08 : 0) * (.6 + .4 * Math.sin(theta * 3 + t));
-      pigment.copy(roast).lerp(char, toasted * .69 + slice).lerp(carved, cutFace * .72);
+      const slice = (row % 2 === 0 ? .20 : 0) * (.6 + .4 * Math.sin(theta * 3 + t));
+      pigment.copy(roast).lerp(char, toasted * .72 + slice).lerp(carved, cutFace * .72);
       const glint = .96 + .04 * Math.sin(theta * 9 + row * 2.2);
       colours.push(pigment.r * glint, pigment.g * glint, pigment.b * glint);
     }

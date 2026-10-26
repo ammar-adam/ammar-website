@@ -116,15 +116,15 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  };
  const palette=createFilmMaterials(invalidate);
  const {ink,steel,coral,cyan,gold,dark,glass,warmLight:lightWarm,coolLight:lightCyan}=palette.materials;
- const concrete=palette.materials.ivory,cream=palette.materials.ivory,magenta=palette.materials.walnut;
- const toon=(color:string)=>keepMaterial(palette.createSurface(color,{roughness:.82,metalness:.08,paint:.4}));
+ const concrete=palette.materials.ivory,cream=palette.materials.ivory,magenta=palette.materials.coral;
+ const toon=(color:string)=>keepMaterial(palette.createSurface(color,{roughness:.82,metalness:.08,paint:.95}));
  const architecture=createFilmArchitecture(palette.materials);scene.add(architecture.root);
  const wallArt=createFilmWallArt(invalidate);scene.add(wallArt.root);
  const outline=keepMaterial(new THREE.LineBasicMaterial({color:"#091122",transparent:true,opacity:.72}));
- scene.add(new THREE.HemisphereLight("#a2c8cf","#514664",.22));
+ scene.add(new THREE.HemisphereLight("#80c6ce","#423467",.30));
  const key=new THREE.DirectionalLight("#ffb46a",3.6);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(shadowMapSize,shadowMapSize);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00016;key.shadow.normalBias=.014;key.shadow.radius=.7;scene.add(key,key.target);
- const cool=new THREE.DirectionalLight("#78b6bc",.62);cool.position.set(-12,7,10);scene.add(cool);
- const pink=new THREE.DirectionalLight("#9482c3",.34);pink.position.set(-18,5,-70);scene.add(pink);
+ const cool=new THREE.DirectionalLight("#73c2cb",.82);cool.position.set(-12,7,10);scene.add(cool);
+ const pink=new THREE.DirectionalLight("#9690e1",.46);pink.position.set(-18,5,-70);scene.add(pink);
  // Two unshadowed practical sources are reused room by room; no extra render pass.
  const screenSpill=new THREE.PointLight("#84d9d5",5,7,2);
  const signSpill=new THREE.PointLight("#ffc480",12,9,2);
@@ -200,7 +200,9 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  careerArrivals.forEach((entry,i)=>{
   const x=-10.7+i*2.85,z=-27;
   block(2.5,.92,1.1,x,.48,z,concrete,[0,0,0],true);block(2.65,.14,1.42,x,1.02,z+.05,ink,[0,0,0],true);
-  block(2.38,.68,.055,x,.5,z+.59,i%2?steel:dark);block(2.4,.065,.08,x,.91,z+.65,lightCyan);
+  block(2.38,.68,.055,x,.5,z+.59,i%2?cyan:dark);block(2.4,.045,.08,x,.91,z+.65,gold);
+  for(let fin=0;fin<11;fin++)block(.034,.56,.035,x-1.08+fin*.216,.5,z+.63,palette.materials.walnut);
+  block(2.3,.025,.045,x,.26,z+.65,cream);
   block(.6,.3,.5,x+.77,.17,z+1.0,dark,[0,0,0],true);block(.63,.05,1.4,x+.77,.35,z+1.0,steel);
   for(let n=0;n<9;n++)rod([x+.48,.4,z+.4+n*.13],[x+1.04,.4,z+.4+n*.13],.035,ink);
   block(.12,.45,.12,x-.45,1.28,z,steel);block(.68,.45,.08,x-.45,1.57,z+.02,ink,[0,0,0],true);
@@ -245,7 +247,16 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  for(const x of [archX-1.26,archX+1.26]){block(.045,2.8,.07,x,1.47,archZ+.5,lightCyan);block(.045,2.8,.07,x,1.47,archZ-.5,magenta);}
  block(2.5,.035,.14,archX,.025,archZ,gold);sign("SECURITY","AIRSIDE SCREENING",.6,5.6,-40,8,1.45);
  // X-ray tunnel, rubber entrance strips, conveyor rollers and monitor stand.
- block(2.35,2.1,2.8,6.2,1.35,-43,steel,[0,0,0],true);block(1.66,1.35,.07,6.2,1.15,-41.55,ink);
+ block(2.35,2.1,2.8,6.2,1.35,-43,cream,[0,0,0],true);block(1.66,1.35,.07,6.2,1.15,-41.55,ink);
+ // Layered enamel skins, a service panel and ventilation replace the plain cube.
+ block(2.48,.33,2.94,6.2,2.33,-43,cyan,[0,0,0],true);
+ block(.12,1.46,2.75,5.02,1.3,-43,dark);block(.12,1.46,2.75,7.38,1.3,-43,cyan);
+ block(2.42,.17,.12,6.2,2.08,-41.50,gold);block(2.42,.16,.12,6.2,.42,-41.50,steel);
+ for(const x of [5.2,7.2]){block(.13,1.43,.13,x,1.31,-41.44,steel);block(.19,.12,.16,x,.61,-41.42,coral);}
+ for(let vent=0;vent<9;vent++)block(.020,.035,1.18,7.454,.94+vent*.094,-43.3,ink);
+ block(.025,.26,.34,7.46,1.96,-42.1,gold);
+ for(const x of [archX-1.5,archX+1.5]){block(.51,.75,1.0,x,.40,archZ,dark);block(.54,.14,1.02,x,2.89,archZ,gold);}
+ block(3.54,.17,1.0,archX,3.46,archZ,cream);
  for(let i=0;i<9;i++)block(.145,1.17,.05,5.55+i*.165,1.13,-41.49,dark,[0,0,(i%3-1)*.025]);
  block(2.05,.25,7.7,6.2,.68,-42,ink,[0,0,0],true);for(let i=0;i<34;i++)rod([5.25,.83,-38.3-i*.22],[7.15,.83,-38.3-i*.22],.055,i%3?steel:cyan);
  for(const z of [-39,-45]){block(.16,.7,.16,5.4,.35,z,steel);block(.16,.7,.16,7,.35,z,steel);}
@@ -277,20 +288,30 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const round=keepGeometry(new THREE.SphereGeometry(1,10,7));
  const solid=(geometry:THREE.BufferGeometry,mat:THREE.Material,x:number,y:number,z:number,sx=1,sy=1,sz=1,parent:THREE.Object3D=scene)=>{const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);parent.add(mesh);return mesh;};
  const photos:THREE.Object3D[]=[];
- const shops=[{code:"A02",city:"DXB",name:"KITCHEN",finish:palette.materials.cyan,trim:gold},{code:"A03",city:"KHI",name:"CAFÉ",finish:sage,trim:walnut},{code:"A04",city:"YYZ",name:"NEWSSTAND",finish:palette.materials.steel,trim:gold}];
+ const shops=[{code:"A02",city:"DXB",name:"KITCHEN",finish:coral,trim:gold},{code:"A03",city:"KHI",name:"CAFÉ",finish:sage,trim:gold},{code:"A04",city:"YYZ",name:"NEWSSTAND",finish:dark,trim:cyan}];
  shops.forEach((shop,i)=>{
   const z=-57-i*11;
   block(8.9,.12,10.4,-9.3,.065,z,tile);block(.35,6.7,10.5,-13.55,3.35,z,shop.finish);
-  block(8.8,6.7,.3,-9.3,3.35,z-4.5,tile);block(8.8,1.1,.055,-9.3,.59,z-4.31,shop.finish);block(8.9,.25,10.5,-9.3,6.7,z,walnut);
+  block(8.8,6.7,.3,-9.3,3.35,z-4.5,tile);block(8.8,1.1,.055,-9.3,.59,z-4.31,shop.finish);block(8.9,.25,10.5,-9.3,6.7,z,dark);
+  // A deep coloured upper frieze and chalk returns make each bay its own room.
+  block(8.65,1.4,.055,-9.3,5.9,z-4.30,shop.finish);
+  block(8.60,.09,.08,-9.3,5.18,z-4.25,shop.trim);
+  for(let fin=0;fin<15;fin++)block(.075,.88,.10,-13.1+fin*.54,5.91,z-4.24,cream);
   // Painted panels sit in a metal frame above a durable darker skirting.
   for(let panel=0;panel<4;panel++){block(.035,5.35,.035,-12.6+panel*2.2,3.93,z-4.30,shop.trim);}
   block(8.45,.045,.035,-9.3,1.16,z-4.29,shop.trim);
-  block(.28,5.8,.35,-4.9,2.9,z+4.7,walnut,[0,0,0],true);block(.28,5.8,.35,-4.9,2.9,z-4.7,walnut,[0,0,0],true);
-  block(.36,1.15,9.8,-4.9,5.8,z,shop.finish,[0,0,0],true);block(.4,.08,9.8,-4.85,5.18,z,lightWarm);
+  block(.32,5.8,.42,-4.9,2.9,z+4.7,cream,[0,0,0],true);block(.32,5.8,.42,-4.9,2.9,z-4.7,cream,[0,0,0],true);
+  for(const end of [-4.7,4.7]){block(.38,.9,.49,-4.9,.45,z+end,shop.finish);block(.39,.08,.51,-4.9,4.93,z+end,shop.trim);}
+  block(.36,1.15,9.8,-4.9,5.8,z,shop.finish,[0,0,0],true);
+  block(.52,.17,10.0,-4.85,6.42,z,cream);block(.58,.11,10.06,-4.82,5.20,z,cream);
+  block(.61,.035,9.8,-4.80,5.13,z,shop.trim);
+  // Shallow projecting shades catch the warm light without closing the walkway.
+  block(.90,.07,9.7,-4.51,5.0,z,cream,[0,0,-.12],true);
+  for(let stripe=0;stripe<10;stripe++)block(.92,.014,.34,-4.50,5.055,z-4.45+stripe*.98,shop.finish,[0,0,-.12]);
   const fascia=plane(5.0,.82,canvasTexture((ctx,W,H)=>{ctx.fillStyle="#10282c";ctx.fillRect(0,0,W,H);ctx.fillStyle="#d8b46a";ctx.fillRect(24,24,4,H-48);ctx.font="600 36px Arial";ctx.fillText(shop.city,60,63);ctx.fillStyle="#f2e8d3";ctx.font="700 85px Arial";ctx.fillText(shop.name,60,165,W-120);},1536,256));fascia.position.set(-4.65,5.78,z+1.5);fascia.rotation.y=Math.PI/2;
   for(let n=0;n<9;n++)block(.035,.26,.055,-4.63,5.00,z-4.2+n*1.05,shop.trim);
   for(let n=0;n<7;n++){block(.035,.025,9.7,-12.5+n*1.1,.14,z,walnut);block(8.2,.025,.035,-9.3,.14,z-4+n*1.3,walnut);}
-  for(const x of [-11.5,-8]){rod([x,6.5,z],[x,4.55,z],.025,ink);solid(cylinderGeometry,walnut,x,4.5,z,.38,.22,.38);solid(round,lightWarm,x,4.36,z,.28,.08,.28);}
+  for(const x of [-11.5,-8]){rod([x,6.5,z],[x,4.55,z],.025,ink);solid(cylinderGeometry,shop.finish,x,4.5,z,.38,.22,.38);solid(round,lightWarm,x,4.36,z,.28,.08,.28);}
   block(5.1,1.12,1.3,-9.4,.6,z+.4,shop.finish,[0,0,0],true);block(5.4,.16,1.48,-9.4,1.23,z+.4,tile,[0,0,0],true);block(5.1,.07,.08,-9.4,1.1,z+1.08,lightWarm);
   for(let n=0;n<14;n++)block(.055,.94,.04,-11.75+n*.36,.58,z+1.1,shop.trim);
   // Two full-image mounts on the back wall and one on its return: the wide
@@ -309,13 +330,26 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   });
   // Gate seating lives opposite each shop, behind the open walking lane.
   block(.22,4.0,.22,4.7,2,z,steel);const gate=plane(2.6,1.0,label(shop.code,"GATE","#7bdce9",768,256));gate.position.set(4.7,3.5,z+.15);
-  for(let seat=0;seat<4;seat++){const x=6.4+seat*1.6;block(1.25,.18,.92,x,.66,z,dark,[0,0,0],true);block(1.25,.95,.18,x,1.2,z-.45,dark,[-.12,0,0]);rod([x-.4,0,z],[x-.4,.6,z],.04,steel);rod([x+.4,0,z],[x+.4,.6,z],.04,steel);}
+  for(let seat=0;seat<4;seat++){const x=6.4+seat*1.6,upholstery=seat%3===0?coral:cyan;
+   block(1.25,.18,.92,x,.66,z,upholstery,[0,0,0],true);block(1.25,.95,.18,x,1.2,z-.45,upholstery,[-.12,0,0]);
+   block(1.12,.035,.04,x,1.62,z-.39,gold);block(1.12,.025,.04,x,.77,z+.44,cream);
+   for(const side of [-.66,.66]){rod([x+side,.56,z-.3],[x+side,.91,z+.3],.027,steel);block(.08,.07,.63,x+side,.92,z,walnut);}
+   rod([x-.4,0,z],[x-.4,.6,z],.04,steel);rod([x+.4,0,z],[x+.4,.6,z],.04,steel);
+  }
  });
  // The rotating roast is a continuous painted mesh in front of glowing grill bars.
  // The grill faces the walking route from the end of the service counter.
  block(1.75,3.8,.22,-5.9,2.3,-59.95,ink,[0,0,0],true);
  block(1.94,.16,1.32,-5.9,.55,-59.30,steel);
  block(1.94,.19,1.20,-5.9,4.24,-59.45,steel);
+ block(1.97,.075,1.24,-5.9,4.36,-59.45,cream);
+ for(const side of [-1,1]){
+  block(.10,3.61,.53,-5.9+side*.91,2.38,-59.69,steel);
+  block(.022,3.46,.29,-5.9+side*.972,2.38,-59.67,cream);
+ }
+ block(1.84,.30,.12,-5.9,.35,-58.63,ink);
+ for(const x of [-6.52,-6.12,-5.72])solid(cylinderGeometry,x===-6.52?coral:gold,x,.35,-58.54,.085,.048,.085).rotation.x=Math.PI/2;
+ for(let vent=0;vent<7;vent++)block(.026,.13,.025,-5.22+vent*.06,.35,-58.55,steel);
  for(const x of [-6.45,-5.9,-5.35])block(.085,2.8,.1,x,2.35,-59.78,lightWarm);
  const spit=new THREE.Group();spit.position.set(-5.9,2.3,-59.3);scene.add(spit);
  const roastMaterial=keepMaterial(palette.createSurface("#ffffff",{roughness:.72,metalness:0,paint:.38,rim:.04}));roastMaterial.vertexColors=true;
@@ -359,7 +393,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const shirtShape=new THREE.Shape();shirtShape.moveTo(-.22,.5);shirtShape.lineTo(-.42,.36);shirtShape.lineTo(-.32,.12);shirtShape.lineTo(-.23,.18);shirtShape.lineTo(-.22,-.38);shirtShape.quadraticCurveTo(0,-.43,.24,-.36);shirtShape.lineTo(.24,.18);shirtShape.lineTo(.34,.12);shirtShape.lineTo(.44,.36);shirtShape.lineTo(.23,.5);shirtShape.quadraticCurveTo(0,.38,-.22,.5);
  const shirtGeo=keepGeometry(new THREE.ShapeGeometry(shirtShape,12));const shirtPos=shirtGeo.getAttribute("position");
  for(let i=0;i<shirtPos.count;i++){const y=shirtPos.getY(i);shirtPos.setZ(i,-.1*Math.cos(y*3)+.035*Math.sin(shirtPos.getX(i)*18));}shirtGeo.computeVertexNormals();
- const shirt=new THREE.Mesh(shirtGeo,keepMaterial(new THREE.MeshStandardMaterial({color:"#a92739",roughness:1,side:THREE.DoubleSide})));shirt.position.set(0,.7,.36);shirt.rotation.x=-.2;cart.add(shirt);
+ const shirtFinish=toon("#b42b39");shirtFinish.side=THREE.DoubleSide;const shirt=new THREE.Mesh(shirtGeo,shirtFinish);shirt.position.set(0,.7,.36);shirt.rotation.x=-.2;cart.add(shirt);
  const jerseyPrint=plane(.30,.23,canvasTexture((ctx,W,H)=>{ctx.clearRect(0,0,W,H);ctx.fillStyle="#eee8d9";ctx.font="700 100px Arial";ctx.textAlign="center";ctx.fillText("66",W/2,107);},256,128),cart,true);jerseyPrint.position.set(0,.74,.345);jerseyPrint.rotation.x=-.2;
  // A worn team luggage patch makes the basketball reference personal.
  const teamPatch=plane(.30,.18,canvasTexture((ctx,W,H)=>{ctx.fillStyle="#423457";ctx.fillRect(0,0,W,H);ctx.strokeStyle="#c3434b";ctx.lineWidth=16;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(52+i*28,18);ctx.lineTo(35+i*28,68);ctx.stroke();}ctx.fillStyle="#f4e8ce";ctx.font="700 28px Arial";ctx.textAlign="center";ctx.fillText("RAPTORS",W/2,H-13);},256,128),cart);teamPatch.position.set(.30,.65,.316);teamPatch.rotation.y=.10;
@@ -375,12 +409,19 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   walkers.forEach((walker,i)=>{walker.root.position.z=-60-i*19-Math.sin(t*.12+i)*2;walker.legs.forEach((leg,j)=>leg.rotation.x=Math.sin(t*2.8+i+j*Math.PI)*.28);walker.arms.forEach((arm,j)=>arm.rotation.x=Math.sin(t*2.8+i-j*Math.PI)*.25);});
   (television.material as THREE.MeshBasicMaterial).color.setScalar(.97+Math.sin(t*.4)*.03);
  };
- for(const side of [-1,1])for(let i=0;i<4;i++){const x=side*8.4-2.1+i*1.4;block(1.12,.16,.94,x,.72,-91,dark);block(1.12,1,.16,x,1.21,-91.47,dark,[-.11,0,0]);rod([x,0,-91],[x,.6,-91],.05,steel);}
+ for(const side of [-1,1])for(let i=0;i<4;i++){const x=side*8.4-2.1+i*1.4,seatFinish=i===0?coral:cyan;
+  block(1.12,.16,.94,x,.72,-91,seatFinish);block(1.12,1,.16,x,1.21,-91.47,seatFinish,[-.11,0,0]);
+  block(1.04,.04,.05,x,1.68,-91.39,gold);block(1.04,.03,.05,x,.82,-90.53,cream);
+  for(const arm of [-.6,.6]){rod([x+arm,.66,-91.3],[x+arm,1.0,-90.8],.025,steel);block(.075,.07,.62,x+arm,1.0,-91,walnut);}
+  rod([x,0,-91],[x,.6,-91],.05,steel);
+ }
 
  // Final gate desk, glazing, and an actual jetway leading out to the aircraft.
  sign("GATE 05","BOARDING",3.2,4.8,-102,7.4,1.2);
- block(3.4,1.1,1.1,-5,.56,-95,concrete,[0,0,0],true);block(3.6,.14,1.4,-5,1.17,-95,ink,[0,0,0],true);block(3.2,.6,.08,-5,.7,-94.42,coral);
- const gateLogo=plane(2.9,.5,label("AMMAR ADAM","", "#ffc978",1024,128));gateLogo.position.set(-5,.73,-94.36);
+ block(3.4,1.1,1.1,-5,.56,-95,concrete,[0,0,0],true);block(3.6,.14,1.4,-5,1.17,-95,ink,[0,0,0],true);block(3.2,.6,.08,-5,.7,-94.42,cyan);
+ for(let fin=0;fin<15;fin++)block(.035,.63,.04,-6.48+fin*.212,.62,-94.36,walnut);
+ block(3.25,.04,.10,-5,.32,-94.34,gold);block(3.25,.04,.10,-5,1.02,-94.34,cream);
+ const gateLogo=plane(2.9,.5,label("AMMAR ADAM","", "#ffc978",1024,128));gateLogo.position.set(-5,.73,-94.29);
  for(let x=-14;x<=14;x+=3.5){block(.18,9.5,.2,x,4.75,-104,steel);if(Math.abs(x)>1)block(3.3,8.4,.04,x+1.75,4.8,-104.02,glass);}
  for(const y of [3,6,9])block(28,.14,.14,0,y,-104,steel);
  block(3.1,.35,21,0,.15,-113,concrete);for(const x of [-1.7,1.7]){block(.18,3,21,x,1.6,-113,steel);for(let z=-104;z>-124;z-=2.7){block(.14,3.2,.12,x,1.7,z,ink);block(.04,2.4,2.5,x,1.65,z-1.35,glass);}}block(3.7,.2,21,0,3.3,-113,dark);
@@ -390,7 +431,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  // Fully articulated mesh traveller: the raised grip is the rope anchor.
  const traveler=createFilmTraveler3D({invalidate});scene.add(traveler.root);
  traveler.root.traverse(object=>{if(object instanceof THREE.Mesh){for(const material of Array.isArray(object.material)?object.material:[object.material])protectFilmRegistration(material);}});
- const travelerKey=new THREE.PointLight("#ffd1a3",11,13,2),travelerRim=new THREE.PointLight("#8bdbe3",7,11,2);scene.add(travelerKey,travelerRim);
+ const travelerKey=new THREE.PointLight("#ffd6a7",16,13,2),travelerRim=new THREE.PointLight("#8bdbe3",9,11,2);scene.add(travelerKey,travelerRim);
  const tetherGeometry=keepGeometry(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]));
  const tether=new THREE.Line(tetherGeometry,keepMaterial(new THREE.LineBasicMaterial({color:"#b7f8f3"})));scene.add(tether);
  const landingShadow=new THREE.Mesh(keepGeometry(new THREE.CircleGeometry(1.1,32)),keepMaterial(new THREE.MeshBasicMaterial({color:"#071728",transparent:true,opacity:.35,depthWrite:false})));landingShadow.rotation.x=-Math.PI/2;landingShadow.position.y=.035;scene.add(landingShadow);

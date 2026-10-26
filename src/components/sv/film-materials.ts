@@ -91,21 +91,33 @@ float filmBrush(vec2 uv, float density, float seed) {
 
 const PIGMENT = /* glsl */`
 vec2 filmUV = filmSurfaceUV(vFilmPosition, vFilmNormal);
-float filmFine = texture2D(uFilmPaint, filmUV * uFilmScale).g - 0.75;
-float filmBroad = filmBrush(filmUV, 0.30, 0.0) + filmBrush(filmUV, 0.82, 19.0) * 0.35;
-// Pigment is brushed across the form rather than added as screen-space noise.
-// The same small atlas supplies broad loaded-brush marks and finer dry edges.
+// Tiles share an uninterrupted underpainting; it cannot repeat once per slab.
+if (uFilmSurface > 0.5 && uFilmSurface < 1.5) filmUV = vFilmWorldPosition.xz;
+vec3 filmPaintData = texture2D(uFilmPaint, filmUV * uFilmScale).rgb;
+float filmFine = filmPaintData.g - 0.75;
+// The painted source bends broad stroke edges by centimetres and pulls pigment
+// from their bodies. There is no added random screen grain or tiled hatch.
+vec2 filmStrokeUV = filmUV + (filmPaintData.rb - vec2(0.75)) * vec2(0.46, -0.39);
+float filmBroad = filmBrush(filmStrokeUV, 0.115, 0.0) + filmBrush(filmStrokeUV, 0.273, 19.0) * 0.27;
 float filmSurfacePaint = filmBroad;
 if (uFilmSurface > 2.5 && uFilmSurface < 3.5) {
-  // Long restrained grain makes walnut read as veneer, not brown plastic.
-  filmSurfacePaint = filmBrush(filmUV * vec2(3.8, 0.18), 0.72, 8.0) * 0.70 + filmBroad * 0.40;
+  // Loaded strokes run with the timber grain; isolated light streaks show varnish.
+  filmSurfacePaint = filmBrush(filmStrokeUV * vec2(3.2, 0.19), 0.48, 8.0) * 0.72 + filmBroad * 0.24;
 } else if (uFilmSurface > 1.5 && uFilmSurface < 2.5) {
-  // Plaster retains a little of the painter's downward brush direction.
-  filmSurfacePaint += filmBrush(filmUV * vec2(2.8, 0.22), 0.62, 11.0) * 0.35;
+  filmSurfacePaint = filmBrush(filmStrokeUV * vec2(0.9, 1.35), 0.15, 0.0) + filmBroad * 0.18;
 }
-float filmPigmentValue = 1.0 + (filmSurfacePaint * 0.15 + filmFine * 0.025) * uFilmPaintStrength;
+filmSurfacePaint *= clamp(0.78 + filmFine * 2.1, 0.28, 1.08);
+// Broad loaded-brush planes expose the cool undercoat beside a warm pigment
+// ridge. Fine texture only roughens their edges; it never becomes a dirt layer.
+float filmLoaded = smoothstep(0.10, 0.46, filmSurfacePaint);
+float filmUnderpaint = smoothstep(0.06, 0.42, -filmSurfacePaint);
+float filmPigmentStrength = uFilmPaintStrength;
+if (uFilmSurface > 0.5 && uFilmSurface < 1.5) filmPigmentStrength *= 0.35;
+float filmFineStrength = uFilmSurface > 1.5 && uFilmSurface < 2.5 ? 0.12 : 0.045;
+float filmPigmentValue = 1.0 + (filmSurfacePaint * 0.27 + filmFine * filmFineStrength) * filmPigmentStrength;
 diffuseColor.rgb *= filmPigmentValue;
-diffuseColor.rgb *= vec3(1.0 + filmSurfacePaint * 0.030, 1.0 + filmSurfacePaint * 0.012, 1.0 - filmSurfacePaint * 0.040);
+diffuseColor.rgb *= mix(vec3(1.0), vec3(1.13, 1.045, 0.83), filmLoaded * filmPigmentStrength * 0.56);
+diffuseColor.rgb *= mix(vec3(1.0), vec3(0.78, 0.91, 1.15), filmUnderpaint * filmPigmentStrength * 0.62);
 `;
 
 const PRINT_SHADOW = /* glsl */`
@@ -142,12 +154,12 @@ float filmBanded = 0.31 * smoothstep(0.13 - filmBandAA, 0.13 + filmBandAA, filmP
 float filmBandGain = mix(filmExposure, filmBanded, uFilmBands) / max(filmExposure, 0.0001);
 reflectedLight.directDiffuse *= filmBandGain;
 float filmLit = smoothstep(0.18, 0.83, filmExposure);
-reflectedLight.directDiffuse *= mix(vec3(0.65, 0.83, 1.25), vec3(1.035, 1.0, 0.95), filmLit);
+reflectedLight.directDiffuse *= mix(vec3(0.45, 0.80, 1.52), vec3(1.055, 1.0, 0.91), filmLit);
 // The shadow side carries violet/teal reflected colour, never neutral grey.
-reflectedLight.indirectDiffuse *= mix(vec3(0.84, 1.15, 1.85), vec3(0.91, 1.0, 1.04), filmLit);
+reflectedLight.indirectDiffuse *= mix(vec3(0.70, 1.13, 2.10), vec3(0.88, 1.0, 1.07), filmLit);
 // A cool lower ramp value retains painted colour in shadow without lifting
 // the entire room's ambient light or washing out the window-key contrast.
-reflectedLight.indirectDiffuse += diffuseColor.rgb * vec3(0.014, 0.026, 0.057) * (1.0 - filmLit);
+reflectedLight.indirectDiffuse += diffuseColor.rgb * mix(vec3(0.025, 0.044, 0.12), vec3(0.023, 0.068, 0.10), filmLoaded) * (1.0 - filmLit);
 float filmFacing = clamp(abs(dot(normal, normalize(vViewPosition))), 0.0, 1.0);
 // Metal and varnish keep a physical broad sheen; other highlights resolve into
 // small painted shapes. Ink contours are a consistent pixel width in post.
@@ -208,23 +220,37 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
     context.fillStyle = "#808080"; context.fillRect(0, 0, 512, 512);
     let seed = 731982;
     const random = () => { seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0; return seed / 4294967296; };
-    for (let i = 0; i < 42; i++) {
-      const x = random() * 512, y = random() * 512;
-      const length = 55 + random() * 125, width = 28 + random() * 62;
-      const angle = (random() - .5) * .38 + (i % 11 === 0 ? .55 : 0);
-      const tone = random() > .5 ? "#d3d3d3" : "#333333";
-      const opacity = .10 + random() * .16;
-      const top = Array.from({ length: 10 }, (_, n) => [-length / 2 + n * length / 9, -width * (.34 + random() * .10) * (.22 + .78 * Math.sin(n / 9 * Math.PI))]);
-      const bottom = Array.from({ length: 10 }, (_, n) => [length / 2 - n * length / 9, width * (.30 + random() * .10) * (.22 + .78 * Math.sin(n / 9 * Math.PI))]);
+    // A handful of long loaded marks, each with a broad body and a ragged end.
+    // Their negative space is as important as the strokes: no all-over hatch.
+    const marks = [
+      [12, 66, 282, 96, -.12, true], [326, 96, 246, 132, .09, false],
+      [192, 264, 312, 112, -.07, true], [464, 332, 238, 148, .18, false],
+      [51, 452, 266, 94, .11, false], [340, 495, 225, 83, -.16, true],
+      [436, 184, 152, 42, .06, true], [108, 344, 174, 48, -.13, false],
+    ] as const;
+    for (const [x, y, length, width, angle, light] of marks) {
+      const tone = light ? "#e4e4e4" : "#292929";
+      const opacity = light ? .76 : .62;
+      const top = Array.from({ length: 33 }, (_, n) => [-length / 2 + n * length / 32, -width * (.40 + random() * .12) * (.66 + .34 * Math.sin(n / 32 * Math.PI))]);
+      const bottom = Array.from({ length: 33 }, (_, n) => [length / 2 - n * length / 32, width * (.38 + random() * .11) * (.66 + .34 * Math.sin(n / 32 * Math.PI))]);
       for (const dx of [-512, 0, 512]) for (const dy of [-512, 0, 512]) {
         context.save(); context.translate(x + dx, y + dy); context.rotate(angle);
         context.beginPath(); context.moveTo(top[0][0], top[0][1]);
         [...top.slice(1), ...bottom].forEach(([px, py]) => context.lineTo(px, py));
-        context.closePath(); context.globalAlpha = opacity; context.fillStyle = tone; context.fill();
-        context.clip(); context.strokeStyle = tone; context.globalAlpha = opacity * .12; context.lineWidth = .8;
-        for (let bristle = -2; bristle <= 2; bristle++) {
-          context.beginPath(); context.moveTo(-length * .48, bristle * width * .13);
-          context.lineTo(length * .44, bristle * width * .13 + width * .08); context.stroke();
+        context.closePath(); context.globalAlpha = opacity;
+        const loading = context.createLinearGradient(-length * .5, 0, length * .5, 0);
+        loading.addColorStop(0, `${tone}2b`); loading.addColorStop(.13, `${tone}ed`);
+        loading.addColorStop(.47, `${tone}d4`); loading.addColorStop(.79, `${tone}83`); loading.addColorStop(1, `${tone}00`);
+        context.fillStyle = loading; context.fill();
+        context.clip();
+        // Pigment pulls off the brush at the end in a few uneven ribbons.
+        context.strokeStyle = "#808080";
+        for (let bristle = 0; bristle < 36; bristle++) {
+          const across = (bristle / 35 - .5) * width * .90;
+          const begin = length * (-.14 + random() * .46);
+          context.globalAlpha = .22 + random() * .43; context.lineWidth = .45 + random() * 2.2;
+          context.beginPath(); context.moveTo(begin, across);
+          context.quadraticCurveTo(length * .32, across + (random() - .5) * 2.7, length * .56, across + width * .018); context.stroke();
         }
         context.restore();
       }
@@ -270,7 +296,7 @@ export function createFilmMaterials(invalidate: () => void): FilmMaterials {
     };
     // These uniform objects may be adjusted without creating shader variants.
     material.userData.film = uniforms;
-    material.customProgramCacheKey = () => "film-painted-standard-v5-proof3";
+    material.customProgramCacheKey = () => "film-painted-standard-v6-dry-pigment";
     material.onBeforeCompile = shader => {
       Object.assign(shader.uniforms, uniforms);
       shader.vertexShader = shader.vertexShader
@@ -301,16 +327,16 @@ directLight.color *= mix(0.40, 1.0, smoothstep(-12.0, 13.0, vFilmWorldPosition.x
 
   const materials: FilmMaterialPalette = {
     ink: painted("ink", { color: "#111c2d", roughness: 0.84, paint: 0.45, rim: 0.10 }),
-    steel: painted("steel", { color: "#527b88", roughness: 0.33, metalness: 0.48, paint: 0.65, rim: 0.30, kind: 4 }),
-    ivory: painted("ivory", { color: "#e6d7bb", roughness: 0.59, paint: 0.85 }),
-    coral: painted("coral", { color: "#ac5548", roughness: 0.64, paint: 0.65 }),
-    cyan: painted("cyan", { color: "#79a9ad", roughness: 0.48, metalness: 0.12, paint: 0.55 }),
-    gold: painted("gold", { color: "#d1a56d", roughness: 0.29, metalness: 0.56, paint: 0.50, rim: 0.22, kind: 4 }),
-    floor: painted("floor", { color: "#829caf", roughness: 0.26, metalness: 0.16, paint: 0.64, scale: 0.36, bands: 0.96, rim: 0.04, drawing: 0.15, kind: 1 }),
-    wall: painted("wall", { color: "#d8d5c4", roughness: 0.88, paint: 0.72, bands: 1.0, kind: 2 }),
-    dark: painted("dark", { color: "#253853", roughness: 0.72, paint: 0.62, rim: 0.19 }),
-    walnut: painted("walnut", { color: "#946746", roughness: 0.47, paint: 0.82, scale: 0.55, rim: 0.09, kind: 3 }),
-    sage: painted("sage", { color: "#7e8b77", roughness: 0.89, paint: 0.68, rim: 0.12 }),
+    steel: painted("steel", { color: "#357c8a", roughness: 0.33, metalness: 0.48, paint: 0.65, rim: 0.30, kind: 4 }),
+    ivory: painted("ivory", { color: "#ead4a3", roughness: 0.59, paint: 0.85 }),
+    coral: painted("coral", { color: "#cb6244", roughness: 0.64, paint: 0.65 }),
+    cyan: painted("cyan", { color: "#438f99", roughness: 0.48, metalness: 0.12, paint: 0.55 }),
+    gold: painted("gold", { color: "#d7a341", roughness: 0.29, metalness: 0.56, paint: 0.50, rim: 0.22, kind: 4 }),
+    floor: painted("floor", { color: "#547e9b", roughness: 0.26, metalness: 0.16, paint: 0.64, scale: 0.36, bands: 0.96, rim: 0.04, drawing: 0.15, kind: 1 }),
+    wall: painted("wall", { color: "#b8cec1", roughness: 0.88, paint: 0.94, bands: 1.0, kind: 2 }),
+    dark: painted("dark", { color: "#213c70", roughness: 0.72, paint: 0.62, rim: 0.19 }),
+    walnut: painted("walnut", { color: "#a76536", roughness: 0.47, paint: 0.82, scale: 0.55, rim: 0.09, kind: 3 }),
+    sage: painted("sage", { color: "#568d7f", roughness: 0.89, paint: 0.68, rim: 0.12 }),
     skin: painted("skin", { color: "#b98466", roughness: 0.82, paint: 0.14, scale: 0.8, bands: 0.90, rim: 0.10, drawing: 0.35 }),
     glass: new THREE.MeshPhysicalMaterial({ color: "#aacacc", roughness: 0.13, metalness: 0, transparent: true, opacity: 0.18, depthWrite: false, side: THREE.DoubleSide, ior: 1.45, clearcoat: 0.35, clearcoatRoughness: 0.18 }),
     warmLight: new THREE.MeshBasicMaterial({ color: "#ffe0ad", toneMapped: false }),

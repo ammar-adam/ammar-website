@@ -173,3 +173,10 @@ The interior uses four light values in the shared custom material ramp, a warm w
 Gate 05's painted wall wayfinding and the shawarma roast are code-authored, not generated imagery. The roast is one continuously shaped mesh with painted vertex colours, replacing separate cylinders. Existing concourse objects and photos remain in the 3D world.
 
 First-visit loading keeps WebGL dormant during the film. Once playback is buffered, critical texture prefetch and a memoized module import can warm the handoff. Later project and concourse images load one room ahead, shader linking is asynchronous, and the last film frame remains visible until the core textures have settled. The opening films are deterministic 60 fps renders of the same world, with AV1 selected only when hardware decoding is reported as smooth and power-efficient; H.264 remains the fallback.
+
+
+## Terminal art direction revision
+
+The terminal layout and camera rail are unchanged. The redesigned interior carries the exterior's chalk, ochre, petrol, cobalt and celadon palette through real architectural finishes: sweeping enamel wall inlays, coloured arch soffits, stone/slate floor runs, glazed check-in fronts with curved timber fins, layered security casings, distinct retail fascias and upholstered seating. All new inlays receive the existing light and shadows and are merged into room material batches.
+
+Broad brush marks now taper from loaded pigment into dry bristle gaps, with the existing plaster texture breaking their edges. The character retains identical geometry, skinning and animation, with more legible indigo cloth planes and separate canvas, leather and stitching colours. No additional scene images or runtime texture downloads were introduced. The six-second 60 fps opening films were rendered again from this same redesigned world.

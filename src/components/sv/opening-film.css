@@ -6,8 +6,8 @@
 .of-header-links{display:flex;align-items:center;gap:26px}.of-header-links .social-icons{border-left:1px solid #f5ecd642;padding-left:12px}@media(max-width:720px){.of-header{align-items:flex-start}.of-header-links{flex-direction:column-reverse;align-items:flex-end;gap:4px}.of-header-links .social-icons{border:0;padding:0;margin-right:-9px}.of-header nav{gap:18px}}
 
 /* The decoded last frame bridges video playback to the first live 3D render. */
-.terminal-world{background-image:url("/film/arrival-desktop-end.webp?v=paint-v6");background-position:center;background-size:cover}
-@media(max-width:720px){.terminal-world{background-image:url("/film/arrival-portrait-end.webp?v=paint-v6");background-position:67% center}}
+.terminal-world{background-image:url("/film/arrival-desktop-end.webp?v=terminal-v7");background-position:center;background-size:cover}
+@media(max-width:720px){.terminal-world{background-image:url("/film/arrival-portrait-end.webp?v=terminal-v7");background-position:67% center}}
 
 .of-poster,.of-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 @media(max-width:720px){.opening-film .of-caption.of-caption{top:auto;bottom:8%;left:7%;right:6%}.opening-film .of-caption.of-named{bottom:7%}.opening-film .of-named h2{font-size:clamp(58px,18vw,82px)}.of-poster img,.of-video{object-position:center}}

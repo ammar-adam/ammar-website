@@ -22,7 +22,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld }: { onFinish: () => void
     const choose = (av1: boolean) => {
       if (stopped || settled) return;
       settled = true;
-      setSource(`/film/arrival-${profile}${av1 ? "-av1" : ""}.mp4?v=paint-v6`);
+      setSource(`/film/arrival-${profile}${av1 ? "-av1" : ""}.mp4?v=terminal-v7`);
     };
     // Prefer the smaller film only when the device reports smooth hardware
     // decoding. Older phones retain H.264 instead of expensive software AV1.
@@ -85,7 +85,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld }: { onFinish: () => void
   }, []);
 
   return <motion.section className="opening-film" aria-label="Introduction" initial={false} exit={{ opacity: 0 }} transition={{ duration: .2 }}>
-    <picture className="of-poster"><source media="(max-width: 720px)" srcSet="/film/arrival-portrait.webp?v=paint-v6" /><img src="/film/arrival-desktop.webp?v=paint-v6" alt="" /></picture>
+    <picture className="of-poster"><source media="(max-width: 720px)" srcSet="/film/arrival-portrait.webp?v=terminal-v7" /><img src="/film/arrival-desktop.webp?v=terminal-v7" alt="" /></picture>
     <video ref={video} className="of-video" src={source} autoPlay muted playsInline preload="auto" onTimeUpdate={event => { if (event.currentTarget.currentTime >= 1.85) setNamed(true); }} onEnded={onFinish} onError={() => { if (source?.includes("-av1")) setSource(source.replace("-av1", "")); else onFinish(); }} aria-hidden="true" tabIndex={-1} />
     <div className="of-shade" />
     <header className="of-header"><span className="of-mark">a<span>/</span>a</span><div className="of-header-links"><nav><Link href="/short">Short version</Link><button onClick={onFinish}>Skip intro <span aria-hidden="true">→</span></button></nav><SocialLinks /></div></header>
