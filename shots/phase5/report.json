@@ -1,0 +1,170 @@
+[
+  {
+    "name": "desktop",
+    "height": 900,
+    "width": 1440,
+    "viewport": 900,
+    "links": [
+      {
+        "text": "GitHub",
+        "href": "https://github.com/ammar-adam",
+        "height": 44
+      },
+      {
+        "text": "LinkedIn",
+        "href": "https://www.linkedin.com/in/ammar-adam/",
+        "height": 44
+      },
+      {
+        "text": "X",
+        "href": "https://x.com/ammaradam_5807?s=11",
+        "height": 44
+      },
+      {
+        "text": "Email",
+        "href": "mailto:ammar.adam@uwaterloo.ca",
+        "height": 44
+      },
+      {
+        "text": "Résumé",
+        "href": "http://localhost:3101/Ammar_Adam.pdf",
+        "height": 44
+      },
+      {
+        "text": "OpenAI",
+        "href": "https://openai.com/",
+        "height": 21.75
+      },
+      {
+        "text": "Sagard",
+        "href": "https://www.sagard.com/",
+        "height": 21.75
+      },
+      {
+        "text": "DataStealth",
+        "href": "https://datastealth.io/",
+        "height": 21.75
+      },
+      {
+        "text": "Alpen Capital",
+        "href": "https://alpencapital.com/",
+        "height": 21.75
+      },
+      {
+        "text": "Pear VC",
+        "href": "https://pear.vc/",
+        "height": 21.75
+      },
+      {
+        "text": "Backseat",
+        "href": "https://backseatnav.com/",
+        "height": 21.75
+      },
+      {
+        "text": "RocketShip",
+        "href": "https://rocketshipstocks.vercel.app/",
+        "height": 21.75
+      },
+      {
+        "text": "Waterloo Venture Group",
+        "href": "https://www.waterloovg.com/",
+        "height": 21.75
+      },
+      {
+        "text": "Waterloo Tech Week / Hack the North",
+        "href": "https://waterlootechweek.ca/",
+        "height": 21.75
+      },
+      {
+        "text": "Back to the terminal",
+        "href": "http://localhost:3101/",
+        "height": 44
+      }
+    ],
+    "text": "Ammar Adam\n\nCS & Finance at Waterloo. I build things and find the people who build them.\n\nGitHub\nLinkedIn\nX\nEmail\nRésumé\nEXPERIENCE\nPlace\tRole\tOne sentence\nOpenAI\tFounding Builder Lead\tI find student builders and help them ship.\nSagard\tAI Engineer\tAI tools for the legal and compliance team.\nDataStealth\tProduct Engineering Intern\tBuilt product demos and automated competitor research.\nAlpen Capital\tM&A Summer Analyst\tThe firm's youngest intern, in Dubai at sixteen.\nPear VC\tFellow\tScouting early-stage founders.\nBUILT\nPlace\tRole\tOne sentence\nBackseat\tCreator\tCharacter voices for Waze, installed in one tap.\nRocketShip\tCreator\tAI equity research with honest evals.\nWaterloo Venture Group\tManaging Director\tWaterloo's student venture community.\nWaterloo Tech Week / Hack the North\tOrganizer\tRan Tech Week; helped run Hack the North.\nBack to the terminal"
+  },
+  {
+    "name": "mobile",
+    "height": 1497,
+    "width": 390,
+    "viewport": 844,
+    "links": [
+      {
+        "text": "GitHub",
+        "href": "https://github.com/ammar-adam",
+        "height": 44
+      },
+      {
+        "text": "LinkedIn",
+        "href": "https://www.linkedin.com/in/ammar-adam/",
+        "height": 44
+      },
+      {
+        "text": "X",
+        "href": "https://x.com/ammaradam_5807?s=11",
+        "height": 44
+      },
+      {
+        "text": "Email",
+        "href": "mailto:ammar.adam@uwaterloo.ca",
+        "height": 44
+      },
+      {
+        "text": "Résumé",
+        "href": "http://localhost:3101/Ammar_Adam.pdf",
+        "height": 44
+      },
+      {
+        "text": "OpenAI",
+        "href": "https://openai.com/",
+        "height": 44
+      },
+      {
+        "text": "Sagard",
+        "href": "https://www.sagard.com/",
+        "height": 44
+      },
+      {
+        "text": "DataStealth",
+        "href": "https://datastealth.io/",
+        "height": 44
+      },
+      {
+        "text": "Alpen Capital",
+        "href": "https://alpencapital.com/",
+        "height": 44
+      },
+      {
+        "text": "Pear VC",
+        "href": "https://pear.vc/",
+        "height": 44
+      },
+      {
+        "text": "Backseat",
+        "href": "https://backseatnav.com/",
+        "height": 44
+      },
+      {
+        "text": "RocketShip",
+        "href": "https://rocketshipstocks.vercel.app/",
+        "height": 44
+      },
+      {
+        "text": "Waterloo Venture Group",
+        "href": "https://www.waterloovg.com/",
+        "height": 44
+      },
+      {
+        "text": "Waterloo Tech Week / Hack the North",
+        "href": "https://waterlootechweek.ca/",
+        "height": 44
+      },
+      {
+        "text": "Back to the terminal",
+        "href": "http://localhost:3101/",
+        "height": 44
+      }
+    ],
+    "text": "Ammar Adam\n\nCS & Finance at Waterloo. I build things and find the people who build them.\n\nGitHub\nLinkedIn\nX\nEmail\nRésumé\nEXPERIENCE\nPlace\nRole\nOne sentence\nOpenAI\nFounding Builder Lead\nI find student builders and help them ship.\nSagard\nAI Engineer\nAI tools for the legal and compliance team.\nDataStealth\nProduct Engineering Intern\nBuilt product demos and automated competitor research.\nAlpen Capital\nM&A Summer Analyst\nThe firm's youngest intern, in Dubai at sixteen.\nPear VC\nFellow\nScouting early-stage founders.\nBUILT\nPlace\nRole\nOne sentence\nBackseat\nCreator\nCharacter voices for Waze, installed in one tap.\nRocketShip\nCreator\nAI equity research with honest evals.\nWaterloo Venture Group\nManaging Director\nWaterloo's student venture community.\nWaterloo Tech Week / Hack the North\nOrganizer\nRan Tech Week; helped run Hack the North.\nBack to the terminal"
+  }
+]
