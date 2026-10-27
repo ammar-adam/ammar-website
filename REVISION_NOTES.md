@@ -33,3 +33,12 @@ The continuous dark reading field leaves the graffiti visible at the edges while
 Hardware Chrome visual checks cover 1440×900, 1280×720, 1100×740, 950×740, 900×740, 640×900, 390×844 and 320×740. No horizontal overflow, missing images or page errors. The 1440×900 view fits one screen; shorter laptops and phones scroll naturally without reducing text size or squeezing margins. Skip link, visible keyboard focus, all nine external links, all three PNG logo links, 44px social targets and the actual PDF response passed. Existing content records match the prior commit. Evidence is in the task workspace at outputs/short-editorial/final/.
 
 Lint, TypeScript and the production build pass. No push or merge.
+
+## One-screen spacing and main release — 2026-10-27
+
+Reduced desktop-only vertical gaps and outer padding below 820px viewport height. Short or narrow desktop windows place roles beside organization names; body text remains 17px and all content is retained. Phone spacing is unchanged.
+
+Production Chrome checks fit the full short page at 1440×900, 1440×780, 1366×768, 1280×720, 1280×650, 1280×600, 1100×740 and 950×740. Mobile/reflow, PNG links, résumé and keyboard checks pass. Production smoke test played the intro and rendered check-in, security, concourse and gate without missing assets, page errors or 3D fallback. Lint, TypeScript and the production build pass. Proofs are in the task workspace at outputs/short-one-screen-release/.
+
+The user explicitly authorized publishing the entire site to GitHub main in this revision.
+

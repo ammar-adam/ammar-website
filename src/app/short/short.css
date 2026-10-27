@@ -136,6 +136,24 @@
 .short-skip:focus { transform: translateY(0); }
 .short-page::selection, .short-page ::selection { background: #f2cc74; color: #080909; }
 
+/* Keep the full desktop overview in a laptop viewport without reducing body type. */
+@media (min-width: 901px) and (max-height: 820px) {
+  .short-content { padding-top: 24px; padding-bottom: 20px; }
+  .short-header { row-gap: 8px; margin-bottom: 20px; }
+  .short-introduction .short-personal { margin-top: 4px; }
+  .short-section > h2 { margin-bottom: 12px; padding-bottom: 8px; }
+  .short-entries { gap: 10px; }
+  .short-entry-heading { gap: 0; }
+  .short-row-line { margin-top: 3px; }
+  .short-footer { margin-top: 12px; }
+}
+
+/* Short or narrow desktop windows retain the same type in two-line entries. */
+@media (min-width: 901px) and (max-height: 700px),
+       (min-width: 901px) and (max-width: 1100px) and (max-height: 820px) {
+  .short-entry-heading { flex-direction: row; align-items: baseline; flex-wrap: wrap; column-gap: 10px; }
+}
+
 @media (max-width: 1100px) and (min-width: 901px) {
   .short-content { width: calc(100% - 80px); }
   .short-columns { gap: 56px; }
