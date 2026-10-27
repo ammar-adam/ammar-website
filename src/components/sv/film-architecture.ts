@@ -375,8 +375,8 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   const gateTexture = new THREE.CanvasTexture(gateCanvas); gateTexture.colorSpace = THREE.SRGBColorSpace;
   const gateMaterial = new THREE.MeshStandardMaterial({ map: gateTexture, transparent: true, alphaTest: .06, roughness: 1, depthWrite: false, polygonOffset: true, polygonOffsetFactor: -1, polygonOffsetUnits: -1 });
   finishTextures.push(gateTexture); finishMaterials.push(gateMaterial);
-  const paintedGate = new THREE.Mesh(owned(new THREE.PlaneGeometry(10.8, 4.5)), gateMaterial);
-  paintedGate.name = "painted-gate-05-wayfinding"; paintedGate.position.set(-1.5, 3.1, -83.50);
+  const paintedGate = new THREE.Mesh(owned(new THREE.PlaneGeometry(2.8, 1.2)), gateMaterial);
+  paintedGate.name = "painted-gate-05-wayfinding"; paintedGate.position.set(1.5, 3.8, -83.50);
   paintedGate.receiveShadow = true; rooms[3].group.add(paintedGate);
 
   // A deep, curved shopfront soffit gives the concourse a human-scaled left edge.

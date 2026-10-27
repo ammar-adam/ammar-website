@@ -151,7 +151,7 @@ export function createConcourseSet(palette: FilmMaterialPalette): FilmSet {
     plate(pastry, x, y - .055, -67.50, .19);
     pastry.add(new THREE.TorusGeometry(.105, .045, 6, 12, Math.PI * 1.45), "gold", [x, y, -67.50], [-Math.PI / 2, 0, .25], [1.25, .65, 1]);
   }
-  cup(cafe, -5.08, 1.325, -69.40, "ivory", .90);
+
   plate(cafe, -5.08, 1.321, -69.40, .16);
   // Things left in use, rather than decorative labels, make the seating inhabited.
   for (const [x, z] of [[6.1, -66.5], [6.4, -70.5], [5.8, -63.3]]) {
@@ -161,48 +161,7 @@ export function createConcourseSet(palette: FilmMaterialPalette): FilmSet {
   curve(cafe, [[6.32, 1.13, -66.85], [6.45, 1.23, -66.86], [6.61, 1.23, -66.82], [6.70, 1.13, -66.77]], .018, "ink");
   for (const x of [6.32, 6.70]) cafe.add(new THREE.SphereGeometry(1, 10, 6), "dark", [x, 1.14, -66.79], [0, 0, 0], [.048, .06, .072]);
 
-  // A low sculpted souvenir plinth leaves all three photographs unobstructed.
-  returnCounter(news, -5.50, -81.35, 2.05, 1.30, "dark");
-  const display = offsetBuilder(news, 2.22, -2.95);
-  display.add(extrusion(roundProfile(2.05, .94, .28), .16, .025), "walnut", [-7.72, 1.40, -78.58], [Math.PI / 2, 0, 0]);
-  // YYZ tower, Dubai's stepped spire and Karachi's domed mausoleum are objects.
-  const towers = [[-8.35, 1.51, -78.58], [-7.72, 1.51, -78.58], [-7.04, 1.51, -78.58]] as const;
-  const [tx, ty, tz] = towers[0];
-  display.add(new THREE.CylinderGeometry(.10, .15, .045, 14), "dark", [tx, ty, tz]);
-  display.add(lathe([[.048, 0], [.029, .44], [.025, .70], [.01, .87]], 12), "ivory", [tx, ty + .023, tz]);
-  display.add(lathe([[.035, 0], [.12, .035], [.12, .075], [.035, .11]], 14), "gold", [tx, ty + .52, tz]);
-  const [dx, dy, dz] = towers[1];
-  for (let tier = 0; tier < 5; tier++) display.add(new THREE.CylinderGeometry(.105 - tier * .017, .12 - tier * .017, .145, 6), tier % 2 ? "cyan" : "steel", [dx, dy + .0725 + tier * .132, dz]);
-  display.rod([dx, dy + .64, dz], [dx, dy + .84, dz], .009, "gold");
-  const [kx, ky, kz] = towers[2];
-  display.box([.38, .035, .36], [kx, ky, kz], "dark", [0, 0, 0], .025);
-  display.box([.29, .28, .27], [kx, ky + .16, kz], "ivory", [0, 0, 0], .025);
-  display.add(new THREE.SphereGeometry(.17, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2), "ivory", [kx, ky + .30, kz], [0, 0, 0], [1, .76, 1]);
-  for (const offset of [-.075, .075]) display.box([.045, .15, .008], [kx + offset, ky + .14, kz + .142], "dark");
-  for (let n = 0; n < 5; n++) book(news, -10.43 + (n % 2) * .09, 1.32 + n * .07, -78.45, .54, .68, n % 2 ? "cyan" : "coral", -.12 + n * .06);
-  book(news, -11.41, 1.32, -78.40, .44, .61, "gold", .18);
-  countertopMenu(news, -11.30, -78.55, "dark");
-  // Freestanding postcard carousel: wire pockets, card thickness and central axle.
-  news.add(lathe([[0, 0], [.49, 0], [.47, .06], [.20, .13], [.06, .18]], 18), "dark", [-5.65, .13, -79.55]);
-  news.rod([-5.65, .20, -79.55], [-5.65, 2.20, -79.55], .026, "steel");
-  for (let side = 0; side < 4; side++) {
-    const yaw = side * Math.PI / 2 + .22, normal = new THREE.Vector3(Math.sin(yaw), 0, Math.cos(yaw));
-    for (let row = 0; row < 3; row++) {
-      const y = .87 + row * .43, x = normal.x * .35, z = normal.z * .35;
-      cards.box([.48, .31, .018], [x, y, z], "ivory", [0, yaw, 0]);
-      cards.box([.39, .18, .008], [x + normal.x * .014, y + .018, z + normal.z * .014], row === 0 ? "cyan" : row === 1 ? "coral" : "gold", [0, yaw, 0]);
-      const tangent = new THREE.Vector3(normal.z, 0, -normal.x);
-      const a: SetVector = [x - tangent.x * .26 + normal.x * .035, y - .13, z - tangent.z * .26 + normal.z * .035];
-      const b: SetVector = [x + tangent.x * .26 + normal.x * .035, y - .13, z + tangent.z * .26 + normal.z * .035];
-      cards.rod(a, b, .012, "gold");
-      for (const sign of [-1, 1]) cards.rod([x + tangent.x * .26 * sign, y - .13, z + tangent.z * .26 * sign], [x + tangent.x * .26 * sign, y + .13, z + tangent.z * .26 * sign], .010, "steel");
-    }
-  }
-  const cardGroup = cards.finish(); cardGroup.position.set(-5.65, 0, -79.55);
-  cardGroup.userData.setMotion = {
-    channels: [{ axis: "y", offset: 0, amplitude: .16, frequency: .12, phase: 0 }],
-    reducedRotation: [0, 0, 0],
-  };
-  const groups = [kitchen.finish(), cafe.finish(), news.finish()]; groups[2].add(cardGroup);
-  return { groups, update(time, reduced) { cardGroup.rotation.y = reduced ? 0 : Math.sin(time * .12) * .16; }, dispose() { kitchen.dispose(); cafe.dispose(); news.dispose(); cards.dispose(); } };
+  const groups=[kitchen.finish(),cafe.finish()];
+  news.dispose();cards.dispose();
+  return {groups,update(){},dispose(){kitchen.dispose();cafe.dispose();}};
 }

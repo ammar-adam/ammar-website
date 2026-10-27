@@ -1,0 +1,16 @@
+{
+  "generator": "Built-in image_gen, using the imagegen skill",
+  "assets": [
+    {
+      "path": "public/art/references/himalayan-friends.webp",
+      "promptBrief": "Original portrait travel illustration: four anonymous hikers and a windblown scarf on a Himalayan ridge, painted volumetric forms, golden key and violet shadow, selective ink and shadow-transition halftone, lower 15% dark and quiet for later typography. No actors, copied character designs, official poster composition, logos or text. Spider-Verse-inspired treatment in the terminal warm/cool palette.",
+      "source": "exec-b8351d76-a149-4fa6-b095-2f59d8360cf9.png"
+    },
+    {
+      "path": "public/art/references/coastal-road.webp",
+      "promptBrief": "Original portrait travel illustration: three anonymous friends in a red convertible on a winding Mediterranean coastal road, painted volumetric forms, golden key and violet shadow, selective ink and shadow-transition halftone, lower 15% dark and quiet for later typography. No actors, copied character designs, official poster composition, logos or text. Spider-Verse-inspired treatment in the terminal warm/cool palette.",
+      "source": "exec-2f455e31-57c4-4f65-910d-63545236fb73.png"
+    }
+  ],
+  "implementation": "WebP assets below 2048px, loaded only with the concourse. Movie titles rendered in the existing type system on the lit physical posters; no new fonts."
+}

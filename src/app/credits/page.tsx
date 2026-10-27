@@ -33,10 +33,10 @@ export default function CreditsPage() {
         <section aria-labelledby="character-credit" style={{ marginTop: 40, borderTop: "1px solid #34404b", paddingTop: 30 }}>
           <h2 id="character-credit" style={{ fontFamily: "var(--font-anton), Impact, sans-serif", fontSize: 30, fontWeight: 400, textTransform: "uppercase", margin: "0 0 12px", lineHeight: 1.15 }}>Illustration & animation</h2>
           <p style={{ margin: 0, color: "#cdd2d4", fontSize: 14 }}>
-            The 3D airport, props, aircraft and articulated character were built for this site. AI-generated artwork supplies the distant cityscape, painted material detail, original traveler reference and an original Paddington fan-art vignette on the café television. Earlier environment paintings remain archived in the project. The personal gallery uses Ammar’s own photographs.
+            The 3D airport, props, aircraft and articulated character were built for this site. AI-generated artwork supplies the distant cityscape, original traveler reference, and two original travel illustrations on the concourse cinema posters. The interior brush atlas and surface marks are procedural. Earlier environment paintings remain archived in the project. The personal gallery uses Ammar’s own photographs.
           </p>
           <p style={{ margin: "16px 0 0", color: "#cdd2d4", fontSize: 14 }}>
-            Liverpool’s Liverbird and L.F.C. emblem © Liverpool Football Club, sourced from its <a href="https://stadion-edge.liverpoolfc.com/images/lfc.svg" target="_blank" rel="noreferrer" style={{ color: "#efb550", textUnderlineOffset: 4 }}>official website</a>. The concourse mural uses an original spray-paint treatment for this independent fan artwork.
+            The terminal references use original objects, lettering and abstract paper-cut animation, with no club crests or copied character illustrations.
           </p>
         </section>
         <p style={{ marginTop: 32, fontSize: 14, color: "#aeb8c1" }}>

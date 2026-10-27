@@ -1,0 +1,13 @@
+{
+  "phase": 3,
+  "screenshots": "82 sequential dwell captures at desktop and phone, additional exploration angles, and a final 84% transition correction. Individual files in this folder. report.json records the final focused correction; the full dwell files are retained.",
+  "visualReview": "Reviewed full-size Alpen, security, food, movie posters, jersey fabric, mechanical board and 84% transition images, plus desktop/phone contact sheets.",
+  "references": "All A references implemented and visually inspected in the scene. Jersey66/Salah and sports bank are best viewed with the registry exploration angle; small globe/plush shapes are details rather than named displays. The 14px text minimum is not certified for every possible viewing angle or phone crop.",
+  "rooms": "All four rooms gain ceiling baffles/fins, upper/back/left wall reliefs and niches; added geometry merged per material and lazy loaded.",
+  "checks": [
+    "TypeScript passed",
+    "ESLint passed",
+    "Hardware Chrome screenshot sweep: no page errors"
+  ],
+  "protected": "Intro media, skyline and authored camera keys unchanged. Opening Alright letterform restored at user request."
+}

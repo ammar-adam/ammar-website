@@ -100,7 +100,7 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    element!.dataset.fallback=world.scene.userData.ready?"0":"1";element!.dataset.stage=world.scene.userData.stage;element!.dataset.progress=motionValues.current.t.get().toFixed(4);element!.dataset.camera=world.camera.position.toArray().map(n=>n.toFixed(2)).join(",");element!.dataset.drawCalls=String(calls);surface!.style.opacity=world.scene.userData.ready?"1":"0";
    element!.dataset.looking=String(Math.abs(look.yaw)+Math.abs(look.pitch)>.03);element!.dataset.lookYaw=look.yaw.toFixed(3);element!.dataset.lookPitch=look.pitch.toFixed(3);
    if(!ready&&world.scene.userData.ready){ready=true;state.onReady?.();}
-   if(state.active&&!state.reduced&&motionValues.current.t.get()<.86)frame=requestAnimationFrame(ambient);
+   if(state.active&&!state.reduced)frame=requestAnimationFrame(ambient);
   }
   function ambient(now:number){frame=0;if(dead||lost||document.hidden)return;if(dirty){lastAmbient=now;draw();return;}if(!view.current.active||view.current.reduced)return;if(now-lastAmbient>=1000/30){lastAmbient=now;draw();}else frame=requestAnimationFrame(ambient);}
   const lose=(event:Event)=>{event.preventDefault();lost=true;compileGeneration++;compiled=false;compiling=false;compileFailed=false;cancelAnimationFrame(frame);frame=0;element.dataset.fallback="1";surface.style.opacity="0";};

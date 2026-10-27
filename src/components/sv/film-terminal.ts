@@ -9,11 +9,11 @@ import { protectFilmRegistration } from "./terminal-post";
 import { createFilmArchitecture } from "./film-architecture";
 import { loadFilmSet } from "./film-set-assets";
 import type { FilmSet } from "./film-set-builder";
-import { createFilmWallArt } from "./film-wall-art";
+import { terminalReferences } from "@/data/references";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { createFilmAircraft } from "./film-aircraft";
 import { createFilmCheckin } from "./film-checkin";
-import { createShawarmaGeometry } from "./film-shawarma";
+
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 
 type V3 = [number,number,number];
@@ -122,7 +122,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const concrete=palette.materials.ivory,cream=palette.materials.ivory,magenta=palette.materials.coral;
  const toon=(color:string)=>keepMaterial(palette.createSurface(color,{roughness:.82,metalness:.08,paint:.95}));
  const architecture=createFilmArchitecture(palette.materials);scene.add(architecture.root);
- const wallArt=createFilmWallArt(invalidate);scene.add(wallArt.root);
+
  const outline=keepMaterial(new THREE.LineBasicMaterial({color:"#091122",transparent:true,opacity:.72}));
  scene.add(new THREE.HemisphereLight("#3a4f8a","#2b3566",.22));
  const key=new THREE.DirectionalLight("#ffb46a",3.6);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(shadowMapSize,shadowMapSize);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00016;key.shadow.normalBias=.014;key.shadow.radius=.45;scene.add(key,key.target);
@@ -263,7 +263,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  for(const z of [-39,-45]){block(.16,.7,.16,5.4,.35,z,steel);block(.16,.7,.16,7,.35,z,steel);}
  block(.2,1.5,.2,5.05,.75,-40.6,steel);
  const projectMonitor=new THREE.Group();projectMonitor.position.set(5.05,2.35,-40.6);scene.add(projectMonitor);meshBlock(3,2,.18,ink,projectMonitor);meshBlock(2.9,.05,.2,lightCyan,projectMonitor,0,-1.02,0);
- const projectScreens=projects.map(project=>{const image=plane(2.8,1.8,texture(project.screenshot,.34),projectMonitor);image.position.z=.11;return image;});
+ const projectScreens=projects.map(project=>{const screen=project.slug==="backseat"?canvasTexture((ctx,W,H)=>{ctx.fillStyle="#0d0f1f";ctx.fillRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 76px Arial";ctx.fillText("Backseat",55,115);ctx.strokeStyle="#ffd9a0";ctx.lineWidth=8;ctx.beginPath();for(let x=60;x<W-60;x+=8){const y=H*.58+Math.sin(x*.055)*Math.sin(x*.011)*H*.19;if(x===60)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();},1024,640):texture(project.screenshot,.34);const image=plane(2.8,1.8,screen,projectMonitor);image.position.z=.11;return image;});
  const trays:THREE.Group[]=[];
  projects.forEach((project,i)=>{
   const group=new THREE.Group();scene.add(group);group.position.set(6.2,.98,-38.4-i*1.35);
@@ -285,11 +285,11 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const scanBar=new THREE.Group();scene.add(scanBar);meshBlock(2.48,.045,.045,lightCyan,scanBar);meshBlock(.045,2.72,.045,lightCyan,scanBar,-1.24,-1.34,0);meshBlock(.045,2.72,.045,lightCyan,scanBar,1.24,-1.34,0);
 
  // Three inhabited retail bays replace the former continuous photo wall.
- const walnut=palette.materials.walnut,sage=palette.materials.sage,tile=palette.materials.ivory,terracotta=toon("#a96744"),skin=palette.materials.skin,paleSkin=toon("#c59578"),hair=toon("#171d27");
+ const walnut=palette.materials.walnut,sage=palette.materials.sage,tile=palette.materials.ivory,skin=palette.materials.skin,paleSkin=toon("#c59578"),hair=toon("#171d27");
  const round=keepGeometry(new THREE.SphereGeometry(1,10,7));
  const solid=(geometry:THREE.BufferGeometry,mat:THREE.Material,x:number,y:number,z:number,sx=1,sy=1,sz=1,parent:THREE.Object3D=scene)=>{const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);parent.add(mesh);return mesh;};
  const photos:THREE.Object3D[]=[];
- const shops=[{code:"A02",city:"DXB",name:"KITCHEN",finish:coral,trim:gold},{code:"A03",city:"KHI",name:"CAFÉ",finish:sage,trim:gold},{code:"A04",city:"YYZ",name:"NEWSSTAND",finish:dark,trim:cyan}];
+ const shops=[{code:"A02",city:"KARACHI / RIDGEWAY",name:"KITCHEN",finish:coral,trim:gold},{code:"A03",city:"DUBAI",name:"CAFÉ",finish:sage,trim:gold},{code:"A04",city:"YYZ",name:"SOUVENIRS",finish:dark,trim:cyan}];
  shops.forEach((shop,i)=>{
   const z=-57-i*11;
   block(8.9,.12,10.4,-9.3,.065,z,tile);block(.35,6.7,10.5,-13.55,3.35,z,shop.finish);
@@ -315,19 +315,19 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   for(const x of [-11.5,-8]){rod([x,6.5,z],[x,4.55,z],.025,ink);solid(cylinderGeometry,shop.finish,x,4.5,z,.38,.22,.38);solid(round,lightWarm,x,4.36,z,.28,.08,.28);}
   block(5.1,1.12,1.3,-9.4,.6,z+.4,shop.finish,[0,0,0],true);block(5.4,.16,1.48,-9.4,1.23,z+.4,tile,[0,0,0],true);block(5.1,.07,.08,-9.4,1.1,z+1.08,lightWarm);
   for(let n=0;n<14;n++)block(.055,.94,.04,-11.75+n*.36,.58,z+1.1,shop.trim);
-  // Two full-image mounts on the back wall and one on its return: the wide
-  // photos fit their actual bay, with no overlap or frame floating past a jamb.
-  const bayPhotos=memorySequence.filter(memory=>memory.group===i),photoHeight=2.36;
-  const backWidth=bayPhotos.filter((_,slot)=>slot!==1).reduce((sum,memory)=>sum+photoHeight*memory.width/memory.height+.18,0)+.30;
-  let photoLeft=-9.3-backWidth*.5;
-  bayPhotos.forEach((memory,slot)=>{
-   const aspect=memory.width/memory.height,h=photoHeight,w=h*aspect,y=3.60;
-   const frame=new THREE.Group();
-   if(slot===1){frame.position.set(-13.335,y,z-.8);frame.rotation.y=Math.PI/2;}
-   else{frame.position.set(photoLeft+(w+.18)*.5,y,z-4.25);photoLeft+=w+.18+.30;}
-   scene.add(frame);meshBlock(w+.18,h+.18,.13,ink,frame);meshBlock(w+.09,h+.09,.06,cream,frame,0,0,.045);
-   const picture=plane(w,h,texture(memory.src,.52),frame);picture.position.z=.085;picture.userData.photoIndex=memory.photoIndex;photos.push(picture);
-  });
+  if(i===1){
+   const photoReference=terminalReferences.find(reference=>reference.id==="concourse-cafe-photos")!;
+   const photoWall=new THREE.Group();photoWall.position.set(...photoReference.position);photoWall.rotation.set(...photoReference.rotation);photoWall.scale.set(...photoReference.scale);photoWall.userData.referenceId=photoReference.id;scene.add(photoWall);
+   const selectedPhotos=[memorySequence[0],memorySequence[1],memorySequence[3],memorySequence[5]];
+   selectedPhotos.forEach((memory,slot)=>{
+    const h=2.08,w=h*memory.width/memory.height,frame=new THREE.Group();frame.name=`cafe-photo-${slot}`;
+    frame.userData.referenceId="concourse-cafe-photos";
+    if(slot<2)frame.position.set(slot===0?-1.85:1.85,0,0);
+    else{frame.position.set(-3.985,0,slot===2?3.25:6.35);frame.rotation.y=Math.PI/2;}
+    photoWall.add(frame);meshBlock(w+.15,h+.15,.12,ink,frame);meshBlock(w+.07,h+.07,.04,cream,frame,0,0,.065);
+    const picture=plane(w,h,texture(memory.src,.52),frame);picture.position.z=.095;picture.userData.photoIndex=memory.photoIndex;photos.push(picture);
+   });
+  }
   // Gate seating lives opposite each shop, behind the open walking lane.
   block(.22,4.0,.22,4.7,2,z,steel);const gate=plane(2.6,1.0,label(shop.code,"GATE","#7bdce9",768,256));gate.position.set(4.7,3.5,z+.15);
   for(let seat=0;seat<4;seat++){const x=6.4+seat*1.6,upholstery=seat%3===0?coral:cyan;
@@ -345,40 +345,15 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  },1024,128);
  const concourseIntroRoot=new THREE.Group();scene.add(concourseIntroRoot);
  const transom=new THREE.Mesh(unitBox,ink);transom.scale.set(6.65,.98,.12);transom.position.z=-.09;concourseIntroRoot.add(transom);
+ for(const x of [-2.3,2.3]){const hanger=new THREE.Mesh(cylinderGeometry,steel);hanger.scale.set(.023,2.8,.023);hanger.position.set(x,1.85,-.09);concourseIntroRoot.add(hanger);}
  const concourseLettering=plane(6.4,.8,concourseLine,concourseIntroRoot,true);
  concourseLettering.name="concourse-painted-introduction";
- concourseIntroRoot.position.set(-1.9,4.05,-58.4);
- // The rotating roast is a continuous painted mesh in front of glowing grill bars.
- // The grill faces the walking route from the end of the service counter.
- block(1.75,3.8,.22,-5.9,2.3,-59.95,ink,[0,0,0],true);
- block(1.94,.16,1.32,-5.9,.55,-59.30,steel);
- block(1.94,.19,1.20,-5.9,4.24,-59.45,steel);
- block(1.97,.075,1.24,-5.9,4.36,-59.45,cream);
- for(const side of [-1,1]){
-  block(.10,3.61,.53,-5.9+side*.91,2.38,-59.69,steel);
-  block(.022,3.46,.29,-5.9+side*.972,2.38,-59.67,cream);
- }
- block(1.84,.30,.12,-5.9,.35,-58.63,ink);
- for(const x of [-6.52,-6.12,-5.72])solid(cylinderGeometry,x===-6.52?coral:gold,x,.35,-58.54,.085,.048,.085).rotation.x=Math.PI/2;
- for(let vent=0;vent<7;vent++)block(.026,.13,.025,-5.22+vent*.06,.35,-58.55,steel);
- for(const x of [-6.45,-5.9,-5.35])block(.085,2.8,.1,x,2.35,-59.78,lightWarm);
- const spit=new THREE.Group();spit.position.set(-5.9,2.3,-59.3);scene.add(spit);
- const roastMaterial=keepMaterial(palette.createSurface("#ffffff",{roughness:.72,metalness:0,paint:.38,rim:.04}));roastMaterial.vertexColors=true;
- const roast=new THREE.Mesh(keepGeometry(createShawarmaGeometry()),roastMaterial);roast.castShadow=roast.receiveShadow=true;spit.add(roast);
- rod([-5.9,.55,-59.3],[-5.9,4.1,-59.3],.045,steel);solid(cylinderGeometry,steel,-5.9,.65,-59.3,.92,.09,.92);
+ concourseIntroRoot.position.set(-1.9,4.95,-58.4);
  // Café equipment, matcha cups and a low simmering nihari pot.
  block(1.3,.8,.75,-10.7,1.72,-67,steel,[0,0,0],true);block(1.18,.16,.86,-10.7,2.15,-67,ink);block(.9,.12,.3,-10.7,1.47,-66.65,lightWarm);
  for(let n=0;n<5;n++){solid(cylinderGeometry,cream,-8.8+n*.28,1.45,-67,.10,.26,.10);solid(cylinderGeometry,sage,-8.8+n*.28,1.585,-67,.085,.018,.085);}
- solid(cylinderGeometry,steel,-12,1.47,-67.1,.56,.38,.56);solid(cylinderGeometry,terracotta,-12,1.67,-67.1,.49,.025,.49);
- const menu=plane(1.55,1.8,label("Nihari","TODAY’S SPECIAL","#e4c27d",512,640));menu.position.set(-12.1,3,-68.9);
- const steam=Array.from({length:4},(_,i)=>solid(round,keepMaterial(new THREE.MeshBasicMaterial({color:"#efdfc4",transparent:true,opacity:.14,depthWrite:false})),-12,2.05+i*.26,-67.1,.1,.18,.1));
  // Warm café furniture and a small screen playing the station vignette.
  for(const [x,z] of [[6.1,-66.5],[6.4,-70.5],[5.8,-63.3]]){solid(cylinderGeometry,walnut,x,1.02,z,.67,.12,.67);rod([x,.04,z],[x,.98,z],.08,steel);for(const dx of [-.95,.95]){block(.62,.12,.65,x+dx,.57,z,sage);block(.62,.65,.12,x+dx,.94,z-.3,sage);rod([x+dx,.05,z],[x+dx,.52,z],.04,steel);}}
- block(2.8,1.65,.17,4.4,3.2,-71.8,ink,[0,-.2,0],true);rod([4.4,4.1,-71.8],[4.4,6.7,-71.8],.045,steel);const television=plane(2.6,1.462,texture("/art/paddington-screen-v3.webp",.52));television.position.set(4.38,3.2,-71.68);television.rotation.y=-.2;
- // Books, tiny skyline models and luggage tags fill the Toronto shop.
- for(const shelfY of [1.8,2.55,3.3]){block(.8,.1,6.1,-13,shelfY,-78.8,walnut);for(let n=0;n<12;n++)block(.23,.42,.15,-12.75,shelfY+.26,-81.4+n*.46,n%3===0?coral:n%3===1?sage:cream);}
- for(let n=0;n<5;n++){solid(cylinderGeometry,steel,-11+n*.7,1.7,-78,.035,.8,.035);solid(cylinderGeometry,cream,-11+n*.7,1.77,-78,.14,.1,.14);}
- for(const [i,city] of ["TORONTO","MISSISSAUGA"].entries()){block(.84,.42,.045,-8.4+i*1.05,1.52,-77.75,cream);const postcard=plane(.76,.34,label(city,"POSTCARDS","#e4c79c",512,192));postcard.position.set(-8.4+i*1.05,1.52,-77.72);}
  // Small articulated background people are actual volumes with separate limbs.
  const limbGeometry=keepGeometry(new THREE.CapsuleGeometry(.075,.46,3,6));
  const personTorsoGeometry=keepGeometry(new THREE.LatheGeometry([new THREE.Vector2(.18,0),new THREE.Vector2(.22,.16),new THREE.Vector2(.30,.48),new THREE.Vector2(.20,.63)],10));
@@ -393,36 +368,17 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const cook=person(cream,-9.4,-57.7,.3);const barista=person(sage,-10,-68.6,.1);const customer=person(coral,6.2,-65.5,-.5,paleSkin);
  const loader=person(gold,7.7,-45.3,-Math.PI/2);const queueGuest=person(sage,-1.1,-40.8,.3,paleSkin);
  const loadBag=new THREE.Group();scene.add(loadBag);meshBlock(.6,.65,.4,coral,loadBag,0,.33,0);meshBlock(.27,.05,.12,ink,loadBag,0,.72,0);
- // A folded Liverpool shirt and a ball belong to a parked bag, not a mascot.
- const cart=new THREE.Group();cart.position.set(3.65,0,-69.2);cart.rotation.y=-.18;scene.add(cart);
- for(const x of [-.42,.42])for(const z of [-.55,.55])solid(cylinderGeometry,ink,x,.14,z,.10,.065,.10,cart).rotation.z=Math.PI/2;
- meshBlock(.82,.07,1.1,steel,cart,0,.27,0);
- for(const x of [-.44,.44]){meshBlock(.035,.8,.035,steel,cart,x,.7,.48);}
- meshBlock(.9,.045,.045,steel,cart,0,1.1,.48);
- const duffel=solid(round,dark,0,.59,-.08,.49,.31,.39,cart);
- duffel.rotation.z=.06;
- const shirtShape=new THREE.Shape();shirtShape.moveTo(-.22,.5);shirtShape.lineTo(-.42,.36);shirtShape.lineTo(-.32,.12);shirtShape.lineTo(-.23,.18);shirtShape.lineTo(-.22,-.38);shirtShape.quadraticCurveTo(0,-.43,.24,-.36);shirtShape.lineTo(.24,.18);shirtShape.lineTo(.34,.12);shirtShape.lineTo(.44,.36);shirtShape.lineTo(.23,.5);shirtShape.quadraticCurveTo(0,.38,-.22,.5);
- const shirtGeo=keepGeometry(new THREE.ShapeGeometry(shirtShape,12));const shirtPos=shirtGeo.getAttribute("position");
- for(let i=0;i<shirtPos.count;i++){const y=shirtPos.getY(i);shirtPos.setZ(i,-.1*Math.cos(y*3)+.035*Math.sin(shirtPos.getX(i)*18));}shirtGeo.computeVertexNormals();
- const shirtFinish=toon("#b42b39");shirtFinish.side=THREE.DoubleSide;const shirt=new THREE.Mesh(shirtGeo,shirtFinish);shirt.position.set(0,.7,.36);shirt.rotation.x=-.2;cart.add(shirt);
- const jerseyPrint=plane(.30,.23,canvasTexture((ctx,W,H)=>{ctx.clearRect(0,0,W,H);ctx.fillStyle="#eee8d9";ctx.font="700 100px Arial";ctx.textAlign="center";ctx.fillText("66",W/2,107);},256,128),cart,true);jerseyPrint.position.set(0,.74,.345);jerseyPrint.rotation.x=-.2;
- // A worn team luggage patch makes the basketball reference personal.
- const teamPatch=plane(.30,.18,canvasTexture((ctx,W,H)=>{ctx.fillStyle="#423457";ctx.fillRect(0,0,W,H);ctx.strokeStyle="#c3434b";ctx.lineWidth=16;for(let i=0;i<3;i++){ctx.beginPath();ctx.moveTo(52+i*28,18);ctx.lineTo(35+i*28,68);ctx.stroke();}ctx.fillStyle="#f4e8ce";ctx.font="700 28px Arial";ctx.textAlign="center";ctx.fillText("RAPTORS",W/2,H-13);},256,128),cart);teamPatch.position.set(.30,.65,.316);teamPatch.rotation.y=.10;
- const basketball=solid(round,terracotta,3.12,.24,-68.8,.23,.23,.23);basketball.rotation.z=.28;
- for(const turn of [0,Math.PI/2]){const seam=solid(keepGeometry(new THREE.TorusGeometry(.232,.006,5,40)),ink,3.12,.24,-68.8);seam.rotation.y=turn;}
  const walkers=[person(dark,11,-60,Math.PI),person(sage,11,-79,Math.PI,paleSkin)];
- const transitionTravelers=[person(cream,6.0,-83.8,.45),person(coral,10.5,-88.2,-.55,paleSkin)];
+ const transitionTravelers=[person(cream,6.0,-83.8,.45)];
  transitionTravelers.forEach((guest,index)=>{guest.root.name=`gate-transition-traveler-${index}`;});
  const animateAirport=(time:number,reduced:boolean)=>{
-  const t=reduced?0:time;spit.rotation.y=t*.55;
-  steam.forEach((puff,i)=>{const phase=(t*.3+i*.25)%1;puff.position.y=1.9+phase*1.2;puff.position.x=-12+Math.sin(t+i)*.08;(puff.material as THREE.MeshBasicMaterial).opacity=(1-phase)*.14;});
+  const t=reduced?0:time;
   agent.arms[0].rotation.x=-.8+Math.sin(t*1.2)*.12;agent.arms[1].rotation.x=-.65;clerk.arms[1].rotation.x=-.7+Math.sin(t)*.18;
   cook.arms[1].rotation.x=-.7+Math.sin(t*1.6)*.25;barista.arms[0].rotation.x=-.9+Math.sin(t*1.4)*.2;customer.root.rotation.y=-.5+Math.sin(t*.35)*.15;
   const lift=(Math.sin(t*.9)+1)*.5,reach=.38+lift*1.49;loader.arms[0].rotation.x=loader.arms[1].rotation.x=-reach;loadBag.position.set(7.7-.59*Math.sin(reach),.745-.59*Math.cos(reach),-45.3);queueGuest.arms[1].rotation.x=-.3+Math.sin(t*.7)*.2;
   walkers.forEach((walker,i)=>{walker.root.position.z=-60-i*19-Math.sin(t*.12+i)*2;walker.legs.forEach((leg,j)=>leg.rotation.x=Math.sin(t*2.8+i+j*Math.PI)*.28);walker.arms.forEach((arm,j)=>arm.rotation.x=Math.sin(t*2.8+i-j*Math.PI)*.25);});
-  (television.material as THREE.MeshBasicMaterial).color.setScalar(.97+Math.sin(t*.4)*.03);
  };
- for(const side of [-1,1])for(let i=0;i<4;i++){const x=side*8.4-2.1+i*1.4,seatFinish=i===0?coral:cyan;
+ for(const side of [-1,1])for(let i=0;i<4;i++){if(side===1&&(i===1||i===2))continue;const x=side*8.4-2.1+i*1.4,seatFinish=i===0?coral:cyan;
   block(1.12,.16,.94,x,.72,-91,seatFinish);block(1.12,1,.16,x,1.21,-91.47,seatFinish,[-.11,0,0]);
   block(1.04,.04,.05,x,1.68,-91.39,gold);block(1.04,.03,.05,x,.82,-90.53,cream);
   for(const arm of [-.6,.6]){rod([x+arm,.66,-91.3],[x+arm,1.0,-90.8],.025,steel);block(.075,.07,.62,x+arm,1.0,-91,walnut);}
@@ -485,6 +441,25 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   });
  }
  requestSet("atrium");
+ const referenceSets:FilmSet[]=[];const requestedReferences=new Set<string>();
+ let counterReferences:Awaited<ReturnType<typeof import("./film-counter-references")["createCounterReferences"]>>|undefined;
+ let gateReferences:Awaited<ReturnType<typeof import("./film-gate-references")["createGateReferences"]>>|undefined;
+ function requestReferences(zone:"checkin"|"security"|"concourse"|"gate"){
+  if(requestedReferences.has(zone))return;requestedReferences.add(zone);
+  // Room installations share the reference lifecycle, but build only near that room.
+  void import("./film-room-art").then(module=>module.createFilmRoomArt(palette.materials,zone)).then(set=>{
+   if(dead){set.dispose();return;}referenceSets.push(set);scene.add(...set.groups);invalidate();
+  }).catch(error=>console.warn(`Terminal ${zone} architectural art unavailable.`,error));
+  const task=zone==="checkin"?import("./film-counter-references").then(module=>module.createCounterReferences(palette.materials,terminalReferences,invalidate))
+   :zone==="security"?import("./film-security-references").then(module=>module.createSecurityReferences(palette.materials,terminalReferences,invalidate))
+   :zone==="concourse"?import("./film-concourse-references").then(module=>module.createConcourseReferences(palette.materials,terminalReferences,invalidate))
+   :import("./film-gate-references").then(module=>module.createGateReferences(palette.materials,terminalReferences,invalidate));
+  void task.then(set=>{if(dead){set.dispose();return;}referenceSets.push(set);
+   if(zone==="checkin"){counterReferences=set as typeof counterReferences;const wrapper=new THREE.Group();wrapper.name="checkin-reference-wrapper";wrapper.add(...set.groups);scene.add(wrapper);}
+   else{scene.add(...set.groups);if(zone==="gate")gateReferences=set as typeof gateReferences;}
+   invalidate();
+  }).catch(error=>console.warn(`Terminal ${zone} references unavailable.`,error));
+ }
  const travelerBounds=new THREE.Box3();
  const temp=new THREE.Vector3(),look=new THREE.Vector3(),right=new THREE.Vector3(),up=new THREE.Vector3(),forward=new THREE.Vector3();
  return {scene,camera,photos,
@@ -524,6 +499,9 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    if(p>=.34)requestSet("airside");
    if(p>=.52)requestSet("concourse");
    for(const set of setDressing)set.update(setTime,setReduced);
+   if(p>=.16)requestReferences("checkin");if(p>=.34)requestReferences("security");if(p>=.54)requestReferences("concourse");if(p>=.76)requestReferences("gate");
+   counterReferences?.updateSelection(state.experienceIndex);gateReferences?.updateProgress(p);
+   for(const set of referenceSets)set.update(setTime,setReduced);
    scene.userData.ready=(Boolean(scene.userData.ready)||settledSets.has(p<.45?"atrium":p<.65?"airside":p<.86?"concourse":"airside"))&&Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=p<.24?"atrium":p<.45?"checkin":p<.65?"security":p<.86?"concourse":"gate";
    aircraft.position.set(-8+flight*38,3.5+flight*15,-128-flight*22);aircraft.rotation.set(0,flight*-.08,flight*.14);
    const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=travelerKey.visible=travelerRim.visible=visible;
@@ -544,6 +522,6 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    // must not drag the character around with the camera.
    camera.rotateY(state.lookYaw??0);camera.rotateX(state.lookPitch??0);camera.updateMatrixWorld();
   },
-  dispose(){dead=true;setDressing.forEach(set=>set.dispose());traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();wallArt.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
+  dispose(){dead=true;referenceSets.forEach(set=>set.dispose());setDressing.forEach(set=>set.dispose());traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
  };
 }

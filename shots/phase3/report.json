@@ -1,0 +1,83 @@
+{
+  "errors": [],
+  "shots": [
+    {
+      "name": "desktop",
+      "file": "desktop-840.png",
+      "progress": 0.84,
+      "refs": [
+        "concourse-basketball-player"
+      ],
+      "state": {
+        "fallback": "0",
+        "stage": "concourse",
+        "progress": "0.8400",
+        "camera": "7.84,1.90,-80.22",
+        "drawCalls": "184",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-854.png",
+      "progress": 0.854,
+      "refs": [
+        "traveller-4",
+        "traveller-9",
+        "traveller-43",
+        "traveller-bautista"
+      ],
+      "state": {
+        "fallback": "0",
+        "stage": "concourse",
+        "progress": "0.8540",
+        "camera": "9.40,1.90,-86.40",
+        "drawCalls": "216",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-840.png",
+      "progress": 0.84,
+      "refs": [
+        "concourse-basketball-player"
+      ],
+      "state": {
+        "fallback": "0",
+        "stage": "concourse",
+        "progress": "0.8400",
+        "camera": "7.86,1.90,-80.23",
+        "drawCalls": "161",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-854.png",
+      "progress": 0.854,
+      "refs": [
+        "traveller-4",
+        "traveller-9",
+        "traveller-43",
+        "traveller-bautista"
+      ],
+      "state": {
+        "fallback": "0",
+        "stage": "concourse",
+        "progress": "0.8540",
+        "camera": "9.40,1.90,-86.40",
+        "drawCalls": "200",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    }
+  ]
+}

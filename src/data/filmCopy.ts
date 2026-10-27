@@ -3,7 +3,7 @@ export type IntroCopy = { pre: string; lines: string[]; aside: string };
 export type FilmCardCopy = { slug: string; name: string; role: string; tag: string; line: string };
 
 export const INTRO_COPY: readonly IntroCopy[] = [
-  { pre: "Alright.", lines: [], aside: "Let's do this one more time." },
+  { pre: "", lines: ["Alright."], aside: "Let's do this one more time." },
   { pre: "My name's", lines: ["AMMAR", "ADAM."], aside: "CS & Finance at Waterloo." },
   { pre: "And finding", lines: ["MY", "PEOPLE."], aside: "Builders, founders, friends. Come on. I'll show you." },
 ];
