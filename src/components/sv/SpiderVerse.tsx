@@ -38,7 +38,7 @@ export function SpiderVerse() {
   const smooth = useSpring(scrollYProgress, { stiffness: 190, damping: 35, mass: .38, restDelta: .00002 });
   const t = reduced ? scrollYProgress : smooth;
   const subscribeTimeline = useCallback((update: () => void) => t.on("change", update), [t]);
-  const readChapter = useCallback(() => CUTS.filter(cut => t.get() >= cut).length, [t]);
+  const readChapter = useCallback(() => CUTS.filter(cut => t.get() + .0001 >= cut).length, [t]);
   const chapter = useSyncExternalStore(subscribeTimeline, readChapter, () => 0);
   const experienceProgress = useSceneProgress(t, 1);
   const projectProgress = useSceneProgress(t, 2);

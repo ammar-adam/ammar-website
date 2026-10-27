@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { FilmTitle } from "./FilmTitle";
+import { INTRO_COPY } from "@/data/filmCopy";
 import { SocialLinks } from "./SocialLinks";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -11,7 +12,8 @@ export function OpeningFilm({ onFinish, onPrepareWorld }: { onFinish: () => void
   const finish = useRef(onFinish);
   const prepareWorld = useRef(onPrepareWorld);
   const video = useRef<HTMLVideoElement>(null);
-  const [named, setNamed] = useState(false);
+  const [beat, setBeat] = useState(0);
+  const caption = INTRO_COPY[beat];
   const [source, setSource] = useState<string>();
   useEffect(() => { finish.current = onFinish; prepareWorld.current = onPrepareWorld; }, [onFinish, onPrepareWorld]);
 
@@ -86,11 +88,13 @@ export function OpeningFilm({ onFinish, onPrepareWorld }: { onFinish: () => void
 
   return <motion.section className="opening-film" aria-label="Introduction" initial={false} exit={{ opacity: 0 }} transition={{ duration: .2 }}>
     <picture className="of-poster"><source media="(max-width: 720px)" srcSet="/film/arrival-portrait.webp?v=set-v8" /><img src="/film/arrival-desktop.webp?v=set-v8" alt="" /></picture>
-    <video ref={video} className="of-video" src={source} autoPlay muted playsInline preload="auto" onTimeUpdate={event => { if (event.currentTarget.currentTime >= 1.85) setNamed(true); }} onEnded={onFinish} onError={() => { if (source?.includes("-av1")) setSource(source.replace("-av1", "")); else onFinish(); }} aria-hidden="true" tabIndex={-1} />
+    <video ref={video} className="of-video" src={source} autoPlay muted playsInline preload="auto" onTimeUpdate={event => { setBeat(event.currentTarget.currentTime >= 4.15 ? 2 : event.currentTarget.currentTime >= 1.85 ? 1 : 0); }} onEnded={onFinish} onError={() => { if (source?.includes("-av1")) setSource(source.replace("-av1", "")); else onFinish(); }} aria-hidden="true" tabIndex={-1} />
     <div className="of-shade" />
     <header className="of-header"><span className="of-mark">a<span>/</span>a</span><div className="of-header-links"><nav><Link href="/short">Short version</Link><button onClick={onFinish}>Skip intro <span aria-hidden="true">→</span></button></nav><SocialLinks /></div></header>
-    <div key={named ? "named" : "first"} className={`of-caption${named ? " of-named" : ""}`} aria-live="off">
-      {named ? <><p>My name’s</p><h2><FilmTitle words={["AMMAR", "ADAM."]} /></h2><p>CS &amp; Finance at Waterloo.</p></> : <><h2><FilmTitle words={["Alright."]} /></h2><p>Let’s do this one more time.</p></>}
+    <div key={beat} className={`of-caption${beat > 0 ? " of-named" : ""}`} aria-live="off">
+      {caption.pre && <p>{caption.pre}</p>}
+      {caption.lines.length > 0 && <h2><FilmTitle words={caption.lines} /></h2>}
+      <p>{caption.aside}</p>
     </div>
     <div className="of-progress" aria-hidden="true"><i /></div>
   </motion.section>;

@@ -8,72 +8,38 @@ import { FilmTitle } from "./FilmTitle";
 import { CityMuralBackground } from "./CityMuralBackground";
 import { careerArrivals, getArrivalBySlug } from "@/data/arrivals";
 import { projects } from "@/data/departures";
+import { INTRO_COPY, EXPERIENCE_COPY, PROJECT_COPY } from "@/data/filmCopy";
 import "./manifest.css";
 
-const VOICE = [
-  { pre: "", lines: ["Alright."], aside: "Let’s do this one more time." },
-  { pre: "My name’s", lines: ["Ammar", "Adam."], aside: "CS & Finance at Waterloo." },
-  { pre: "Most days, I’m", lines: ["Making", "things."], aside: "AI tools. Character voices.\nThe occasional five-agent argument." },
-  { pre: "And finding", lines: ["My", "people."], aside: "Builders, founders, friends.\nCome on. I’ll show you." },
-];
-const BEATS = [0, .055, .112, .175, .24];
+const BEATS = [0, .055, .175, .24];
 
 export function SpokenIntro({ t, reduced }: { t: MotionValue<number>; reduced: boolean }) {
   const subscribe = useCallback((update: () => void) => t.on("change", update), [t]);
-  const read = useCallback(() => Math.min(3, BEATS.slice(1, -1).filter(cut => t.get() >= cut).length), [t]);
+  const read = useCallback(() => Math.min(INTRO_COPY.length - 1, BEATS.slice(1, -1).filter(cut => t.get() >= cut).length), [t]);
   const beat = useSyncExternalStore(subscribe, read, () => 0);
   return <IntroBeat key={beat} t={t} beat={beat} reduced={reduced} />;
 }
 
 function IntroBeat({ t, beat, reduced }: { t: MotionValue<number>; beat: number; reduced: boolean }) {
-  const voice = VOICE[beat];
+  const voice = INTRO_COPY[beat];
   const local = useTransform(t, [BEATS[beat], BEATS[beat + 1]], [0, 1]);
   const opacity = useTransform(local, [0, .07, .85, 1], [beat === 0 || reduced ? 1 : .15, 1, 1, reduced ? 1 : .1]);
   const y = useTransform(local, [0, 1], [0, 0]);
-  return <motion.section className={`tj-intro tj-intro-${beat}`} data-intro-beat={beat} style={{ opacity, y }} aria-label="Introduction">
+  return <motion.section className={`tj-intro tj-intro-${beat === 2 ? 3 : beat}`} data-intro-beat={beat} style={{ opacity, y }} aria-label="Introduction">
     {voice.pre && <p className="tj-voice-lead">{voice.pre}</p>}
-    <h2><FilmTitle words={voice.lines} /></h2>
+    {voice.lines.length > 0 && <h2><FilmTitle words={voice.lines} /></h2>}
     <p className="tj-voice-aside">{voice.aside}</p>
     {beat === 0 && <p className="tj-start-cue"><span aria-hidden="true">↓</span> Scroll to continue</p>}
   </motion.section>;
 }
 
-const WORK = [
-  { line: "I was sixteen when I started.", role: "M&A Summer Analyst", result: "$50M+", label: "in buy- and sell-side deal flow supported.", body: "At 16, I became Alpen’s youngest intern, working in equity advisory and learning financial modelling and investment research." },
-  { line: "Next, I put code to work.", role: "Product Engineering Intern", result: "Months → hours", label: "to set up a demo across 8 product capabilities.", body: "I automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%." },
-  { line: "Turns out, I like the useful stuff.", role: "AI Engineer (Contract)", result: "Weeks → hours", label: "to prepare a KYC package during my internship.", body: "I now build AI tools for Legal & Compliance at a $46B AUM asset manager: a six-tool Legal AI Hub and Doppel, a local-LLM computer-use agent." },
-  { line: "Building gets better with people.", role: "Founding Builder Lead", result: "1 of 5", label: "Founding Builder Leads selected across North America.", body: "I scout student builders and help them adopt OpenAI’s developer tools." },
-  { line: "Good ideas deserve a shot.", role: "Pear VC Fellow", result: "Early-stage founders", label: "sourcing startups and founder talent.", body: "I source and evaluate early-stage startups and founder talent as a Pear VC Fellow." },
-];
-
-const PROJECT_VOICE = [
-  { line: "Yes, I made my GPS talk.", role: "Creator · Voice software", result: "43 prompts. One tap.", label: "Character voices you can install in Waze.", body: "I reverse-engineered Waze’s undocumented voice format and built an open-source SDK for text-to-speech, source separation, and round-trip validation." },
-  { line: "Five agents. I checked their work.", role: "Creator · AI & finance", result: "5 agents. Honest evals.", label: "Stock research with live news and portfolio optimization.", body: "I built a five-agent stock debate, then tested it with walk-forward evaluations. A simple momentum baseline beat the LLM ranker and exposed inflated backtests." },
-  { line: "Some projects aren’t code.", role: "Managing Director", result: "$13.9M", label: "raised by founders WVG has helped.", body: "I run a 1,300+ member student venture community with 30+ student startup placements. WVG has helped founders raise $13.9M. I support founders with market research and partner introductions, including Smoov’s expansion beyond the US." },
-  { line: "Get everyone in the same room.", role: "Organizer · Community events", result: "70 events · $6K+", label: "in sponsorship for Waterloo Tech Week.", body: "I ran outreach to 60+ companies and moderated founder conversations." },
-];
-
 type StorySelection = { selected: number; select: (index: number) => void; onOpenChange?: (open: boolean) => void };
 type DetailLink = { label: string; url: string };
 type DetailContent = { name: string; role: string; location?: string; result: string; body: string; image?: string; links: DetailLink[] };
 
-const WORK_RESULTS = [
-  "$50M+ in deal flow supported.",
-  "Sales demos: months → hours.",
-  "KYC prep: weeks → hours.",
-  "1 of 5 leads in North America.",
-  "Finding founders early.",
-];
-const PROJECT_RESULTS = [
-  "43 Waze prompts. One-tap install.",
-  "5-agent research. Honest evals.",
-  "Helped founders raise $13.9M.",
-  "70 events. $6K+ raised.",
-];
-
-function SceneReadout({ kind, selected, select, names, role, result, detail, slug, onOpenChange }: {
+function SceneReadout({ kind, selected, select, names, role, tag, result, detail, slug, onOpenChange }: {
   onOpenChange?: (open: boolean) => void; kind: "experience" | "project"; selected: number; select: (index: number) => void;
-  names: string[]; role: string; result: string; detail: DetailContent; slug: string;
+  names: string[]; role: string; tag: string; result: string; detail: DetailContent; slug: string;
 }) {
   const [open, setOpen] = useState(false);
   useEffect(() => { onOpenChange?.(open); return () => onOpenChange?.(false); }, [open, onOpenChange]);
@@ -82,13 +48,13 @@ function SceneReadout({ kind, selected, select, names, role, result, detail, slu
   return <section className={`mf-scene mf-${section}`} aria-label={section}>
     <div className="mf-panel" data-experience-detail={kind === "experience" ? slug : undefined} data-project-detail={kind === "project" ? slug : undefined}>
       <div className="mf-caption" key={slug}>
-      <div className="mf-readout-label"><span>{kind === "experience" ? WORK[selected].line : PROJECT_VOICE[selected].line}</span><span className="mf-item-number">{selected + 1} <i>/ {names.length}</i></span></div>
+      {tag && <div className="mf-readout-label"><span>{tag}</span></div>}
       <div className="mf-identity">
         <h2 className="mf-sr-only">{detail.name}</h2>
         <select aria-label={`Choose ${kind}`} value={selected} onChange={event => select(Number(event.target.value))}>
           {names.map((name, index) => <option key={name} value={index}>{name}</option>)}
         </select>
-        <p className="mf-role">{role}</p>
+        {role && <p className="mf-role">{role}</p>}
       </div>
       <p className="mf-result">{result}</p>
       </div>
@@ -150,11 +116,13 @@ function StoryDetails({ id, open, onClose, item, section }: { id: string; open: 
 
 export function ExperienceStory({ selected, select, onOpenChange }: StorySelection) {
   const current = careerArrivals[selected];
-  return <SceneReadout onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={careerArrivals.map(item => item.from)} role={WORK[selected].role} result={WORK_RESULTS[selected]} slug={current.slug} detail={{ name: current.from, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
+  const copy = EXPERIENCE_COPY.find(item => item.slug === current.slug)!;
+  return <SceneReadout onOpenChange={onOpenChange} kind="experience" selected={selected} select={select} names={EXPERIENCE_COPY.map(item => item.name)} role={copy.role} tag={copy.tag} result={copy.line} slug={current.slug} detail={{ name: copy.name, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, image: current.image, links: current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : [] }} />;
 }
 
 export function ProjectStory({ selected, select, onOpenChange }: StorySelection) {
   const current = projects[selected];
+  const copy = PROJECT_COPY.find(item => item.slug === current.slug)!;
   const community = getArrivalBySlug(current.slug === "waterloo-tech-week" ? "hack-the-north" : current.slug);
-  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={projects.map(item => item.slug === "waterloo-tech-week" ? "Tech Week / HTN" : item.name)} role={PROJECT_VOICE[selected].role} result={PROJECT_RESULTS[selected]} slug={current.slug} detail={{ name: current.name, role: PROJECT_VOICE[selected].role, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
+  return <SceneReadout onOpenChange={onOpenChange} kind="project" selected={selected} select={select} names={PROJECT_COPY.map(item => item.name)} role={copy.role} tag={copy.tag} result={copy.line} slug={current.slug} detail={{ name: copy.name, role: community?.detailTitle ?? "Creator", location: community?.origin, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, image: current.screenshot, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
 }

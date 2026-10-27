@@ -328,7 +328,6 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    else{frame.position.set(photoLeft+(w+.18)*.5,y,z-4.25);photoLeft+=w+.18+.30;}
    scene.add(frame);meshBlock(w+.18,h+.18,.13,ink,frame);meshBlock(w+.09,h+.09,.06,cream,frame,0,0,.045);
    const picture=plane(w,h,texture(memory.src,.52),frame);picture.position.z=.085;picture.userData.photoIndex=memory.photoIndex;photos.push(picture);
-   const caption=plane(Math.min(Math.max(w,1.85),2.65),.34,canvasTexture((ctx,W,H)=>{ctx.fillStyle="#163039";ctx.fillRect(0,0,W,H);ctx.fillStyle="#f3e9d5";ctx.font="500 39px Arial";ctx.fillText(memory.caption,24,63,W-48);},768,96),frame);caption.position.set(0,-h*.5-.28,.09);
   });
   // Gate seating lives opposite each shop, behind the open walking lane.
   block(.22,4.0,.22,4.7,2,z,steel);const gate=plane(2.6,1.0,label(shop.code,"GATE","#7bdce9",768,256));gate.position.set(4.7,3.5,z+.15);
@@ -339,6 +338,17 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    rod([x-.4,0,z],[x-.4,.6,z],.04,steel);rod([x+.4,0,z],[x+.4,.6,z],.04,steel);
   }
  });
+ // The only concourse narration is painted onto an entrance transom.
+ const concourseLine=canvasTexture((ctx,W,H)=>{
+  ctx.clearRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 52px FilmHand, cursive";
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("I do everything on purpose. Look around.",W/2,H/2,W-30);
+ },1024,128);
+ const concourseIntroRoot=new THREE.Group();scene.add(concourseIntroRoot);
+ const transom=new THREE.Mesh(unitBox,ink);transom.scale.set(6.65,.98,.12);transom.position.z=-.09;concourseIntroRoot.add(transom);
+ const concourseLettering=plane(6.4,.8,concourseLine,concourseIntroRoot,true);
+ concourseLettering.name="concourse-painted-introduction";
+ concourseIntroRoot.position.set(-1.9,4.05,-58.4);
  // The rotating roast is a continuous painted mesh in front of glowing grill bars.
  // The grill faces the walking route from the end of the service counter.
  block(1.75,3.8,.22,-5.9,2.3,-59.95,ink,[0,0,0],true);
@@ -479,6 +489,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   update(state){
    for(const [src,entry]of deferredTextures)if(!entry.started&&state.t>=entry.at)startTexture(src,entry);
    architecture.update(state.t,Math.abs(state.lookYaw??0)>.12);
+   concourseIntroRoot.scale.set(state.aspect<.8?.50:1,state.aspect<.8?.78:1,1);concourseIntroRoot.position.x=state.aspect<.8?-.85:-1.9;
    let p=clamp(state.t);if(state.reduced)p=p<.24?.20:p<.45?.30:p<.65?.49:p<.72?.665:p<.79?.735:p<.86?.805:.94;
    const next=CAMERA.findIndex(key=>key.at>=p),b=CAMERA[next<0?CAMERA.length-1:next],a=CAMERA[Math.max(0,(next<0?CAMERA.length-1:next)-1)];const f=a===b?0:smooth((p-a.at)/(b.at-a.at));
    camera.position.set(...a.position).lerp(temp.set(...b.position),f);look.set(...a.target).lerp(temp.set(...b.target),f);camera.fov=mix(a.fov,b.fov,f)+(state.aspect<.8?9:0);camera.aspect=state.aspect;

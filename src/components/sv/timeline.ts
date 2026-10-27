@@ -10,10 +10,10 @@ export const SEG = {
 export const CUTS = [0.24, 0.45, 0.65, 0.86];
 export const CHAPTERS = [
   { id: "top", label: "The introduction", short: "Intro", at: 0 },
-  { id: "experience", label: "Experience", short: "Experience", at: 0.255 },
-  { id: "projects", label: "Projects", short: "Projects", at: 0.465 },
-  { id: "people", label: "On the way to the gate", short: "Life", at: 0.665 },
-  { id: "contact", label: "The next departure", short: "Contact", at: 0.925 },
+  { id: "experience", label: "Check-in", short: "Check-in", at: 0.255 },
+  { id: "projects", label: "Security", short: "Security", at: 0.465 },
+  { id: "people", label: "Concourse", short: "Concourse", at: 0.665 },
+  { id: "contact", label: "Gate", short: "Gate", at: 0.925 },
 ];
 
 export function useSceneProgress(t: MotionValue<number>, chapter: number) {
