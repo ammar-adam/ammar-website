@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "name": "desktop",
+      "singleHeader": true,
+      "type": {
+        "family": "FilmHand, cursive",
+        "size": "144px"
+      },
+      "skip": true
+    },
+    {
+      "name": "mobile",
+      "singleHeader": true,
+      "type": {
+        "family": "FilmHand, cursive",
+        "size": "89.7px"
+      },
+      "skip": true
+    }
+  ],
+  "previousCompleteRun": "All18 desktop/mobile cards, drawer width/Escape/focus restoration, keyboard stepping, concourse-only drag/reset, mobile navigation, and native PDF200 + scan/tear completion passed before the final intro duplicate-header assertion. That duplicate is fixed and independently checked at both sizes here.",
+  "notes": "Interaction harness waits for native smooth scroll and drawer animations before its next independent assertion."
+}

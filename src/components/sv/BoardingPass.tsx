@@ -17,9 +17,6 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
   const [scanNumber, setScanNumber] = useState(0);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const busy = useRef(false);
-  const scanner = useRef<HTMLAnchorElement>(null);
-  const viewer = useRef<HTMLDialogElement>(null);
-  const closeButton = useRef<HTMLButtonElement>(null);
   const y = useTransform(p, [0, .3, 1], [reduced ? 0 : 24, 0, reduced ? 0 : -8]);
   const rotate = useTransform(p, [0, .5, 1], [reduced ? 0 : -3, reduced ? 0 : -1.5, reduced ? 0 : -.75]);
 
@@ -44,35 +41,14 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
     };
   }, []);
 
-  useEffect(() => {
-    if (status !== "opening") return;
-    const dialog = viewer.current;
-    if (!dialog) return;
-    const trigger = scanner.current;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    dialog.showModal();
-    closeButton.current?.focus({ preventScroll: true });
-    return () => {
-      if (dialog.open) dialog.close();
-      document.body.style.overflow = previousOverflow;
-      if (trigger?.isConnected) trigger.focus({ preventScroll: true });
-    };
-  }, [status]);
-
-  function resetTicket() {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
-    busy.current = false;
-    setStatus("ready");
-    onReset?.();
-  }
-
   function scan(event: MouseEvent<HTMLAnchorElement>) {
     // Keep the browser's normal new-tab/window behavior for modified activation.
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    if (busy.current) return;
+    if (busy.current) { event.preventDefault(); return; }
+    // The native anchor opens the PDF in this same click's user activation.
+    // The original tab keeps the authored scan / tear / departure sequence.
+    timers.current.forEach(clearTimeout);
+    onReset?.();
     busy.current = true;
     setScanNumber((value) => value + 1);
     setStatus("scanning");
@@ -82,15 +58,15 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
         setStatus("departing");
         onDeparture();
       }, DEPARTURE_MS),
-      setTimeout(() => setStatus("opening"), OPEN_MS),
+      setTimeout(() => { setStatus("opening"); busy.current = false; }, OPEN_MS),
     ];
   }
 
   const detached = status === "tearing" || status === "departing" || status === "opening";
-  const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? "Pass accepted" : status === "departing" || status === "opening" ? "Opening resume" : "Scan & open resume";
-  const announcement = status === "scanning" ? "Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure. Opening resume PDF." : status === "opening" ? "Resume PDF is open. Close the viewer to return to the terminal." : "Ready to scan. Resume opens after two seconds.";
+  const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? "Pass accepted" : status === "departing" ? "Departing" : status === "opening" ? "Résumé opened" : "Scan & open resume";
+  const announcement = status === "scanning" ? "Résumé opened in a new tab. Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure." : status === "opening" ? "Résumé opened in a new tab. You can scan again." : "Scan the boarding pass to open the résumé PDF in a new tab.";
 
-  return <div className={`bp-scene${reduced ? " bp-reduced" : ""}`} data-scan-status={status} data-scan-duration={SCAN_MS} data-departure-delay={DEPARTURE_MS} data-open-delay={OPEN_MS}>
+  return <div className={`bp-scene${reduced ? " bp-reduced" : ""}`} data-scan-status={status} data-scan-duration={SCAN_MS} data-departure-delay={DEPARTURE_MS} data-animation-duration={OPEN_MS}>
     <div className="bp-layout">
       <div className="bp-introduction">
         <p className="bp-eyebrow">And that’s me.</p>
@@ -110,7 +86,7 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
         <div className="bp-stub">
           <div className="bp-stub-header"><span>RESUME / PDF</span><strong>AMM01</strong></div>
           <div className="bp-stub-passenger"><span>ADAM / AMMAR</span><strong>YKF <i aria-hidden="true">→</i> NEXT</strong></div>
-          <a ref={scanner} className="bp-scanner" data-scan-trigger="true" data-scan-status={status} href={RESUME} target="_blank" rel="noreferrer" aria-label="Scan boarding pass and open Ammar Adam’s resume PDF after two seconds" aria-busy={status !== "ready"} onClick={scan}>
+          <a className="bp-scanner" data-scan-trigger="true" data-scan-status={status} href={RESUME} target="_blank" rel="noopener noreferrer" aria-label="Scan boarding pass and open Ammar Adam’s résumé PDF in a new tab" aria-busy={status !== "ready" && status !== "opening"} onClick={scan}>
             <span className="bp-barcode" aria-hidden="true"><span className="bp-code-bars" />{status === "scanning" && <span key={scanNumber} className="bp-scan-line" style={{ animationDuration: `${SCAN_MS}ms` }} />}<span className="bp-code-number">AMM01 / AMMAR-ADAM / 01A</span></span>
             <span className="bp-scan-label">{label}<b aria-hidden="true">↗</b></span>
           </a>
@@ -120,20 +96,9 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
 
       <div className="bp-contact">
         <a className="bp-hello" href={siteConfig.socialLinks.email}>Say hello <span aria-hidden="true">↗</span></a>
-        <nav className="bp-socials" aria-label="Find Ammar online"><a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer">GitHub</a><a href={siteConfig.socialLinks.x} target="_blank" rel="noreferrer">X</a><a className="bp-direct-link" href={RESUME} target="_blank" rel="noreferrer">Open PDF directly <span aria-hidden="true">↗</span></a></nav>
+        <nav className="bp-socials" aria-label="Find Ammar online"><a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer">GitHub</a><a href={siteConfig.socialLinks.x} target="_blank" rel="noreferrer">X</a><a href={siteConfig.socialLinks.email}>Email</a></nav>
       </div>
     </div>
-    <dialog ref={viewer} className="bp-resume-dialog" data-resume-viewer="true" aria-labelledby="bp-resume-title" onClose={resetTicket}>
-      <header className="bp-viewer-header">
-        <div><p>AMMAR ADAM</p><h2 id="bp-resume-title">Résumé</h2></div>
-        <button ref={closeButton} className="bp-viewer-close" type="button" onClick={() => viewer.current?.close()} aria-label="Close resume viewer"><span aria-hidden="true">×</span></button>
-      </header>
-      <nav className="bp-viewer-links" aria-label="Resume PDF options">
-        <a href={RESUME} target="_blank" rel="noreferrer">Open in new tab <span aria-hidden="true">↗</span></a>
-        <a href={RESUME} download="Ammar_Adam.pdf">Download PDF <span aria-hidden="true">↓</span></a>
-      </nav>
-      {status === "opening" && <iframe className="bp-resume-frame" src={RESUME} title="Ammar Adam résumé" />}
-    </dialog>
     <p className="bp-announcement" role="status" aria-live="polite" aria-atomic="true">{announcement}</p>
   </div>;
 }

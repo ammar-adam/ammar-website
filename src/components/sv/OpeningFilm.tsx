@@ -1,14 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import { FilmTitle } from "./FilmTitle";
 import { INTRO_COPY } from "@/data/filmCopy";
-import { SocialLinks } from "./SocialLinks";
+import { JourneyHeader } from "./JourneyHeader";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import "./opening-film.css";
 
-export function OpeningFilm({ onFinish, onPrepareWorld }: { onFinish: () => void; onPrepareWorld?: () => void }) {
+export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish: () => void; onPrepareWorld?: () => void; onNavigate: (index: number) => void }) {
   const finish = useRef(onFinish);
   const prepareWorld = useRef(onPrepareWorld);
   const video = useRef<HTMLVideoElement>(null);
@@ -78,24 +77,23 @@ export function OpeningFilm({ onFinish, onPrepareWorld }: { onFinish: () => void
   }, []);
 
   useEffect(() => {
-    // A slow download or blocked autoplay must never hold the visitor captive.
-
-    const end = window.setTimeout(() => finish.current(), 6000);
-    const escape = (event: KeyboardEvent) => { if (event.key === "Escape") finish.current(); };
+    // The visible Skip control remains available even if autoplay is blocked.
+    // Let the actual six-second film finish instead of cutting it by wall time.
+    const escape = (event: KeyboardEvent) => { if (event.key === "Escape" && !event.defaultPrevented) finish.current(); };
     window.addEventListener("keydown", escape);
-    return () => { clearTimeout(end); window.removeEventListener("keydown", escape); };
+    return () => { window.removeEventListener("keydown", escape); };
   }, []);
 
   return <motion.section className="opening-film" aria-label="Introduction" initial={false} exit={{ opacity: 0 }} transition={{ duration: .2 }}>
     <picture className="of-poster"><source media="(max-width: 720px)" srcSet="/film/arrival-portrait.webp?v=set-v8" /><img src="/film/arrival-desktop.webp?v=set-v8" alt="" /></picture>
     <video ref={video} className="of-video" src={source} autoPlay muted playsInline preload="auto" onTimeUpdate={event => { setBeat(event.currentTarget.currentTime >= 4.15 ? 2 : event.currentTarget.currentTime >= 1.85 ? 1 : 0); }} onEnded={onFinish} onError={() => { if (source?.includes("-av1")) setSource(source.replace("-av1", "")); else onFinish(); }} aria-hidden="true" tabIndex={-1} />
     <div className="of-shade" />
-    <header className="of-header"><span className="of-mark">a<span>/</span>a</span><div className="of-header-links"><nav><Link href="/short">Short version</Link><button onClick={onFinish}>Skip intro <span aria-hidden="true">→</span></button></nav><SocialLinks /></div></header>
+    <JourneyHeader chapter={0} onNavigate={onNavigate} />
     <div key={beat} className={`of-caption${beat > 0 ? " of-named" : ""}`} aria-live="off">
       {caption.pre && <p>{caption.pre}</p>}
       {caption.lines.length > 0 && <h2><FilmTitle words={caption.lines} /></h2>}
       <p>{caption.aside}</p>
     </div>
-    <div className="of-progress" aria-hidden="true"><i /></div>
+    <button className="of-skip" type="button" onClick={onFinish}>Skip intro <span aria-hidden="true">→</span></button>
   </motion.section>;
 }

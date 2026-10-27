@@ -5,7 +5,7 @@ import "./terminal-journey.css";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import "./film-type.css";
-import { SocialLinks } from "./SocialLinks";
+import { JourneyHeader } from "./JourneyHeader";
 import { OpeningFilm } from "./OpeningFilm";
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { AnimatePresence, animate, motion, useMotionValue, useScroll, useSpring, type AnimationPlaybackControls } from "framer-motion";
@@ -20,7 +20,6 @@ const prepareTerminalWorld = () => { void loadTerminalWorld().then(module => mod
 const TerminalWorld = dynamic(() => loadTerminalWorld().then(module => module.TerminalWorld), { ssr: false });
 import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
-import { JourneyNavigation } from "./JourneyNavigation";
 import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
@@ -43,8 +42,8 @@ export function SpiderVerse() {
   const experienceProgress = useSceneProgress(t, 1);
   const projectProgress = useSceneProgress(t, 2);
   const boardingProgress = useSceneProgress(t, 4);
-  const [experience, selectExperience] = useSelection(experienceProgress, 5, true);
-  const [project, selectProject] = useSelection(projectProgress, 4, true);
+  const [experience] = useSelection(experienceProgress, 5);
+  const [project] = useSelection(projectProgress, 4);
   const departure = useMotionValue(0);
   const departureAnimation = useRef<AnimationPlaybackControls | null>(null);
   const resetDeparture = useCallback(() => {
@@ -64,10 +63,33 @@ export function SpiderVerse() {
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [ready, setReady] = useState(false);
   const [intro, setIntro] = useState(true);
+  const [introKey, setIntroKey] = useState(0);
+  const [scrollHint, setScrollHint] = useState(false);
+  const scrollHintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const [lookHint, setLookHint] = useState(false);
+  const lookHintSeen = useRef(false);
+  const lookHintTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const dismissLookHint = useCallback(() => setLookHint(false), []);
+  useEffect(() => {
+    if (chapter !== 3 || lookHintSeen.current || intro) return;
+    const frame = requestAnimationFrame(() => {
+      lookHintSeen.current = true;
+      setLookHint(true);
+      lookHintTimer.current = setTimeout(dismissLookHint, 4000);
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [chapter, intro, dismissLookHint]);
+  useEffect(() => () => {
+    if (scrollHintTimer.current) clearTimeout(scrollHintTimer.current);
+    if (lookHintTimer.current) clearTimeout(lookHintTimer.current);
+  }, []);
   // Constructing the WebGL world during video playback competed for the GPU.
   // Keep it dormant until the film ends; preserve the instance on later replays.
   const finishIntro = useCallback((seek = true) => {
     setIntro(false);
+    setScrollHint(true);
+    if (scrollHintTimer.current) clearTimeout(scrollHintTimer.current);
+    scrollHintTimer.current = setTimeout(() => setScrollHint(false), 4000);
     if (seek) {
       const progress = .2405;
       scrollYProgress.set(progress);
@@ -126,17 +148,42 @@ export function SpiderVerse() {
     window.history.replaceState(null, "", index ? `#${CHAPTERS[index].id}` : window.location.pathname);
   }, [reduced, scrollYProgress, smooth]);
 
-  const seekItem = (section: 1 | 2, index: number) => {
-    const node = track.current;
-    if (!node) return;
-    const start = CUTS[section - 1];
-    const end = CUTS[section];
-    const count = section === 1 ? 5 : 4;
-    const progress = start + (index + .45) / count * (end - start);
-    if (section === 1) selectExperience(index);
-    else selectProject(index);
-    window.scrollTo({ top: (node.offsetHeight - window.innerHeight) * progress, behavior: "instant" });
-  };
+  const navigate = useCallback((index: number) => {
+    if (index === 0 && !reduced) {
+      setScrollHint(false);
+      setIntroKey(value => value + 1);
+      setIntro(true);
+      jump(0);
+    } else {
+      if (intro) finishIntro(false);
+      requestAnimationFrame(() => jump(index));
+    }
+  }, [finishIntro, intro, jump, reduced]);
+
+  useEffect(() => {
+    const steps = [0,
+      ...Array.from({ length: 5 }, (_, index) => CUTS[0] + (index + .45) / 5 * (CUTS[1] - CUTS[0])),
+      ...Array.from({ length: 4 }, (_, index) => CUTS[1] + (index + .45) / 4 * (CUTS[2] - CUTS[1])),
+      .665, .735, .805, CHAPTERS[4].at];
+    const keydown = (event: KeyboardEvent) => {
+      if (intro || detailsOpen || event.defaultPrevented || event.repeat || event.altKey || event.ctrlKey || event.metaKey) return;
+      if (document.querySelector("dialog[open]")) return;
+      const target = event.target;
+      if (target instanceof HTMLElement && target.closest("input,textarea,select,[contenteditable='true']")) return;
+      if (event.key === " " && target instanceof HTMLElement && target.closest("a,button")) return;
+      if (document.querySelector('.journey-menu-button[aria-expanded="true"]')) return;
+      const backwards = event.key === "ArrowUp" || (event.key === " " && event.shiftKey);
+      if (!backwards && event.key !== "ArrowDown" && event.key !== " ") return;
+      event.preventDefault();
+      const current = t.get();
+      const nearest = steps.reduce((best, step, index) => Math.abs(step - current) < Math.abs(steps[best] - current) ? index : best, 0);
+      const next = steps[nearest + (backwards ? -1 : 1)];
+      if (next === undefined || !track.current) return;
+      window.scrollTo({ top: (track.current.offsetHeight - innerHeight) * next, behavior: reduced ? "instant" : "smooth" });
+    };
+    window.addEventListener("keydown", keydown);
+    return () => window.removeEventListener("keydown", keydown);
+  }, [detailsOpen, intro, reduced, t]);
 
   useEffect(() => {
     const aliases: Record<string, string> = { checkin: "experience", security: "projects", passport: "top", origins: "top", photos: "people", concourse: "people", boarding: "contact", resume: "contact" };
@@ -151,30 +198,25 @@ export function SpiderVerse() {
     return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", navigate); };
   }, [jump]);
 
-  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready} data-intro-playing={intro && !reduced}>
+  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready} data-scroll-hint={scrollHint} data-intro-playing={intro && !reduced}>
     <h1 className="tj-sr-only">Ammar Adam — CS & Finance at Waterloo</h1>
     <Link className="tj-skip" href="/short">Skip to the short version</Link>
     <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">
-        {(!intro || reduced || ready) && <TerminalWorld t={t} reduced={reduced} active={!intro && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} />}
+        {(!intro || reduced || ready) && <TerminalWorld t={t} reduced={reduced} active={!intro && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} allowLook={chapter === 3} onLook={dismissLookHint} />}
         <div className="tj-screen-shade" aria-hidden="true" />
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
-          {chapter === 1 && <ExperienceStory selected={experience} select={index => seekItem(1, index)} onOpenChange={setDetailsOpen} />}
-          {chapter === 2 && <ProjectStory selected={project} select={index => seekItem(2, index)} onOpenChange={setDetailsOpen} />}
+          {chapter === 1 && <ExperienceStory selected={experience} onOpenChange={setDetailsOpen} />}
+          {chapter === 2 && <ProjectStory selected={project} onOpenChange={setDetailsOpen} />}
           {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
-        <header className="tj-header">
-          <div className="tj-header-left"><button className="tj-brand" onClick={() => { jump(0); if (!reduced) setIntro(true); }} aria-label="Replay introduction"><span aria-hidden="true">a<span>/</span>a</span></button><JourneyNavigation chapter={chapter} onNavigate={index => { jump(index); if (index === 0 && !reduced) setIntro(true); }} /></div>
-          <div className="tj-header-links"><nav aria-label="Portfolio shortcuts"><Link className="tj-short-button" href="/short">Short version <span aria-hidden="true">↗</span></Link></nav><SocialLinks /></div>
-        </header>
-        <footer className="tj-footer">
-          <p className="tj-scroll-cue">{!ready ? "Loading the terminal…" : chapter === 4 ? "Let’s make something happen." : <>Scroll to continue <span aria-hidden="true">↓</span></>}</p>
-          {chapter < 4 ? <button className="tj-next" onClick={() => jump(chapter + 1)}>{["Experience", "Projects", "Concourse", "Résumé"][chapter]}<span aria-hidden="true">→</span></button> : <a className="tj-credits" href="/credits">Visual credits ↗</a>}
-        </footer>
-        <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} /></div>
+        {(!intro || reduced) && <JourneyHeader chapter={chapter} onNavigate={navigate} />}
+        {scrollHint && chapter !== 3 && chapter !== 4 && <p className="tj-scroll-hint" aria-hidden="true">Scroll <span>↓</span></p>}
+        <AnimatePresence>{chapter === 3 && lookHint && <motion.p key="look-hint" className="tj-look-hint" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .2 }}>Drag to look around</motion.p>}</AnimatePresence>
+        <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} />{CUTS.map(cut => <i key={cut} style={{ left: `${cut * 100}%` }} />)}</div>
       </div>
     </div>
-    <AnimatePresence>{intro && !reduced && <OpeningFilm key="opening-film" onFinish={() => finishIntro()} onPrepareWorld={prepareTerminalWorld} />}</AnimatePresence>
+    <AnimatePresence>{intro && !reduced && <OpeningFilm key={introKey} onFinish={() => finishIntro()} onPrepareWorld={prepareTerminalWorld} onNavigate={navigate} />}</AnimatePresence>
   </main>;
 }
