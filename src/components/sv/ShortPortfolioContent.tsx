@@ -45,14 +45,14 @@ export function ShortPortfolioContent({ idPrefix = "short" }: { idPrefix?: strin
   return <>
     <header className="short-header" id={`${idPrefix}-about`} tabIndex={-1}>
       <h1>Ammar Adam</h1>
-      <nav className="short-socials" aria-label="Profile links">
-        <SocialLinks />
-        <a className="short-resume" href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>
-      </nav>
       <div className="short-introduction">
         <p>I study CS + Finance at <span className="short-brand-phrase">Waterloo <a className="short-brand-link" href="https://uwaterloo.ca/" target="_blank" rel="noopener noreferrer" aria-label="University of Waterloo" title="University of Waterloo"><Image className="short-brand short-brand-waterloo" src="/art/waterloo-official.png" alt="" width={164} height={189} unoptimized /></a></span>.</p>
         <p className="short-personal">I build software and bring people together. I love cooking + <span className="short-brand-phrase">eating food <a className="short-brand-link" href="https://beliapp.com/" target="_blank" rel="noopener noreferrer" aria-label="Beli" title="Beli"><Image className="short-brand short-brand-beli" src="/art/beli-official.png" alt="" width={300} height={300} unoptimized /></a></span>, <span className="short-brand-phrase">playing soccer <a className="short-brand-link" href="https://www.liverpoolfc.com/" target="_blank" rel="noopener noreferrer" aria-label="Liverpool FC" title="Liverpool FC"><Image className="short-brand short-brand-liverpool" src="/art/liverpool-official.png" alt="" width={136} height={244} unoptimized /></a></span>, and trying new things!</p>
       </div>
+      <nav className="short-socials" aria-label="Profile links">
+        <SocialLinks />
+        <a className="short-resume" href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>
+      </nav>
     </header>
     <div className="short-columns">
       <section className="short-section" id={`${idPrefix}-work`} aria-labelledby={`${idPrefix}-work-title`}>

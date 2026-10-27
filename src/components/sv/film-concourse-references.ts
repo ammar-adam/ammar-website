@@ -99,9 +99,8 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
       ctx.direction = "ltr";
     }, lines.map((text, index) => ({ text, pixels: size, y: top + index * spacing })));
   }
-  // Food boards are painted still lifes, with a small menu at their lower edge.
-  // Pigment strokes follow the bowl, bread, glass and leaves; the shop keeps its
-  // original physical sign size and its cooking props remain the foreground.
+  // A few compact still lifes identify the stalls; the food itself carries
+  // the references. Counter-front artwork leaves the photo wall and aisle clear.
   function foodSign(builder: Builder, record: ConcourseReference, width: number, height: number, position: SetVector, kind: "nihari" | "ridgeway" | "matcha" | "dubai" | "thai") {
     const lettering: { text: string; pixels: number; y: number }[] = [];
     const resolution: readonly [number, number] = [1024, Math.round(1024 * height / width)];
@@ -210,7 +209,7 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
         for (let i = 0; i < 4; i++) { ellipse(.72 + i * .014, .28 + i * .07, .045, .034, C.red, -.2); stroke([[.695 + i * .014, .27 + i * .07], [.74 + i * .014, .29 + i * .07]], C.warm, .009); }
         stroke([[.88, .53], [.86, .20], [.79, .08]], C.gold, .007);
         for (let i = 0; i < 4; i++) { stroke([[.86 - i * .015, .20 - i * .025], [.93 - i * .012, .15 - i * .018]], C.blue, .018); stroke([[.86 - i * .015, .20 - i * .025], [.78 - i * .016, .23 - i * .02]], C.blue, .018); }
-        text(lines[0], .27, .77, .18, .42); text(lines[1], .73, .77, .18, .43); text(lines[2], .5, .94, .16, .8, C.gold);
+        text(lines[0], .5, .87, .20, .90, C.gold);
       } else {
         bowl(false);
         // Wide rice-noodle ribbons and a lime wedge; no generic ramen coil.
@@ -218,7 +217,7 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
         shape([[.65, .28], [.76, .31], [.71, .40]], C.gold); stroke([[.67, .30], [.71, .37], [.74, .32]], C.cream, .005);
         for (const x of [.32, .50, .60]) { ellipse(x, .37, .022, .018, C.red); stroke([[x - .03, .33], [x + .02, .30]], C.shadow, .009); }
         stroke([[.62, .26], [.89, .09]], C.gold, .010); stroke([[.65, .28], [.92, .12]], C.gold, .010); steam(.35, .22);
-        text(lines[0], .50, .75, .18, .90); text(lines[1], .25, .93, .17, .43, C.gold); text(lines[2], .75, .93, .17, .44, C.gold);
+        text(lines[0], .5, .87, .20, .90, C.gold);
       }
       // A few edge bristles sit inside each painted form rather than across it.
       stroke([[.06, .67], [.15, .68], [.20, .665]], C.blue, .006);
@@ -232,7 +231,7 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
     for (let i = 0; i < 8; i++) builder.box([.035, .83, .035], [-width / 2 + .17 + i * (width - .34) / 7, .67, depth / 2 + .025], "steel");
   }
 
-  make("concourse-nihari", (b, r) => {
+  make("concourse-nihari", b => {
     counter(b, 2.35, 1.25, "dark");
     b.add(lathe([[.43, 0], [.62, .08], [.66, .48], [.60, .62], [.56, .63], [.56, .18], [0, .16]], 20), "steel", [-.15, 1.28, 0]);
     b.add(new THREE.CylinderGeometry(.55, .55, .025, 20), "walnut", [-.15, 1.84, 0]);
@@ -240,8 +239,6 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
     b.add(new THREE.SphereGeometry(.64, 18, 7, 0, Math.PI * 2, 0, Math.PI / 2), "steel", [.60, 1.34, -.36], [0, 0, -.54], [1, .13, 1]);
     b.rod([.60, 1.36, -.36], [.60, 1.53, -.36], .045, "ink");
     b.rod([-.55, 1.83, .05], [-.85, 2.14, .16], .023, "gold");
-    foodSign(b, r, 2.95, 1.68, [0, 3.10, -.16], "nihari");
-    for (const side of [-1, 1]) b.rod([side * 1.27, 1.25, -.25], [side * 1.27, 4.01, -.25], .025, "steel");
   });
   make("concourse-ridgeway", (b, r) => {
     b.box([2.15, .16, 1.45], [0, .28, 0], "steel", [0, 0, 0], .04);
@@ -260,19 +257,19 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
     }
     combineShared(roast); moving(roast);
     animated.push(time => { roast.rotation.y = Math.floor(time * 12) / 12 * .11; });
-    for(const x of [-1.02,1.02])b.rod([x,3.62,-.06],[x,5.83,-.06],.025,"steel"); foodSign(b, r, 3.35, 1.05, [0, 5.30, -.06], "ridgeway");
+    for (const x of [-1.02, 1.02]) b.rod([x, 3.62, -.06], [x, 4.84, -.06], .025, "steel");
+    foodSign(b, r, 2.50, .70, [0, 4.45, -.06], "ridgeway");
   });
-  make("concourse-mango-matcha", (b, r) => {
+  make("concourse-mango-matcha", b => {
     b.add(lathe([[.19, 0], [.23, .04], [.255, .58], [.245, .64], [.225, .63], [.19, .07], [0, .06]], 18), "glass", [0, 0, 0], [0, 0, 0], [1, 1, 1], false);
     b.add(new THREE.CylinderGeometry(.219, .185, .27, 18), "gold", [0, .19, 0]);
     b.add(new THREE.CylinderGeometry(.237, .219, .25, 18), "sage", [0, .45, 0]);
     b.add(new THREE.CylinderGeometry(.241, .241, .032, 18), "ivory", [0, .59, 0]);
     b.rod([.08, .21, -.02], [.12, .97, -.05], .022, "ivory");
-    foodSign(b, r, 1.60, .60, [.07, .28, .53], "matcha");
   });
   make("concourse-dubai", (b, r) => {
     counter(b, 2.65, 1.18, "cyan");
-    foodSign(b, r, 2.95, 1.92, [0, 3.16, -.14], "dubai");
+    foodSign(b, r, 1.55, .65, [0, .68, .70], "dubai");
     for (let i = 0; i < 3; i++) {
       const x = -.72 + i * .72;
       b.add(new THREE.CylinderGeometry(.20, .26, .032, 16), "ivory", [x, 1.32, .06]);
@@ -284,7 +281,7 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
   });
   make("concourse-thai", (b, r) => {
     counter(b, 2.30, 1.10, "ivory");
-    foodSign(b, r, 3.05, 2.0, [0, 3.12, -.18], "thai");
+    foodSign(b, r, 1.55, .65, [0, .68, .66], "thai");
     for (const x of [-.66, 0, .66]) {
       b.add(lathe([[0, 0], [.12, 0], [.28, .10], [.33, .23], [.30, .25], [.13, .075], [0, .075]]), "dark", [x, 1.30, .05]);
       b.add(new THREE.CylinderGeometry(.26, .26, .025, 14), "gold", [x, 1.51, .05]);
@@ -601,7 +598,7 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
     combineShared(ball); moving(ball); moving(rig.rightArm);
     animated.push(time => { const phase = Math.floor(time * 12) / 12 * 3.0; ball.position.y = .20 + Math.abs(Math.sin(phase)) * .72; rig.rightArm.rotation.x = -.10 - Math.abs(Math.sin(phase)) * .20; });
   });
-  for (const id of ["concourse-wings-flyer", "concourse-london-board", "concourse-record-picks"]) make(id, (b, r) => sign(b, r, id.includes("record") ? 2.65 : 2.05, id.includes("record") ? 1.55 : 1.10, [0, 0, 0], { cream: true, hand: true, size: id.includes("record") ? 99 : 125 }));
+  make("concourse-record-picks", (b, r) => sign(b, r, 1.45, .85, [0, 0, 0], { cream: true, hand: true, size: 99 }));
   make("concourse-cinema-posters", (b, r) => {
     (r.text ?? []).forEach((title, index) => {
       const x = (index - .5) * 2.28;

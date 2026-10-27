@@ -6,16 +6,24 @@ import { ensurePaintUV } from "./film-paint-uv";
 import type { TerminalReference } from "@/data/references";
 import { protectFilmRegistration } from "./terminal-post";
 
-const GLYPHS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789→—-/·¾";
+const GLYPHS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789→—-/·¾…";
 const ATLAS_COLUMNS = 16, ATLAS_ROWS = Math.ceil(GLYPHS.length / ATLAS_COLUMNS);
 const TILE_WIDTH = .164, TILE_HEIGHT = .42, HALF_HEIGHT = .206, HALF_CENTER = .107;
-const PITCH = .185;
 const COLUMNS = [
- { label: "ROUTE", start: -5.12, count: 9 },
- { label: "DESTINATION", start: -3.12, count: 35 },
- { label: "STATUS", start: 3.43, count: 9 },
-] as const;
+ { label: "ROUTE", left: -5.22, right: -3.50, count: 9 },
+ { label: "DESTINATION", left: -3.20, right: 3.02, count: 35 },
+ { label: "STATUS", left: 3.48, right: 5.20, count: 9 },
+].map(column=>{
+ // Every cassette stays inside its column, with a clear gutter on either
+ // side of the dividers even when all 35 destination characters are occupied.
+ const pitch=(column.right-column.left)/column.count;
+ return{...column,pitch,start:column.left+pitch/2,width:Math.min(TILE_WIDTH,pitch-.021)};
+});
 const CELLS_PER_ROW = COLUMNS.reduce((sum, column) => sum + column.count, 0);
+const fitColumnText=(value:string,count:number)=>{
+ const letters=Array.from(value.trim().replace(/\s+/g," ").toUpperCase());
+ return letters.length>count?[...letters.slice(0,count-1),"…"].join(""):letters.join("");
+};
 type PrintedWord = { text: string; center: [number,number,number]; unitHeight: number };
 type GlyphPlate = { x:number; y:number; z:number; width:number; height:number; glyph:number; half:number; next?:number; flip?:number; tint?:THREE.Color };
 type Flip = { from:number; to:number; start:number; delay:number };
@@ -91,11 +99,11 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
   items.forEach((item,index)=>{transform.position.set(item.x,item.y,item.z);transform.rotation.set(0,0,0);transform.scale.set(item.width,item.height,1);transform.updateMatrix();mesh.setMatrixAt(index,transform.matrix);mesh.setColorAt(index,item.tint??white);});
   mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.computeBoundingSphere();parent.add(mesh);return{mesh,from,next};
  }
- const rowSources=Array.from({length:rowCount},(_,index)=>index),cellPositions:{x:number;y:number;column:number;slot:number}[]=[];
+ const rowSources=Array.from({length:rowCount},(_,index)=>index),cellPositions:{x:number;y:number;width:number;column:number;slot:number}[]=[];
  const fixedItems:GlyphPlate[]=[],movingItems:GlyphPlate[]=[],headings:PrintedWord[]=[];
  for(let row=0;row<rowCount;row++)for(const [columnIndex,column]of COLUMNS.entries())for(let slot=0;slot<column.count;slot++){
-  const x=column.start+slot*PITCH,y=.54-row*.55;cellPositions.push({x,y,column:columnIndex,slot});
-  for(const half of [0,1])fixedItems.push({x,y:y+(half?HALF_CENTER:-HALF_CENTER),z:.040,width:TILE_WIDTH,height:HALF_HEIGHT,glyph:0,half});
+  const x=column.start+slot*column.pitch,y=.54-row*.55;cellPositions.push({x,y,width:column.width,column:columnIndex,slot});
+  for(const half of [0,1])fixedItems.push({x,y:y+(half?HALF_CENTER:-HALF_CENTER),z:.040,width:column.width,height:HALF_HEIGHT,glyph:0,half});
   movingItems.push({x,y,z:.052,width:0,height:0,glyph:0,next:0,half:1,flip:1});
  }
  function heading(text:string,x:number,y:number,width:number,height:number){
@@ -114,15 +122,16 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
  const pinGeometry=keep(new THREE.SphereGeometry(1,6,4));
  const pins=new THREE.InstancedMesh(pinGeometry,palette.steel,cellPositions.length*2);instances.push(pins);pins.name="flap-hinge-end-pins";
  cellPositions.forEach((cell,index)=>{
-  transform.position.set(cell.x,cell.y,.005);transform.rotation.set(0,0,0);transform.scale.set(1,1,1);transform.updateMatrix();cassette.setMatrixAt(index,transform.matrix);
-  transform.position.z=.046;transform.rotation.z=Math.PI/2;transform.scale.set(.006,.158,.006);transform.updateMatrix();spindles.setMatrixAt(index,transform.matrix);
-  for(let side=0;side<2;side++){transform.position.set(cell.x+(side?1:-1)*.083,cell.y,.045);transform.rotation.set(0,0,0);transform.scale.set(.010,.010,.006);transform.updateMatrix();pins.setMatrixAt(index*2+side,transform.matrix);}
+  const widthScale=cell.width/TILE_WIDTH;
+  transform.position.set(cell.x,cell.y,.005);transform.rotation.set(0,0,0);transform.scale.set(widthScale,1,1);transform.updateMatrix();cassette.setMatrixAt(index,transform.matrix);
+  transform.position.z=.046;transform.rotation.z=Math.PI/2;transform.scale.set(.006,.158*widthScale,.006);transform.updateMatrix();spindles.setMatrixAt(index,transform.matrix);
+  for(let side=0;side<2;side++){transform.position.set(cell.x+(side?1:-1)*.083*widthScale,cell.y,.045);transform.rotation.set(0,0,0);transform.scale.set(.010*widthScale,.010,.006);transform.updateMatrix();pins.setMatrixAt(index*2+side,transform.matrix);}
  });
  for(const mesh of [cassette,spindles,pins]){mesh.computeBoundingSphere();root.add(mesh);}
  const current=new Uint16Array(cellPositions.length),flips=new Map<number,Flip>();
- function rowStrings(row:number){return routes[rowSources[row]].map(value=>value.toUpperCase());}
+ function rowStrings(row:number){return COLUMNS.map((column,index)=>fitColumnText(routes[rowSources[row]][index]??"",column.count));}
  function updateMetadata(){
-  fixed.mesh.userData.referenceText=[...headings,...rowSources.flatMap((_,row)=>rowStrings(row).map((text,column)=>({text,center:[COLUMNS[column].start+(COLUMNS[column].count-1)*PITCH/2,.54-row*.55,0],unitHeight:TILE_HEIGHT*74/96})))];
+  fixed.mesh.userData.referenceText=[...headings,...rowSources.flatMap((_,row)=>rowStrings(row).map((text,column)=>({text,center:[COLUMNS[column].start+Math.max(0,Array.from(text).length-1)*COLUMNS[column].pitch/2,.54-row*.55,0],unitHeight:TILE_HEIGHT*74/96})))];
   root.userData.displayedRoutes=rowSources.map(index=>routes[index][0]);
  }
  function hideLeaf(index:number){transform.position.set(0,0,0);transform.rotation.set(0,0,0);transform.scale.set(0,0,0);transform.updateMatrix();moving.mesh.setMatrixAt(index,transform.matrix);}
@@ -161,7 +170,7 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
   let changed=false;for(const[index,flip]of flips){const phase=isReduced?1:Math.max(0,Math.min(1,(time-flip.start-flip.delay)/.42));
    if(phase>=1){settle(index,flip.to);changed=true;continue;}
    const cell=cellPositions[index],angle=phase*Math.PI;rotation.setFromAxisAngle(axis,angle);offset.set(0,HALF_CENTER,0).applyQuaternion(rotation);
-   transform.position.set(cell.x+offset.x,cell.y+offset.y,.052+offset.z);transform.quaternion.copy(rotation);transform.scale.set(TILE_WIDTH,HALF_HEIGHT,1);transform.updateMatrix();moving.mesh.setMatrixAt(index,transform.matrix);changed=true;
+   transform.position.set(cell.x+offset.x,cell.y+offset.y,.052+offset.z);transform.quaternion.copy(rotation);transform.scale.set(cell.width,HALF_HEIGHT,1);transform.updateMatrix();moving.mesh.setMatrixAt(index,transform.matrix);changed=true;
   }
   if(changed){fixed.from.needsUpdate=true;moving.mesh.instanceMatrix.needsUpdate=true;}
  },updateDeparture(value){

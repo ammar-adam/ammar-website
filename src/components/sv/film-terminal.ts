@@ -339,18 +339,20 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    rod([x-.4,0,z],[x-.4,.6,z],.04,steel);rod([x+.4,0,z],[x+.4,.6,z],.04,steel);
   }
  });
- // The only concourse narration is painted onto an entrance transom.
+ // A two-line painted transom hangs wholly inside the open aisle. Its left
+ // edge clears the shop awning instead of burying the sentence in that fascia.
  const concourseLine=canvasTexture((ctx,W,H)=>{
-  ctx.clearRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 52px FilmHand, cursive";
+  ctx.clearRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 72px FilmHand, cursive";
   ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.fillText("There’s a bit of me in here. Take a look around.",W/2,H/2,W-30);
- },1024,128);
+  ctx.fillText("There’s a bit of me in here.",W/2,H*.29,W-64);
+  ctx.fillText("Take a look around.",W/2,H*.72,W-64);
+ },1024,256);
  const concourseIntroRoot=new THREE.Group();scene.add(concourseIntroRoot);
- const transom=new THREE.Mesh(unitBox,ink);transom.scale.set(6.65,.98,.12);transom.position.z=-.09;concourseIntroRoot.add(transom);
+ const transom=new THREE.Mesh(unitBox,ink);transom.scale.set(6.24,1.70,.12);transom.position.z=-.09;concourseIntroRoot.add(transom);
  for(const x of [-2.3,2.3]){const hanger=new THREE.Mesh(cylinderGeometry,steel);hanger.scale.set(.023,2.8,.023);hanger.position.set(x,1.85,-.09);concourseIntroRoot.add(hanger);}
- const concourseLettering=plane(6.4,.8,concourseLine,concourseIntroRoot,true);
+ const concourseLettering=plane(6.0,1.46,concourseLine,concourseIntroRoot,true);
  concourseLettering.name="concourse-painted-introduction";
- concourseIntroRoot.position.set(-1.9,4.95,-58.4);
+ concourseIntroRoot.position.set(-.55,4.40,-61.5);
  // Café equipment, matcha cups and a low simmering nihari pot.
  block(1.3,.8,.75,-10.7,1.72,-67,steel,[0,0,0],true);block(1.18,.16,.86,-10.7,2.15,-67,ink);block(.9,.12,.3,-10.7,1.47,-66.65,lightWarm);
  for(let n=0;n<5;n++){solid(cylinderGeometry,cream,-8.8+n*.28,1.45,-67,.10,.26,.10);solid(cylinderGeometry,sage,-8.8+n*.28,1.585,-67,.085,.018,.085);}
@@ -478,7 +480,6 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   update(state){
    for(const [src,entry]of deferredTextures)if(!entry.started&&state.t>=entry.at)startTexture(src,entry);
    architecture.update(state.t,Math.abs(state.lookYaw??0)>.12);
-   concourseIntroRoot.scale.set(state.aspect<.8?.50:1,state.aspect<.8?.78:1,1);concourseIntroRoot.position.x=state.aspect<.8?-.85:-1.9;
    let p=clamp(state.t);if(state.reduced)p=p<.24?.20:p<.45?.30:p<.65?.49:p<.72?.665:p<.79?.735:p<.86?.805:.94;
    const next=CAMERA.findIndex(key=>key.at>=p),b=CAMERA[next<0?CAMERA.length-1:next],a=CAMERA[Math.max(0,(next<0?CAMERA.length-1:next)-1)];const f=a===b?0:smooth((p-a.at)/(b.at-a.at));
    camera.position.set(...a.position).lerp(temp.set(...b.position),f);look.set(...a.target).lerp(temp.set(...b.target),f);camera.fov=mix(a.fov,b.fov,f)+(state.aspect<.8?9:0);camera.aspect=state.aspect;
@@ -490,7 +491,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    }
    if(state.aspect<.8&&p>=.24&&p<=.440){const enter=smooth(clamp((p-.24)/.012)),exit=smooth(clamp((p-.433)/.007)),weight=enter*(1-exit);camera.position.lerp(temp.set(3.45,1.9,mix(-16.8,-17.8,clamp((p-.24)/.193))),weight);look.lerp(temp.set(3.8,.3,-26.1),weight);camera.fov=mix(camera.fov,74,weight);}
    if(state.aspect<.8&&p>=.445&&p<=.641){const enter=smooth(clamp((p-.445)/.01)),travel=clamp((p-.45)/.185),exit=smooth(clamp((p-.635)/.006));temp.set(5.05,1.85,mix(-33.5,-34.4,travel)).lerp(new THREE.Vector3(1.3,1.75,-44.6),exit);camera.position.lerp(temp,enter);temp.set(5.05,-.05,-40.6).lerp(new THREE.Vector3(-5.5,1.8,-47.5),exit);look.lerp(temp,enter);}
-   if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.816)/.01)),weight=enter*exit;camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;look.y-=.9*weight;camera.fov=mix(camera.fov,92,weight);}
+   if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.816)/.01)),weight=enter*exit;camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;look.y+=1.25*weight;camera.fov=mix(camera.fov,92,weight);}
    const flight=clamp(state.departure);if(flight&&!state.reduced){
     camera.position.lerp(temp.set(1,2.5,-90.5),smooth(flight));look.lerp(temp.set(5,4,-126),flight);
     // A portrait frame follows the plane once the gate fixtures clear the glass.

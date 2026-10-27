@@ -22,6 +22,7 @@ export function JourneyHeader({ chapter, onNavigate }: { chapter: number; onNavi
   const menuId = useId();
   useEffect(() => {
     if (!open) return;
+    document.documentElement.classList.add("journey-menu-open");
     const outside = (event: PointerEvent) => { if (!root.current?.contains(event.target as Node)) setOpen(false); };
     const escape = (event: KeyboardEvent) => {
       if (event.key !== "Escape") return;
@@ -40,7 +41,7 @@ export function JourneyHeader({ chapter, onNavigate }: { chapter: number; onNavi
     desktop.addEventListener("change", closeOnDesktop);
     document.addEventListener("pointerdown", outside);
     document.addEventListener("keydown", escape);
-    return () => { desktop.removeEventListener("change", closeOnDesktop); document.removeEventListener("pointerdown", outside); document.removeEventListener("keydown", escape); };
+    return () => { document.documentElement.classList.remove("journey-menu-open"); desktop.removeEventListener("change", closeOnDesktop); document.removeEventListener("pointerdown", outside); document.removeEventListener("keydown", escape); };
   }, [open]);
   const navigate = (index: number) => {
     setOpen(false);
@@ -57,6 +58,7 @@ export function JourneyHeader({ chapter, onNavigate }: { chapter: number; onNavi
         <span className="journey-current-chapter">{CHAPTERS[chapter].short}</span>
       </div>
       <div className="journey-desktop-shortcuts"><HeaderLinks /></div>
+      <Link className="journey-mobile-short" href="/short">Short version</Link>
       <button ref={trigger} className="journey-menu-button" type="button" aria-label={open ? "Close navigation menu" : "Open navigation menu"} aria-expanded={open} aria-controls={menuId} onClick={() => setOpen(value => !value)}>
         <span>Menu</span><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d={open ? "m4 4 10 10M14 4 4 14" : "M2 5h14M2 9h14M2 13h14"} fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
       </button>

@@ -130,10 +130,19 @@ export async function createFilmRoomArt(palette: FilmMaterialPalette, room: Film
   const left = (position: SetVector) => localSurface(set, position, [0, Math.PI / 2, 0]);
 
   if (room === "checkin") {
-    // A folded canopy and tall city casting grow from the scale of the check-in
-    // hall. Everything stops well before the right-hand exit x[8,13].
-    for (let n = 0; n < 4; n++) ceilingBaffle(set, [-1.25 + n * .38, 6.8 + n * .14, -25.1 - n * 1.32], 12.4 - n * 1.0, .46, .68, n % 2 ? "ivory" : "steel", -.07);
-    // The back wall now carries directly painted city graffiti.
+    // Straight acoustic panels sit in one measured plane. Thin suspension
+    // rods meet the vault; the ivory undersides pick up the window light.
+    // The right-hand exit x[8,13] remains clear.
+    for (let n = 0; n < 4; n++) {
+      const panel = localSurface(set, [-1.25, 7.30, -25.1 - n * 1.32]);
+      panel.box([11.6, .14, .64], [0, 0, 0], "ivory");
+      for (const x of [-4.2, 4.2]) {
+        const roof = 8 + 3.6 * (1 - ((x - 1.25) / 14) ** 2);
+        panel.rod([x, .09, 0], [x, roof - 7.50, 0], .016, "steel", false);
+        panel.box([.17, .055, .34], [x, .10, 0], "steel", [0, 0, 0], false);
+      }
+    }
+    // The back wall carries the framed city painting.
     cityRelief(left([-13.35, 4.20, -25.1]), 7.8, 3.9, 1);
     niche(left([-13.25, 3.40, -19.5]), 2.30, 3.1, 0);
   } else if (room === "security") {
@@ -174,7 +183,7 @@ export async function createFilmRoomArt(palette: FilmMaterialPalette, room: Film
 
   const root = set.finish(); root.userData.architecturalArt = room;
   root.userData.drawCalls = root.children.length;
-  root.userData.design = room === "checkin" ? "Folded city canopy" : room === "security" ? "Measured screening ribs" : room === "concourse" ? "Connected retail frieze" : "Quiet horizon sails";
+  root.userData.design = room === "checkin" ? "Suspended acoustic panels" : room === "security" ? "Measured screening ribs" : room === "concourse" ? "Connected retail frieze" : "Quiet horizon sails";
   const paint = await createWallPaint(palette, room);
   root.add(paint.root);
   return { groups: [root], update() {}, dispose() { paint.dispose(); set.dispose(); } };

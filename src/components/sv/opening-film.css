@@ -1,5 +1,6 @@
 .opening-film{position:fixed;inset:0;z-index:100;background:#0a1827;color:#f4ecd8;overflow:hidden;font-family:var(--font-inter),sans-serif;isolation:isolate}
-.of-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.of-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0}
+.of-video[data-has-frame="true"]{opacity:1}
 .of-shade{position:absolute;inset:0;background:linear-gradient(90deg,#0710208c,transparent 68%),linear-gradient(0deg,#051022bd,transparent 25%,transparent 78%,#05102270)}
 .of-caption{position:absolute;left:8%;top:32%;text-shadow:0 2px 24px #07102066}
 .of-caption h2{font:400 clamp(86px,11vw,180px)/.96 var(--font-anton),Impact,sans-serif;text-transform:uppercase;letter-spacing:-.03em;margin:0 0 28px;transform:skewX(-3deg)}
@@ -7,12 +8,30 @@
 .of-named{top:22%}.of-named p:first-child{margin-bottom:18px}.of-named h2{font-size:clamp(84px,9vw,146px)}
 .of-skip{position:absolute;right:48px;bottom:48px;display:inline-flex;align-items:center;justify-content:center;gap:16px;min-height:44px;min-width:44px;padding:0 16px;border:1px solid #f4ecd866;border-radius:0;background:#0d0f1f99;color:#f4ecd8;font:400 13px/1.4 var(--font-inter),Arial,sans-serif;cursor:pointer}
 .of-skip:hover{background:#0d0f1fcc}.of-skip:focus-visible{outline:2px solid #ffd9a0;outline-offset:4px}
+.of-play{position:absolute;left:48px;bottom:48px;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:44px;padding:0 16px;border:1px solid #f4ecd866;border-radius:0;background:#0d0f1fe6;color:#f4ecd8;font:400 14px/1.4 var(--font-inter),Arial,sans-serif;cursor:pointer}
+.of-play:hover{background:#1d2941}.of-play:focus-visible{outline:2px solid #ffd9a0;outline-offset:4px}
+.of-playback-status{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
 .of-poster,.of-poster img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-/* Preserve the existing decoded last-frame bridge and film assets. */
-.terminal-world{background-image:url("/film/arrival-desktop-end.webp?v=set-v8");background-position:center;background-size:cover}
-@media(max-width:720px){
+/* Match the decoded film's last frame while the terminal is preparing. */
+.terminal-world{background-image:url("/film/arrival-desktop-end.webp?v=mobile-v9");background-position:center;background-size:cover}
+@media (orientation:portrait) and (max-width:720px),
+       (orientation:portrait) and (pointer:coarse) and (max-width:1100px){
  .opening-film .of-caption.of-caption{top:auto;bottom:104px;left:7%;right:6%}.opening-film .of-caption.of-named{bottom:104px}
  .of-caption h2{font-size:22vw;margin-bottom:20px}.of-caption p{font-size:16px}.opening-film .of-named h2{font-size:clamp(58px,18vw,82px)}
- .of-poster img,.of-video{object-position:center}.of-skip{right:20px;bottom:max(20px,env(safe-area-inset-bottom));font-size:13px}
- .terminal-world{background-image:url("/film/arrival-portrait-end.webp?v=set-v8");background-position:67% center}
+ .of-poster img,.of-video{object-position:center}.of-skip{right:max(20px,env(safe-area-inset-right));bottom:max(20px,env(safe-area-inset-bottom));font-size:13px}
+ .of-play{left:max(20px,env(safe-area-inset-left));bottom:max(20px,env(safe-area-inset-bottom));font-size:13px}
+ .terminal-world{background-image:url("/film/arrival-portrait-end.webp?v=mobile-v9");background-position:67% center}
+}
+@media (orientation:landscape) and (max-width:720px),
+       (orientation:landscape) and (pointer:coarse) and (max-width:1100px),
+       (orientation:landscape) and (pointer:coarse) and (max-height:720px){
+ .opening-film .of-caption.of-caption{left:max(24px,env(safe-area-inset-left));top:max(76px,18vh);right:auto;bottom:76px;max-width:60%}
+ .opening-film .of-caption h2{margin-bottom:10px;line-height:.96}
+ .opening-film .of-caption:not(.of-named) h2{font-size:clamp(54px,18vh,88px)}
+ .opening-film .of-caption.of-named h2{font-size:clamp(36px,14vh,64px)}
+ .opening-film .of-caption>p:first-child{font-size:14px;line-height:1.2;padding:4px 9px 2px;margin-bottom:8px}
+ .opening-film .of-caption>p:last-child{font-size:13px;line-height:1.3;padding:6px 9px 4px;max-width:32ch}
+ .of-skip{right:max(20px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom))}
+ .of-play{left:max(20px,env(safe-area-inset-left));bottom:max(16px,env(safe-area-inset-bottom))}
+ .terminal-world{background-image:url("/film/arrival-mobile-landscape-end.webp?v=mobile-v9");background-position:center}
 }

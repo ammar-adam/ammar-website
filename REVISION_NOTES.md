@@ -42,3 +42,20 @@ Production Chrome checks fit the full short page at 1440×900, 1440×780, 1366×
 
 The user explicitly authorized publishing the entire site to GitHub main in this revision.
 
+
+
+## Mobile usability and scene cleanup — 2026-10-27
+
+The airport now has touch-friendly Back/Next stops for all five experiences, four projects and three concourse views. Short version remains visible in the phone header. Vertical swipes scroll natively; horizontal concourse gestures turn the view only after clear intent, and a second finger releases camera control for zoom. Browser address-bar height changes no longer reposition the story. Phone rendering uses a rotation-safe 30 fps budget, capped pixel ratio, 2× MSAA and 1024px shadows.
+
+Phone captions, navigation, full-screen details and boarding pass respect safe-area insets. Landscape separates the gate headline/contact from the ticket. All gate links have 44px touch targets. The short page uses a readable single-column layout on touch devices, with larger link targets and natural scrolling; desktop still fits one screen through 1280×600. Existing content and the requested linked PNG logos remain.
+
+Concourse discretionary signs were reduced from eight to four, retaining the food objects and photos. Its invitation clears the awning; portrait framing tilts upward. Security has one small newspaper on the bench and no foreground flag. City paintings sit inside physical frames, check-in has straight ivory acoustic panels, gate column gutters contain the Seoul row, and Gate 9¾ is a small mullion plaque.
+
+The 6-second intro was rendered again from the current 3D scene so the old floor glare is absent from both video and posters. Desktop remains 1920×1080 at 60 fps; phone portrait is 720×1560 at 30 fps and phone landscape is 960×540 at 30 fps. AV1 is used only when decoding is reported smooth and power-efficient, with H.264 fallback. Landscape phone H.264 is 2.68 MB versus 8.02 MB for desktop; portrait is 2.66 MB. Blocked autoplay exposes a Play intro button while keeping the first caption, Skip and Short version available.
+
+Verification: hardware Chrome (Intel Arc via ANGLE/D3D11, never SwiftShader) at 1440×900, 390×844, 320×568 and 844×390. All 13 touch stops, vertical/horizontal gestures, pinch handling, menu scroll lock, native detail scrolling, bounded layouts and 44px controls pass. Scan, rip and departure precede a PDF request at 2.06 seconds. The short page passes 13 viewport, keyboard, logo-link and content-preservation checks. Lint, TypeScript and production build pass. QA artifacts remain in the task workspace under outputs/mobile-interactions-corrected, outputs/scene-cleanup-proof, outputs/short-mobile-release and outputs/mobile-final-film.
+
+The user explicitly authorized pushing the completed revision to GitHub main.
+
+Intro production checks also pass for natural portrait/landscape completion, blocked autoplay, menu cleanup across the handoff, height-only resize and rotation. Both unthrottled mobile films decoded all 180 frames with zero drops in hardware Chrome. With 8Mbps/60ms simulated 4G, the caption appeared at 269ms, first decoded frame at 906ms, and 2 of 180 frames dropped. These are desktop hardware browser simulations, not measurements from a physical phone. Full 3D readiness followed film completion by roughly 1–2.2 seconds. Evidence: task workspace outputs/mobile-intro-final/.

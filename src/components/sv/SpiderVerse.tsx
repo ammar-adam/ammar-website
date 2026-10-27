@@ -21,6 +21,8 @@ const TerminalWorld = dynamic(() => loadTerminalWorld().then(module => module.Te
 import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
 import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
+import { MobileJourneyControls, MOBILE_STOPS, mobileStopAt } from "./MobileJourneyControls";
+import "./mobile-airport.css";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
 const subscribeMotion = (update: () => void) => {
@@ -44,6 +46,8 @@ export function SpiderVerse() {
   const boardingProgress = useSceneProgress(t, 4);
   const [experience] = useSelection(experienceProgress, 5);
   const [project] = useSelection(projectProgress, 4);
+  const readMobileStop = useCallback(() => mobileStopAt(t.get()), [t]);
+  const mobileStop = useSyncExternalStore(subscribeTimeline, readMobileStop, () => 0);
   const departure = useMotionValue(0);
   const departureAnimation = useRef<AnimationPlaybackControls | null>(null);
   const resetDeparture = useCallback(() => {
@@ -112,15 +116,16 @@ export function SpiderVerse() {
   }, [intro, reduced]);
   const onReady = useCallback(() => setReady(true), []);
 
-  // Keep the same story position when rotation or a resized window changes svh.
+  // Address-bar expansion changes height during normal swipes. Only re-anchor
+  // the story when the layout width changes (rotation or a genuine resize).
   useEffect(() => {
-    let height = window.innerHeight;
+    let width = window.innerWidth;
     let progress = scrollYProgress.get();
     let frame = 0;
     const unsubscribe = scrollYProgress.on("change", value => { progress = value; });
     const resize = () => {
-      if (height === window.innerHeight) return;
-      height = window.innerHeight;
+      if (width === window.innerWidth) return;
+      width = window.innerWidth;
       const held = progress;
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
@@ -159,6 +164,12 @@ export function SpiderVerse() {
       requestAnimationFrame(() => jump(index));
     }
   }, [finishIntro, intro, jump, reduced]);
+
+  const moveMobile = useCallback((index: number) => {
+    const stop = MOBILE_STOPS[index];
+    if (!stop || !track.current) return;
+    window.scrollTo({ top: (track.current.offsetHeight - innerHeight) * stop.at, behavior: reduced ? "instant" : "smooth" });
+  }, [reduced]);
 
   useEffect(() => {
     const steps = [0,
@@ -212,6 +223,7 @@ export function SpiderVerse() {
           {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
         {(!intro || reduced) && <JourneyHeader chapter={chapter} onNavigate={navigate} />}
+        {!intro && chapter > 0 && chapter < 4 && <MobileJourneyControls index={mobileStop} onMove={moveMobile} />}
         {scrollHint && chapter !== 3 && chapter !== 4 && <p className="tj-scroll-hint" aria-hidden="true">Scroll <span>↓</span></p>}
         <AnimatePresence>{chapter === 3 && lookHint && <motion.p key="look-hint" className="tj-look-hint" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .2 }}>Drag to look around</motion.p>}</AnimatePresence>
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} />{CUTS.map(cut => <i key={cut} style={{ left: `${cut * 100}%` }} />)}</div>

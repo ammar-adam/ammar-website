@@ -40,9 +40,9 @@ export function createSecurityReferences(palette: FilmMaterialPalette, reference
       set.rod([x, .06, .24], [x, .49, .24], .035, "steel"); set.rod([x, .06, -.18], [x, 1.11, -.18], .035, "steel");
     }
     set.box([1.42, .31, .055], [0, .96, -.18], "walnut", [0, 0, 0], .03);
-    // The paper rests open against the bench back, with a shallow central fold.
-    set.box([1.12, .80, .016], [-.08, .89, .08], "ivory", [-.34, 0, .025]);
-    print(1.08, .76, (ctx, w, h) => {
+    // One folded paper lies on the seat, below the project screen sightline.
+    set.box([.56, .39, .010], [-.15, .551, .06], "ivory", [-Math.PI / 2, 0, .06]);
+    print(.54, .37, (ctx, w, h) => {
       printBase(ctx, w, h); ctx.fillStyle = REFERENCE_INK; ctx.fillRect(w * .065, h * .04, w * .87, h * .015);
       printText(ctx, "CORNER", h * .205, w * .065, h * .18);
       printText(ctx, "TAKEN QUICKLY", h * .16, w * .065, h * .39);
@@ -50,12 +50,7 @@ export function createSecurityReferences(palette: FilmMaterialPalette, reference
       ctx.strokeStyle = REFERENCE_GOLD; ctx.lineWidth = 3; ctx.strokeRect(w * .11, h * .59, w * .28, h * .21);
       for (let column = 0; column < 2; column++) for (let line = 0; line < 6; line++) { ctx.fillStyle = REFERENCE_INK; ctx.fillRect(w * (.52 + column * .225), h * (.55 + line * .061), w * .17, h * .009); }
       ctx.fillStyle = "rgba(13,15,31,.12)"; ctx.fillRect(w * .49, 0, w * .012, h);
-    }, [{ text: "CORNER", height: .156, center: [-.10, .243, 0] }, { text: "TAKEN QUICKLY", height: .122, center: [0, .084, 0] }], [-.08, .89, .093], [-.34, 0, .025]);
-    // An ordinary red triangular corner flag, with a weighted foot and no crest.
-    set.add(new THREE.CylinderGeometry(.13, .17, .065, 12), "steel", [.89, .04, -.05]);
-    set.rod([.89, .07, -.05], [.69, 1.85, -.11], .018, "ivory");
-    const flag = new THREE.Shape(); flag.moveTo(0, 0); flag.lineTo(.50, -.08); flag.lineTo(.035, -.37); flag.closePath();
-    set.add(new THREE.ExtrudeGeometry(flag, { depth: .018, bevelEnabled: false, steps: 1 }), "coral", [.69, 1.82, -.12]);
+    }, [{ text: "CORNER", height: .076, center: [-.05, .118, 0] }, { text: "TAKEN QUICKLY", height: .059, center: [0, .041, 0] }], [-.15, .559, .06], [-Math.PI / 2, 0, .06]);
   });
 
   add("security-cap-wand", ({ set }) => {
