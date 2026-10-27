@@ -1,0 +1,25 @@
+{
+  "retrieved": "2026-10-27",
+  "assets": [
+    {
+      "file": "waterloo-official.png",
+      "publisher": "University of Waterloo",
+      "page": "https://uwaterloo.ca/",
+      "source": "https://uwaterloo.ca/profiles/uw_base_profile/modules/custom/uw_wcms_ohana/dist/images/uwaterloo-logo.svg",
+      "use": "Faithful crop and PNG render of the official shield paths, preserving transparent background and white outer trim; linked to the university homepage"
+    },
+    {
+      "file": "beli-official.png",
+      "publisher": "Beli",
+      "page": "https://beliapp.com/",
+      "source": "https://images.squarespace-cdn.com/content/v1/5d27a2af17e26b0001269fd6/8f86dd75-d05e-41db-a33f-01aa6c7391d4/Beli+Logo_FINAL070423.png?format=300w",
+      "use": "Unmodified official app mark alongside the food reference on /short"
+    },
+    {
+      "file": "liverpool-official.png",
+      "publisher": "Liverpool FC",
+      "page": "https://www.liverpoolfc.com/",
+      "use": "Faithful transparent PNG rasterization of the existing liverpool-official-source.svg; linked to the club homepage"
+    }
+  ]
+}

@@ -14,7 +14,7 @@ Hardware Chrome with `--use-angle=default --enable-gpu`: 30 main-site desktop/ph
 
 Boarding tests verify the scan/tear/takeoff states, duplicate-click guard, delayed PDF requests at ~2.1–2.3s during capture (scheduled at2.0s), reduced motion, native Ctrl-click, history reset and cancellation after leaving Gate. The animation proof intercepted PDF navigation to retain each frame; a separate actual request returned HTTP200/application-pdf. The final phone framing proof shows the complete aircraft. [Boarding evidence](shots/revision-wall-and-copy/boarding/qa-result.json) · [Desktop takeoff](shots/revision-wall-and-copy/boarding/takeoff-desktop.png) · [Phone takeoff](shots/revision-wall-and-copy/boarding/takeoff-phone.png).
 
-Short-page document height equals viewport height at1440×900,1440×780,1366×768,1280×720 and1100×740. At390×844 it is1516px (1.80screens), with no horizontal overflow. All social icons have accessible names and44px targets. [Laptop proof](shots/revision-wall-and-copy/short/laptop-720.png) · [Measurements](shots/revision-wall-and-copy/short/report.json).
+Short-page document height equals viewport height at1440×900,1440×780,1366×768, 1280×720 and1100×740. At390×844 it is1516px (1.80screens), with no horizontal overflow. All social icons have accessible names and44px targets. [Laptop proof](shots/revision-wall-and-copy/short/laptop-720.png) · [Measurements](shots/revision-wall-and-copy/short/report.json).
 
 Lint, TypeScript and the production build pass. Protected video/poster/skyline hashes and the ordinary scroll-camera route match baseline. [Hash audit](shots/revision-wall-and-copy/locked-audit.json).
 
@@ -23,3 +23,13 @@ The previous cold-start performance limitations remain; this revision does not c
 ## Generated artwork
 
 [Saved atlas](public/art/terminal-graffiti-v1.webp) · [Full prompt and provenance](public/art/terminal-graffiti-v1.provenance.json). Created with the built-in image-generation tool, optimized to WebP with alpha preserved, and mapped into four original wall paintings.
+
+## Short-page layout revision — 2026-10-27
+
+Replaced the full-width tables with two editorial lists: Experience and Built. Every entry groups organization, role and description vertically, with 19px titles and 17px descriptions. The content measure is 1040px, with an 88px desktop column gutter and a single-column phone layout. All nine existing entries, roles, descriptions, order and destination links are preserved. Only the short page changes.
+
+The continuous dark reading field leaves the graffiti visible at the edges while reducing its contrast behind the copy. The introduction uses the requested two desktop lines: education, then building software and the food/soccer/trying-new-things sentence. The three inline marks are PNGs linking to Waterloo, Beli and Liverpool's official sites. Sources are recorded in public/art/short-logos.sources.json. Social icons and résumé remain at the top.
+
+Hardware Chrome visual checks cover 1440×900, 1280×720, 1100×740, 950×740, 900×740, 640×900, 390×844 and 320×740. No horizontal overflow, missing images or page errors. The 1440×900 view fits one screen; shorter laptops and phones scroll naturally without reducing text size or squeezing margins. Skip link, visible keyboard focus, all nine external links, all three PNG logo links, 44px social targets and the actual PDF response passed. Existing content records match the prior commit. Evidence is in the task workspace at outputs/short-editorial/final/.
+
+Lint, TypeScript and the production build pass. No push or merge.
