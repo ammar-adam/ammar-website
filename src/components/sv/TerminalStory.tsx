@@ -30,30 +30,34 @@ function IntroBeat({ t, beat, reduced }: { t: MotionValue<number>; beat: number;
   </motion.section>;
 }
 
-type StorySelection = { selected: number; onOpenChange?: (open: boolean) => void };
+type StorySelection = { selected: number; p: MotionValue<number>; reduced: boolean; onOpenChange?: (open: boolean) => void };
 type DetailLink = { label: string; url: string };
 type DetailContent = { name: string; role: string; location?: string; dates?: string; result: string; body: string; links: DetailLink[] };
 
-function SceneReadout({ kind, role, tag, result, detail, slug, onOpenChange }: {
+function SceneReadout({ kind, role, tag, result, detail, slug, selected, count, p, reduced, onOpenChange }: {
   onOpenChange?: (open: boolean) => void; kind: "experience" | "project";
   role: string; tag: string; result: string; detail: DetailContent; slug: string;
+  selected: number; count: number; p: MotionValue<number>; reduced: boolean;
 }) {
   const [openDetail, setOpenDetail] = useState<DetailContent | null>(null);
+  const local = useTransform(p, value => Math.max(0, Math.min(1, value * count - selected)));
+  const opacity = useTransform(local, [0, .10, .88, 1], [selected === 0 ? 1 : .25, 1, 1, selected === count - 1 ? 1 : .25]);
+  const y = useTransform(local, [0, .12, .88, 1], [selected === 0 ? 0 : 16, 0, 0, selected === count - 1 ? 0 : -16]);
   const open = openDetail !== null;
   useEffect(() => { onOpenChange?.(open); return () => onOpenChange?.(false); }, [open, onOpenChange]);
   const section = kind === "experience" ? "experience" : "projects";
   const dialogId = useId();
   const headingId = useId();
   return <section className={`mf-scene mf-${section}`} aria-labelledby={headingId}>
-    <div className="mf-panel" data-experience-detail={kind === "experience" ? slug : undefined} data-project-detail={kind === "project" ? slug : undefined}>
+    <motion.div className="mf-panel" style={{ opacity: reduced ? 1 : opacity, y: reduced ? 0 : y }} data-experience-detail={kind === "experience" ? slug : undefined} data-project-detail={kind === "project" ? slug : undefined}>
       {tag && <p className="mf-readout-label">{tag}</p>}
       <div className="mf-caption">
         <h2 id={headingId} className="mf-name">{detail.name}</h2>
         {role && <p className="mf-role">{role}</p>}
         <p className="mf-result">{result}</p>
-        <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpenDetail(detail)}>Details <span aria-hidden="true">↗</span></button>
+        <button type="button" className="mf-details-button" aria-haspopup="dialog" aria-controls={dialogId} onClick={() => setOpenDetail(detail)}>Details</button>
       </div>
-    </div>
+    </motion.div>
     <StoryDetails id={dialogId} open={open} onClose={() => setOpenDetail(null)} item={openDetail ?? detail} section={section} />
   </section>;
 }
@@ -98,21 +102,21 @@ function StoryDetails({ id, open, onClose, item, section }: { id: string; open: 
     <div className="mf-dialog-panel">
       <header className="mf-dialog-header"><span>{section === "experience" ? "Experience" : "Projects"}</span><button ref={closeButton} type="button" onClick={onClose} aria-label="Close details">Close <span aria-hidden="true">×</span></button></header>
       <div className="mf-dialog-scroll">
-        <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.dates && <span>{item.dates}</span>}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={item.name + " links"}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</nav></article>
+        <article className="mf-dialog-copy"><h2 id={titleId}>{item.name}</h2><p className="mf-dialog-role">{item.role}{item.dates && <span>{item.dates}</span>}{item.location && <span>{item.location}</span>}</p><p className="mf-dialog-result">{item.result}</p><p className="mf-dialog-description">{item.body}</p><nav className="mf-dialog-links" aria-label={item.name + " links"}>{item.links.map(link => <a key={link.url} href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>)}</nav></article>
       </div>
     </div>
   </dialog>;
 }
 
-export function ExperienceStory({ selected, onOpenChange }: StorySelection) {
+export function ExperienceStory({ selected, p, reduced, onOpenChange }: StorySelection) {
   const current = careerArrivals[selected];
   const copy = EXPERIENCE_COPY.find(item => item.slug === current.slug)!;
-  return <SceneReadout onOpenChange={onOpenChange} kind="experience" role={copy.role} tag={copy.tag} result={copy.line} slug={current.slug} detail={{ name: copy.name, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, links: [...(current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : []), ...(current.links ?? [])] }} />;
+  return <SceneReadout selected={selected} count={careerArrivals.length} p={p} reduced={reduced} onOpenChange={onOpenChange} kind="experience" role={copy.role} tag={copy.tag} result={copy.line} slug={current.slug} detail={{ name: copy.name, role: current.detailTitle ?? current.title, location: current.origin, result: current.impact, body: current.details, links: [...(current.fromUrl ? [{ label: "Company website", url: current.fromUrl }] : []), ...(current.links ?? [])] }} />;
 }
 
-export function ProjectStory({ selected, onOpenChange }: StorySelection) {
+export function ProjectStory({ selected, p, reduced, onOpenChange }: StorySelection) {
   const current = projects[selected];
   const copy = PROJECT_COPY.find(item => item.slug === current.slug)!;
   const community = getArrivalBySlug(current.slug === "waterloo-tech-week" ? "hack-the-north" : current.slug);
-  return <SceneReadout onOpenChange={onOpenChange} kind="project" role={copy.role} tag={copy.tag} result={copy.line} slug={current.slug} detail={{ name: copy.name, role: community?.detailTitle ?? "Creator", location: community?.origin, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, dates: current.year || undefined, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
+  return <SceneReadout selected={selected} count={projects.length} p={p} reduced={reduced} onOpenChange={onOpenChange} kind="project" role={copy.role} tag={copy.tag} result={copy.line} slug={current.slug} detail={{ name: copy.name, role: community?.detailTitle ?? "Creator", location: community?.origin, result: community?.impact ?? current.routeName, body: community?.details ?? current.shortDesc, dates: current.year || undefined, links: current.seats.flatMap(seat => seat.links ?? []) }} />;
 }

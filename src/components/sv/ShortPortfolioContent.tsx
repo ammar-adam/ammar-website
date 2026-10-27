@@ -26,13 +26,12 @@ const built: ShortRow[] = [
 function EntryList({ rows, kind }: { rows: ShortRow[]; kind: "experience" | "built" }) {
   return <ul className="short-entries" role="list">
     {rows.map(row => {
-      const lastWord = row.place.lastIndexOf(" ") + 1;
       const href = kind === "experience"
         ? getArrivalBySlug(row.slug)?.fromUrl
         : getProjectBySlug(row.slug)?.seats.flatMap(seat => seat.links ?? [])[0]?.url;
       return <li className="short-entry" key={row.slug} data-short-role={kind === "experience" ? row.slug : undefined} data-short-project={kind === "built" ? row.slug : undefined}>
         <div className="short-entry-heading">
-          <h3><a href={href} target="_blank" rel="noopener noreferrer">{row.place.slice(0, lastWord)}<span className="short-title-end">{row.place.slice(lastWord)}<span aria-hidden="true" className="short-external">↗</span></span></a></h3>
+          <h3><a href={href} target="_blank" rel="noopener noreferrer">{row.place}</a></h3>
           <p className="short-row-role">{row.role}</p>
         </div>
         <p className="short-row-line">{row.line}</p>
@@ -51,7 +50,7 @@ export function ShortPortfolioContent({ idPrefix = "short" }: { idPrefix?: strin
       </div>
       <nav className="short-socials" aria-label="Profile links">
         <SocialLinks />
-        <a className="short-resume" href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>
+        <a className="short-resume" href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
       </nav>
     </header>
     <div className="short-columns">
@@ -64,6 +63,6 @@ export function ShortPortfolioContent({ idPrefix = "short" }: { idPrefix?: strin
         <EntryList rows={built} kind="built" />
       </section>
     </div>
-    <footer className="short-footer"><Link href="/"><span aria-hidden="true">←</span> Back to the terminal</Link></footer>
+    <footer className="short-footer"><Link href="/"><svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M16 10H4m5-5-5 5 5 5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" /></svg>Back to the terminal</Link></footer>
   </>;
 }

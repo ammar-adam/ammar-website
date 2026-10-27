@@ -90,3 +90,11 @@ html.journey-menu-open,html.journey-menu-open body { overflow:hidden; }
 @media (max-width:719px) and (orientation:portrait) {
   .bp-ticket { width:calc(100% - 8px); align-self:center; }
 }
+
+/* Safari's address bar changes the UI viewport, never the scene's render buffer. */
+@media (pointer:coarse) and (max-width:1050px) {
+  .tj .terminal-world { height:100lvh; }
+  .tj[data-chapter] .mf-panel { max-height:none; }
+  .tj .mf-caption { overflow:visible; }
+  .tj .mf-dialog-links a { min-width:44px; }
+}

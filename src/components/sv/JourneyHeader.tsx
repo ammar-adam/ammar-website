@@ -9,8 +9,8 @@ import "./journey-navigation.css";
 
 function HeaderLinks() {
   return <div className="journey-shortcuts">
-    <Link href="/short">Short version</Link>
-    <a href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé <span aria-hidden="true">↗</span></a>
+    <Link href="/short">About me</Link>
+    <a href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
     <SocialLinks />
   </div>;
 }
@@ -58,7 +58,7 @@ export function JourneyHeader({ chapter, onNavigate }: { chapter: number; onNavi
         <span className="journey-current-chapter">{CHAPTERS[chapter].short}</span>
       </div>
       <div className="journey-desktop-shortcuts"><HeaderLinks /></div>
-      <Link className="journey-mobile-short" href="/short">Short version</Link>
+      <Link className="journey-mobile-short" href="/short">About me</Link>
       <button ref={trigger} className="journey-menu-button" type="button" aria-label={open ? "Close navigation menu" : "Open navigation menu"} aria-expanded={open} aria-controls={menuId} onClick={() => setOpen(value => !value)}>
         <span>Menu</span><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d={open ? "m4 4 10 10M14 4 4 14" : "M2 5h14M2 9h14M2 13h14"} fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
       </button>

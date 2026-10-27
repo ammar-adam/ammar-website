@@ -101,7 +101,7 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
       </motion.article>
 
       <div className="bp-contact">
-        <a className="bp-hello" href={siteConfig.socialLinks.email}>Say hello <span aria-hidden="true">↗</span></a>
+        <a className="bp-hello" href={siteConfig.socialLinks.email}>Say hello</a>
         <nav className="bp-socials" aria-label="Find Ammar online"><a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer">GitHub</a><a href={siteConfig.socialLinks.x} target="_blank" rel="noreferrer">X</a><a href={siteConfig.socialLinks.email}>Email</a></nav>
       </div>
     </div>

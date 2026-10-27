@@ -59,3 +59,19 @@ Verification: hardware Chrome (Intel Arc via ANGLE/D3D11, never SwiftShader) at 
 The user explicitly authorized pushing the completed revision to GitHub main.
 
 Intro production checks also pass for natural portrait/landscape completion, blocked autoplay, menu cleanup across the handoff, height-only resize and rotation. Both unthrottled mobile films decoded all 180 frames with zero drops in hardware Chrome. With 8Mbps/60ms simulated 4G, the caption appeared at 269ms, first decoded frame at 906ms, and 2 of 180 frames dropped. These are desktop hardware browser simulations, not measurements from a physical phone. Full 3D readiness followed film completion by roughly 1–2.2 seconds. Evidence: task workspace outputs/mobile-intro-final/.
+
+## Native phone journey and restored references — 2026-10-27
+
+Renamed the alternate page to About me and removed diagonal arrows from active navigation, readouts and detail links. Its desktop content starts up to 76px lower, with a shrinking spacer that preserves the one-screen layout on shorter laptops. The mobile reading layout remains unchanged.
+
+Touch scrolling now drives the world directly. A phone-specific monotone mapping gives corridor travel its own scroll distance, and the camera moves continuously through check-in and security. Next/Back animate along the same rail and stop immediately when a touch or wheel gesture begins. Captions respond to scroll with brief entrances and exits around a stable reading interval. Phone scroll distance is fixed per orientation, and the WebGL surface uses large-viewport height so Safari toolbar height changes do not continually resize its render buffers. Rotation preserves the story position. Reduced motion keeps stationary room views.
+
+The last project remains fully framed before the camera moves sideways in front of its monitor and then through security. In the concourse, portrait framing turns toward the neighbouring shop after the invitation. All eight original food/music reference groups and their original wording are restored. Artwork has independent wall anchors, away from photos and the walking lane. Ridgeway sits on the kitchen side wall where the rotisserie cannot hide it. The small corner flag is restored below the bench backrest; the single small newspaper remains.
+
+Validation uses installed hardware Chrome with ANGLE/GPU, never SwiftShader. Native touch checks cover all13 stops, all9 details, motion during room swipes, at least10 intermediate Next-camera positions, interruption, doorway travel, vertical/horizontal gesture separation, pinch, menu locking, height-only resize, rotation, 320px portrait and landscape bounds, and scan/rip/takeoff before the PDF request. The camera math audit samples20,001 positions with no intersections against the tested conservative monitor/scanner/partition bounds. Short-page checks pass13 viewports, including one-screen desktop through1280x600, accessible links, logos and unchanged content. Wall placements were inspected from desktop and portrait exploration angles.
+
+Evidence is in the task workspace under outputs/phone-flow-proof, outputs/wall-restoration-final, outputs/short-lowered-proof, outputs/mobile-scroll-final and outputs/mobile-scroll-doorway. Chrome touch emulation is not physical iPhone Safari validation; Safari's collapsing browser chrome still needs device confirmation.
+
+The user explicitly authorized publishing the completed fixes to main.
+
+Final production rechecks: portrait and landscape intro playback, blocked autoplay, simulated 4G and mapped handoff all pass. The restored wall references pass the exploration-angle proof. The arrow-free Demo link has a measured 44x44px target. At1440x900 the About me header begins at121px and the document remains900px tall. Lint, TypeScript and the production build pass. Additional evidence: outputs/mobile-intro-phone-flow and outputs/phone-flow-final.

@@ -51,6 +51,12 @@ export function createSecurityReferences(palette: FilmMaterialPalette, reference
       for (let column = 0; column < 2; column++) for (let line = 0; line < 6; line++) { ctx.fillStyle = REFERENCE_INK; ctx.fillRect(w * (.52 + column * .225), h * (.55 + line * .061), w * .17, h * .009); }
       ctx.fillStyle = "rgba(13,15,31,.12)"; ctx.fillRect(w * .49, 0, w * .012, h);
     }, [{ text: "CORNER", height: .076, center: [-.05, .118, 0] }, { text: "TAKEN QUICKLY", height: .059, center: [0, .041, 0] }], [-.15, .559, .06], [-Math.PI / 2, 0, .06]);
+    // The corner flag leans beside the bench, entirely below its backrest.
+    // Its former tall pole intruded into the project-photo sightline.
+    set.add(new THREE.CylinderGeometry(.095, .13, .045, 12), "steel", [.95, .03, -.20]);
+    set.rod([.95, .05, -.20], [.81, .96, -.20], .014, "ivory");
+    const flag = new THREE.Shape(); flag.moveTo(0, 0); flag.lineTo(.30, -.045); flag.lineTo(.02, -.22); flag.closePath();
+    set.add(new THREE.ExtrudeGeometry(flag, { depth: .012, bevelEnabled: false, steps: 1 }), "coral", [.81, .96, -.19]);
   });
 
   add("security-cap-wand", ({ set }) => {

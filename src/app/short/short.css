@@ -111,8 +111,6 @@
 .short-entry-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 1px; }
 .short-entry h3 { margin: 0; font-size: 19px; line-height: 1.4; font-weight: 550; letter-spacing: -.025em; }
 .short-entry h3 a { display: inline; }
-.short-external { display: inline-block; margin-left: 5px; color: #8e9291; font-size: 14px; font-weight: 400; }
-.short-title-end { white-space: nowrap; }
 .short-row-role { margin: 0; color: #bec3bd; font-size: 14px; line-height: 1.5; letter-spacing: -.01em; }
 .short-row-line { margin: 5px 0 0; color: #eeeee9; font-size: 17px; line-height: 1.6; font-weight: 400; letter-spacing: -.015em; }
 
@@ -135,6 +133,15 @@
 }
 .short-skip:focus { transform: translateY(0); }
 .short-page::selection, .short-page ::selection { background: #f2cc74; color: #080909; }
+
+/* Use spare desktop height for breathing room, without making short screens scroll. */
+@media (min-width: 901px) {
+  .short-content { display: flex; flex-direction: column; height: 100svh; }
+  .short-content::before { content: ""; flex: 0 1 76px; min-height: 0; }
+  .short-content > .short-header,
+  .short-content > .short-columns,
+  .short-content > .short-footer { flex: none; }
+}
 
 /* Keep the full desktop overview in a laptop viewport without reducing body type. */
 @media (min-width: 901px) and (max-height: 820px) {
@@ -163,11 +170,14 @@
 @media (max-width: 900px),
        (max-width: 1024px) and (hover: none) and (pointer: coarse) {
   .short-content {
+    display: block;
+    height: auto;
     width: 100%;
     max-width: 660px;
     padding: max(28px, env(safe-area-inset-top)) max(24px, env(safe-area-inset-right)) max(28px, env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
     text-shadow: 0 1px 3px #000b;
   }
+  .short-content::before { display: none; }
   .short-header { display: flex; flex-direction: column; align-items: stretch; gap: 14px; margin-bottom: 28px; }
   .short-header h1 { font-size: clamp(30px, 8.7vw, 34px); letter-spacing: -.045em; }
   .short-introduction > p { font-size: 17px; line-height: 1.65; letter-spacing: -.01em; }

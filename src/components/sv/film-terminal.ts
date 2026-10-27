@@ -64,14 +64,14 @@ const smooth=(v:number)=>v*v*(3-2*v);
 // A continuous, shape-preserving camera rail. Easing each shot independently
 // brought the camera to a complete stop at every key, which read as dropped frames.
 const FLIGHT_KEYS=CAMERA.filter(key=>key.at<=.24);
-function flightValue(progress:number,read:(key:CameraKey)=>number){
- const end=FLIGHT_KEYS.length-1;
- let j=FLIGHT_KEYS.findIndex(key=>key.at>=progress);if(j<0)j=end;
- const i=Math.max(0,j-1),a=FLIGHT_KEYS[i],b=FLIGHT_KEYS[j];if(i===j)return read(a);
+function railValue(keys:CameraKey[],progress:number,read:(key:CameraKey)=>number){
+ const end=keys.length-1;
+ let j=keys.findIndex(key=>key.at>=progress);if(j<0)j=end;
+ const i=Math.max(0,j-1),a=keys[i],b=keys[j];if(i===j)return read(a);
  const slope=(n:number)=>{
   if(n===end)return 0;
-  if(n===0)return (read(FLIGHT_KEYS[1])-read(FLIGHT_KEYS[0]))/(FLIGHT_KEYS[1].at-FLIGHT_KEYS[0].at);
-  const left=FLIGHT_KEYS[n-1],here=FLIGHT_KEYS[n],right=FLIGHT_KEYS[n+1];
+  if(n===0)return (read(keys[1])-read(keys[0]))/(keys[1].at-keys[0].at);
+  const left=keys[n-1],here=keys[n],right=keys[n+1];
   const dl=(read(here)-read(left))/(here.at-left.at),dr=(read(right)-read(here))/(right.at-here.at);
   if(dl*dr<=0)return 0;
   const h0=here.at-left.at,h1=right.at-here.at,w0=2*h1+h0,w1=h1+2*h0;
@@ -80,6 +80,7 @@ function flightValue(progress:number,read:(key:CameraKey)=>number){
  const span=b.at-a.at,t=clamp((progress-a.at)/span),t2=t*t,t3=t2*t;
  return (2*t3-3*t2+1)*read(a)+(t3-2*t2+t)*span*slope(i)+(-2*t3+3*t2)*read(b)+(t3-t2)*span*slope(j);
 }
+const flightValue=(progress:number,read:(key:CameraKey)=>number)=>railValue(FLIGHT_KEYS,progress,read);
 
 
 export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number; lookYaw?:number; lookPitch?:number }
@@ -489,9 +490,34 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
     look.set(flightValue(p,k=>k.target[0]),flightValue(p,k=>k.target[1]),flightValue(p,k=>k.target[2]));
     camera.fov=flightValue(p,k=>k.fov)+(state.aspect<.8?9:0);cameraRoll=flightValue(p,k=>k.roll);
    }
-   if(state.aspect<.8&&p>=.24&&p<=.440){const enter=smooth(clamp((p-.24)/.012)),exit=smooth(clamp((p-.433)/.007)),weight=enter*(1-exit);camera.position.lerp(temp.set(3.45,1.9,mix(-16.8,-17.8,clamp((p-.24)/.193))),weight);look.lerp(temp.set(3.8,.3,-26.1),weight);camera.fov=mix(camera.fov,74,weight);}
-   if(state.aspect<.8&&p>=.445&&p<=.641){const enter=smooth(clamp((p-.445)/.01)),travel=clamp((p-.45)/.185),exit=smooth(clamp((p-.635)/.006));temp.set(5.05,1.85,mix(-33.5,-34.4,travel)).lerp(new THREE.Vector3(1.3,1.75,-44.6),exit);camera.position.lerp(temp,enter);temp.set(5.05,-.05,-40.6).lerp(new THREE.Vector3(-5.5,1.8,-47.5),exit);look.lerp(temp,enter);}
-   if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.816)/.01)),weight=enter*exit;camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;look.y+=1.25*weight;camera.fov=mix(camera.fov,92,weight);}
+   if(state.aspect<.8&&p>=.24&&!state.reduced){
+    // Shape-preserving interpolation stays inside the authored corridor bounds
+    // and keeps moving between keys instead of stopping at every keyframe.
+    camera.position.set(railValue(CAMERA,p,k=>k.position[0]),railValue(CAMERA,p,k=>k.position[1]),railValue(CAMERA,p,k=>k.position[2]));
+    look.set(railValue(CAMERA,p,k=>k.target[0]),railValue(CAMERA,p,k=>k.target[1]),railValue(CAMERA,p,k=>k.target[2]));
+    camera.fov=railValue(CAMERA,p,k=>k.fov)+9;cameraRoll=railValue(CAMERA,p,k=>k.roll);
+   }
+   if(state.aspect<.8&&p>=.24&&p<=.440){
+    const travel=clamp((p-.24)/.168),enter=smooth(clamp((p-.24)/.02)),exit=1-smooth(clamp((p-.408)/.032)),weight=enter*exit;
+    camera.position.lerp(temp.set(mix(.4,7.6,travel),2.0,mix(-18.3,-19.4,travel)-Math.sin(travel*Math.PI)*.7),weight);
+    look.lerp(temp.set(3.45,.65,-26.7),weight);camera.fov=mix(camera.fov,74,weight);
+   }
+   if(state.aspect<.8&&p>=.445&&p<=.641){
+    const travel=clamp((p-.45)/.185),enter=smooth(clamp((p-.445)/.018)),exit=1-smooth(clamp((p-.635)/.006)),weight=enter*exit;
+    // Step sideways in front of the monitor before walking through the scanner.
+    const side=enter*(1-smooth(clamp((p-.635)/.003))),forward=enter*(1-smooth(clamp((p-.638)/.003)));
+    camera.position.x=mix(camera.position.x,mix(2.9,7.1,travel),side);
+    camera.position.y=mix(camera.position.y,1.9,weight);
+    camera.position.z=mix(camera.position.z,mix(-32.9,-35.4,travel),forward);
+    look.lerp(temp.set(5.05,.5,-40.6),weight);camera.fov=mix(camera.fov,76,weight);
+   }
+   if(state.aspect<.8&&p>=.649&&p<=.846){
+    const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.816)/.01)),weight=enter*exit;
+    camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;look.y+=.65*weight;camera.fov=mix(camera.fov,84,weight);
+    // After the invitation, turn toward the neighbouring shop as we walk past it.
+    const shop=smooth(clamp((p-.675)/.03))*weight;
+    look.lerp(temp.set(-9.4,2.55,camera.position.z-6),shop);camera.fov=mix(camera.fov,78,shop);
+   }
    const flight=clamp(state.departure);if(flight&&!state.reduced){
     camera.position.lerp(temp.set(1,2.5,-90.5),smooth(flight));look.lerp(temp.set(5,4,-126),flight);
     // A portrait frame follows the plane once the gate fixtures clear the glass.
