@@ -1,65 +1,103 @@
-# ✈️ AFA International Airport
+# Ammar Adam
 
-*A portfolio disguised as an airport terminal.*
+[ammaradam.com](https://ammaradam.com) — my personal site, told through a 3D airport inspired by *Spider-Man: Into the Spider-Verse*.
 
-![Next.js](https://img.shields.io/badge/Next.js-15-black?style=for-the-badge&logo=next.js&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind](https://img.shields.io/badge/Tailwind-CSS-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)
-![Framer Motion](https://img.shields.io/badge/Framer-Motion-EF0080?style=for-the-badge&logo=framer&logoColor=white)
-![Vercel](https://img.shields.io/badge/Vercel-Deploy-000000?style=for-the-badge&logo=vercel&logoColor=white)
-[![Live](https://img.shields.io/badge/Live-ammaradam.com-F5A623?style=for-the-badge&logo=safari&logoColor=white)](https://ammaradam.com)
+A short opening film leads into a terminal you explore by scrolling: check in, pass through security, walk the concourse, and scan a boarding pass. An [About me page](https://ammaradam.com/short) offers a direct way to read my experience and projects.
 
----
+## The experience
 
-## Design Philosophy
+- **Introduction:** a six-second film recorded from the airport scene. The first caption, Skip intro, and About me are visible from the start. The interactive world starts after the film finishes or is skipped.
+- **Check-in:** five experiences, with animated luggage and a counter that changes with the story. Each entry has a brief introduction and a Details dialog.
+- **Security:** four projects, including community work, presented through inspection trays and a changing display.
+- **Concourse:** photographs, food, music, film, and sports references placed among shops and cafés. Toronto, Dubai, and Karachi run through the artwork. Drag horizontally to look around.
+- **Gate:** scanning the boarding-pass barcode triggers a scan, ticket tear, and takeoff, then opens the résumé PDF in the same tab after two seconds.
 
-The site is built around a single metaphor: you’re moving through an airport. Projects are **gates and seats** - pick a flight and a seat to see what’s on board. Experiences are the **baggage carousel** - grab a bag to see where it’s been. The About page is the **lounge**: bio, highlights, and a grid of moments. The Resume is your **boarding pass**: one tap opens the PDF in a new tab. No corporate clutter - just clear signage and a calm, human tone.
+On phones, native swipes drive the camera and captions; Back/Next controls travel along the same path. Reduced motion skips the film, uses stationary room views, and opens the résumé immediately. About me uses two columns on desktop and a naturally scrolling single column on phones.
 
----
+## Stack
 
-## Getting Started
+Next.js 16 App Router, React 19, TypeScript 5, Three.js, Framer Motion 12, and Tailwind CSS 4. Hosted on Vercel.
 
-```bash
+The terminal uses real-time 3D geometry, an articulated traveler, painted materials, lighting, and a WebGL post-processing pass. The opening film ships in desktop, phone portrait, and phone landscape formats, with H.264 and capability-selected AV1 versions.
+
+## Local development
+
+Requires Node.js **20.9 or newer** and npm. On Windows, keep the checkout path short, such as `C:\dev\site`, to avoid Turbopack path-length problems.
+
+```powershell
+git clone https://github.com/ammar-adam/ammar-website.git C:\dev\site
+cd C:\dev\site
 npm install
-npm run dev
+npm run tw
+npx next dev -p 3101
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [localhost:3101](http://localhost:3101). On other platforms, clone into a directory of your choice and run the same npm commands.
 
----
+Tailwind is compiled separately into `src/app/tw.generated.css`, which is gitignored. Run `npm run tw:watch` in another terminal while editing utility classes, or rerun `npm run tw` after changes. The convenience command `npm run dev` starts both watchers on Next.js's default port, 3000.
 
 ## Routes
 
-| Route        | Description                          |
-|-------------|--------------------------------------|
-| `/`         | Home - Terminal Directory (gate links) |
-| `/projects` | Projects - seat map, pick a seat for details |
-| `/arrivals` | Experiences - baggage carousel, pick a bag |
-| `/about`    | About - bio, highlights, photos      |
-| `/resume`   | Resume - boarding pass + open PDF in new tab |
+| URL | Purpose |
+| --- | --- |
+| `/` | Opening film and scroll-driven airport |
+| `/#experience` | Check-in / experience |
+| `/#projects` | Security / projects |
+| `/#people` | Concourse |
+| `/#contact` | Gate and boarding pass |
+| `/short` | About me: experience, projects, résumé, and social links |
+| `/credits` | Artwork and photographic source credits |
+| `/Ammar_Adam.pdf` | Résumé PDF |
 
----
+Legacy routes redirect to the current experience; the complete mapping is in [next.config.ts](next.config.ts).
 
-## Content & Assets
+## Editing content
 
-All copy and links live in **`src/data/`**:
+| File | Controls |
+| --- | --- |
+| [src/data/arrivals.ts](src/data/arrivals.ts) | Experience records, detail text, images, and company links |
+| [src/data/departures.ts](src/data/departures.ts) | Projects and community work, screenshots, descriptions, and links |
+| [src/data/filmCopy.ts](src/data/filmCopy.ts) | First-person intro captions and experience/project readouts |
+| [src/data/site.ts](src/data/site.ts) | Shared social links and site configuration |
+| [src/data/references.ts](src/data/references.ts) | Easter eggs, wall-art placement, labels, and exploration references |
+| [src/data/loungeRoom.ts](src/data/loungeRoom.ts) | Personal photograph sources and captions |
+| [src/components/sv/memorySequence.ts](src/components/sv/memorySequence.ts) | Concourse photograph selection and framing |
+| [src/components/sv/ShortPortfolioContent.tsx](src/components/sv/ShortPortfolioContent.tsx) | About me introduction, curated summaries, and ordering |
+| [src/components/sv/BoardingPass.tsx](src/components/sv/BoardingPass.tsx) | Boarding-pass content, scan timing, and résumé destination |
 
-| File              | What it controls |
-|-------------------|------------------|
-| **`site.ts`**     | Airport name, hero line, social links (email, GitHub, LinkedIn, X), ticker, check-in intro |
-| **`departures.ts`** | Projects: `name`, `destination`, `shortDesc`, `screenshot` path, `seats[].links` (View Project, GitHub, Demo, More) |
-| **`arrivals.ts`** | Experiences: `from`, `fromUrl`, `image`, `origin` (bag tag), `detailTitle`, `impact`, `details` |
-| **`about.ts`**    | Intro, “Some Cool Stuff” list, location stamps (YYZ, DXB, KHI) and their URLs |
-| **`loungeRoom.ts`** | About page photos: `photos.items[]` with `src` and optional `caption` (e.g. `/ABOUT1.jpg` … `/ABOUT12.jpg`) |
-| **`boardingPass.ts`** | Resume: `displayName`, `from`, `to`, `flight`, `tagline`, `resumeFileUrl` (PDF path) |
+Images and other static assets live in `public/`. Replace [public/Ammar_Adam.pdf](public/Ammar_Adam.pdf) to update the résumé. The About me summaries are curated separately from the film captions; update both when changing biography or role descriptions.
 
-### Images (in `public/`)
+## Scene and layout code
 
-- **Projects:** Set each project’s `screenshot` in `departures.ts` (e.g. `/ROCKETSHIP.png`). Use `.mp4` for video; the app will show a Google Drive embed where appropriate.
-- **Experiences:** Set each experience’s `image` in `arrivals.ts` (e.g. `/WATERLOOVG.jpg`).
-- **About photos:** Point `loungeRoom.ts` → `photos.items[].src` at your files (e.g. `/ABOUT1.jpg` … `/ABOUT12.jpg`).
-- **Resume PDF:** Put **`Ammar_Adam.pdf`** (or your file) in `public/` and set `resumeFileUrl` in `boardingPass.ts` (e.g. `"/Ammar_Adam.pdf"`). Clicking the barcode opens the PDF in a new tab.
+Most active airport code lives in [src/components/sv/](src/components/sv/):
 
----
+- `SpiderVerse.tsx` coordinates the film, scroll timeline, chapter navigation, and overlays.
+- `OpeningFilm.tsx` handles video selection, autoplay fallback, captions, and skipping.
+- `TerminalWorld.tsx` manages rendering, touch gestures, loading, and the GPU budget.
+- `film-terminal.ts` composes the world and camera path; `film-architecture.ts`, `film-checkin.ts`, and the other `film-*` modules build its rooms, props, and character.
+- `film-materials.ts` and `terminal-post.ts` control the painted surfaces and final image treatment.
+- `timeline.ts`, `mobile-scroll.ts`, and `MobileJourneyControls.tsx` define chapter timing and phone navigation.
+- `TerminalStory.tsx` renders the readouts and Details dialogs.
 
-*Designed and built by Ammar Adam*
+The About me route and responsive layout live in [src/app/short/](src/app/short/). Its background uses `CityMuralBackground.tsx`. Older scene implementations remain in the repository; the active home-page entry point is `SpiderVerse.tsx`.
+
+## Build and verification
+
+```bash
+npm run lint
+npx tsc --noEmit
+npm run build
+npm run start -- -p 3101
+```
+
+`npm run build` automatically bakes the static terminal sets and compiles Tailwind before building Next.js. If you change the baked set definitions during development, run `npm run bake:sets` to regenerate `public/geometry/` and `src/data/terminalSets.generated.json`. This does not regenerate the opening film; the videos and posters in `public/film/` are separately recorded assets.
+
+For visual checks on Windows, use Playwright with installed Chrome at `C:/Program Files/Google/Chrome/Application/chrome.exe` and the arguments `--use-angle=default --enable-gpu`. Do not use SwiftShader for visual or performance verification. Check desktop, portrait, and landscape views, including the intro handoff, native swipes, Details dialogs, and scan-to-PDF sequence. Chrome touch emulation does not replace testing on a physical iPhone in Safari.
+
+Vercel deploys from `main`; pushing there publishes the site. Develop on a working branch and obtain the site owner's approval before pushing or merging to `main`.
+
+## Artwork and credits
+
+Source and provenance records are in [public/art/README.md](public/art/README.md), the adjacent provenance files, and the [credits page](https://ammaradam.com/credits). Earlier photographic environment plates are retained with attribution in [public/plates/PLATES.md](public/plates/PLATES.md). The terminal's personal photographs belong to Ammar.
+
+Recent implementation and verification notes are in [REVISION_NOTES.md](REVISION_NOTES.md).
