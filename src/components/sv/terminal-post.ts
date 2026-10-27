@@ -28,7 +28,6 @@ uniform vec2 uResolution;
 uniform mat4 uProjectionInverse;
 uniform float uIntensity,uMotion,uTime;
 float filmLuma(vec3 c){return dot(c,vec3(.2126,.7152,.0722));}
-float filmHash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
 vec3 filmView(vec2 uv,float depth){
  vec4 projected=uProjectionInverse*vec4(uv*2.-1.,depth*2.-1.,1.);
  if(abs(projected.w)>.00001)return projected.xyz/projected.w;
@@ -49,7 +48,7 @@ void main(){
  vec3 vpLeft=filmView(vUv-dx,dl),vpRight=filmView(vUv+dx,dr);
  vec3 vpUp=filmView(vUv+dy,du),vpDown=filmView(vUv-dy,dd);
  float distanceToCamera=max(.08,-center.z);
- float nearInk=1.-smoothstep(16.,43.,distanceToCamera);
+ float nearInk=1.-smoothstep(12.,38.,distanceToCamera);
  // Four local triangles agree on a plane and separate at a modelled crease.
  // A depth discontinuity supplies the silhouette; both use the same 1.5px pen.
  vec3 n0=filmNormal(vpRight-center,vpUp-center);
@@ -65,10 +64,8 @@ void main(){
  vec3 left=texture2D(uScene,vUv-dx).rgb,right=texture2D(uScene,vUv+dx).rgb;
  vec3 above=texture2D(uScene,vUv+dy).rgb,below=texture2D(uScene,vUv-dy).rgb;
  float gradient=length(vec2(filmLuma(right)-filmLuma(left),filmLuma(above)-filmLuma(below)));
- float strokePhase=(pixel.x*.37+pixel.y*.74+sin(pixel.y*.061)*3.)/31.;
- float pressure=.72+.28*smoothstep(.12,.34,fract(strokePhase));
- vec3 shadowInk=vec3(.012,.027,.047);
- c=mix(c,shadowInk,clamp(contour*pressure*1.3*uIntensity,0.,.82));
+ vec3 shadowInk=vec3(.004,.005,.014);
+ c=mix(c,shadowInk,clamp(contour*1.22*uIntensity,0.,.78));
 
  // One 45-degree screen, 4.5px at a 1080px image height. It lives only inside
  // shadow transitions: no dots on a flat wall, solid black or bright lettering.
@@ -81,8 +78,9 @@ void main(){
  float radius=mix(.11,.34,shadow);
  float dotAA=max(fwidth(length(fract(printGrid)-.5)),.055);
  float dotInk=1.-smoothstep(radius-dotAA*.5,radius+dotAA*.5,length(fract(printGrid)-.5));
- vec3 printHue=mix(c*.46,shadowInk,.25);
- c=mix(c,printHue,dotInk*transition*.72*uIntensity);
+ vec3 printHue=c*vec3(.51,.53,.61);
+ float printDepth=mix(1.,.15,smoothstep(8.,45.,distanceToCamera));
+ c=mix(c,printHue,dotInk*transition*printDepth*.68*uIntensity);
 
  // The colour target's alpha is a registration mask. Characters and signage
  // write zero there; their ink remains intact but their R/B never separate.
@@ -97,16 +95,12 @@ void main(){
  vec3 separated=vec3(redSample.r,c.g,blueSample.b);
  c=mix(c,separated,offFocus*.72*uIntensity);
 
- // Keep the authored skyline's palette. Interior shadows receive its teal;
- // lit pigment keeps the warm window key. Haze is subtle and depth-dependent.
+ // The skyline remains untouched. Warm light stays warm; no blanket cyan grade.
  float interior=1.-smoothstep(60.,115.,distanceToCamera);
- vec3 grade=mix(vec3(.94,1.015,1.045),vec3(1.035,1.006,.975),smoothstep(.09,.55,L));
+ vec3 grade=mix(vec3(.985,.99,1.025),vec3(1.025,1.008,.98),smoothstep(.09,.55,L));
  c*=mix(vec3(1.),grade,interior*uIntensity);
- float haze=smoothstep(20.,95.,distanceToCamera)*interior*.085*uIntensity;
- c=mix(c,vec3(.29,.46,.48),haze);
- // Stationary fine paper grain: four percent peak-to-peak, never animated noise.
- float grain=filmHash(floor(pixel))-.5;
- c*=1.+grain*.04;
+ float haze=smoothstep(22.,95.,distanceToCamera)*interior*.055*uIntensity;
+ c=mix(c,vec3(.55,.36,.19),haze);
  c*=1.-dot(vUv-.5,vUv-.5)*.055;
  gl_FragColor=vec4(max(c,vec3(0.)),1.);
  #include <colorspace_fragment>

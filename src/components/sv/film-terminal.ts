@@ -4,6 +4,7 @@ import { projects } from "@/data/departures";
 import { memorySequence } from "./memorySequence";
 import { createFilmTraveler3D } from "./film-traveler-3d";
 import { createFilmMaterials } from "./film-materials";
+import { ensurePaintUV } from "./film-paint-uv";
 import { protectFilmRegistration } from "./terminal-post";
 import { createFilmArchitecture } from "./film-architecture";
 import { loadFilmSet } from "./film-set-assets";
@@ -88,7 +89,7 @@ export interface TerminalModel {
 }
 
 export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{shadowMapSize?:number}={}):TerminalModel {
- const scene=new THREE.Scene();scene.background=new THREE.Color("#526d83");scene.fog=new THREE.Fog("#617387",42,155);
+ const scene=new THREE.Scene();scene.background=new THREE.Color("#2b3566");scene.fog=new THREE.Fog("#ffd9a0",65,180);
  const camera=new THREE.PerspectiveCamera(63,1,.08,650);
  const textures=new Set<THREE.Texture>(),materials=new Set<THREE.Material>(),geometries=new Set<THREE.BufferGeometry>();
  let dead=false;
@@ -123,13 +124,11 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const architecture=createFilmArchitecture(palette.materials);scene.add(architecture.root);
  const wallArt=createFilmWallArt(invalidate);scene.add(wallArt.root);
  const outline=keepMaterial(new THREE.LineBasicMaterial({color:"#091122",transparent:true,opacity:.72}));
- scene.add(new THREE.HemisphereLight("#80c6ce","#423467",.30));
- const key=new THREE.DirectionalLight("#ffb46a",3.6);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(shadowMapSize,shadowMapSize);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00016;key.shadow.normalBias=.014;key.shadow.radius=.7;scene.add(key,key.target);
- const cool=new THREE.DirectionalLight("#73c2cb",.82);cool.position.set(-12,7,10);scene.add(cool);
- const pink=new THREE.DirectionalLight("#9690e1",.46);pink.position.set(-18,5,-70);scene.add(pink);
+ scene.add(new THREE.HemisphereLight("#3a4f8a","#2b3566",.22));
+ const key=new THREE.DirectionalLight("#ffb46a",3.6);key.position.set(20,24,0);key.castShadow=true;key.shadow.mapSize.set(shadowMapSize,shadowMapSize);key.shadow.camera.left=-24;key.shadow.camera.right=24;key.shadow.camera.top=24;key.shadow.camera.bottom=-24;key.shadow.camera.near=1;key.shadow.camera.far=95;key.shadow.bias=-.00016;key.shadow.normalBias=.014;key.shadow.radius=.45;scene.add(key,key.target);
  // Two unshadowed practical sources are reused room by room; no extra render pass.
- const screenSpill=new THREE.PointLight("#84d9d5",5,7,2);
- const signSpill=new THREE.PointLight("#ffc480",12,9,2);
+ const screenSpill=new THREE.PointLight("#3a4f8a",3,5,2);
+ const signSpill=new THREE.PointLight("#ffd9a0",6,6,2);
  scene.add(screenSpill,signSpill);
  const unitBox=keepGeometry(new RoundedBoxGeometry(1,1,1,2,.035));
  const staticBoxes=new Map<THREE.Material,THREE.Matrix4[]>(),edgePoints:number[]=[];
@@ -412,6 +411,8 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const basketball=solid(round,terracotta,3.12,.24,-68.8,.23,.23,.23);basketball.rotation.z=.28;
  for(const turn of [0,Math.PI/2]){const seam=solid(keepGeometry(new THREE.TorusGeometry(.232,.006,5,40)),ink,3.12,.24,-68.8);seam.rotation.y=turn;}
  const walkers=[person(dark,11,-60,Math.PI),person(sage,11,-79,Math.PI,paleSkin)];
+ const transitionTravelers=[person(cream,6.0,-83.8,.45),person(coral,10.5,-88.2,-.55,paleSkin)];
+ transitionTravelers.forEach((guest,index)=>{guest.root.name=`gate-transition-traveler-${index}`;});
  const animateAirport=(time:number,reduced:boolean)=>{
   const t=reduced?0:time;spit.rotation.y=t*.55;
   steam.forEach((puff,i)=>{const phase=(t*.3+i*.25)%1;puff.position.y=1.9+phase*1.2;puff.position.x=-12+Math.sin(t+i)*.08;(puff.material as THREE.MeshBasicMaterial).opacity=(1-phase)*.14;});
@@ -443,7 +444,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  // Fully articulated mesh traveller: the raised grip is the rope anchor.
  const traveler=createFilmTraveler3D({invalidate});scene.add(traveler.root);
  traveler.root.traverse(object=>{if(object instanceof THREE.Mesh){for(const material of Array.isArray(object.material)?object.material:[object.material])protectFilmRegistration(material);}});
- const travelerKey=new THREE.PointLight("#ffd6a7",16,13,2),travelerRim=new THREE.PointLight("#8bdbe3",9,11,2);scene.add(travelerKey,travelerRim);
+ const travelerKey=new THREE.PointLight("#ffd9a0",12,13,2),travelerRim=new THREE.PointLight("#3a4f8a",4,11,2);scene.add(travelerKey,travelerRim);
  const tetherGeometry=keepGeometry(new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(),new THREE.Vector3()]));
  const tether=new THREE.Line(tetherGeometry,keepMaterial(new THREE.LineBasicMaterial({color:"#b7f8f3"})));scene.add(tether);
  const landingShadow=new THREE.Mesh(keepGeometry(new THREE.CircleGeometry(1.1,32)),keepMaterial(new THREE.MeshBasicMaterial({color:"#071728",transparent:true,opacity:.35,depthWrite:false})));landingShadow.rotation.x=-Math.PI/2;landingShadow.position.y=.035;scene.add(landingShadow);
@@ -464,6 +465,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   for(const [material,pieces]of buckets){if(pieces.length<2)continue;const sources=pieces.map(piece=>{piece.updateMatrix();const source=piece.geometry.index?piece.geometry.toNonIndexed():new THREE.BufferGeometry().copy(piece.geometry);return source.applyMatrix4(piece.matrix);});const geometry=mergeGeometries(sources,false);sources.forEach(source=>source.dispose());if(!geometry)continue;keepGeometry(geometry);const mesh=new THREE.Mesh(geometry,material);mesh.receiveShadow=true;mesh.castShadow=pieces.some(piece=>piece.castShadow);pieces.forEach(piece=>group.remove(piece));group.add(mesh);}
  }
  for(const child of scene.children)if(child instanceof THREE.Group&&child!==architecture.root&&child!==traveler.root&&child!==aircraft&&child!==checkinIsland.root)batchProp(child);
+ scene.traverse(object=>{if(object instanceof THREE.Mesh)ensurePaintUV(object.geometry);});
  // Each set is already merged by material. Keep its animated children intact
  // and let the normal room culler hide these independent room groups.
  const setDressing:FilmSet[]=[];
@@ -517,6 +519,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    trays.forEach((group,i)=>{const travel=state.reduced?i*1.7:((state.time??0)*.34+i*1.9+security*2.2)%7.5;group.visible=p>=.43&&p<.65;group.position.z=-37.9-travel;group.rotation.y=0;});
    const scan=state.reduced?.5:(security*4)%1;scanPlane.position.set(archX,1.65,-42.55-scan*.9);scanBar.position.set(archX,3,-42.55-scan*.9);scanPlane.visible=scanBar.visible=p>=.45&&p<.64;
    animateAirport(state.time??0,state.reduced);updateBelt(state.reduced?0:state.time??0);
+   transitionTravelers.forEach((guest,index)=>{guest.arms[0].rotation.x=state.reduced?-.16:-.16+Math.sin((state.time??0)*.45+index)*.06;});
    setTime=state.time??0;setReduced=state.reduced;
    if(p>=.34)requestSet("airside");
    if(p>=.52)requestSet("concourse");

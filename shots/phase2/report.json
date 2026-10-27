@@ -1,0 +1,223 @@
+{
+  "phase": "phase2",
+  "errors": [],
+  "warnings": [],
+  "shots": [
+    {
+      "name": "desktop",
+      "file": "desktop-intro-0s.png",
+      "seconds": 0,
+      "text": "Alright.Let's do this one more time."
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-intro-3s.png",
+      "seconds": 3,
+      "text": "My name'sAMMARADAM.CS & Finance at Waterloo."
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-intro-6s.png",
+      "seconds": 6,
+      "text": "And findingMYPEOPLE.Builders, founders, friends. Come on. I'll show you."
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-000.png",
+      "progress": 0,
+      "actual": "0.0000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nALRIGHT.\n\nLET'S DO THIS ONE MORE TIME.\n\n↓\nScroll to continue\n\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nExperience\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-010.png",
+      "progress": 0.1,
+      "actual": "0.1000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nMY NAME'S\n\nAMMAR\nADAM.\n\nCS & FINANCE AT WATERLOO.\n\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nExperience\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-020.png",
+      "progress": 0.2,
+      "actual": "0.2000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nAND FINDING\n\nMY\nPEOPLE.\n\nBUILDERS, FOUNDERS, FRIENDS. COME ON. I'LL SHOW YOU.\n\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nExperience\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-030.png",
+      "progress": 0.3,
+      "actual": "0.3000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nTHEN I STARTED BUILDING THE TOOLS.\nDataStealth\nAlpen Capital\nDataStealth\nSagard\nOpenAI\nPear VC\n\nProduct Engineering Intern, Mississauga\n\nBuilt product demos and automated competitor research.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nProjects\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-040.png",
+      "progress": 0.4,
+      "actual": "0.4000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nAND FINDING OTHER PEOPLE WHO BUILD.\nOpenAI\nAlpen Capital\nDataStealth\nSagard\nOpenAI\nPear VC\n\nFounding Builder Lead\n\nI find student builders and help them ship.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nProjects\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-050.png",
+      "progress": 0.5,
+      "actual": "0.5000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nYOUR GPS COULD USE A BETTER VOICE.\nBackseat\nBackseat\nRocketShip\nWaterloo Venture Group\nWaterloo Tech Week / Hack the North\n\nCharacter voices for Waze, installed in one tap.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nConcourse\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-060.png",
+      "progress": 0.6,
+      "actual": "0.6000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nSOME PROJECTS ARE MADE OF PEOPLE.\nWaterloo Venture Group\nBackseat\nRocketShip\nWaterloo Venture Group\nWaterloo Tech Week / Hack the North\n\nManaging Director\n\nWaterloo's student venture community.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nConcourse\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-070.png",
+      "progress": 0.7,
+      "actual": "0.7000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nRésumé\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-080.png",
+      "progress": 0.8,
+      "actual": "0.8000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nRésumé\n→",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-090.png",
+      "progress": 0.9,
+      "actual": "0.9000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nAnd that’s me.\n\nThe story’s\nstill going.\na/a\nAMMAR ADAM\nBOARDING PASS\nPASSENGER\nADAM / AMMAR\nComputer Science & Finance · Waterloo\nFROM\nYKF\nWATERLOO\nTO\nNEXT\nWHAT’S NEXT\nFLIGHT\nAMM01\nGATE\n05\nSEAT\n01A\nDOCUMENT\nRESUME\nAMMARADAM.COM\nKEEP THIS PART\nRESUME / PDF\nAMM01\nADAM / AMMAR\nYKF → NEXT\nAMM01 / AMMAR-ADAM / 01A\nScan & open resume\n↗\nTWO SECONDS TO DEPARTURE\nSay hello\n↗\nLinkedIn\nGitHub\nX\nOpen PDF directly\n↗\n\nReady to scan. Resume opens after two seconds.\n\na/a\nExplore\nShort version\n↗\n\nLet’s make something happen.\n\nVisual credits ↗",
+      "overflow": false
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-scroll-100.png",
+      "progress": 1,
+      "actual": "1.0000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nAnd that’s me.\n\nThe story’s\nstill going.\na/a\nAMMAR ADAM\nBOARDING PASS\nPASSENGER\nADAM / AMMAR\nComputer Science & Finance · Waterloo\nFROM\nYKF\nWATERLOO\nTO\nNEXT\nWHAT’S NEXT\nFLIGHT\nAMM01\nGATE\n05\nSEAT\n01A\nDOCUMENT\nRESUME\nAMMARADAM.COM\nKEEP THIS PART\nRESUME / PDF\nAMM01\nADAM / AMMAR\nYKF → NEXT\nAMM01 / AMMAR-ADAM / 01A\nScan & open resume\n↗\nTWO SECONDS TO DEPARTURE\nSay hello\n↗\nLinkedIn\nGitHub\nX\nOpen PDF directly\n↗\n\nReady to scan. Resume opens after two seconds.\n\na/a\nExplore\nShort version\n↗\n\nLet’s make something happen.\n\nVisual credits ↗",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-intro-0s.png",
+      "seconds": 0,
+      "text": "Alright.Let's do this one more time."
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-intro-3s.png",
+      "seconds": 3,
+      "text": "My name'sAMMARADAM.CS & Finance at Waterloo."
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-intro-6s.png",
+      "seconds": 6,
+      "text": "And findingMYPEOPLE.Builders, founders, friends. Come on. I'll show you."
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-000.png",
+      "progress": 0,
+      "actual": "0.0001",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nALRIGHT.\n\nLET'S DO THIS ONE MORE TIME.\n\n↓\nScroll to continue\n\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nExperience\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-010.png",
+      "progress": 0.1,
+      "actual": "0.0999",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nMY NAME'S\n\nAMMAR\nADAM.\n\nCS & FINANCE AT WATERLOO.\n\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nExperience\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-020.png",
+      "progress": 0.2,
+      "actual": "0.1999",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nAND FINDING\n\nMY\nPEOPLE.\n\nBUILDERS, FOUNDERS, FRIENDS. COME ON. I'LL SHOW YOU.\n\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nExperience\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-030.png",
+      "progress": 0.3,
+      "actual": "0.3000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nTHEN I STARTED BUILDING THE TOOLS.\nDataStealth\nAlpen Capital\nDataStealth\nSagard\nOpenAI\nPear VC\n\nProduct Engineering Intern, Mississauga\n\nBuilt product demos and automated competitor research.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nProjects\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-040.png",
+      "progress": 0.4,
+      "actual": "0.4000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nAND FINDING OTHER PEOPLE WHO BUILD.\nOpenAI\nAlpen Capital\nDataStealth\nSagard\nOpenAI\nPear VC\n\nFounding Builder Lead\n\nI find student builders and help them ship.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nProjects\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-050.png",
+      "progress": 0.5,
+      "actual": "0.4999",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nYOUR GPS COULD USE A BETTER VOICE.\nBackseat\nBackseat\nRocketShip\nWaterloo Venture Group\nWaterloo Tech Week / Hack the North\n\nCharacter voices for Waze, installed in one tap.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nConcourse\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-060.png",
+      "progress": 0.6,
+      "actual": "0.5999",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\nSOME PROJECTS ARE MADE OF PEOPLE.\nWaterloo Venture Group\nBackseat\nRocketShip\nWaterloo Venture Group\nWaterloo Tech Week / Hack the North\n\nManaging Director\n\nWaterloo's student venture community.\n\n←\n→\nDetails\n↗\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nConcourse\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-070.png",
+      "progress": 0.7,
+      "actual": "0.6999",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nRésumé\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-080.png",
+      "progress": 0.8,
+      "actual": "0.8000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\na/a\nExplore\nShort version\n↗\n\nScroll to continue\n↓\n\nRésumé\n→",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-090.png",
+      "progress": 0.9,
+      "actual": "0.9000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nAnd that’s me.\n\nThe story’s\nstill going.\na/a\nAMMAR ADAM\nBOARDING PASS\nPASSENGER\nADAM / AMMAR\nComputer Science & Finance · Waterloo\nFROM\nYKF\nWATERLOO\nTO\nNEXT\nWHAT’S NEXT\nFLIGHT\nAMM01\nGATE\n05\nSEAT\n01A\nDOCUMENT\nRESUME\nAMMARADAM.COM\nKEEP THIS PART\nAMM01 / AMMAR-ADAM / 01A\nScan & open resume\n↗\nTWO SECONDS TO DEPARTURE\nSay hello\n↗\nLinkedIn\nGitHub\nX\nOpen PDF directly\n↗\n\nReady to scan. Resume opens after two seconds.\n\na/a\nExplore\nShort version\n↗\n\nLet’s make something happen.\n\nVisual credits ↗",
+      "overflow": false
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-scroll-100.png",
+      "progress": 1,
+      "actual": "1.0000",
+      "text": "Ammar Adam — CS & Finance at Waterloo\nSkip to the short version\n\nAnd that’s me.\n\nThe story’s\nstill going.\na/a\nAMMAR ADAM\nBOARDING PASS\nPASSENGER\nADAM / AMMAR\nComputer Science & Finance · Waterloo\nFROM\nYKF\nWATERLOO\nTO\nNEXT\nWHAT’S NEXT\nFLIGHT\nAMM01\nGATE\n05\nSEAT\n01A\nDOCUMENT\nRESUME\nAMMARADAM.COM\nKEEP THIS PART\nAMM01 / AMMAR-ADAM / 01A\nScan & open resume\n↗\nTWO SECONDS TO DEPARTURE\nSay hello\n↗\nLinkedIn\nGitHub\nX\nOpen PDF directly\n↗\n\nReady to scan. Resume opens after two seconds.\n\na/a\nExplore\nShort version\n↗\n\nLet’s make something happen.\n\nVisual credits ↗",
+      "overflow": false
+    }
+  ],
+  "gpu": [
+    "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+    "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+  ]
+}

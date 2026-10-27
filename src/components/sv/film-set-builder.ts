@@ -2,6 +2,7 @@ import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import type { FilmMaterialPalette } from "./film-materials";
+import { ensurePaintUV } from "./film-paint-uv";
 
 export type SetVector = readonly [number, number, number];
 export type SetMaterial = keyof FilmMaterialPalette;
@@ -26,6 +27,7 @@ export function createSetBuilder(palette: FilmMaterialPalette, name: string) {
     transform.position.set(...position); transform.rotation.set(...rotation); transform.scale.set(...scale); transform.updateMatrix();
     const geometry = source.index ? source.toNonIndexed() : source;
     if (geometry !== source) source.dispose();
+    ensurePaintUV(geometry);
     geometry.deleteAttribute("uv"); geometry.deleteAttribute("color");
     if (!geometry.getAttribute("normal")) geometry.computeVertexNormals();
     geometry.applyMatrix4(transform.matrix);

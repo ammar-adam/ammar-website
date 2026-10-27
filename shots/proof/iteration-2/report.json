@@ -1,0 +1,27 @@
+{
+  "states": [
+    {
+      "name": "desktop",
+      "fallback": "0",
+      "stage": "checkin",
+      "progress": "0.2600",
+      "camera": "1.78,1.89,-18.87",
+      "drawCalls": "248",
+      "looking": "false",
+      "lookYaw": "0.000",
+      "lookPitch": "0.000"
+    },
+    {
+      "name": "mobile",
+      "fallback": "0",
+      "stage": "checkin",
+      "progress": "0.2601",
+      "camera": "3.45,1.90,-16.90",
+      "drawCalls": "214",
+      "looking": "false",
+      "lookYaw": "0.000",
+      "lookPitch": "0.000"
+    }
+  ],
+  "errors": []
+}

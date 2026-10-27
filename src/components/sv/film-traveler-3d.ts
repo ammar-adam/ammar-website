@@ -59,7 +59,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
    float drawnStroke(vec2 p,vec2 a,vec2 b,float width){
     vec2 axis=b-a;float along=clamp(dot(p-a,axis)/dot(axis,axis),0.0,1.0);
     float distanceToStroke=length(p-a-along*axis);
-    float irregularWidth=width*1.65*(0.78+0.22*sin(along*17.0));
+    float irregularWidth=width*1.4*(0.45+0.55*sin(along*3.14159265));
     float aa=max(fwidth(distanceToStroke)*0.7,0.00035);
     float broken=1.0-smoothstep(0.42,0.47,along)* (1.0-smoothstep(0.53,0.57,along));
     return (1.0-smoothstep(irregularWidth-aa,irregularWidth+aa,distanceToStroke))*broken;
@@ -87,71 +87,66 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
    // Broad dragged pigment follows individual garment panels in bind space.
    // These are colour shapes inside the cloth, not a second silhouette pass.
    float garmentWash(vec2 p,float region){
-    if(region<1.5)return max(drawnStroke(p,vec2(-.14,.20),vec2(.11,.27),.027),drawnStroke(p,vec2(-.12,.40),vec2(.07,.45),.022));
-    if(region<2.5)return max(drawnStroke(p,vec2(-.13,.24),vec2(.10,.30),.024),drawnStroke(p,vec2(-.08,.36),vec2(.02,.39),.018));
-    if(region<3.5)return max(drawnStroke(p,vec2(-.055,-.18),vec2(.035,-.29),.018),drawnStroke(p,vec2(-.045,-.43),vec2(.025,-.47),.014));
-    if(region<4.5)return max(drawnStroke(p,vec2(-.06,-.23),vec2(.045,-.34),.024),drawnStroke(p,vec2(-.035,-.58),vec2(.025,-.65),.018));
-    return max(drawnStroke(p,vec2(-.12,.31),vec2(.10,.29),.019),drawnStroke(p,vec2(-.10,.12),vec2(.08,.15),.014));
+    float wash=0.0;
+    if(region<1.5)wash= max(drawnStroke(p,vec2(-.14,.20),vec2(.11,.27),.027),drawnStroke(p,vec2(-.12,.40),vec2(.07,.45),.022));
+    else if(region<2.5)wash= max(drawnStroke(p,vec2(-.13,.24),vec2(.10,.30),.024),drawnStroke(p,vec2(-.08,.36),vec2(.02,.39),.018));
+    else if(region<3.5)wash= max(drawnStroke(p,vec2(-.055,-.18),vec2(.035,-.29),.018),drawnStroke(p,vec2(-.045,-.43),vec2(.025,-.47),.014));
+    else if(region<4.5)wash= max(drawnStroke(p,vec2(-.06,-.23),vec2(.045,-.34),.024),drawnStroke(p,vec2(-.035,-.58),vec2(.025,-.65),.018));
+    else wash=max(drawnStroke(p,vec2(-.12,.31),vec2(.10,.29),.019),drawnStroke(p,vec2(-.10,.12),vec2(.08,.15),.014));
+    return wash;
    }`).replace("#include <color_fragment>",`#include <color_fragment>
-   vec3 brushCell=floor(clothPoint*vec3(110.0,175.0,95.0));
-   float pigment=fract(sin(dot(brushCell,vec3(13.13,67.71,41.9)))*43758.5453);
-   float stroke=sin(clothPoint.y*173.0+sin(clothPoint.x*41.0)*3.0);
-   diffuseColor.rgb*=0.96+0.035*pigment+0.008*stroke;
+   float travelerPigmentRatio=1.0;
+   float travelerPaintCoverage=0.0;
    if(originalTravelerReady>0.5&&originalPaintUV.z>0.001){
     vec4 originalPigment=texture2D(originalTravelerPaint,originalPaintUV.xy);
     float inside=step(0.0,originalPaintUV.x)*step(originalPaintUV.x,1.0)*step(0.0,originalPaintUV.y)*step(originalPaintUV.y,1.0);
-    float cover=smoothstep(0.7,0.9,originalPigment.a)*inside;
-    // Retain the original painted folds without projecting black or glowing
-    // orange patches across unrelated parts of the new articulated surface.
+    travelerPaintCoverage=smoothstep(0.7,0.9,originalPigment.a)*inside*originalPaintUV.z;
     float originalValue=dot(originalPigment.rgb,vec3(.2126,.7152,.0722));
     float clothValue=max(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722)),.025);
-    float pigmentRatio=clamp(originalValue/clothValue,.66,1.40);
-    diffuseColor.rgb*=mix(1.0,pigmentRatio,.36*originalPaintUV.z*cover);
+    travelerPigmentRatio=clamp(originalValue/clothValue,.78,1.22);
    }
-   if(drawnRegion>0.5){
-    vec3 clothPlane=normalize(clothRestNormal);
-    float dryBoundary=.024*sin(clothPoint.y*41.0+clothPoint.x*17.0);
-    float raisedPlane=smoothstep(.12+dryBoundary,.20+dryBoundary,dot(clothPlane,normalize(vec3(-.45,.45,.77))));
-    vec3 planePigment=mix(vec3(.88,.89,1.03),vec3(1.18,1.23,1.31),raisedPlane);
-    float coolPlane=smoothstep(.18,.32,dot(clothPlane,normalize(vec3(-1.0,.05,.20))));
-    planePigment*=mix(vec3(1.0),vec3(.92,1.06,1.13),coolPlane*.45);
-    float paintedWash=garmentWash(clothPoint.xy,drawnRegion);
-    diffuseColor.rgb*=planePigment*(1.0+paintedWash*.18);
-   }
-   // Deliberately placed creases use bind coordinates, so they bend with the real cloth.
+   // Authored seams remain attached to the cloth charts as the joints bend.
    float rearSurface=smoothstep(-0.08,0.25,clothRestNormal.z);
    float creaseInk=garmentInk(clothPoint.xy,drawnRegion)*rearSurface;
-   diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.006,.010,.019),creaseInk*.76);
+   float clothDepthFade=mix(1.0,.15,smoothstep(8.0,45.0,length(vViewPosition)));
+   diffuseColor.rgb=mix(diffuseColor.rgb,vec3(.004,.005,.014),creaseInk*.48*clothDepthFade);
+   `).replace("#include <aomap_fragment>",`#include <aomap_fragment>
+   float travelerAlbedo=max(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722)),.015);
+   float travelerExposure=max(0.0,dot(reflectedLight.directDiffuse,vec3(.2126,.7152,.0722))/travelerAlbedo);
+   float travelerFacingKey=0.0;
+   #if NUM_DIR_LIGHTS > 0
+    travelerFacingKey=max(0.0,dot(normal,directionalLights[0].direction));
+   #endif
+   float travelerAvailable=smoothstep(.025,.10,travelerExposure);
+   float travelerTerminator=smoothstep(.12,.18,travelerFacingKey)*(1.0-smoothstep(.40,.48,travelerFacingKey));
+   float travelerFalloff=smoothstep(.05,.15,travelerExposure)*(1.0-smoothstep(.42,.65,travelerExposure));
+   float travelerShadowEdge=smoothstep(.002,.035,fwidth(travelerExposure));
+   float travelerPaintMask=max(travelerTerminator*travelerAvailable,travelerFalloff*travelerShadowEdge)*clothDepthFade;
+   float travelerWash=drawnRegion>.5?garmentWash(clothPoint.xy,drawnRegion)*travelerPaintMask:0.0;
+   float travelerPigment=mix(1.0,travelerPigmentRatio,travelerPaintCoverage*.28*travelerPaintMask)*(1.0+travelerWash*.075);
+   float travelerAA=clamp(fwidth(travelerExposure)*.45,.002,.012);
+   float travelerBand=.10
+    +.22*smoothstep(.18-travelerAA,.18+travelerAA,travelerExposure)
+    +.30*smoothstep(.42-travelerAA,.42+travelerAA,travelerExposure)
+    +.38*smoothstep(.70-travelerAA,.70+travelerAA,travelerExposure);
+   reflectedLight.directDiffuse*=travelerBand/max(travelerExposure,.0001)*travelerPigment;
+   float travelerLit=smoothstep(.16,.70,travelerExposure);
+   reflectedLight.indirectDiffuse*=mix(vec3(.72,.78,1.16),vec3(.96,.98,1.0),travelerLit)*travelerPigment;
+   reflectedLight.indirectDiffuse+=diffuseColor.rgb*vec3(.014,.019,.047)*(1.0-travelerLit);
+   reflectedLight.directSpecular*=.08;reflectedLight.indirectSpecular*=.08;
    `).replace("#include <opaque_fragment>",`
-   outgoingLight=mix(outgoingLight,diffuseColor.rgb,0.19);
-   if(drawnRegion>0.5){
-    // Lighting bands use real scene illumination; a fixed paint edge breaks each transition.
-    float baseValue=max(dot(diffuseColor.rgb,vec3(.2126,.7152,.0722)),.014);
-    float lightValue=dot(outgoingLight,vec3(.2126,.7152,.0722))/baseValue;
-    float edgePaint=.025*sin(clothPoint.y*97.0+sin(clothPoint.x*71.0)*2.0);
-    float band=mix(.48,.94,smoothstep(.43+edgePaint,.49+edgePaint,lightValue));
-    band=mix(band,1.40,smoothstep(.95+edgePaint,1.01+edgePaint,lightValue));
-    band+=max(0.0,lightValue-1.6)*.55;
-    vec3 graphicLight=outgoingLight/max(lightValue,.12)*band;
-    outgoingLight=mix(outgoingLight,graphicLight,.74);
-    float edge=1.0-clamp(dot(normal,normalize(vViewPosition)),0.0,1.0);
-    float brokenEdge=smoothstep(-.15,.45,sin(clothPoint.y*43.0+clothPoint.x*31.0));
-    // Silhouette ink comes from the same 1.5px depth/normal pass as the room.
-    // Keep only the authored cloth creases and reflected pigment here.
-    // A warm dry edge is restricted to lit window-facing cloth. The shadow
-    // side keeps its pigment colour instead of acquiring an electric-blue rim.
-    vec3 worldClothNormal=inverseTransformDirection(normal,viewMatrix);
-    float windowSide=smoothstep(.35,.72,dot(worldClothNormal,normalize(vec3(.85,.40,.25))));
-    float keyAvailable=smoothstep(.12,.65,dot(reflectedLight.directDiffuse,vec3(.2126,.7152,.0722))/baseValue);
-    float rimEdge=smoothstep(.67,.90,edge)*(1.0-smoothstep(.96,1.0,edge));
-    outgoingLight+=vec3(.24,.11,.043)*rimEdge*brokenEdge*windowSide*keyAvailable*.20;
-   }
+   float travelerEdge=pow(1.0-clamp(abs(dot(normal,normalize(vViewPosition))),0.0,1.0),4.0);
+   float travelerWindowSide=smoothstep(.25,.72,travelerFacingKey);
+   float travelerFillAvailable=clamp(dot(reflectedLight.indirectDiffuse,vec3(.2126,.7152,.0722))/travelerAlbedo,0.0,1.0);
+   // Both rims respond to the scene lights; neither is an emissive outline.
+   outgoingLight+=vec3(.32,.17,.055)*travelerEdge*travelerWindowSide*travelerAvailable*.25;
+   outgoingLight+=vec3(.025,.038,.11)*travelerEdge*(1.0-travelerWindowSide)*travelerFillAvailable*.16;
    #include <opaque_fragment>`);
  };
- paint.customProgramCacheKey=()=>"traveler-painted-panels-v6";materials.add(paint);
- const palette={navy:"#3d547f",light:"#7799ac",dark:"#202a45",black:"#171e2b",red:"#c54636",coral:"#ed8150",cyan:"#417f9b",cream:"#e9dbc0",sole:"#aa9478",skin:"#8c5038",metal:"#82969c",pack:"#3f4e55",packPanel:"#6b7d7b",leather:"#a4764d",stitch:"#c8ab77"};
+ paint.customProgramCacheKey=()=>"traveler-surface-light-v7";materials.add(paint);
+ const palette={navy:"#3a4f8a",light:"#6b79a2",dark:"#2b3566",black:"#0d0f1f",red:"#ff514e",coral:"#ffb46a",cyan:"#3a4f8a",cream:"#f4ecd8",sole:"#ffb46a",skin:"#b98466",metal:"#d8d1bd",pack:"#2b3566",packPanel:"#3a4f8a",leather:"#b1845f",stitch:"#ffd9a0"};
  const color=new THREE.Color();
- function finish(source:THREE.BufferGeometry,base:string,variance=.025){
+ function finish(source:THREE.BufferGeometry,base:string){
   source.computeVertexNormals();
   const geometry=source.index?source.toNonIndexed():source;
   if(geometry!==source)source.dispose();
@@ -161,9 +156,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
   const position=geometry.getAttribute("position"),baseColor=new THREE.Color(base);
   const colors=new Float32Array(position.count*3),uvs=new Float32Array(position.count*2);
   for(let i=0;i<position.count;i+=3){
-   const face=i/3,grain=Math.sin(face*52.31+position.getY(i)*93.7)*.5+.5;
-   const light=.94+grain*variance;
-   color.copy(baseColor).multiplyScalar(light);
+   color.copy(baseColor);
    for(let j=0;j<3;j++){colors[(i+j)*3]=color.r;colors[(i+j)*3+1]=color.g;colors[(i+j)*3+2]=color.b;uvs[(i+j)*2]=position.getX(i+j);uvs[(i+j)*2+1]=position.getY(i+j);}
   }
   geometry.setAttribute("color",new THREE.BufferAttribute(colors,3));
@@ -214,10 +207,16 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
  panel(head,[[.14,.30,.095],[.20,.17,.03],[.14,.11,.16],[.12,.20,.179]],palette.dark);
  panel(head,[[-.15,.30,.11],[-.20,.17,.03],[-.15,.08,.14],[-.12,.20,.179]],palette.light);
  cloth(head,[[.02,.06,.062,0,-.075],[.07,.091,.078,0,-.09],[.19,.102,.08,0,-.09],[.275,.083,.071,0,-.075],[.305,.035,.035,0,-.065]],palette.skin,.012);
- // Narrow brow, nose and jaw are mostly occluded inside the hood; no oversized toy eyes.
- panel(head,[[-.08,.185,-.162],[.08,.185,-.162],[.067,.225,-.156],[-.066,.227,-.156]],palette.dark);
+ // Keep the existing face and hood proportions; reveal the features within them.
+ // Small visible eyes and two narrow brows sit inside the existing hood opening.
+ for(const side of [-1,1]){
+  const eye=mesh(head,new THREE.SphereGeometry(1,10,6),palette.cream);eye.position.set(side*.039,.202,-.173);eye.scale.set(.014,.008,.004);
+  const pupil=mesh(head,new THREE.SphereGeometry(1,8,6),palette.black);pupil.position.set(side*.039,.202,-.178);pupil.scale.set(.0045,.005,.002);
+  cord(head,[[side*.020,.222,-.170],[side*.040,.229,-.169],[side*.060,.223,-.162]],.0035,palette.black);
+ }
+ cord(head,[[-.027,.121,-.167],[0,.117,-.174],[.026,.122,-.166]],.0025,palette.leather);
  cloth(head,[[.182,.005,.005,0,-.165],[.151,.012,.022,0,-.168],[.139,.010,.009,0,-.165]],palette.skin,0);
- panel(head,[[-.13,.265,-.106],[.12,.265,-.106],[.11,.224,-.18],[-.11,.233,-.18]],palette.dark);
+ panel(head,[[-.13,.285,-.106],[.12,.285,-.106],[.10,.251,-.17],[-.10,.255,-.17]],palette.dark);
  const hairGeometry=finish(new THREE.IcosahedronGeometry(.027,1),palette.black);
  const hair=new THREE.InstancedMesh(hairGeometry,paint,19),matrix=new THREE.Matrix4();
  for(let i=0;i<19;i++){const a=i*2.4,r=.073*Math.sqrt((i+.5)/19);matrix.compose(new THREE.Vector3(Math.cos(a)*r,.285+Math.sin(a)*.025,-.11-Math.sin(a)*r*.45),new THREE.Quaternion().setFromEuler(new THREE.Euler(i*.7,i*.4,0)),new THREE.Vector3(1,.78,1));hair.setMatrixAt(i,matrix);}hair.castShadow=true;head.add(hair);
@@ -230,6 +229,14 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
  cord(pack,[[-.13,.09,.133],[-.145,.24,.138],[-.07,.31,.136],[.10,.29,.137]],.006,palette.stitch);
  cord(pack,[[-.065,.41,-.005],[-.055,.49,.015],[.055,.49,.015],[.065,.41,-.005]],.011,palette.leather);
  for(const side of [-1,1]){cord(torso,[[side*.12,.55,.13],[side*.175,.49,.04],[side*.168,.36,-.113],[side*.15,.12,-.08]],.026,palette.leather);cord(torso,[[side*.14,.55,.14],[side*.180,.47,.035],[side*.175,.33,-.116]],.005,palette.stitch);}
+ // Two unbranded lentil plush charms hang from small backpack clips.
+ for(const [side,finishColor,name] of [[-1,palette.stitch,"yellow"],[1,palette.cyan,"blue"]] as const){
+  const charm=joint(pack,`plush-keychain-${name}`,side*.18,.205,.15);
+  const body=mesh(charm,new THREE.SphereGeometry(1,16,10),finishColor);body.scale.set(.054,.064,.027);
+  const clip=mesh(charm,new THREE.TorusGeometry(.014,.0026,5,12),palette.metal);clip.position.y=.080;
+  cord(pack,[[side*.145,.36,.11],[side*.171,.31,.15],[side*.18,.282,.15]],.0024,palette.metal);
+  for(const eyeSide of [-1,1]){const eye=mesh(charm,new THREE.SphereGeometry(1,8,6),palette.black);eye.position.set(eyeSide*.016,.009,.027);eye.scale.set(.004,.004,.0018);}
+ }
  const fingers:THREE.Group[]=[];
  function arm(side:number){
   const shoulder=joint(torso,side<0?"left-shoulder":"right-shoulder",side*.205,.49,0);
@@ -251,7 +258,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
   const ankle=joint(knee,side<0?"left-ankle":"right-ankle",0,-.43,0);ankle.scale.set(.82,1,.83);
   cloth(ankle,[[-.14,.086,.165,0,-.062],[-.115,.103,.185,0,-.065],[-.07,.098,.177,0,-.065],[-.015,.079,.125,0,-.015],[.07,.067,.075,0,.025]],palette.cream,.005);
   cloth(ankle,[[-.145,.09,.166,0,-.065],[-.125,.102,.183,0,-.065],[-.105,.103,.185,0,-.065]],palette.sole,.001);
-  for(let i=0;i<4;i++)cord(ankle,[[-.041,.005-i*.011,-.035-i*.021],[.042,.006-i*.011,-.04-i*.021]],.0035,"#918d7d");
+  for(let i=0;i<4;i++)cord(ankle,[[-.041,.005-i*.011,-.035-i*.021],[.042,.006-i*.011,-.04-i*.021]],.0035,palette.cream);
   soles.push(joint(ankle,"sole",0,-.145,-.08));return{hip,knee,ankle};
  }
  const leftLeg=leg(-1),rightLeg=leg(1);
@@ -316,7 +323,7 @@ export function createFilmTraveler3D(options: { loader?: THREE.TextureLoader; in
   const position=object.geometry.getAttribute("position"),normal=object.geometry.getAttribute("normal"),projection=new Float32Array(position.count*3);
   let cloth=!(object instanceof THREE.InstancedMesh),backpack=false,region=0;
   for(let node:THREE.Object3D|null=object;node&&node!==root;node=node.parent){
-   if(/ankle|wrist|finger|suitcase|grip/.test(node.name))cloth=false;
+   if(/ankle|wrist|finger|suitcase|grip|keychain/.test(node.name))cloth=false;
    if(node.name==="backpack"){backpack=true;region=5;}
    else if(node.name==="hood-and-head"&&region===0)region=2;
    else if(/shoulder/.test(node.name)&&region===0)region=3;

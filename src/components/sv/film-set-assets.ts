@@ -2,6 +2,7 @@ import * as THREE from "three";
 import manifest from "@/data/terminalSets.generated.json";
 import type { FilmMaterialPalette } from "./film-materials";
 import type { FilmSet } from "./film-set-builder";
+import { ensurePaintUV } from "./film-paint-uv";
 
 type SetName = "atrium" | "concourse" | "airside";
 type Axis = "x" | "y" | "z";
@@ -10,9 +11,9 @@ type NodeRecord = {
   type: "group" | "mesh"; name: string; position: [number, number, number];
   quaternion: [number, number, number, number]; scale: [number, number, number];
   geometry?: number; material?: keyof FilmMaterialPalette; castShadow?: boolean;
-  receiveShadow?: boolean; userData?: Record<string, unknown>; children: NodeRecord[];
+  receiveShadow?: boolean; visible?: boolean; userData?: Record<string, unknown>; children: NodeRecord[];
 };
-type GeometryRecord = { positionOffset: number; positionCount: number; normalOffset: number; normalCount: number; indexOffset?: number; indexCount?: number; indexType?: "uint32" };
+type GeometryRecord = { positionOffset: number; positionCount: number; normalOffset: number; normalCount: number; paintUVOffset?: number; paintUVCount?: number; indexOffset?: number; indexCount?: number; indexType?: "uint32" };
 type Header = { version: number; roots: NodeRecord[]; geometries: GeometryRecord[] };
 type PreparedSet = { header: Header; buffer: ArrayBuffer; start: number };
 const requests = new Map<SetName, Promise<PreparedSet>>();
@@ -50,6 +51,8 @@ function instantiate({ header, buffer, start }: PreparedSet, palette: FilmMateri
     item.setAttribute("position", new THREE.BufferAttribute(new Float32Array(buffer, start + record.positionOffset, record.positionCount), 3));
     item.setAttribute("normal", new THREE.BufferAttribute(new Float32Array(buffer, start + record.normalOffset, record.normalCount), 3));
     if (record.indexOffset !== undefined && record.indexCount) item.setIndex(new THREE.BufferAttribute(new Uint32Array(buffer, start + record.indexOffset, record.indexCount), 1));
+    if (record.paintUVOffset !== undefined && record.paintUVCount) item.setAttribute("paintUV", new THREE.BufferAttribute(new Float32Array(buffer, start + record.paintUVOffset, record.paintUVCount), 2));
+    ensurePaintUV(item);
     item.computeBoundingBox(); item.computeBoundingSphere();
     return item;
   });
@@ -59,7 +62,7 @@ function instantiate({ header, buffer, start }: PreparedSet, palette: FilmMateri
       ? new THREE.Mesh(geometry[record.geometry!], palette[record.material!]) : new THREE.Group();
     object.name = record.name; object.position.fromArray(record.position);
     object.quaternion.fromArray(record.quaternion); object.scale.fromArray(record.scale);
-    object.castShadow = record.castShadow ?? false; object.receiveShadow = record.receiveShadow ?? false;
+    object.castShadow = record.castShadow ?? false; object.receiveShadow = record.receiveShadow ?? false; object.visible = record.visible !== false;
     object.userData = { ...record.userData };
     if (object.userData.setMotion) moving.push({ object, motion: object.userData.setMotion as Motion });
     for (const child of record.children) object.add(node(child));
@@ -87,8 +90,10 @@ export async function loadFilmSet(name: SetName, palette: FilmMaterialPalette): 
     // Retain the authored construction path for a failed asset or an older
     // browser without native gzip streams. It is deliberately off the hot path.
     console.warn(`Using procedural ${name} set fallback.`, error);
-    if (name === "atrium") return (await import("./film-atrium-set")).createAtriumSet(palette);
-    if (name === "concourse") return (await import("./film-concourse-set")).createConcourseSet(palette);
-    return (await import("./film-airside-set")).createAirsideSet(palette);
+    const set = name === "atrium" ? (await import("./film-atrium-set")).createAtriumSet(palette)
+      : name === "concourse" ? (await import("./film-concourse-set")).createConcourseSet(palette)
+      : (await import("./film-airside-set")).createAirsideSet(palette);
+    for (const root of set.groups) root.traverse(object => { if (object instanceof THREE.Mesh) ensurePaintUV(object.geometry); });
+    return set;
   }
 }

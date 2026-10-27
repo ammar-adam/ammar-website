@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { ensurePaintUV } from "./film-paint-uv";
 
 export type FilmArchitectureMaterials = Record<
   "ink" | "steel" | "ivory" | "coral" | "cyan" | "gold" | "floor" | "wall" |
@@ -135,7 +136,18 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   for (let step = 1; step <= 64; step++) { const x = -14 + step * 28 / 64; archShape.lineTo(x, roofY(x)); }
   for (let step = 64; step >= 0; step--) { const x = -14 + step * 28 / 64; archShape.lineTo(x, roofY(x) - ribThickness(x)); }
   archShape.closePath();
+  // Surface coordinates follow the beam's arc, including its bevel and soffit.
+  const archLength=(x:number)=>{const k=7.2/196;return .5*(x*Math.sqrt(1+(k*x)**2)+Math.asinh(k*x)/k);};
+  const archUV=(geometry:THREE.BufferGeometry)=>{
+    const position=geometry.getAttribute("position"),normal=geometry.getAttribute("normal"),uv=new Float32Array(position.count*2);
+    for(let i=0;i<position.count;i++){
+      const x=position.getX(i);uv[i*2]=archLength(x)-archLength(-14);
+      uv[i*2+1]=Math.abs(normal.getZ(i))>.5?roofY(x)-position.getY(i):position.getZ(i);
+    }
+    geometry.setAttribute("paintUV",new THREE.BufferAttribute(uv,2));
+  };
   const arch = extrude(archShape, .64, .045);
+  archUV(arch);
   const archUnderPositions: number[] = [], archUnderIndices: number[] = [];
   for (let row = 0; row < 2; row++) for (let step = 0; step <= 64; step++) {
     const x = -13.96 + step * 27.92 / 64;
@@ -143,7 +155,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
   }
   for (let step = 0; step < 64; step++) { const a = step, b = step + 65; archUnderIndices.push(a, a + 1, b, a + 1, b + 1, b); }
   const archUnderside = owned(new THREE.BufferGeometry());
-  archUnderside.setAttribute("position", new THREE.Float32BufferAttribute(archUnderPositions, 3)); archUnderside.setIndex(archUnderIndices); archUnderside.computeVertexNormals();
+  archUnderside.setAttribute("position", new THREE.Float32BufferAttribute(archUnderPositions, 3)); archUnderside.setIndex(archUnderIndices); archUnderside.computeVertexNormals(); archUV(archUnderside);
   const pillar = extrude(roundedProfile(.43, 7.95, .16), .54, .035);
 
   function roofPanel(left: number, right: number, length: number) {
@@ -154,7 +166,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     }
     for (let col = 0; col < steps; col++) { const a = col, b = col + steps + 1; indices.push(a, a + 1, b, a + 1, b + 1, b); }
     const geometry = owned(new THREE.BufferGeometry());
-    geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3)); geometry.setIndex(indices); geometry.computeVertexNormals();
+    geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3)); geometry.setIndex(indices); geometry.computeVertexNormals(); archUV(geometry);
     return geometry;
   }
   const timberCeiling = roofPanel(-10.8, 6.7, 6.14);
@@ -185,7 +197,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     block("steel", [.60, .08, .70], [12.91, .045, z], false, zone);
     if (z - 3.2 < -104) continue;
     const panelZ = z - 3.2, panelZone = zoneAt(panelZ);
-    place(timberCeiling, "cyan", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
+    place(timberCeiling, "ivory", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
     place(leftCeiling, "dark", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
     place(clerestory, "glass", [0, 0, panelZ], [1, 1, 1], [0, 0, 0], false, undefined, panelZone);
     // Ceiling seams and slender cross bars; no luminous neon outlines.
@@ -210,7 +222,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
       if (near - far < .02) continue;
       const tone = .95 + ((lane * 13 + row * 7 + 21) % 9) * .009;
       // Broad slate, warm-stone and sea-glass runs make a designed floor plan.
-      const laneTint = [[.54,.82,.94],[.67,.98,1.08],[1.42,1.31,1.05],[1.68,1.49,1.12],[1.68,1.49,1.12],[1.12,1.31,1.18],[.72,1.13,1.18]][lane];
+      const laneTint = [[.78,.78,.83],[.90,.89,.90],[1.02,.99,.94],[1.08,1.04,.96],[1.08,1.04,.96],[1.02,.99,.94],[.94,.94,.95]][lane];
       place(box, "floor", [-12 + lane * 4, -.027, (near + far) / 2], [3.976, .045, near - far - .026], [0, 0, 0], false, new THREE.Color(...laneTint as [number,number,number]).multiplyScalar(tone), index);
     }
     // A single sweeping terrazzo fan per hall echoes the aviation wall inlays.
@@ -280,6 +292,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     // An integrated aviation composition gives each hall its own visible face.
     // The large colour planes stop before the real opening, preserving every
     // approach and doorway. They are lit enamel surfaces, not a pasted poster.
+    if (portal.zone !== 1) {
     const fieldLeft = left > 0 ? -13.7 : right + .4, fieldRight = left > 0 ? left - .4 : 13.7;
     const span = fieldRight - fieldLeft, x = (u: number) => fieldLeft + span * u;
     const lower = new THREE.Shape();
@@ -306,6 +319,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     inlay(tail, "coral", portal.zone, [0, 0, portal.z + .426]);
     // A narrow warm-metal datum makes the sweeping paint belong to the building.
     block("gold", [span, .042, .03], [(fieldLeft + fieldRight) / 2, .91, portal.z + .435], false, portal.zone);
+    }
     const reveal = new THREE.Shape();
     reveal.moveTo(left - .13, 0); reveal.lineTo(left - .13, 3.93); reveal.quadraticCurveTo((left + right) / 2, 5.40, right + .13, 3.93); reveal.lineTo(right + .13, 0); reveal.lineTo(right, 0); reveal.lineTo(right, 3.85); reveal.quadraticCurveTo((left + right) / 2, 5.20, left, 3.85); reveal.lineTo(left, 0); reveal.closePath();
     place(extrude(reveal, .80, .02), "ivory", [0, 0, portal.z], [1, 1, 1], [0, 0, 0], false, undefined, portal.zone);
@@ -448,6 +462,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     group.userData.drawCalls = batches.size + drawing.size;
     group.userData.authoredStrokes = strokeCount;
   });
+  root.traverse(object=>{if(object instanceof THREE.Mesh)ensurePaintUV(object.geometry);});
   let activeRoom = -1;
   const update = (progress: number, lookingAround = false) => {
     const index = progress < .24 ? 0 : progress < .45 ? 1 : progress < .65 ? 2 : progress < .86 ? 3 : 4;

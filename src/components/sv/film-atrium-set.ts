@@ -63,27 +63,6 @@ export function createAtriumSet(palette: FilmMaterialPalette): FilmSet {
     return { pivot, yaw: -.24 + i * .36, phase: i * 1.31 };
   });
 
-  // A freestanding, layered wing relief is mounted BEHIND the Alpen desk.
-  // Its 0.8m depth creates real overlaps and cast shadows; no wall illustration.
-  const relief = [
-    { x: -10.0, y: 3.95, z: -29.60, span: 7.0, chord: 1.95, lift: 1.75, camber: .60, tilt: .46, material: "ivory" as const },
-    { x: -7.2, y: 4.30, z: -29.35, span: 8.6, chord: 2.30, lift: 2.10, camber: .74, tilt: .64, material: "gold" as const },
-    { x: -3.4, y: 4.78, z: -29.20, span: 10.0, chord: 2.15, lift: 2.12, camber: .66, tilt: .52, material: "ivory" as const },
-    { x: .35, y: 4.37, z: -28.60, span: 6.25, chord: 1.65, lift: 1.60, camber: .64, tilt: .72, material: "cyan" as const },
-  ];
-  for (const panel of relief) {
-    checkin.add(wing(panel.span, panel.chord, panel.lift, panel.camber, .32, .18, .36), panel.material, [panel.x, panel.y, panel.z], [panel.tilt, 0, 0]);
-    const rotation = new THREE.Euler(panel.tilt, 0, 0), origin = new THREE.Vector3(panel.x, panel.y, panel.z);
-    const points = Array.from({ length: 20 }, (_, i) => { const t = i / 19, taper = .08 + .92 * (1 - t ** 1.35); return new THREE.Vector3(panel.span * t, panel.lift * t + Math.sin(t * Math.PI) * panel.camber, -panel.chord * taper * .5 + .32 * t * t).applyEuler(rotation).add(origin); });
-    checkin.add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3(points), 32, .026, 6, false), "steel");
-    for (const fraction of [.12, .55]) {
-      const mount = new THREE.Vector3(panel.span * fraction, panel.lift * fraction + Math.sin(fraction * Math.PI) * panel.camber - .15, .32 * fraction * fraction).applyEuler(rotation).add(origin);
-      checkin.rod([mount.x, mount.y, -30.64], [mount.x, mount.y, mount.z], .045, "gold");
-    }
-  }
-  // Mounting spine and three sculpted base fins establish the relief as an object.
-  checkin.add(new THREE.TubeGeometry(new THREE.CatmullRomCurve3([new THREE.Vector3(-10.4, 3.50, -30.35), new THREE.Vector3(-7.7, 4.1, -30.25), new THREE.Vector3(-4.3, 4.55, -30.15), new THREE.Vector3(1, 5.1, -30.12)]), 36, .11, 10, false), "steel");
-
   // Two sculpted self-check-in terminals stand left of the walking route.
   // Their curved one-piece shell, recessed screen, paper slot and ribbed foot
   // are modelled at human scale, not represented by another text placard.

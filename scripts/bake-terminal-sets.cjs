@@ -64,6 +64,7 @@ async function main() {
     return loadedModule.exports;
   }
 
+  const { ensurePaintUV } = load(path.join(sourceRoot, "film-paint-uv.ts"));
   const palette = Object.fromEntries(paletteKeys.map(key => { const material = new THREE.MeshStandardMaterial(); material.name = key; return [key, material]; }));
   const paletteNames = new Map(Object.entries(palette).map(([name, material]) => [material, name]));
   const manifest = {};
@@ -86,12 +87,13 @@ async function main() {
         };
         const encodeGeometry = source => {
           if (geometryIds.has(source)) return geometryIds.get(source);
-          const copy = source.clone();
-          for (const attribute of Object.keys(copy.attributes)) if (attribute !== "position" && attribute !== "normal") copy.deleteAttribute(attribute);
+          const copy = ensurePaintUV(new THREE.BufferGeometry().copy(source));
+          const originalPaintUV = copy.getAttribute("paintUV"), paintIndex = copy.index;
+          for (const attribute of Object.keys(copy.attributes)) if (attribute !== "position" && attribute !== "normal" && attribute !== "paintUV") copy.deleteAttribute(attribute);
           if (!copy.getAttribute("normal")) copy.computeVertexNormals();
           const indexed = bufferUtils.mergeVertices(copy, tolerance); copy.dispose();
           try {
-            const position = indexed.getAttribute("position"), normal = indexed.getAttribute("normal"), index = indexed.getIndex();
+            const position = indexed.getAttribute("position"), normal = indexed.getAttribute("normal"), paintUV = indexed.getAttribute("paintUV"), index = indexed.getIndex();
             if (!index || position.itemSize !== 3 || normal.itemSize !== 3) throw new Error(`${name}: unexpected geometry attributes`);
             const originalPosition = source.getAttribute("position"), originalNormal = source.getAttribute("normal");
             const count = source.index?.count ?? originalPosition.count;
@@ -100,6 +102,8 @@ async function main() {
             // No vertex normal is recomputed and no face is added or removed.
             for (let i = 0; i < count; i++) {
               const a = source.index ? source.index.getX(i) : i, b = index.getX(i);
+              const paintA = paintIndex ? paintIndex.getX(i) : i;
+              for (let component = 0; component < 2; component++) maxAttributeError = Math.max(maxAttributeError, Math.abs(originalPaintUV.getComponent(paintA, component) - paintUV.getComponent(b, component)));
               for (let component = 0; component < 3; component++) {
                 maxAttributeError = Math.max(maxAttributeError, Math.abs(originalPosition.getComponent(a, component) - position.getComponent(b, component)));
                 if (originalNormal) maxAttributeError = Math.max(maxAttributeError, Math.abs(originalNormal.getComponent(a, component) - normal.getComponent(b, component)));
@@ -109,6 +113,7 @@ async function main() {
             const entry = {
               positionOffset: append(position.array), positionCount: position.array.length,
               normalOffset: append(normal.array), normalCount: normal.array.length,
+              paintUVOffset: append(paintUV.array), paintUVCount: paintUV.array.length,
               indexOffset: append(index.array, true), indexCount: index.count, indexType: "uint32",
             };
             const id = geometries.length; geometries.push(entry); geometryIds.set(source, id);
@@ -153,6 +158,7 @@ async function main() {
           };
           geometry.setAttribute("position", new THREE.BufferAttribute(read(entry.positionOffset, entry.positionCount), 3));
           geometry.setAttribute("normal", new THREE.BufferAttribute(read(entry.normalOffset, entry.normalCount), 3));
+          geometry.setAttribute("paintUV", new THREE.BufferAttribute(read(entry.paintUVOffset, entry.paintUVCount), 2));
           geometry.setIndex(new THREE.BufferAttribute(read(entry.indexOffset, entry.indexCount, true), 1));
           decodedGeometries.push(geometry);
         }
