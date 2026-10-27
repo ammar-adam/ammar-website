@@ -1,0 +1,4967 @@
+{
+  "label": "production-final",
+  "url": "http://localhost:3103/",
+  "chrome": "156.0.8078.47",
+  "profile": {
+    "viewport": {
+      "width": 390,
+      "height": 844
+    },
+    "deviceScaleFactor": 2,
+    "isMobile": true,
+    "hasTouch": true,
+    "cpu": 4,
+    "targetFps": 30
+  },
+  "networkProfile": {
+    "name": "Historical Chrome Fast 3G (now named Slow 4G)",
+    "cdp": {
+      "offline": false,
+      "latency": 562.5,
+      "downloadThroughput": 180000,
+      "uploadThroughput": 84375,
+      "connectionType": "cellular3g"
+    },
+    "source": "https://chromium.googlesource.com/devtools/devtools-frontend/+/HEAD/front_end/core/sdk/NetworkManager.ts#709"
+  },
+  "cold": "New browser/context, cleared HTTP cache, blocked/bypassed service workers; normal in-visit caching retained for prefetch reuse.",
+  "caveats": [
+    "CPU is slowed4x; the GPU remains desktop hardware.",
+    "Performance timestamps are relative to navigation start. A video frame with mediaTime 0 can be decoded while paused; firstPlayingMs and firstMovingVideoFrameMs are reported separately and determine motion startup, not the first-frame callback alone.",
+    "The URL may serve a Next dev build. Detection uses dev-only resource markers; their absence does not prove production. Turbopack appears in production too. This harness never starts or stops servers."
+  ],
+  "failure": null,
+  "summary": {
+    "firstPlayingMs": 11473.599999999627,
+    "firstPresentedVideoFrameMs": 4917.2,
+    "firstMovingVideoFrameMs": 11500.5,
+    "targetStartMs": 2000,
+    "firstPlayingMeetsTarget": false,
+    "firstMovingFrameMeetsTarget": false,
+    "firstFrameMeetsTarget": false,
+    "captionDOMMs": 781.7999999988824,
+    "skipDOMMs": 782,
+    "firstCaptionPresentAtFirstVideoFrame": true,
+    "introEndedMs": 19779.299999998882,
+    "lastMediaTime": 5.983333,
+    "decodedVideoFrames": 360,
+    "droppedVideoFrames": 8,
+    "worldMountMs": 22766.299999998882,
+    "firstReadyPostDrawMs": 28440.39999999851,
+    "observedNetworkBytes": 4086163,
+    "completeEncodedBytes": 2906405,
+    "incompleteBodyBytes": 1179758,
+    "networkByteCaveat": "Incomplete/canceled transfers have observed encoded body bytes only; their headers may be missing."
+  },
+  "gpuVerified": true,
+  "textureLimitViolations": [],
+  "likelyDevelopmentBuild": false,
+  "audit": {
+    "method": "Terminal uScene/uDepth post-composite draws to the default framebuffer; CPU submission timestamps, not compositor presentation or GPU completion.",
+    "postFrames": [
+      {
+        "at": 28440.39999999851,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28542.099999999627,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28640.699999999255,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28701.799999998882,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28759.299999998882,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28796,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28807.5,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28836.299999998882,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28873.799999998882,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28916.5,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28958.299999998882,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 28993.799999998882,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 29024.699999999255,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      },
+      {
+        "at": 29035.199999999255,
+        "progress": 0.2405,
+        "stage": "checkin",
+        "drawCalls": 203,
+        "width": 526,
+        "height": 1139,
+        "hidden": false,
+        "ready": true
+      }
+    ],
+    "contexts": [
+      {
+        "id": 1,
+        "at": 22795.599999999627,
+        "unmasked": true,
+        "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+        "version": "WebGL 2.0 (OpenGL ES 3.0 Chromium)"
+      }
+    ],
+    "textures": [
+      {
+        "id": 1,
+        "context": 1,
+        "width": 1,
+        "height": 1,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "Uint8Array",
+        "uploads": 1,
+        "lastUploadAt": 22802.89999999851
+      },
+      {
+        "id": 2,
+        "context": 1,
+        "width": 526,
+        "height": 1139,
+        "repeatS": false,
+        "repeatT": false,
+        "source": null,
+        "uploads": 1,
+        "lastUploadAt": 26294.39999999851
+      },
+      {
+        "id": 3,
+        "context": 1,
+        "width": 526,
+        "height": 1139,
+        "repeatS": false,
+        "repeatT": false,
+        "source": null,
+        "uploads": 1,
+        "lastUploadAt": 26307.099999999627
+      },
+      {
+        "id": 4,
+        "context": 1,
+        "width": 1536,
+        "height": 1536,
+        "repeatS": false,
+        "repeatT": false,
+        "source": null,
+        "uploads": 1,
+        "lastUploadAt": 27658.39999999851
+      },
+      {
+        "id": 5,
+        "context": 1,
+        "width": 1536,
+        "height": 1536,
+        "repeatS": false,
+        "repeatT": false,
+        "source": null,
+        "uploads": 1,
+        "lastUploadAt": 27660.199999999255
+      },
+      {
+        "id": 6,
+        "context": 1,
+        "width": 4,
+        "height": 4,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "Float32Array",
+        "uploads": 15,
+        "lastUploadAt": 29030.299999998882
+      },
+      {
+        "id": 7,
+        "context": 1,
+        "width": 4,
+        "height": 4,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "Float32Array",
+        "uploads": 15,
+        "lastUploadAt": 29031.299999998882
+      },
+      {
+        "id": 8,
+        "context": 1,
+        "width": 4,
+        "height": 4,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "Float32Array",
+        "uploads": 15,
+        "lastUploadAt": 29031.699999999255
+      },
+      {
+        "id": 9,
+        "context": 1,
+        "width": 4,
+        "height": 4,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "Float32Array",
+        "uploads": 15,
+        "lastUploadAt": 29031.799999998882
+      },
+      {
+        "id": 10,
+        "context": 1,
+        "width": 512,
+        "height": 512,
+        "repeatS": true,
+        "repeatT": true,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 27877.199999999255
+      },
+      {
+        "id": 11,
+        "context": 1,
+        "width": 16,
+        "height": 16,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "Uint16Array",
+        "uploads": 2,
+        "lastUploadAt": 27879.39999999851
+      },
+      {
+        "id": 12,
+        "context": 1,
+        "width": 1672,
+        "height": 941,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "http://localhost:3103/art/terminal-city-v3.webp",
+        "uploads": 2,
+        "lastUploadAt": 28133.5
+      },
+      {
+        "id": 13,
+        "context": 1,
+        "width": 1024,
+        "height": 256,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28152.599999999627
+      },
+      {
+        "id": 14,
+        "context": 1,
+        "width": 1024,
+        "height": 256,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28155.299999998882
+      },
+      {
+        "id": 15,
+        "context": 1,
+        "width": 512,
+        "height": 256,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28157.099999999627
+      },
+      {
+        "id": 16,
+        "context": 1,
+        "width": 1024,
+        "height": 256,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28159.099999999627
+      },
+      {
+        "id": 17,
+        "context": 1,
+        "width": 256,
+        "height": 128,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28160.199999999255
+      },
+      {
+        "id": 18,
+        "context": 1,
+        "width": 1536,
+        "height": 384,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28161.799999998882
+      },
+      {
+        "id": 19,
+        "context": 1,
+        "width": 683,
+        "height": 1024,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "http://localhost:3103/art/traveler-v2.webp",
+        "uploads": 2,
+        "lastUploadAt": 28303.89999999851
+      },
+      {
+        "id": 20,
+        "context": 1,
+        "width": 1024,
+        "height": 1024,
+        "repeatS": false,
+        "repeatT": false,
+        "source": "HTMLCanvasElement",
+        "uploads": 2,
+        "lastUploadAt": 28762.799999998882
+      }
+    ],
+    "longTasks": [
+      {
+        "name": "self",
+        "at": 1864.7999999988824,
+        "duration": 163
+      },
+      {
+        "name": "self",
+        "at": 3532.5,
+        "duration": 131
+      },
+      {
+        "name": "self",
+        "at": 4568.39999999851,
+        "duration": 74
+      },
+      {
+        "name": "self",
+        "at": 19819.099999999627,
+        "duration": 88
+      },
+      {
+        "name": "self",
+        "at": 22689.199999999255,
+        "duration": 69
+      },
+      {
+        "name": "self",
+        "at": 22767.799999998882,
+        "duration": 1327
+      },
+      {
+        "name": "self",
+        "at": 24111.89999999851,
+        "duration": 151
+      },
+      {
+        "name": "self",
+        "at": 24843.799999998882,
+        "duration": 68
+      },
+      {
+        "name": "self",
+        "at": 24986.299999998882,
+        "duration": 211
+      },
+      {
+        "name": "self",
+        "at": 26272.699999999255,
+        "duration": 680
+      },
+      {
+        "name": "self",
+        "at": 27440.5,
+        "duration": 1007
+      },
+      {
+        "name": "self",
+        "at": 28463.199999999255,
+        "duration": 82
+      },
+      {
+        "name": "self",
+        "at": 28561.799999998882,
+        "duration": 81
+      },
+      {
+        "name": "self",
+        "at": 28644.599999999627,
+        "duration": 58
+      },
+      {
+        "name": "self",
+        "at": 28707.599999999627,
+        "duration": 54
+      }
+    ],
+    "paints": [
+      {
+        "name": "first-paint",
+        "at": 2120,
+        "duration": 0
+      },
+      {
+        "name": "first-contentful-paint",
+        "at": 2120,
+        "duration": 0
+      }
+    ],
+    "mediaEvents": [
+      {
+        "event": "loadstart",
+        "at": 786.2999999988824,
+        "mediaTime": 0,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 0,
+        "networkState": 2,
+        "width": 0,
+        "height": 0,
+        "error": null
+      },
+      {
+        "event": "stalled",
+        "at": 3845.89999999851,
+        "mediaTime": 0,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 0,
+        "networkState": 2,
+        "width": 0,
+        "height": 0,
+        "error": null
+      },
+      {
+        "event": "loadedmetadata",
+        "at": 4897.699999999255,
+        "mediaTime": 0,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 1,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "loadeddata",
+        "at": 4926.89999999851,
+        "mediaTime": 0,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 4927.799999998882,
+        "mediaTime": 0,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 11473.599999999627,
+        "mediaTime": 0.0035,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 4,
+        "networkState": 1,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 14661.5,
+        "mediaTime": 3.1888,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 15046,
+        "mediaTime": 3.1896,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 15046.5,
+        "mediaTime": 3.1901,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 15570.299999998882,
+        "mediaTime": 3.7108,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 15976.699999999255,
+        "mediaTime": 3.7115,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 15977.299999998882,
+        "mediaTime": 3.7121,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 16510.799999998882,
+        "mediaTime": 4.2438,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 16886.39999999851,
+        "mediaTime": 4.2444,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 16886.599999999627,
+        "mediaTime": 4.2446,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 17420.799999998882,
+        "mediaTime": 4.7754,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 17819.199999999255,
+        "mediaTime": 4.777,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 17819.5,
+        "mediaTime": 4.7772,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 17961.699999999255,
+        "mediaTime": 4.9167,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 17991.39999999851,
+        "mediaTime": 4.9176,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 17991.699999999255,
+        "mediaTime": 4.9179,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 18118.89999999851,
+        "mediaTime": 5.0435,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 18175.89999999851,
+        "mediaTime": 5.0444,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 18176.5,
+        "mediaTime": 5.045,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 18314.599999999627,
+        "mediaTime": 5.1775,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 18344.599999999627,
+        "mediaTime": 5.1786,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 18345.199999999255,
+        "mediaTime": 5.1792,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 3,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "waiting",
+        "at": 18478.5,
+        "mediaTime": 5.3096,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 2,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "canplay",
+        "at": 19077.39999999851,
+        "mediaTime": 5.3106,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 4,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "playing",
+        "at": 19078,
+        "mediaTime": 5.311,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 4,
+        "networkState": 2,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      },
+      {
+        "event": "ended",
+        "at": 19779.299999998882,
+        "mediaTime": 6,
+        "src": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "readyState": 4,
+        "networkState": 1,
+        "width": 900,
+        "height": 1950,
+        "error": null
+      }
+    ],
+    "videoFrames": [
+      {
+        "at": 4917.2,
+        "mediaTime": 0,
+        "presentedFrames": 1,
+        "expectedDisplayTime": 4922.8,
+        "total": 1,
+        "dropped": 0
+      },
+      {
+        "at": 11475.4,
+        "mediaTime": 0.016667,
+        "presentedFrames": 2,
+        "expectedDisplayTime": 11483.8,
+        "total": 5,
+        "dropped": 0
+      },
+      {
+        "at": 11500.5,
+        "mediaTime": 0.033333,
+        "presentedFrames": 3,
+        "expectedDisplayTime": 11500.5,
+        "total": 7,
+        "dropped": 0
+      },
+      {
+        "at": 11508.8,
+        "mediaTime": 0.05,
+        "presentedFrames": 4,
+        "expectedDisplayTime": 11517.1,
+        "total": 8,
+        "dropped": 0
+      },
+      {
+        "at": 11525.4,
+        "mediaTime": 0.066667,
+        "presentedFrames": 5,
+        "expectedDisplayTime": 11533.8,
+        "total": 9,
+        "dropped": 0
+      },
+      {
+        "at": 11542.2,
+        "mediaTime": 0.083333,
+        "presentedFrames": 6,
+        "expectedDisplayTime": 11550.5,
+        "total": 10,
+        "dropped": 0
+      },
+      {
+        "at": 11558.8,
+        "mediaTime": 0.1,
+        "presentedFrames": 7,
+        "expectedDisplayTime": 11567.1,
+        "total": 11,
+        "dropped": 0
+      },
+      {
+        "at": 11575.5,
+        "mediaTime": 0.116667,
+        "presentedFrames": 8,
+        "expectedDisplayTime": 11583.8,
+        "total": 12,
+        "dropped": 0
+      },
+      {
+        "at": 11592.2,
+        "mediaTime": 0.133333,
+        "presentedFrames": 9,
+        "expectedDisplayTime": 11600.6,
+        "total": 13,
+        "dropped": 0
+      },
+      {
+        "at": 11608.8,
+        "mediaTime": 0.15,
+        "presentedFrames": 10,
+        "expectedDisplayTime": 11617.1,
+        "total": 14,
+        "dropped": 0
+      },
+      {
+        "at": 11625.5,
+        "mediaTime": 0.166667,
+        "presentedFrames": 11,
+        "expectedDisplayTime": 11633.8,
+        "total": 15,
+        "dropped": 0
+      },
+      {
+        "at": 11642.2,
+        "mediaTime": 0.183333,
+        "presentedFrames": 12,
+        "expectedDisplayTime": 11650.5,
+        "total": 16,
+        "dropped": 0
+      },
+      {
+        "at": 11658.8,
+        "mediaTime": 0.2,
+        "presentedFrames": 13,
+        "expectedDisplayTime": 11667.2,
+        "total": 17,
+        "dropped": 0
+      },
+      {
+        "at": 11675.5,
+        "mediaTime": 0.216667,
+        "presentedFrames": 14,
+        "expectedDisplayTime": 11683.8,
+        "total": 18,
+        "dropped": 0
+      },
+      {
+        "at": 11692.1,
+        "mediaTime": 0.233333,
+        "presentedFrames": 15,
+        "expectedDisplayTime": 11700.4,
+        "total": 19,
+        "dropped": 0
+      },
+      {
+        "at": 11708.8,
+        "mediaTime": 0.25,
+        "presentedFrames": 16,
+        "expectedDisplayTime": 11717.1,
+        "total": 20,
+        "dropped": 0
+      },
+      {
+        "at": 11725.5,
+        "mediaTime": 0.266667,
+        "presentedFrames": 17,
+        "expectedDisplayTime": 11733.9,
+        "total": 21,
+        "dropped": 0
+      },
+      {
+        "at": 11742.1,
+        "mediaTime": 0.283333,
+        "presentedFrames": 18,
+        "expectedDisplayTime": 11750.5,
+        "total": 22,
+        "dropped": 0
+      },
+      {
+        "at": 11758.9,
+        "mediaTime": 0.3,
+        "presentedFrames": 19,
+        "expectedDisplayTime": 11767.2,
+        "total": 23,
+        "dropped": 0
+      },
+      {
+        "at": 11775.4,
+        "mediaTime": 0.316667,
+        "presentedFrames": 20,
+        "expectedDisplayTime": 11783.7,
+        "total": 24,
+        "dropped": 0
+      },
+      {
+        "at": 11792.2,
+        "mediaTime": 0.333333,
+        "presentedFrames": 21,
+        "expectedDisplayTime": 11800.5,
+        "total": 25,
+        "dropped": 0
+      },
+      {
+        "at": 11808.8,
+        "mediaTime": 0.35,
+        "presentedFrames": 22,
+        "expectedDisplayTime": 11817.2,
+        "total": 26,
+        "dropped": 0
+      },
+      {
+        "at": 11825.5,
+        "mediaTime": 0.366667,
+        "presentedFrames": 23,
+        "expectedDisplayTime": 11833.8,
+        "total": 27,
+        "dropped": 0
+      },
+      {
+        "at": 11842.1,
+        "mediaTime": 0.383333,
+        "presentedFrames": 24,
+        "expectedDisplayTime": 11850.5,
+        "total": 28,
+        "dropped": 0
+      },
+      {
+        "at": 11858.8,
+        "mediaTime": 0.4,
+        "presentedFrames": 25,
+        "expectedDisplayTime": 11867.1,
+        "total": 29,
+        "dropped": 0
+      },
+      {
+        "at": 11875.5,
+        "mediaTime": 0.416667,
+        "presentedFrames": 26,
+        "expectedDisplayTime": 11883.8,
+        "total": 30,
+        "dropped": 0
+      },
+      {
+        "at": 11892.3,
+        "mediaTime": 0.433333,
+        "presentedFrames": 27,
+        "expectedDisplayTime": 11900.6,
+        "total": 31,
+        "dropped": 0
+      },
+      {
+        "at": 11908.8,
+        "mediaTime": 0.45,
+        "presentedFrames": 28,
+        "expectedDisplayTime": 11917.1,
+        "total": 32,
+        "dropped": 0
+      },
+      {
+        "at": 11925.4,
+        "mediaTime": 0.466667,
+        "presentedFrames": 29,
+        "expectedDisplayTime": 11933.7,
+        "total": 33,
+        "dropped": 0
+      },
+      {
+        "at": 11942.1,
+        "mediaTime": 0.483333,
+        "presentedFrames": 30,
+        "expectedDisplayTime": 11950.5,
+        "total": 34,
+        "dropped": 0
+      },
+      {
+        "at": 11958.8,
+        "mediaTime": 0.5,
+        "presentedFrames": 31,
+        "expectedDisplayTime": 11967.1,
+        "total": 35,
+        "dropped": 0
+      },
+      {
+        "at": 11975.6,
+        "mediaTime": 0.516667,
+        "presentedFrames": 32,
+        "expectedDisplayTime": 11983.8,
+        "total": 36,
+        "dropped": 0
+      },
+      {
+        "at": 11992.2,
+        "mediaTime": 0.533333,
+        "presentedFrames": 33,
+        "expectedDisplayTime": 12000.5,
+        "total": 37,
+        "dropped": 0
+      },
+      {
+        "at": 12008.7,
+        "mediaTime": 0.55,
+        "presentedFrames": 34,
+        "expectedDisplayTime": 12017.1,
+        "total": 38,
+        "dropped": 0
+      },
+      {
+        "at": 12025.5,
+        "mediaTime": 0.566667,
+        "presentedFrames": 35,
+        "expectedDisplayTime": 12033.8,
+        "total": 39,
+        "dropped": 0
+      },
+      {
+        "at": 12042.2,
+        "mediaTime": 0.583333,
+        "presentedFrames": 36,
+        "expectedDisplayTime": 12050.6,
+        "total": 40,
+        "dropped": 0
+      },
+      {
+        "at": 12058.9,
+        "mediaTime": 0.6,
+        "presentedFrames": 37,
+        "expectedDisplayTime": 12067.2,
+        "total": 41,
+        "dropped": 0
+      },
+      {
+        "at": 12075.5,
+        "mediaTime": 0.616667,
+        "presentedFrames": 38,
+        "expectedDisplayTime": 12083.9,
+        "total": 42,
+        "dropped": 0
+      },
+      {
+        "at": 12092.2,
+        "mediaTime": 0.633333,
+        "presentedFrames": 39,
+        "expectedDisplayTime": 12100.5,
+        "total": 43,
+        "dropped": 0
+      },
+      {
+        "at": 12108.9,
+        "mediaTime": 0.65,
+        "presentedFrames": 40,
+        "expectedDisplayTime": 12117.2,
+        "total": 44,
+        "dropped": 0
+      },
+      {
+        "at": 12125.5,
+        "mediaTime": 0.666667,
+        "presentedFrames": 41,
+        "expectedDisplayTime": 12133.8,
+        "total": 45,
+        "dropped": 0
+      },
+      {
+        "at": 12142.2,
+        "mediaTime": 0.683333,
+        "presentedFrames": 42,
+        "expectedDisplayTime": 12150.5,
+        "total": 46,
+        "dropped": 0
+      },
+      {
+        "at": 12158.9,
+        "mediaTime": 0.7,
+        "presentedFrames": 43,
+        "expectedDisplayTime": 12167.2,
+        "total": 47,
+        "dropped": 0
+      },
+      {
+        "at": 12175.6,
+        "mediaTime": 0.716667,
+        "presentedFrames": 44,
+        "expectedDisplayTime": 12183.9,
+        "total": 48,
+        "dropped": 0
+      },
+      {
+        "at": 12192.1,
+        "mediaTime": 0.733333,
+        "presentedFrames": 45,
+        "expectedDisplayTime": 12200.4,
+        "total": 49,
+        "dropped": 0
+      },
+      {
+        "at": 12209,
+        "mediaTime": 0.75,
+        "presentedFrames": 46,
+        "expectedDisplayTime": 12217.3,
+        "total": 50,
+        "dropped": 0
+      },
+      {
+        "at": 12225.5,
+        "mediaTime": 0.766667,
+        "presentedFrames": 47,
+        "expectedDisplayTime": 12233.8,
+        "total": 51,
+        "dropped": 0
+      },
+      {
+        "at": 12242.2,
+        "mediaTime": 0.783333,
+        "presentedFrames": 48,
+        "expectedDisplayTime": 12250.5,
+        "total": 52,
+        "dropped": 0
+      },
+      {
+        "at": 12258.8,
+        "mediaTime": 0.8,
+        "presentedFrames": 49,
+        "expectedDisplayTime": 12267.2,
+        "total": 53,
+        "dropped": 0
+      },
+      {
+        "at": 12275.5,
+        "mediaTime": 0.816667,
+        "presentedFrames": 50,
+        "expectedDisplayTime": 12283.9,
+        "total": 54,
+        "dropped": 0
+      },
+      {
+        "at": 12292.1,
+        "mediaTime": 0.833333,
+        "presentedFrames": 51,
+        "expectedDisplayTime": 12300.5,
+        "total": 55,
+        "dropped": 0
+      },
+      {
+        "at": 12309,
+        "mediaTime": 0.85,
+        "presentedFrames": 52,
+        "expectedDisplayTime": 12317.3,
+        "total": 56,
+        "dropped": 0
+      },
+      {
+        "at": 12325.4,
+        "mediaTime": 0.866667,
+        "presentedFrames": 53,
+        "expectedDisplayTime": 12333.8,
+        "total": 57,
+        "dropped": 0
+      },
+      {
+        "at": 12342.3,
+        "mediaTime": 0.883333,
+        "presentedFrames": 54,
+        "expectedDisplayTime": 12350.6,
+        "total": 58,
+        "dropped": 0
+      },
+      {
+        "at": 12358.8,
+        "mediaTime": 0.9,
+        "presentedFrames": 55,
+        "expectedDisplayTime": 12367.1,
+        "total": 59,
+        "dropped": 0
+      },
+      {
+        "at": 12375.5,
+        "mediaTime": 0.916667,
+        "presentedFrames": 56,
+        "expectedDisplayTime": 12383.8,
+        "total": 60,
+        "dropped": 0
+      },
+      {
+        "at": 12392.2,
+        "mediaTime": 0.933333,
+        "presentedFrames": 57,
+        "expectedDisplayTime": 12400.5,
+        "total": 61,
+        "dropped": 0
+      },
+      {
+        "at": 12408.9,
+        "mediaTime": 0.95,
+        "presentedFrames": 58,
+        "expectedDisplayTime": 12417.2,
+        "total": 62,
+        "dropped": 0
+      },
+      {
+        "at": 12425.5,
+        "mediaTime": 0.966667,
+        "presentedFrames": 59,
+        "expectedDisplayTime": 12433.8,
+        "total": 63,
+        "dropped": 0
+      },
+      {
+        "at": 12442.2,
+        "mediaTime": 0.983333,
+        "presentedFrames": 60,
+        "expectedDisplayTime": 12450.6,
+        "total": 64,
+        "dropped": 0
+      },
+      {
+        "at": 12458.8,
+        "mediaTime": 1,
+        "presentedFrames": 61,
+        "expectedDisplayTime": 12467.2,
+        "total": 65,
+        "dropped": 0
+      },
+      {
+        "at": 12475.5,
+        "mediaTime": 1.016667,
+        "presentedFrames": 62,
+        "expectedDisplayTime": 12483.8,
+        "total": 66,
+        "dropped": 0
+      },
+      {
+        "at": 12492.2,
+        "mediaTime": 1.033333,
+        "presentedFrames": 63,
+        "expectedDisplayTime": 12500.5,
+        "total": 67,
+        "dropped": 0
+      },
+      {
+        "at": 12508.9,
+        "mediaTime": 1.05,
+        "presentedFrames": 64,
+        "expectedDisplayTime": 12517.2,
+        "total": 68,
+        "dropped": 0
+      },
+      {
+        "at": 12525.4,
+        "mediaTime": 1.066667,
+        "presentedFrames": 65,
+        "expectedDisplayTime": 12533.8,
+        "total": 69,
+        "dropped": 0
+      },
+      {
+        "at": 12542.1,
+        "mediaTime": 1.083333,
+        "presentedFrames": 66,
+        "expectedDisplayTime": 12550.5,
+        "total": 70,
+        "dropped": 0
+      },
+      {
+        "at": 12558.8,
+        "mediaTime": 1.1,
+        "presentedFrames": 67,
+        "expectedDisplayTime": 12567.1,
+        "total": 71,
+        "dropped": 0
+      },
+      {
+        "at": 12575.5,
+        "mediaTime": 1.116667,
+        "presentedFrames": 68,
+        "expectedDisplayTime": 12583.8,
+        "total": 72,
+        "dropped": 0
+      },
+      {
+        "at": 12592.1,
+        "mediaTime": 1.133333,
+        "presentedFrames": 69,
+        "expectedDisplayTime": 12600.4,
+        "total": 73,
+        "dropped": 0
+      },
+      {
+        "at": 12609,
+        "mediaTime": 1.15,
+        "presentedFrames": 70,
+        "expectedDisplayTime": 12617.3,
+        "total": 74,
+        "dropped": 0
+      },
+      {
+        "at": 12625.4,
+        "mediaTime": 1.166667,
+        "presentedFrames": 71,
+        "expectedDisplayTime": 12633.7,
+        "total": 75,
+        "dropped": 0
+      },
+      {
+        "at": 12642.1,
+        "mediaTime": 1.183333,
+        "presentedFrames": 72,
+        "expectedDisplayTime": 12650.5,
+        "total": 76,
+        "dropped": 0
+      },
+      {
+        "at": 12658.8,
+        "mediaTime": 1.2,
+        "presentedFrames": 73,
+        "expectedDisplayTime": 12667.2,
+        "total": 77,
+        "dropped": 0
+      },
+      {
+        "at": 12675.5,
+        "mediaTime": 1.216667,
+        "presentedFrames": 74,
+        "expectedDisplayTime": 12683.7,
+        "total": 78,
+        "dropped": 0
+      },
+      {
+        "at": 12692.1,
+        "mediaTime": 1.233333,
+        "presentedFrames": 75,
+        "expectedDisplayTime": 12700.5,
+        "total": 79,
+        "dropped": 0
+      },
+      {
+        "at": 12708.8,
+        "mediaTime": 1.25,
+        "presentedFrames": 76,
+        "expectedDisplayTime": 12717.2,
+        "total": 80,
+        "dropped": 0
+      },
+      {
+        "at": 12725.4,
+        "mediaTime": 1.266667,
+        "presentedFrames": 77,
+        "expectedDisplayTime": 12733.8,
+        "total": 81,
+        "dropped": 0
+      },
+      {
+        "at": 12742.1,
+        "mediaTime": 1.283333,
+        "presentedFrames": 78,
+        "expectedDisplayTime": 12750.4,
+        "total": 82,
+        "dropped": 0
+      },
+      {
+        "at": 12758.8,
+        "mediaTime": 1.3,
+        "presentedFrames": 79,
+        "expectedDisplayTime": 12767.1,
+        "total": 83,
+        "dropped": 0
+      },
+      {
+        "at": 12775.5,
+        "mediaTime": 1.316667,
+        "presentedFrames": 80,
+        "expectedDisplayTime": 12783.8,
+        "total": 84,
+        "dropped": 0
+      },
+      {
+        "at": 12792.2,
+        "mediaTime": 1.333333,
+        "presentedFrames": 81,
+        "expectedDisplayTime": 12800.5,
+        "total": 85,
+        "dropped": 0
+      },
+      {
+        "at": 12809,
+        "mediaTime": 1.35,
+        "presentedFrames": 82,
+        "expectedDisplayTime": 12817.3,
+        "total": 86,
+        "dropped": 0
+      },
+      {
+        "at": 12825.5,
+        "mediaTime": 1.366667,
+        "presentedFrames": 83,
+        "expectedDisplayTime": 12833.9,
+        "total": 87,
+        "dropped": 0
+      },
+      {
+        "at": 12842.3,
+        "mediaTime": 1.383333,
+        "presentedFrames": 84,
+        "expectedDisplayTime": 12850.5,
+        "total": 88,
+        "dropped": 0
+      },
+      {
+        "at": 12858.8,
+        "mediaTime": 1.4,
+        "presentedFrames": 85,
+        "expectedDisplayTime": 12867.1,
+        "total": 89,
+        "dropped": 0
+      },
+      {
+        "at": 12875.4,
+        "mediaTime": 1.416667,
+        "presentedFrames": 86,
+        "expectedDisplayTime": 12883.8,
+        "total": 90,
+        "dropped": 0
+      },
+      {
+        "at": 12892.1,
+        "mediaTime": 1.433333,
+        "presentedFrames": 87,
+        "expectedDisplayTime": 12900.5,
+        "total": 91,
+        "dropped": 0
+      },
+      {
+        "at": 12908.8,
+        "mediaTime": 1.45,
+        "presentedFrames": 88,
+        "expectedDisplayTime": 12917.1,
+        "total": 92,
+        "dropped": 0
+      },
+      {
+        "at": 12925.5,
+        "mediaTime": 1.466667,
+        "presentedFrames": 89,
+        "expectedDisplayTime": 12933.9,
+        "total": 93,
+        "dropped": 0
+      },
+      {
+        "at": 12942.3,
+        "mediaTime": 1.483333,
+        "presentedFrames": 90,
+        "expectedDisplayTime": 12950.5,
+        "total": 94,
+        "dropped": 0
+      },
+      {
+        "at": 12958.8,
+        "mediaTime": 1.5,
+        "presentedFrames": 91,
+        "expectedDisplayTime": 12967.2,
+        "total": 95,
+        "dropped": 0
+      },
+      {
+        "at": 12975.4,
+        "mediaTime": 1.516667,
+        "presentedFrames": 92,
+        "expectedDisplayTime": 12983.8,
+        "total": 96,
+        "dropped": 0
+      },
+      {
+        "at": 12992.3,
+        "mediaTime": 1.533333,
+        "presentedFrames": 93,
+        "expectedDisplayTime": 13000.6,
+        "total": 97,
+        "dropped": 0
+      },
+      {
+        "at": 13008.9,
+        "mediaTime": 1.55,
+        "presentedFrames": 94,
+        "expectedDisplayTime": 13017.2,
+        "total": 98,
+        "dropped": 0
+      },
+      {
+        "at": 13025.5,
+        "mediaTime": 1.566667,
+        "presentedFrames": 95,
+        "expectedDisplayTime": 13033.8,
+        "total": 99,
+        "dropped": 0
+      },
+      {
+        "at": 13042.2,
+        "mediaTime": 1.583333,
+        "presentedFrames": 96,
+        "expectedDisplayTime": 13050.5,
+        "total": 100,
+        "dropped": 0
+      },
+      {
+        "at": 13058.9,
+        "mediaTime": 1.6,
+        "presentedFrames": 97,
+        "expectedDisplayTime": 13067.3,
+        "total": 101,
+        "dropped": 0
+      },
+      {
+        "at": 13075.5,
+        "mediaTime": 1.616667,
+        "presentedFrames": 98,
+        "expectedDisplayTime": 13083.9,
+        "total": 102,
+        "dropped": 0
+      },
+      {
+        "at": 13092.3,
+        "mediaTime": 1.633333,
+        "presentedFrames": 99,
+        "expectedDisplayTime": 13100.5,
+        "total": 103,
+        "dropped": 0
+      },
+      {
+        "at": 13108.8,
+        "mediaTime": 1.65,
+        "presentedFrames": 100,
+        "expectedDisplayTime": 13117.2,
+        "total": 104,
+        "dropped": 0
+      },
+      {
+        "at": 13125.5,
+        "mediaTime": 1.666667,
+        "presentedFrames": 101,
+        "expectedDisplayTime": 13133.8,
+        "total": 105,
+        "dropped": 0
+      },
+      {
+        "at": 13142.3,
+        "mediaTime": 1.683333,
+        "presentedFrames": 102,
+        "expectedDisplayTime": 13150.6,
+        "total": 106,
+        "dropped": 0
+      },
+      {
+        "at": 13159,
+        "mediaTime": 1.7,
+        "presentedFrames": 103,
+        "expectedDisplayTime": 13167.3,
+        "total": 107,
+        "dropped": 0
+      },
+      {
+        "at": 13175.6,
+        "mediaTime": 1.716667,
+        "presentedFrames": 104,
+        "expectedDisplayTime": 13184,
+        "total": 108,
+        "dropped": 0
+      },
+      {
+        "at": 13192.2,
+        "mediaTime": 1.733333,
+        "presentedFrames": 105,
+        "expectedDisplayTime": 13200.5,
+        "total": 109,
+        "dropped": 0
+      },
+      {
+        "at": 13208.9,
+        "mediaTime": 1.75,
+        "presentedFrames": 106,
+        "expectedDisplayTime": 13217.3,
+        "total": 110,
+        "dropped": 0
+      },
+      {
+        "at": 13225.6,
+        "mediaTime": 1.766667,
+        "presentedFrames": 107,
+        "expectedDisplayTime": 13233.9,
+        "total": 111,
+        "dropped": 0
+      },
+      {
+        "at": 13242.1,
+        "mediaTime": 1.783333,
+        "presentedFrames": 108,
+        "expectedDisplayTime": 13250.5,
+        "total": 112,
+        "dropped": 0
+      },
+      {
+        "at": 13258.9,
+        "mediaTime": 1.8,
+        "presentedFrames": 109,
+        "expectedDisplayTime": 13267.3,
+        "total": 113,
+        "dropped": 0
+      },
+      {
+        "at": 13275.6,
+        "mediaTime": 1.816667,
+        "presentedFrames": 110,
+        "expectedDisplayTime": 13283.9,
+        "total": 114,
+        "dropped": 0
+      },
+      {
+        "at": 13292.1,
+        "mediaTime": 1.833333,
+        "presentedFrames": 111,
+        "expectedDisplayTime": 13300.5,
+        "total": 115,
+        "dropped": 0
+      },
+      {
+        "at": 13308.8,
+        "mediaTime": 1.85,
+        "presentedFrames": 112,
+        "expectedDisplayTime": 13317.2,
+        "total": 116,
+        "dropped": 0
+      },
+      {
+        "at": 13325.6,
+        "mediaTime": 1.866667,
+        "presentedFrames": 113,
+        "expectedDisplayTime": 13333.9,
+        "total": 117,
+        "dropped": 0
+      },
+      {
+        "at": 13333.8,
+        "mediaTime": 1.883333,
+        "presentedFrames": 114,
+        "expectedDisplayTime": 13350.4,
+        "total": 118,
+        "dropped": 0
+      },
+      {
+        "at": 13367.1,
+        "mediaTime": 1.9,
+        "presentedFrames": 115,
+        "expectedDisplayTime": 13367.2,
+        "total": 119,
+        "dropped": 0
+      },
+      {
+        "at": 13375.6,
+        "mediaTime": 1.916667,
+        "presentedFrames": 116,
+        "expectedDisplayTime": 13383.9,
+        "total": 120,
+        "dropped": 0
+      },
+      {
+        "at": 13392.2,
+        "mediaTime": 1.933333,
+        "presentedFrames": 117,
+        "expectedDisplayTime": 13400.5,
+        "total": 121,
+        "dropped": 0
+      },
+      {
+        "at": 13409,
+        "mediaTime": 1.95,
+        "presentedFrames": 118,
+        "expectedDisplayTime": 13417.4,
+        "total": 122,
+        "dropped": 0
+      },
+      {
+        "at": 13425.6,
+        "mediaTime": 1.966667,
+        "presentedFrames": 119,
+        "expectedDisplayTime": 13434,
+        "total": 123,
+        "dropped": 0
+      },
+      {
+        "at": 13442.2,
+        "mediaTime": 1.983333,
+        "presentedFrames": 120,
+        "expectedDisplayTime": 13450.6,
+        "total": 124,
+        "dropped": 0
+      },
+      {
+        "at": 13458.8,
+        "mediaTime": 2,
+        "presentedFrames": 121,
+        "expectedDisplayTime": 13467.2,
+        "total": 125,
+        "dropped": 0
+      },
+      {
+        "at": 13475.5,
+        "mediaTime": 2.016667,
+        "presentedFrames": 122,
+        "expectedDisplayTime": 13483.8,
+        "total": 126,
+        "dropped": 0
+      },
+      {
+        "at": 13492.2,
+        "mediaTime": 2.033333,
+        "presentedFrames": 123,
+        "expectedDisplayTime": 13500.5,
+        "total": 127,
+        "dropped": 0
+      },
+      {
+        "at": 13508.9,
+        "mediaTime": 2.05,
+        "presentedFrames": 124,
+        "expectedDisplayTime": 13517.2,
+        "total": 128,
+        "dropped": 0
+      },
+      {
+        "at": 13525.5,
+        "mediaTime": 2.066667,
+        "presentedFrames": 125,
+        "expectedDisplayTime": 13533.8,
+        "total": 128,
+        "dropped": 0
+      },
+      {
+        "at": 13542.1,
+        "mediaTime": 2.083333,
+        "presentedFrames": 126,
+        "expectedDisplayTime": 13550.4,
+        "total": 130,
+        "dropped": 0
+      },
+      {
+        "at": 13558.9,
+        "mediaTime": 2.1,
+        "presentedFrames": 127,
+        "expectedDisplayTime": 13567.2,
+        "total": 131,
+        "dropped": 0
+      },
+      {
+        "at": 13575.5,
+        "mediaTime": 2.116667,
+        "presentedFrames": 128,
+        "expectedDisplayTime": 13583.8,
+        "total": 132,
+        "dropped": 0
+      },
+      {
+        "at": 13592.2,
+        "mediaTime": 2.133333,
+        "presentedFrames": 129,
+        "expectedDisplayTime": 13600.4,
+        "total": 133,
+        "dropped": 0
+      },
+      {
+        "at": 13608.9,
+        "mediaTime": 2.15,
+        "presentedFrames": 130,
+        "expectedDisplayTime": 13617.2,
+        "total": 134,
+        "dropped": 0
+      },
+      {
+        "at": 13625.5,
+        "mediaTime": 2.166667,
+        "presentedFrames": 131,
+        "expectedDisplayTime": 13633.8,
+        "total": 135,
+        "dropped": 0
+      },
+      {
+        "at": 13642.2,
+        "mediaTime": 2.183333,
+        "presentedFrames": 132,
+        "expectedDisplayTime": 13650.5,
+        "total": 136,
+        "dropped": 0
+      },
+      {
+        "at": 13658.8,
+        "mediaTime": 2.2,
+        "presentedFrames": 133,
+        "expectedDisplayTime": 13667.1,
+        "total": 137,
+        "dropped": 0
+      },
+      {
+        "at": 13675.5,
+        "mediaTime": 2.216667,
+        "presentedFrames": 134,
+        "expectedDisplayTime": 13683.8,
+        "total": 138,
+        "dropped": 0
+      },
+      {
+        "at": 13692.1,
+        "mediaTime": 2.233333,
+        "presentedFrames": 135,
+        "expectedDisplayTime": 13700.4,
+        "total": 139,
+        "dropped": 0
+      },
+      {
+        "at": 13708.9,
+        "mediaTime": 2.25,
+        "presentedFrames": 136,
+        "expectedDisplayTime": 13717.2,
+        "total": 140,
+        "dropped": 0
+      },
+      {
+        "at": 13725.5,
+        "mediaTime": 2.266667,
+        "presentedFrames": 137,
+        "expectedDisplayTime": 13733.8,
+        "total": 141,
+        "dropped": 0
+      },
+      {
+        "at": 13742.2,
+        "mediaTime": 2.283333,
+        "presentedFrames": 138,
+        "expectedDisplayTime": 13750.5,
+        "total": 142,
+        "dropped": 0
+      },
+      {
+        "at": 13758.8,
+        "mediaTime": 2.3,
+        "presentedFrames": 139,
+        "expectedDisplayTime": 13767.1,
+        "total": 143,
+        "dropped": 0
+      },
+      {
+        "at": 13775.5,
+        "mediaTime": 2.316667,
+        "presentedFrames": 140,
+        "expectedDisplayTime": 13783.8,
+        "total": 144,
+        "dropped": 0
+      },
+      {
+        "at": 13792.2,
+        "mediaTime": 2.333333,
+        "presentedFrames": 141,
+        "expectedDisplayTime": 13800.5,
+        "total": 145,
+        "dropped": 0
+      },
+      {
+        "at": 13808.8,
+        "mediaTime": 2.35,
+        "presentedFrames": 142,
+        "expectedDisplayTime": 13817.2,
+        "total": 146,
+        "dropped": 0
+      },
+      {
+        "at": 13825.4,
+        "mediaTime": 2.366667,
+        "presentedFrames": 143,
+        "expectedDisplayTime": 13833.8,
+        "total": 147,
+        "dropped": 0
+      },
+      {
+        "at": 13842.1,
+        "mediaTime": 2.383333,
+        "presentedFrames": 144,
+        "expectedDisplayTime": 13850.5,
+        "total": 148,
+        "dropped": 0
+      },
+      {
+        "at": 13858.8,
+        "mediaTime": 2.4,
+        "presentedFrames": 145,
+        "expectedDisplayTime": 13867.2,
+        "total": 149,
+        "dropped": 0
+      },
+      {
+        "at": 13875.5,
+        "mediaTime": 2.416667,
+        "presentedFrames": 146,
+        "expectedDisplayTime": 13883.8,
+        "total": 150,
+        "dropped": 0
+      },
+      {
+        "at": 13892.1,
+        "mediaTime": 2.433333,
+        "presentedFrames": 147,
+        "expectedDisplayTime": 13900.4,
+        "total": 151,
+        "dropped": 0
+      },
+      {
+        "at": 13908.9,
+        "mediaTime": 2.45,
+        "presentedFrames": 148,
+        "expectedDisplayTime": 13917.2,
+        "total": 152,
+        "dropped": 0
+      },
+      {
+        "at": 13925.5,
+        "mediaTime": 2.466667,
+        "presentedFrames": 149,
+        "expectedDisplayTime": 13933.8,
+        "total": 153,
+        "dropped": 0
+      },
+      {
+        "at": 13942.1,
+        "mediaTime": 2.483333,
+        "presentedFrames": 150,
+        "expectedDisplayTime": 13950.5,
+        "total": 154,
+        "dropped": 0
+      },
+      {
+        "at": 13958.8,
+        "mediaTime": 2.5,
+        "presentedFrames": 151,
+        "expectedDisplayTime": 13967.2,
+        "total": 155,
+        "dropped": 0
+      },
+      {
+        "at": 13975.5,
+        "mediaTime": 2.516667,
+        "presentedFrames": 152,
+        "expectedDisplayTime": 13983.8,
+        "total": 156,
+        "dropped": 0
+      },
+      {
+        "at": 13992.2,
+        "mediaTime": 2.533333,
+        "presentedFrames": 153,
+        "expectedDisplayTime": 14000.5,
+        "total": 157,
+        "dropped": 0
+      },
+      {
+        "at": 14008.8,
+        "mediaTime": 2.55,
+        "presentedFrames": 154,
+        "expectedDisplayTime": 14017.1,
+        "total": 158,
+        "dropped": 0
+      },
+      {
+        "at": 14025.6,
+        "mediaTime": 2.566667,
+        "presentedFrames": 155,
+        "expectedDisplayTime": 14033.9,
+        "total": 159,
+        "dropped": 0
+      },
+      {
+        "at": 14042.2,
+        "mediaTime": 2.583333,
+        "presentedFrames": 156,
+        "expectedDisplayTime": 14050.6,
+        "total": 160,
+        "dropped": 0
+      },
+      {
+        "at": 14058.8,
+        "mediaTime": 2.6,
+        "presentedFrames": 157,
+        "expectedDisplayTime": 14067.1,
+        "total": 161,
+        "dropped": 0
+      },
+      {
+        "at": 14075.5,
+        "mediaTime": 2.616667,
+        "presentedFrames": 158,
+        "expectedDisplayTime": 14083.9,
+        "total": 162,
+        "dropped": 0
+      },
+      {
+        "at": 14092.2,
+        "mediaTime": 2.633333,
+        "presentedFrames": 159,
+        "expectedDisplayTime": 14100.5,
+        "total": 163,
+        "dropped": 0
+      },
+      {
+        "at": 14108.8,
+        "mediaTime": 2.65,
+        "presentedFrames": 160,
+        "expectedDisplayTime": 14117.1,
+        "total": 164,
+        "dropped": 0
+      },
+      {
+        "at": 14133.8,
+        "mediaTime": 2.666667,
+        "presentedFrames": 161,
+        "expectedDisplayTime": 14133.8,
+        "total": 165,
+        "dropped": 0
+      },
+      {
+        "at": 14142.2,
+        "mediaTime": 2.683333,
+        "presentedFrames": 162,
+        "expectedDisplayTime": 14150.5,
+        "total": 166,
+        "dropped": 0
+      },
+      {
+        "at": 14158.7,
+        "mediaTime": 2.7,
+        "presentedFrames": 163,
+        "expectedDisplayTime": 14167.1,
+        "total": 167,
+        "dropped": 0
+      },
+      {
+        "at": 14175.4,
+        "mediaTime": 2.716667,
+        "presentedFrames": 164,
+        "expectedDisplayTime": 14183.8,
+        "total": 168,
+        "dropped": 0
+      },
+      {
+        "at": 14192.1,
+        "mediaTime": 2.733333,
+        "presentedFrames": 165,
+        "expectedDisplayTime": 14200.5,
+        "total": 169,
+        "dropped": 0
+      },
+      {
+        "at": 14208.8,
+        "mediaTime": 2.75,
+        "presentedFrames": 166,
+        "expectedDisplayTime": 14217.2,
+        "total": 170,
+        "dropped": 0
+      },
+      {
+        "at": 14225.5,
+        "mediaTime": 2.766667,
+        "presentedFrames": 167,
+        "expectedDisplayTime": 14233.8,
+        "total": 171,
+        "dropped": 0
+      },
+      {
+        "at": 14242.2,
+        "mediaTime": 2.783333,
+        "presentedFrames": 168,
+        "expectedDisplayTime": 14250.5,
+        "total": 172,
+        "dropped": 0
+      },
+      {
+        "at": 14259,
+        "mediaTime": 2.8,
+        "presentedFrames": 169,
+        "expectedDisplayTime": 14267.2,
+        "total": 173,
+        "dropped": 0
+      },
+      {
+        "at": 14275.6,
+        "mediaTime": 2.816667,
+        "presentedFrames": 170,
+        "expectedDisplayTime": 14283.9,
+        "total": 174,
+        "dropped": 0
+      },
+      {
+        "at": 14292.1,
+        "mediaTime": 2.833333,
+        "presentedFrames": 171,
+        "expectedDisplayTime": 14300.5,
+        "total": 175,
+        "dropped": 0
+      },
+      {
+        "at": 14308.7,
+        "mediaTime": 2.85,
+        "presentedFrames": 172,
+        "expectedDisplayTime": 14317.1,
+        "total": 176,
+        "dropped": 0
+      },
+      {
+        "at": 14325.5,
+        "mediaTime": 2.866667,
+        "presentedFrames": 173,
+        "expectedDisplayTime": 14333.8,
+        "total": 177,
+        "dropped": 0
+      },
+      {
+        "at": 14342.1,
+        "mediaTime": 2.883333,
+        "presentedFrames": 174,
+        "expectedDisplayTime": 14350.4,
+        "total": 178,
+        "dropped": 0
+      },
+      {
+        "at": 14358.8,
+        "mediaTime": 2.9,
+        "presentedFrames": 175,
+        "expectedDisplayTime": 14367.1,
+        "total": 179,
+        "dropped": 0
+      },
+      {
+        "at": 14375.5,
+        "mediaTime": 2.916667,
+        "presentedFrames": 176,
+        "expectedDisplayTime": 14383.8,
+        "total": 180,
+        "dropped": 0
+      },
+      {
+        "at": 14392.1,
+        "mediaTime": 2.933333,
+        "presentedFrames": 177,
+        "expectedDisplayTime": 14400.5,
+        "total": 181,
+        "dropped": 0
+      },
+      {
+        "at": 14408.9,
+        "mediaTime": 2.95,
+        "presentedFrames": 178,
+        "expectedDisplayTime": 14417.2,
+        "total": 182,
+        "dropped": 0
+      },
+      {
+        "at": 14425.4,
+        "mediaTime": 2.966667,
+        "presentedFrames": 179,
+        "expectedDisplayTime": 14433.8,
+        "total": 183,
+        "dropped": 0
+      },
+      {
+        "at": 14442.2,
+        "mediaTime": 2.983333,
+        "presentedFrames": 180,
+        "expectedDisplayTime": 14450.5,
+        "total": 184,
+        "dropped": 0
+      },
+      {
+        "at": 14458.8,
+        "mediaTime": 3,
+        "presentedFrames": 181,
+        "expectedDisplayTime": 14467.1,
+        "total": 185,
+        "dropped": 0
+      },
+      {
+        "at": 14475.5,
+        "mediaTime": 3.016667,
+        "presentedFrames": 182,
+        "expectedDisplayTime": 14483.8,
+        "total": 186,
+        "dropped": 0
+      },
+      {
+        "at": 14492.1,
+        "mediaTime": 3.033333,
+        "presentedFrames": 183,
+        "expectedDisplayTime": 14500.4,
+        "total": 187,
+        "dropped": 0
+      },
+      {
+        "at": 14508.7,
+        "mediaTime": 3.05,
+        "presentedFrames": 184,
+        "expectedDisplayTime": 14517.1,
+        "total": 188,
+        "dropped": 0
+      },
+      {
+        "at": 14525.4,
+        "mediaTime": 3.066667,
+        "presentedFrames": 185,
+        "expectedDisplayTime": 14533.8,
+        "total": 189,
+        "dropped": 0
+      },
+      {
+        "at": 14542.4,
+        "mediaTime": 3.083333,
+        "presentedFrames": 186,
+        "expectedDisplayTime": 14550.6,
+        "total": 190,
+        "dropped": 0
+      },
+      {
+        "at": 14558.8,
+        "mediaTime": 3.1,
+        "presentedFrames": 187,
+        "expectedDisplayTime": 14567.2,
+        "total": 191,
+        "dropped": 0
+      },
+      {
+        "at": 14575.5,
+        "mediaTime": 3.116667,
+        "presentedFrames": 188,
+        "expectedDisplayTime": 14583.8,
+        "total": 192,
+        "dropped": 0
+      },
+      {
+        "at": 14592.1,
+        "mediaTime": 3.133333,
+        "presentedFrames": 189,
+        "expectedDisplayTime": 14600.5,
+        "total": 193,
+        "dropped": 0
+      },
+      {
+        "at": 14608.8,
+        "mediaTime": 3.15,
+        "presentedFrames": 190,
+        "expectedDisplayTime": 14617.2,
+        "total": 193,
+        "dropped": 0
+      },
+      {
+        "at": 14625.4,
+        "mediaTime": 3.166667,
+        "presentedFrames": 191,
+        "expectedDisplayTime": 14633.8,
+        "total": 193,
+        "dropped": 0
+      },
+      {
+        "at": 14642.2,
+        "mediaTime": 3.183333,
+        "presentedFrames": 192,
+        "expectedDisplayTime": 14650.6,
+        "total": 193,
+        "dropped": 0
+      },
+      {
+        "at": 14658.8,
+        "mediaTime": 3.2,
+        "presentedFrames": 193,
+        "expectedDisplayTime": 14667.1,
+        "total": 193,
+        "dropped": 0
+      },
+      {
+        "at": 14875.6,
+        "mediaTime": 3.216667,
+        "presentedFrames": 194,
+        "expectedDisplayTime": 14871.9,
+        "total": 197,
+        "dropped": 1
+      },
+      {
+        "at": 15067.2,
+        "mediaTime": 3.233333,
+        "presentedFrames": 195,
+        "expectedDisplayTime": 15075.4,
+        "total": 199,
+        "dropped": 1
+      },
+      {
+        "at": 15083.8,
+        "mediaTime": 3.25,
+        "presentedFrames": 196,
+        "expectedDisplayTime": 15092.2,
+        "total": 201,
+        "dropped": 1
+      },
+      {
+        "at": 15100.5,
+        "mediaTime": 3.266667,
+        "presentedFrames": 197,
+        "expectedDisplayTime": 15108.8,
+        "total": 202,
+        "dropped": 1
+      },
+      {
+        "at": 15117.3,
+        "mediaTime": 3.283333,
+        "presentedFrames": 198,
+        "expectedDisplayTime": 15125.6,
+        "total": 203,
+        "dropped": 1
+      },
+      {
+        "at": 15133.8,
+        "mediaTime": 3.3,
+        "presentedFrames": 199,
+        "expectedDisplayTime": 15142.1,
+        "total": 204,
+        "dropped": 1
+      },
+      {
+        "at": 15150.4,
+        "mediaTime": 3.316667,
+        "presentedFrames": 200,
+        "expectedDisplayTime": 15158.8,
+        "total": 205,
+        "dropped": 1
+      },
+      {
+        "at": 15167.1,
+        "mediaTime": 3.333333,
+        "presentedFrames": 201,
+        "expectedDisplayTime": 15175.5,
+        "total": 206,
+        "dropped": 1
+      },
+      {
+        "at": 15183.9,
+        "mediaTime": 3.35,
+        "presentedFrames": 202,
+        "expectedDisplayTime": 15192.2,
+        "total": 207,
+        "dropped": 1
+      },
+      {
+        "at": 15200.4,
+        "mediaTime": 3.366667,
+        "presentedFrames": 203,
+        "expectedDisplayTime": 15208.8,
+        "total": 208,
+        "dropped": 1
+      },
+      {
+        "at": 15217.2,
+        "mediaTime": 3.383333,
+        "presentedFrames": 204,
+        "expectedDisplayTime": 15225.5,
+        "total": 209,
+        "dropped": 1
+      },
+      {
+        "at": 15233.8,
+        "mediaTime": 3.4,
+        "presentedFrames": 205,
+        "expectedDisplayTime": 15242.1,
+        "total": 209,
+        "dropped": 1
+      },
+      {
+        "at": 15250.6,
+        "mediaTime": 3.416667,
+        "presentedFrames": 206,
+        "expectedDisplayTime": 15259,
+        "total": 211,
+        "dropped": 1
+      },
+      {
+        "at": 15267.1,
+        "mediaTime": 3.433333,
+        "presentedFrames": 207,
+        "expectedDisplayTime": 15275.5,
+        "total": 212,
+        "dropped": 1
+      },
+      {
+        "at": 15283.8,
+        "mediaTime": 3.45,
+        "presentedFrames": 208,
+        "expectedDisplayTime": 15292.1,
+        "total": 213,
+        "dropped": 1
+      },
+      {
+        "at": 15300.6,
+        "mediaTime": 3.466667,
+        "presentedFrames": 209,
+        "expectedDisplayTime": 15308.9,
+        "total": 214,
+        "dropped": 1
+      },
+      {
+        "at": 15317.3,
+        "mediaTime": 3.483333,
+        "presentedFrames": 210,
+        "expectedDisplayTime": 15325.6,
+        "total": 215,
+        "dropped": 1
+      },
+      {
+        "at": 15333.9,
+        "mediaTime": 3.5,
+        "presentedFrames": 211,
+        "expectedDisplayTime": 15342.2,
+        "total": 216,
+        "dropped": 1
+      },
+      {
+        "at": 15350.7,
+        "mediaTime": 3.516667,
+        "presentedFrames": 212,
+        "expectedDisplayTime": 15359.1,
+        "total": 217,
+        "dropped": 1
+      },
+      {
+        "at": 15367.1,
+        "mediaTime": 3.533333,
+        "presentedFrames": 213,
+        "expectedDisplayTime": 15375.5,
+        "total": 218,
+        "dropped": 1
+      },
+      {
+        "at": 15383.9,
+        "mediaTime": 3.55,
+        "presentedFrames": 214,
+        "expectedDisplayTime": 15392.2,
+        "total": 219,
+        "dropped": 1
+      },
+      {
+        "at": 15400.4,
+        "mediaTime": 3.566667,
+        "presentedFrames": 215,
+        "expectedDisplayTime": 15408.8,
+        "total": 219,
+        "dropped": 1
+      },
+      {
+        "at": 15417.2,
+        "mediaTime": 3.583333,
+        "presentedFrames": 216,
+        "expectedDisplayTime": 15425.5,
+        "total": 219,
+        "dropped": 1
+      },
+      {
+        "at": 15433.8,
+        "mediaTime": 3.6,
+        "presentedFrames": 217,
+        "expectedDisplayTime": 15442.1,
+        "total": 219,
+        "dropped": 1
+      },
+      {
+        "at": 15450.6,
+        "mediaTime": 3.616667,
+        "presentedFrames": 218,
+        "expectedDisplayTime": 15458.8,
+        "total": 223,
+        "dropped": 1
+      },
+      {
+        "at": 15467.1,
+        "mediaTime": 3.633333,
+        "presentedFrames": 219,
+        "expectedDisplayTime": 15475.5,
+        "total": 224,
+        "dropped": 1
+      },
+      {
+        "at": 15483.8,
+        "mediaTime": 3.65,
+        "presentedFrames": 220,
+        "expectedDisplayTime": 15492.1,
+        "total": 225,
+        "dropped": 1
+      },
+      {
+        "at": 15500.5,
+        "mediaTime": 3.666667,
+        "presentedFrames": 221,
+        "expectedDisplayTime": 15508.9,
+        "total": 225,
+        "dropped": 1
+      },
+      {
+        "at": 15517.1,
+        "mediaTime": 3.683333,
+        "presentedFrames": 222,
+        "expectedDisplayTime": 15525.4,
+        "total": 225,
+        "dropped": 1
+      },
+      {
+        "at": 15533.7,
+        "mediaTime": 3.7,
+        "presentedFrames": 223,
+        "expectedDisplayTime": 15542.1,
+        "total": 225,
+        "dropped": 1
+      },
+      {
+        "at": 15550.5,
+        "mediaTime": 3.716667,
+        "presentedFrames": 224,
+        "expectedDisplayTime": 15558.9,
+        "total": 225,
+        "dropped": 1
+      },
+      {
+        "at": 15567.2,
+        "mediaTime": 3.733333,
+        "presentedFrames": 225,
+        "expectedDisplayTime": 15575.4,
+        "total": 225,
+        "dropped": 1
+      },
+      {
+        "at": 15975.5,
+        "mediaTime": 3.75,
+        "presentedFrames": 226,
+        "expectedDisplayTime": 15973.7,
+        "total": 230,
+        "dropped": 2
+      },
+      {
+        "at": 16008.8,
+        "mediaTime": 3.766667,
+        "presentedFrames": 227,
+        "expectedDisplayTime": 16017.2,
+        "total": 232,
+        "dropped": 2
+      },
+      {
+        "at": 16025.5,
+        "mediaTime": 3.783333,
+        "presentedFrames": 228,
+        "expectedDisplayTime": 16033.8,
+        "total": 233,
+        "dropped": 2
+      },
+      {
+        "at": 16042.2,
+        "mediaTime": 3.8,
+        "presentedFrames": 229,
+        "expectedDisplayTime": 16050.5,
+        "total": 235,
+        "dropped": 2
+      },
+      {
+        "at": 16058.8,
+        "mediaTime": 3.816667,
+        "presentedFrames": 230,
+        "expectedDisplayTime": 16067.1,
+        "total": 236,
+        "dropped": 2
+      },
+      {
+        "at": 16075.6,
+        "mediaTime": 3.833333,
+        "presentedFrames": 231,
+        "expectedDisplayTime": 16083.9,
+        "total": 237,
+        "dropped": 2
+      },
+      {
+        "at": 16092.2,
+        "mediaTime": 3.85,
+        "presentedFrames": 232,
+        "expectedDisplayTime": 16100.5,
+        "total": 238,
+        "dropped": 2
+      },
+      {
+        "at": 16108.8,
+        "mediaTime": 3.866667,
+        "presentedFrames": 233,
+        "expectedDisplayTime": 16117.2,
+        "total": 239,
+        "dropped": 2
+      },
+      {
+        "at": 16125.6,
+        "mediaTime": 3.883333,
+        "presentedFrames": 234,
+        "expectedDisplayTime": 16133.9,
+        "total": 240,
+        "dropped": 2
+      },
+      {
+        "at": 16142.2,
+        "mediaTime": 3.9,
+        "presentedFrames": 235,
+        "expectedDisplayTime": 16150.6,
+        "total": 241,
+        "dropped": 2
+      },
+      {
+        "at": 16158.8,
+        "mediaTime": 3.916667,
+        "presentedFrames": 236,
+        "expectedDisplayTime": 16167.2,
+        "total": 241,
+        "dropped": 2
+      },
+      {
+        "at": 16175.5,
+        "mediaTime": 3.933333,
+        "presentedFrames": 237,
+        "expectedDisplayTime": 16183.9,
+        "total": 243,
+        "dropped": 2
+      },
+      {
+        "at": 16192.2,
+        "mediaTime": 3.95,
+        "presentedFrames": 238,
+        "expectedDisplayTime": 16200.5,
+        "total": 244,
+        "dropped": 2
+      },
+      {
+        "at": 16208.9,
+        "mediaTime": 3.966667,
+        "presentedFrames": 239,
+        "expectedDisplayTime": 16217.2,
+        "total": 245,
+        "dropped": 2
+      },
+      {
+        "at": 16225.5,
+        "mediaTime": 3.983333,
+        "presentedFrames": 240,
+        "expectedDisplayTime": 16233.8,
+        "total": 246,
+        "dropped": 2
+      },
+      {
+        "at": 16242.2,
+        "mediaTime": 4,
+        "presentedFrames": 241,
+        "expectedDisplayTime": 16250.5,
+        "total": 247,
+        "dropped": 2
+      },
+      {
+        "at": 16258.9,
+        "mediaTime": 4.016667,
+        "presentedFrames": 242,
+        "expectedDisplayTime": 16267.2,
+        "total": 248,
+        "dropped": 2
+      },
+      {
+        "at": 16275.5,
+        "mediaTime": 4.033333,
+        "presentedFrames": 243,
+        "expectedDisplayTime": 16283.8,
+        "total": 249,
+        "dropped": 2
+      },
+      {
+        "at": 16292.3,
+        "mediaTime": 4.05,
+        "presentedFrames": 244,
+        "expectedDisplayTime": 16300.6,
+        "total": 249,
+        "dropped": 2
+      },
+      {
+        "at": 16308.9,
+        "mediaTime": 4.066667,
+        "presentedFrames": 245,
+        "expectedDisplayTime": 16317.2,
+        "total": 249,
+        "dropped": 2
+      },
+      {
+        "at": 16325.5,
+        "mediaTime": 4.083333,
+        "presentedFrames": 246,
+        "expectedDisplayTime": 16333.8,
+        "total": 249,
+        "dropped": 2
+      },
+      {
+        "at": 16342.3,
+        "mediaTime": 4.1,
+        "presentedFrames": 247,
+        "expectedDisplayTime": 16350.5,
+        "total": 253,
+        "dropped": 2
+      },
+      {
+        "at": 16358.9,
+        "mediaTime": 4.116667,
+        "presentedFrames": 248,
+        "expectedDisplayTime": 16367.2,
+        "total": 254,
+        "dropped": 2
+      },
+      {
+        "at": 16375.6,
+        "mediaTime": 4.133333,
+        "presentedFrames": 249,
+        "expectedDisplayTime": 16383.9,
+        "total": 255,
+        "dropped": 2
+      },
+      {
+        "at": 16392.2,
+        "mediaTime": 4.15,
+        "presentedFrames": 250,
+        "expectedDisplayTime": 16400.5,
+        "total": 256,
+        "dropped": 2
+      },
+      {
+        "at": 16408.8,
+        "mediaTime": 4.166667,
+        "presentedFrames": 251,
+        "expectedDisplayTime": 16417.2,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16425.5,
+        "mediaTime": 4.183333,
+        "presentedFrames": 252,
+        "expectedDisplayTime": 16433.8,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16442.3,
+        "mediaTime": 4.2,
+        "presentedFrames": 253,
+        "expectedDisplayTime": 16450.6,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16467.2,
+        "mediaTime": 4.216667,
+        "presentedFrames": 254,
+        "expectedDisplayTime": 16467.1,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16475.5,
+        "mediaTime": 4.233333,
+        "presentedFrames": 255,
+        "expectedDisplayTime": 16483.8,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16492.1,
+        "mediaTime": 4.25,
+        "presentedFrames": 256,
+        "expectedDisplayTime": 16500.5,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16508.8,
+        "mediaTime": 4.266667,
+        "presentedFrames": 257,
+        "expectedDisplayTime": 16517.2,
+        "total": 257,
+        "dropped": 2
+      },
+      {
+        "at": 16717.1,
+        "mediaTime": 4.283333,
+        "presentedFrames": 258,
+        "expectedDisplayTime": 16713,
+        "total": 261,
+        "dropped": 3
+      },
+      {
+        "at": 16917.1,
+        "mediaTime": 4.3,
+        "presentedFrames": 259,
+        "expectedDisplayTime": 16925.5,
+        "total": 265,
+        "dropped": 3
+      },
+      {
+        "at": 16942.1,
+        "mediaTime": 4.316667,
+        "presentedFrames": 260,
+        "expectedDisplayTime": 16942.2,
+        "total": 265,
+        "dropped": 3
+      },
+      {
+        "at": 16950.4,
+        "mediaTime": 4.333333,
+        "presentedFrames": 261,
+        "expectedDisplayTime": 16958.8,
+        "total": 267,
+        "dropped": 3
+      },
+      {
+        "at": 16967.1,
+        "mediaTime": 4.35,
+        "presentedFrames": 262,
+        "expectedDisplayTime": 16975.5,
+        "total": 269,
+        "dropped": 3
+      },
+      {
+        "at": 16983.8,
+        "mediaTime": 4.366667,
+        "presentedFrames": 263,
+        "expectedDisplayTime": 16992.1,
+        "total": 269,
+        "dropped": 3
+      },
+      {
+        "at": 17000.5,
+        "mediaTime": 4.383333,
+        "presentedFrames": 264,
+        "expectedDisplayTime": 17008.8,
+        "total": 271,
+        "dropped": 3
+      },
+      {
+        "at": 17017.1,
+        "mediaTime": 4.4,
+        "presentedFrames": 265,
+        "expectedDisplayTime": 17025.5,
+        "total": 272,
+        "dropped": 3
+      },
+      {
+        "at": 17033.8,
+        "mediaTime": 4.416667,
+        "presentedFrames": 266,
+        "expectedDisplayTime": 17042.2,
+        "total": 273,
+        "dropped": 3
+      },
+      {
+        "at": 17050.5,
+        "mediaTime": 4.433333,
+        "presentedFrames": 267,
+        "expectedDisplayTime": 17058.8,
+        "total": 273,
+        "dropped": 3
+      },
+      {
+        "at": 17067.1,
+        "mediaTime": 4.45,
+        "presentedFrames": 268,
+        "expectedDisplayTime": 17075.4,
+        "total": 273,
+        "dropped": 3
+      },
+      {
+        "at": 17083.8,
+        "mediaTime": 4.466667,
+        "presentedFrames": 269,
+        "expectedDisplayTime": 17092.1,
+        "total": 275,
+        "dropped": 3
+      },
+      {
+        "at": 17100.5,
+        "mediaTime": 4.483333,
+        "presentedFrames": 270,
+        "expectedDisplayTime": 17108.8,
+        "total": 277,
+        "dropped": 3
+      },
+      {
+        "at": 17117.1,
+        "mediaTime": 4.5,
+        "presentedFrames": 271,
+        "expectedDisplayTime": 17125.5,
+        "total": 277,
+        "dropped": 3
+      },
+      {
+        "at": 17133.8,
+        "mediaTime": 4.516667,
+        "presentedFrames": 272,
+        "expectedDisplayTime": 17142.1,
+        "total": 279,
+        "dropped": 3
+      },
+      {
+        "at": 17150.4,
+        "mediaTime": 4.533333,
+        "presentedFrames": 273,
+        "expectedDisplayTime": 17158.8,
+        "total": 280,
+        "dropped": 3
+      },
+      {
+        "at": 17167.1,
+        "mediaTime": 4.55,
+        "presentedFrames": 274,
+        "expectedDisplayTime": 17175.5,
+        "total": 281,
+        "dropped": 3
+      },
+      {
+        "at": 17183.8,
+        "mediaTime": 4.566667,
+        "presentedFrames": 275,
+        "expectedDisplayTime": 17192.1,
+        "total": 281,
+        "dropped": 3
+      },
+      {
+        "at": 17200.4,
+        "mediaTime": 4.583333,
+        "presentedFrames": 276,
+        "expectedDisplayTime": 17208.8,
+        "total": 281,
+        "dropped": 3
+      },
+      {
+        "at": 17217.1,
+        "mediaTime": 4.6,
+        "presentedFrames": 277,
+        "expectedDisplayTime": 17225.4,
+        "total": 281,
+        "dropped": 3
+      },
+      {
+        "at": 17233.7,
+        "mediaTime": 4.616667,
+        "presentedFrames": 278,
+        "expectedDisplayTime": 17242.1,
+        "total": 281,
+        "dropped": 3
+      },
+      {
+        "at": 17250.5,
+        "mediaTime": 4.633333,
+        "presentedFrames": 279,
+        "expectedDisplayTime": 17258.8,
+        "total": 281,
+        "dropped": 3
+      },
+      {
+        "at": 17267.1,
+        "mediaTime": 4.65,
+        "presentedFrames": 280,
+        "expectedDisplayTime": 17275.4,
+        "total": 287,
+        "dropped": 3
+      },
+      {
+        "at": 17283.8,
+        "mediaTime": 4.666667,
+        "presentedFrames": 281,
+        "expectedDisplayTime": 17292.1,
+        "total": 288,
+        "dropped": 3
+      },
+      {
+        "at": 17300.4,
+        "mediaTime": 4.683333,
+        "presentedFrames": 282,
+        "expectedDisplayTime": 17308.8,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17317.2,
+        "mediaTime": 4.7,
+        "presentedFrames": 283,
+        "expectedDisplayTime": 17325.5,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17333.9,
+        "mediaTime": 4.716667,
+        "presentedFrames": 284,
+        "expectedDisplayTime": 17342.2,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17350.5,
+        "mediaTime": 4.733333,
+        "presentedFrames": 285,
+        "expectedDisplayTime": 17358.8,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17367.1,
+        "mediaTime": 4.75,
+        "presentedFrames": 286,
+        "expectedDisplayTime": 17375.4,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17383.8,
+        "mediaTime": 4.766667,
+        "presentedFrames": 287,
+        "expectedDisplayTime": 17392.1,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17400.5,
+        "mediaTime": 4.783333,
+        "presentedFrames": 288,
+        "expectedDisplayTime": 17408.8,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17417.1,
+        "mediaTime": 4.8,
+        "presentedFrames": 289,
+        "expectedDisplayTime": 17425.5,
+        "total": 289,
+        "dropped": 3
+      },
+      {
+        "at": 17817.1,
+        "mediaTime": 4.816667,
+        "presentedFrames": 290,
+        "expectedDisplayTime": 17815.2,
+        "total": 295,
+        "dropped": 4
+      },
+      {
+        "at": 17858.8,
+        "mediaTime": 4.833333,
+        "presentedFrames": 291,
+        "expectedDisplayTime": 17867.2,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17883.8,
+        "mediaTime": 4.85,
+        "presentedFrames": 292,
+        "expectedDisplayTime": 17883.7,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17892.1,
+        "mediaTime": 4.866667,
+        "presentedFrames": 293,
+        "expectedDisplayTime": 17900.4,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17908.7,
+        "mediaTime": 4.883333,
+        "presentedFrames": 294,
+        "expectedDisplayTime": 17917.1,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17925.4,
+        "mediaTime": 4.9,
+        "presentedFrames": 295,
+        "expectedDisplayTime": 17933.8,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17942.1,
+        "mediaTime": 4.916667,
+        "presentedFrames": 296,
+        "expectedDisplayTime": 17950.5,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17958.8,
+        "mediaTime": 4.933333,
+        "presentedFrames": 297,
+        "expectedDisplayTime": 17967.1,
+        "total": 297,
+        "dropped": 4
+      },
+      {
+        "at": 17992.1,
+        "mediaTime": 4.95,
+        "presentedFrames": 298,
+        "expectedDisplayTime": 17988.4,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18017.1,
+        "mediaTime": 4.966667,
+        "presentedFrames": 299,
+        "expectedDisplayTime": 18025.5,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18033.7,
+        "mediaTime": 4.983333,
+        "presentedFrames": 300,
+        "expectedDisplayTime": 18042.1,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18050.4,
+        "mediaTime": 5,
+        "presentedFrames": 301,
+        "expectedDisplayTime": 18058.8,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18067.1,
+        "mediaTime": 5.016667,
+        "presentedFrames": 302,
+        "expectedDisplayTime": 18075.4,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18083.8,
+        "mediaTime": 5.033333,
+        "presentedFrames": 303,
+        "expectedDisplayTime": 18092.1,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18100.5,
+        "mediaTime": 5.05,
+        "presentedFrames": 304,
+        "expectedDisplayTime": 18108.9,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18117.2,
+        "mediaTime": 5.066667,
+        "presentedFrames": 305,
+        "expectedDisplayTime": 18125.5,
+        "total": 305,
+        "dropped": 5
+      },
+      {
+        "at": 18175.5,
+        "mediaTime": 5.083333,
+        "presentedFrames": 306,
+        "expectedDisplayTime": 18172.8,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18208.8,
+        "mediaTime": 5.1,
+        "presentedFrames": 307,
+        "expectedDisplayTime": 18217.2,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18225.5,
+        "mediaTime": 5.116667,
+        "presentedFrames": 308,
+        "expectedDisplayTime": 18233.8,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18242.1,
+        "mediaTime": 5.133333,
+        "presentedFrames": 309,
+        "expectedDisplayTime": 18250.5,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18258.8,
+        "mediaTime": 5.15,
+        "presentedFrames": 310,
+        "expectedDisplayTime": 18267.2,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18275.5,
+        "mediaTime": 5.166667,
+        "presentedFrames": 311,
+        "expectedDisplayTime": 18283.8,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18292.1,
+        "mediaTime": 5.183333,
+        "presentedFrames": 312,
+        "expectedDisplayTime": 18300.5,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18308.7,
+        "mediaTime": 5.2,
+        "presentedFrames": 313,
+        "expectedDisplayTime": 18317.1,
+        "total": 313,
+        "dropped": 6
+      },
+      {
+        "at": 18350.5,
+        "mediaTime": 5.216667,
+        "presentedFrames": 314,
+        "expectedDisplayTime": 18342.6,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18375.5,
+        "mediaTime": 5.233333,
+        "presentedFrames": 315,
+        "expectedDisplayTime": 18383.8,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18400.5,
+        "mediaTime": 5.25,
+        "presentedFrames": 316,
+        "expectedDisplayTime": 18400.5,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18408.8,
+        "mediaTime": 5.266667,
+        "presentedFrames": 317,
+        "expectedDisplayTime": 18417.2,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18425.4,
+        "mediaTime": 5.283333,
+        "presentedFrames": 318,
+        "expectedDisplayTime": 18433.8,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18442.1,
+        "mediaTime": 5.3,
+        "presentedFrames": 319,
+        "expectedDisplayTime": 18450.5,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18458.8,
+        "mediaTime": 5.316667,
+        "presentedFrames": 320,
+        "expectedDisplayTime": 18467.1,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18475.5,
+        "mediaTime": 5.333333,
+        "presentedFrames": 321,
+        "expectedDisplayTime": 18483.8,
+        "total": 321,
+        "dropped": 7
+      },
+      {
+        "at": 18533.8,
+        "mediaTime": 5.35,
+        "presentedFrames": 322,
+        "expectedDisplayTime": 18530.3,
+        "total": 322,
+        "dropped": 8
+      },
+      {
+        "at": 19108.8,
+        "mediaTime": 5.366667,
+        "presentedFrames": 323,
+        "expectedDisplayTime": 19117.2,
+        "total": 330,
+        "dropped": 8
+      },
+      {
+        "at": 19125.6,
+        "mediaTime": 5.383333,
+        "presentedFrames": 324,
+        "expectedDisplayTime": 19133.9,
+        "total": 332,
+        "dropped": 8
+      },
+      {
+        "at": 19142.2,
+        "mediaTime": 5.4,
+        "presentedFrames": 325,
+        "expectedDisplayTime": 19150.6,
+        "total": 333,
+        "dropped": 8
+      },
+      {
+        "at": 19158.9,
+        "mediaTime": 5.416667,
+        "presentedFrames": 326,
+        "expectedDisplayTime": 19167.2,
+        "total": 334,
+        "dropped": 8
+      },
+      {
+        "at": 19183.8,
+        "mediaTime": 5.433333,
+        "presentedFrames": 327,
+        "expectedDisplayTime": 19183.7,
+        "total": 335,
+        "dropped": 8
+      },
+      {
+        "at": 19192.3,
+        "mediaTime": 5.45,
+        "presentedFrames": 328,
+        "expectedDisplayTime": 19200.6,
+        "total": 336,
+        "dropped": 8
+      },
+      {
+        "at": 19208.8,
+        "mediaTime": 5.466667,
+        "presentedFrames": 329,
+        "expectedDisplayTime": 19217.1,
+        "total": 337,
+        "dropped": 8
+      },
+      {
+        "at": 19225.5,
+        "mediaTime": 5.483333,
+        "presentedFrames": 330,
+        "expectedDisplayTime": 19233.8,
+        "total": 338,
+        "dropped": 8
+      },
+      {
+        "at": 19242.2,
+        "mediaTime": 5.5,
+        "presentedFrames": 331,
+        "expectedDisplayTime": 19250.5,
+        "total": 338,
+        "dropped": 8
+      },
+      {
+        "at": 19258.8,
+        "mediaTime": 5.516667,
+        "presentedFrames": 332,
+        "expectedDisplayTime": 19267.1,
+        "total": 338,
+        "dropped": 8
+      },
+      {
+        "at": 19275.5,
+        "mediaTime": 5.533333,
+        "presentedFrames": 333,
+        "expectedDisplayTime": 19283.8,
+        "total": 341,
+        "dropped": 8
+      },
+      {
+        "at": 19292.2,
+        "mediaTime": 5.55,
+        "presentedFrames": 334,
+        "expectedDisplayTime": 19300.6,
+        "total": 342,
+        "dropped": 8
+      },
+      {
+        "at": 19308.8,
+        "mediaTime": 5.566667,
+        "presentedFrames": 335,
+        "expectedDisplayTime": 19317.2,
+        "total": 343,
+        "dropped": 8
+      },
+      {
+        "at": 19325.5,
+        "mediaTime": 5.583333,
+        "presentedFrames": 336,
+        "expectedDisplayTime": 19333.9,
+        "total": 344,
+        "dropped": 8
+      },
+      {
+        "at": 19342.1,
+        "mediaTime": 5.6,
+        "presentedFrames": 337,
+        "expectedDisplayTime": 19350.4,
+        "total": 345,
+        "dropped": 8
+      },
+      {
+        "at": 19358.9,
+        "mediaTime": 5.616667,
+        "presentedFrames": 338,
+        "expectedDisplayTime": 19367.2,
+        "total": 346,
+        "dropped": 8
+      },
+      {
+        "at": 19375.6,
+        "mediaTime": 5.633333,
+        "presentedFrames": 339,
+        "expectedDisplayTime": 19384,
+        "total": 347,
+        "dropped": 8
+      },
+      {
+        "at": 19392.2,
+        "mediaTime": 5.65,
+        "presentedFrames": 340,
+        "expectedDisplayTime": 19400.6,
+        "total": 348,
+        "dropped": 8
+      },
+      {
+        "at": 19408.9,
+        "mediaTime": 5.666667,
+        "presentedFrames": 341,
+        "expectedDisplayTime": 19417.2,
+        "total": 349,
+        "dropped": 8
+      },
+      {
+        "at": 19433.9,
+        "mediaTime": 5.683333,
+        "presentedFrames": 342,
+        "expectedDisplayTime": 19433.8,
+        "total": 350,
+        "dropped": 8
+      },
+      {
+        "at": 19442.2,
+        "mediaTime": 5.7,
+        "presentedFrames": 343,
+        "expectedDisplayTime": 19450.6,
+        "total": 351,
+        "dropped": 8
+      },
+      {
+        "at": 19458.9,
+        "mediaTime": 5.716667,
+        "presentedFrames": 344,
+        "expectedDisplayTime": 19467.1,
+        "total": 352,
+        "dropped": 8
+      },
+      {
+        "at": 19475.6,
+        "mediaTime": 5.733333,
+        "presentedFrames": 345,
+        "expectedDisplayTime": 19483.9,
+        "total": 353,
+        "dropped": 8
+      },
+      {
+        "at": 19492.2,
+        "mediaTime": 5.75,
+        "presentedFrames": 346,
+        "expectedDisplayTime": 19500.5,
+        "total": 354,
+        "dropped": 8
+      },
+      {
+        "at": 19508.8,
+        "mediaTime": 5.766667,
+        "presentedFrames": 347,
+        "expectedDisplayTime": 19517.2,
+        "total": 355,
+        "dropped": 8
+      },
+      {
+        "at": 19525.6,
+        "mediaTime": 5.783333,
+        "presentedFrames": 348,
+        "expectedDisplayTime": 19534,
+        "total": 356,
+        "dropped": 8
+      },
+      {
+        "at": 19542.1,
+        "mediaTime": 5.8,
+        "presentedFrames": 349,
+        "expectedDisplayTime": 19550.5,
+        "total": 357,
+        "dropped": 8
+      },
+      {
+        "at": 19558.7,
+        "mediaTime": 5.816667,
+        "presentedFrames": 350,
+        "expectedDisplayTime": 19567.1,
+        "total": 358,
+        "dropped": 8
+      },
+      {
+        "at": 19575.6,
+        "mediaTime": 5.833333,
+        "presentedFrames": 351,
+        "expectedDisplayTime": 19583.9,
+        "total": 359,
+        "dropped": 8
+      },
+      {
+        "at": 19592.2,
+        "mediaTime": 5.85,
+        "presentedFrames": 352,
+        "expectedDisplayTime": 19600.5,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19608.8,
+        "mediaTime": 5.866667,
+        "presentedFrames": 353,
+        "expectedDisplayTime": 19617.1,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19625.4,
+        "mediaTime": 5.883333,
+        "presentedFrames": 354,
+        "expectedDisplayTime": 19633.7,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19642.2,
+        "mediaTime": 5.9,
+        "presentedFrames": 355,
+        "expectedDisplayTime": 19650.5,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19658.9,
+        "mediaTime": 5.916667,
+        "presentedFrames": 356,
+        "expectedDisplayTime": 19667.2,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19675.5,
+        "mediaTime": 5.933333,
+        "presentedFrames": 357,
+        "expectedDisplayTime": 19683.8,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19692.2,
+        "mediaTime": 5.95,
+        "presentedFrames": 358,
+        "expectedDisplayTime": 19700.4,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19708.8,
+        "mediaTime": 5.966667,
+        "presentedFrames": 359,
+        "expectedDisplayTime": 19717.2,
+        "total": 360,
+        "dropped": 8
+      },
+      {
+        "at": 19725.4,
+        "mediaTime": 5.983333,
+        "presentedFrames": 360,
+        "expectedDisplayTime": 19733.8,
+        "total": 360,
+        "dropped": 8
+      }
+    ],
+    "captionAt": 781.7999999988824,
+    "captionAtFirstVideoFrame": true,
+    "skipAt": 782,
+    "worldMountAt": 22766.299999998882,
+    "worldReadyAt": 28440.39999999851,
+    "introEndedAt": 19779.299999998882,
+    "visibility": [],
+    "instrumentationErrors": [],
+    "checkpoints": [],
+    "devicePixelRatio": 2,
+    "visibilityState": "visible",
+    "navigation": [
+      {
+        "name": "http://localhost:3103/",
+        "entryType": "navigation",
+        "startTime": 0,
+        "duration": 5389.299999998882,
+        "navigationId": 5513,
+        "initiatorType": "navigation",
+        "deliveryType": "",
+        "nextHopProtocol": "http/1.1",
+        "renderBlockingStatus": "non-blocking",
+        "contentType": "text/html",
+        "contentEncoding": "gzip",
+        "workerStart": 0,
+        "workerRouterEvaluationStart": 0,
+        "workerCacheLookupStart": 0,
+        "workerMatchedSourceType": "",
+        "workerFinalSourceType": "",
+        "redirectStart": 0,
+        "redirectEnd": 0,
+        "fetchStart": 1,
+        "domainLookupStart": 1,
+        "domainLookupEnd": 1,
+        "connectStart": 1,
+        "secureConnectionStart": 0,
+        "connectEnd": 1,
+        "requestStart": 2.199999999254942,
+        "responseStart": 77.69999999925494,
+        "firstInterimResponseStart": 0,
+        "finalResponseHeadersStart": 77.69999999925494,
+        "responseEnd": 602.7999999988824,
+        "transferSize": 4442,
+        "encodedBodySize": 4142,
+        "decodedBodySize": 17499,
+        "responseStatus": 200,
+        "serverTiming": [],
+        "unloadEventStart": 0,
+        "unloadEventEnd": 0,
+        "domInteractive": 2048.199999999255,
+        "domContentLoadedEventStart": 2048.39999999851,
+        "domContentLoadedEventEnd": 2048.699999999255,
+        "domComplete": 5389.199999999255,
+        "loadEventStart": 5389.299999998882,
+        "loadEventEnd": 5389.299999998882,
+        "type": "navigate",
+        "redirectCount": 0,
+        "activationStart": 0,
+        "criticalCHRestart": 0,
+        "notRestoredReasons": null,
+        "confidence": {
+          "randomizedTriggerRate": 0.4994798,
+          "value": "low"
+        }
+      }
+    ],
+    "resources": [
+      {
+        "name": "http://localhost:3103/_next/static/media/051742360c26797e-s.p.0f97p8c3305p~.woff2",
+        "type": "link",
+        "start": 643,
+        "end": 1731.8999999985099,
+        "transferSize": 31640,
+        "encodedBodySize": 31340,
+        "decodedBodySize": 31340
+      },
+      {
+        "name": "http://localhost:3103/_next/static/media/83afe278b6a6bb3c-s.p.0q-301v4kxxnr.woff2",
+        "type": "link",
+        "start": 646.5,
+        "end": 1826.699999999255,
+        "transferSize": 48732,
+        "encodedBodySize": 48432,
+        "decodedBodySize": 48432
+      },
+      {
+        "name": "http://localhost:3103/_next/static/media/9e9f04e3c37952ab-s.p.07uvnuj.ona6k.woff2",
+        "type": "link",
+        "start": 647,
+        "end": 1528.5,
+        "transferSize": 12304,
+        "encodedBodySize": 12004,
+        "decodedBodySize": 12004
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/12txkz_3mr3e9.css",
+        "type": "link",
+        "start": 648.2999999988824,
+        "end": 1341.2999999988824,
+        "transferSize": 4199,
+        "encodedBodySize": 3899,
+        "decodedBodySize": 20065
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0juryx3fvc2-5.css",
+        "type": "link",
+        "start": 649.0999999996275,
+        "end": 1419.5,
+        "transferSize": 6588,
+        "encodedBodySize": 6288,
+        "decodedBodySize": 26170
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/08fbi8v1fwp8m.css",
+        "type": "link",
+        "start": 649.6999999992549,
+        "end": 1263.3999999985099,
+        "transferSize": 766,
+        "encodedBodySize": 466,
+        "decodedBodySize": 466
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0wk0cpaa4ormp.css",
+        "type": "link",
+        "start": 650.2999999988824,
+        "end": 1858.699999999255,
+        "transferSize": 4688,
+        "encodedBodySize": 4388,
+        "decodedBodySize": 18243
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/10hze9t8dif3e.js",
+        "type": "link",
+        "start": 651.2999999988824,
+        "end": 2108.199999999255,
+        "transferSize": 9771,
+        "encodedBodySize": 9471,
+        "decodedBodySize": 32965
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/07uz2g0_38qia.js",
+        "type": "script",
+        "start": 652.0999999996275,
+        "end": 2219,
+        "transferSize": 9469,
+        "encodedBodySize": 9169,
+        "decodedBodySize": 43946
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0q_8.tqs5n-zm.js",
+        "type": "script",
+        "start": 654,
+        "end": 3526.2999999988824,
+        "transferSize": 71312,
+        "encodedBodySize": 71012,
+        "decodedBodySize": 227537
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0c7h~x4_chf35.js",
+        "type": "script",
+        "start": 655.2999999988824,
+        "end": 3163,
+        "transferSize": 38885,
+        "encodedBodySize": 38585,
+        "decodedBodySize": 141598
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/turbopack-0-x8e1d~dgz8v.js",
+        "type": "script",
+        "start": 656,
+        "end": 2563.39999999851,
+        "transferSize": 4451,
+        "encodedBodySize": 4151,
+        "decodedBodySize": 10580
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0nqel2fwg_k25.js",
+        "type": "script",
+        "start": 656.6999999992549,
+        "end": 2909.5,
+        "transferSize": 3702,
+        "encodedBodySize": 3402,
+        "decodedBodySize": 8258
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0d3shmwh5_nmn.js",
+        "type": "script",
+        "start": 657,
+        "end": 3366.89999999851,
+        "transferSize": 13175,
+        "encodedBodySize": 12875,
+        "decodedBodySize": 54646
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0ka051yepewro.js",
+        "type": "script",
+        "start": 657.2999999988824,
+        "end": 3526.5999999996275,
+        "transferSize": 2804,
+        "encodedBodySize": 2504,
+        "decodedBodySize": 5828
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/11.m0ergdndl7.js",
+        "type": "script",
+        "start": 657.6999999992549,
+        "end": 3664,
+        "transferSize": 9813,
+        "encodedBodySize": 9513,
+        "decodedBodySize": 23421
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0qh~2q67cf84p.js",
+        "type": "script",
+        "start": 658.2999999988824,
+        "end": 4561.299999998882,
+        "transferSize": 54174,
+        "encodedBodySize": 53874,
+        "decodedBodySize": 161425
+      },
+      {
+        "name": "http://localhost:3103/film/arrival-portrait.webp?v=set-v8",
+        "type": "img",
+        "start": 658.5,
+        "end": 5216.799999998882,
+        "transferSize": 258730,
+        "encodedBodySize": 258430,
+        "decodedBodySize": 258430
+      },
+      {
+        "name": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "type": "video",
+        "start": 777.7999999988824,
+        "end": 11460,
+        "transferSize": 300,
+        "encodedBodySize": 0,
+        "decodedBodySize": 0
+      },
+      {
+        "name": "http://localhost:3103/fonts/film-hand-latin.woff2",
+        "type": "css",
+        "start": 1898.5,
+        "end": 2972.7999999988824,
+        "transferSize": 11144,
+        "encodedBodySize": 10844,
+        "decodedBodySize": 10844
+      },
+      {
+        "name": "http://localhost:3103/short?_rsc=5CB68i4pnAekjehf",
+        "type": "fetch",
+        "start": 4767.5999999996275,
+        "end": 5359.89999999851,
+        "transferSize": 654,
+        "encodedBodySize": 354,
+        "decodedBodySize": 763
+      },
+      {
+        "name": "http://localhost:3103/_vercel/insights/script.js",
+        "type": "script",
+        "start": 4784.699999999255,
+        "end": 5386.5999999996275,
+        "transferSize": 300,
+        "encodedBodySize": 0,
+        "decodedBodySize": 0
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0lsng_xvc72zj.css",
+        "type": "link",
+        "start": 5363.699999999255,
+        "end": 5990.799999998882,
+        "transferSize": 1749,
+        "encodedBodySize": 1449,
+        "decodedBodySize": 4559
+      },
+      {
+        "name": "http://localhost:3103/short?_rsc=7h4NYy5eoyMcNlUN",
+        "type": "fetch",
+        "start": 5369.299999998882,
+        "end": 5957.299999998882,
+        "transferSize": 947,
+        "encodedBodySize": 647,
+        "decodedBodySize": 1390
+      },
+      {
+        "name": "http://localhost:3103/short?_rsc=yIp22O3xgPPxC28X",
+        "type": "fetch",
+        "start": 5370.39999999851,
+        "end": 5957.5999999996275,
+        "transferSize": 1135,
+        "encodedBodySize": 835,
+        "decodedBodySize": 1989
+      },
+      {
+        "name": "http://localhost:3103/short?_rsc=7HnpUutfXemuTFgh",
+        "type": "fetch",
+        "start": 5371,
+        "end": 5969.89999999851,
+        "transferSize": 574,
+        "encodedBodySize": 274,
+        "decodedBodySize": 445
+      },
+      {
+        "name": "http://localhost:3103/short?_rsc=RKL-Fn7VCzlwfto7",
+        "type": "fetch",
+        "start": 5371.299999998882,
+        "end": 5985.299999998882,
+        "transferSize": 735,
+        "encodedBodySize": 435,
+        "decodedBodySize": 951
+      },
+      {
+        "name": "http://localhost:3103/icon.svg?icon.0id_emaa.~9hk.svg",
+        "type": "other",
+        "start": 5392.0999999996275,
+        "end": 6546.0999999996275,
+        "transferSize": 681,
+        "encodedBodySize": 381,
+        "decodedBodySize": 381
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/02.p91vzpd4zk.js",
+        "type": "script",
+        "start": 5995.0999999996275,
+        "end": 6701.89999999851,
+        "transferSize": 10822,
+        "encodedBodySize": 10522,
+        "decodedBodySize": 27363
+      },
+      {
+        "name": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+        "type": "video",
+        "start": 11476.39999999851,
+        "end": 19325.89999999851,
+        "transferSize": 1188909,
+        "encodedBodySize": 1188609,
+        "decodedBodySize": 1190219
+      },
+      {
+        "name": "http://localhost:3103/art/terminal-city-v3.webp",
+        "type": "link",
+        "start": 19532,
+        "end": 26264.199999999255,
+        "transferSize": 424668,
+        "encodedBodySize": 424368,
+        "decodedBodySize": 424368
+      },
+      {
+        "name": "http://localhost:3103/art/traveler-v2.webp",
+        "type": "link",
+        "start": 19533.199999999255,
+        "end": 22873.89999999851,
+        "transferSize": 146918,
+        "encodedBodySize": 146618,
+        "decodedBodySize": 146618
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/00gaover4.c8k.css",
+        "type": "link",
+        "start": 19535.299999998882,
+        "end": 20138.89999999851,
+        "transferSize": 384,
+        "encodedBodySize": 84,
+        "decodedBodySize": 84
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0~zgp8vb3uar..js",
+        "type": "script",
+        "start": 19535.699999999255,
+        "end": 20185.5,
+        "transferSize": 2804,
+        "encodedBodySize": 2504,
+        "decodedBodySize": 6007
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/13gohym5ig4eu.js",
+        "type": "script",
+        "start": 19536.099999999627,
+        "end": 21700.39999999851,
+        "transferSize": 69242,
+        "encodedBodySize": 68942,
+        "decodedBodySize": 255984
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0az8v9.mk0sj_.js",
+        "type": "script",
+        "start": 19536.699999999255,
+        "end": 22685.299999998882,
+        "transferSize": 127763,
+        "encodedBodySize": 127463,
+        "decodedBodySize": 482550
+      },
+      {
+        "name": "http://localhost:3103/geometry/atrium.set.gz?v=15c00771e136c23b",
+        "type": "fetch",
+        "start": 22754.5,
+        "end": 25563.699999999255,
+        "transferSize": 130212,
+        "encodedBodySize": 129912,
+        "decodedBodySize": 129912
+      },
+      {
+        "name": "http://localhost:3103/film/arrival-portrait-end.webp?v=set-v8",
+        "type": "css",
+        "start": 22766.799999998882,
+        "end": 26217.299999998882,
+        "transferSize": 186090,
+        "encodedBodySize": 185790,
+        "decodedBodySize": 185790
+      },
+      {
+        "name": "http://localhost:3103/art/terminal-city-v3.webp",
+        "type": "img",
+        "start": 23014.699999999255,
+        "end": 26264.39999999851,
+        "transferSize": 300,
+        "encodedBodySize": 424368,
+        "decodedBodySize": 424368
+      },
+      {
+        "name": "http://localhost:3103/art/traveler-v2.webp",
+        "type": "img",
+        "start": 23752.199999999255,
+        "end": 24340.5,
+        "transferSize": 300,
+        "encodedBodySize": 146618,
+        "decodedBodySize": 146618
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0a5gz0i0vtu.5.js",
+        "type": "script",
+        "start": 24193.5,
+        "end": 24842.5,
+        "transferSize": 3511,
+        "encodedBodySize": 3211,
+        "decodedBodySize": 7382
+      },
+      {
+        "name": "http://localhost:3103/_next/static/chunks/0mg62qm-l7g2m.js",
+        "type": "script",
+        "start": 24194.799999998882,
+        "end": 24982.699999999255,
+        "transferSize": 4181,
+        "encodedBodySize": 3881,
+        "decodedBodySize": 10027
+      }
+    ],
+    "state": {
+      "intro": "false",
+      "worldReady": "true",
+      "width": 390,
+      "height": 844,
+      "scrollHeight": 7596
+    }
+  },
+  "network": [
+    {
+      "url": "http://localhost:3103/",
+      "requestAt": 10637.627362,
+      "wallTime": 1793070344.789959,
+      "type": "Document",
+      "initiator": "other",
+      "priority": "VeryHigh",
+      "bodyBytes": 0,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/html",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10638.213909,
+      "encodedBytes": 4632,
+      "endAt": 10638.229133
+    },
+    {
+      "url": "http://localhost:3103/_next/static/media/051742360c26797e-s.p.0f97p8c3305p~.woff2",
+      "requestAt": 10638.268158,
+      "wallTime": 1793070345.431352,
+      "type": "Font",
+      "initiator": "parser",
+      "priority": "High",
+      "bodyBytes": 31340,
+      "finished": true,
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.372655,
+      "encodedBytes": 31640,
+      "endAt": 10639.358261
+    },
+    {
+      "url": "http://localhost:3103/_next/static/media/83afe278b6a6bb3c-s.p.0q-301v4kxxnr.woff2",
+      "requestAt": 10638.272159,
+      "wallTime": 1793070345.435271,
+      "type": "Font",
+      "initiator": "parser",
+      "priority": "High",
+      "bodyBytes": 48432,
+      "finished": true,
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.46371,
+      "encodedBytes": 48732,
+      "endAt": 10639.453081
+    },
+    {
+      "url": "http://localhost:3103/_next/static/media/9e9f04e3c37952ab-s.p.07uvnuj.ona6k.woff2",
+      "requestAt": 10638.272968,
+      "wallTime": 1793070345.435812,
+      "type": "Font",
+      "initiator": "parser",
+      "priority": "High",
+      "bodyBytes": 12004,
+      "finished": true,
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.158758,
+      "encodedBytes": 12304,
+      "endAt": 10639.154754
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/12txkz_3mr3e9.css",
+      "requestAt": 10638.273962,
+      "wallTime": 1793070345.43689,
+      "type": "Stylesheet",
+      "initiator": "parser",
+      "priority": "VeryHigh",
+      "bodyBytes": 3916,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/css",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10638.891222,
+      "encodedBytes": 4281,
+      "endAt": 10638.967599
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0juryx3fvc2-5.css",
+      "requestAt": 10638.274989,
+      "wallTime": 1793070345.437729,
+      "type": "Stylesheet",
+      "initiator": "parser",
+      "priority": "VeryHigh",
+      "bodyBytes": 6306,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/css",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10638.895676,
+      "encodedBytes": 6671,
+      "endAt": 10639.045793
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/08fbi8v1fwp8m.css",
+      "requestAt": 10638.275814,
+      "wallTime": 1793070345.438536,
+      "type": "Stylesheet",
+      "initiator": "parser",
+      "priority": "VeryHigh",
+      "bodyBytes": 466,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/css",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10638.892227,
+      "encodedBytes": 799,
+      "endAt": 10638.889687
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0wk0cpaa4ormp.css",
+      "requestAt": 10638.276413,
+      "wallTime": 1793070345.439139,
+      "type": "Stylesheet",
+      "initiator": "parser",
+      "priority": "VeryHigh",
+      "bodyBytes": 4406,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/css",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.470131,
+      "encodedBytes": 4771,
+      "endAt": 10639.484979
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/10hze9t8dif3e.js",
+      "requestAt": 10638.27729,
+      "wallTime": 1793070345.440095,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 9489,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.737548,
+      "encodedBytes": 9868,
+      "endAt": 10639.734466
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/07uz2g0_38qia.js",
+      "requestAt": 10638.27774,
+      "wallTime": 1793070345.440882,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 9187,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.858076,
+      "encodedBytes": 9566,
+      "endAt": 10639.845318
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0q_8.tqs5n-zm.js",
+      "requestAt": 10638.279618,
+      "wallTime": 1793070345.442562,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 71072,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10641.155926,
+      "encodedBytes": 71452,
+      "endAt": 10641.152512
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0c7h~x4_chf35.js",
+      "requestAt": 10638.281282,
+      "wallTime": 1793070345.444042,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 38627,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10640.792225,
+      "encodedBytes": 39007,
+      "endAt": 10640.789269
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/turbopack-0-x8e1d~dgz8v.js",
+      "requestAt": 10638.281939,
+      "wallTime": 1793070345.44485,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 4169,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10640.191121,
+      "encodedBytes": 4548,
+      "endAt": 10640.189696
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0nqel2fwg_k25.js",
+      "requestAt": 10638.282749,
+      "wallTime": 1793070345.445469,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 3419,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10640.538039,
+      "encodedBytes": 3798,
+      "endAt": 10640.535802
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0d3shmwh5_nmn.js",
+      "requestAt": 10638.283167,
+      "wallTime": 1793070345.445876,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 12893,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10640.995683,
+      "encodedBytes": 13272,
+      "endAt": 10640.993189
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0ka051yepewro.js",
+      "requestAt": 10638.283551,
+      "wallTime": 1793070345.446098,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 2521,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10641.153785,
+      "encodedBytes": 2900,
+      "endAt": 10641.152867
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/11.m0ergdndl7.js",
+      "requestAt": 10638.283956,
+      "wallTime": 1793070345.446505,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 9531,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10641.298336,
+      "encodedBytes": 9910,
+      "endAt": 10641.290378
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0qh~2q67cf84p.js",
+      "requestAt": 10638.284386,
+      "wallTime": 1793070345.447101,
+      "type": "Script",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 53926,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10642.191216,
+      "encodedBytes": 54306,
+      "endAt": 10642.187642
+    },
+    {
+      "url": "http://localhost:3103/film/arrival-portrait.webp?v=set-v8",
+      "requestAt": 10638.284788,
+      "wallTime": 1793070345.447325,
+      "type": "Image",
+      "initiator": "parser",
+      "priority": "Medium",
+      "bodyBytes": 258430,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/webp",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10639.657012,
+      "encodedBytes": 258714,
+      "endAt": 10642.843082
+    },
+    {
+      "url": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+      "requestAt": 10638.403862,
+      "wallTime": 1793070345.56659,
+      "type": "Media",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 1179758,
+      "finished": true,
+      "status": 206,
+      "mimeType": "video/mp4",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10641.574809,
+      "error": "net::ERR_ABORTED",
+      "canceled": true,
+      "endAt": 10649.086298
+    },
+    {
+      "url": "http://localhost:3103/fonts/film-hand-latin.woff2",
+      "requestAt": 10639.524551,
+      "wallTime": 1793070346.687288,
+      "type": "Font",
+      "initiator": "parser",
+      "priority": "VeryHigh",
+      "bodyBytes": 10844,
+      "finished": true,
+      "status": 200,
+      "mimeType": "font/woff2",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10640.602375,
+      "encodedBytes": 11126,
+      "endAt": 10640.599021
+    },
+    {
+      "url": "http://localhost:3103/short?_rsc=5CB68i4pnAekjehf",
+      "requestAt": 10642.393719,
+      "wallTime": 1793070349.556372,
+      "type": "Fetch",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 371,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/x-component",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10642.986972,
+      "encodedBytes": 763,
+      "endAt": 10642.986156
+    },
+    {
+      "url": "http://localhost:3103/_vercel/insights/script.js",
+      "requestAt": 10642.407765,
+      "wallTime": 1793070349.573332,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 0,
+      "finished": true,
+      "status": 404,
+      "mimeType": "text/html",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10643.012501,
+      "error": "net::ERR_ABORTED",
+      "canceled": true,
+      "endAt": 10643.013437
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0lsng_xvc72zj.css",
+      "requestAt": 10642.989646,
+      "wallTime": 1793070350.152492,
+      "type": "Stylesheet",
+      "initiator": "script",
+      "priority": "VeryHigh",
+      "bodyBytes": 1466,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/css",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10643.584583,
+      "encodedBytes": 1831,
+      "endAt": 10643.617019
+    },
+    {
+      "url": "http://localhost:3103/short?_rsc=7h4NYy5eoyMcNlUN",
+      "requestAt": 10642.995046,
+      "wallTime": 1793070350.157991,
+      "type": "Fetch",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 664,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/x-component",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10643.584809,
+      "encodedBytes": 1056,
+      "endAt": 10643.583665
+    },
+    {
+      "url": "http://localhost:3103/short?_rsc=yIp22O3xgPPxC28X",
+      "requestAt": 10642.996505,
+      "wallTime": 1793070350.159297,
+      "type": "Fetch",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 852,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/x-component",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10643.585327,
+      "encodedBytes": 1244,
+      "endAt": 10643.5839
+    },
+    {
+      "url": "http://localhost:3103/short?_rsc=7HnpUutfXemuTFgh",
+      "requestAt": 10642.997049,
+      "wallTime": 1793070350.159802,
+      "type": "Fetch",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 291,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/x-component",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10643.596855,
+      "encodedBytes": 683,
+      "endAt": 10643.596256
+    },
+    {
+      "url": "http://localhost:3103/short?_rsc=RKL-Fn7VCzlwfto7",
+      "requestAt": 10642.997544,
+      "wallTime": 1793070350.160131,
+      "type": "Fetch",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 452,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/x-component",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10643.612975,
+      "encodedBytes": 844,
+      "endAt": 10643.611638
+    },
+    {
+      "url": "http://localhost:3103/icon.svg?icon.0id_emaa.~9hk.svg",
+      "requestAt": 10643.01837,
+      "wallTime": 1793070350.180944,
+      "type": "Other",
+      "initiator": "other",
+      "priority": "High",
+      "bodyBytes": 393,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/svg+xml",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10644.17415,
+      "encodedBytes": 712,
+      "endAt": 10644.172353
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/02.p91vzpd4zk.js",
+      "requestAt": 10643.619422,
+      "wallTime": 1793070350.783972,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 10540,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10644.32978,
+      "encodedBytes": 10919,
+      "endAt": 10644.32823
+    },
+    {
+      "url": "http://localhost:3103/film/arrival-portrait-av1.mp4?v=set-v8",
+      "requestAt": 10649.102435,
+      "wallTime": 1793070356.265168,
+      "type": "Media",
+      "initiator": "other",
+      "priority": "Low",
+      "bodyBytes": 1188953,
+      "finished": true,
+      "status": 206,
+      "mimeType": "video/mp4",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10649.695397,
+      "encodedBytes": 1189198,
+      "endAt": 10656.952174
+    },
+    {
+      "url": "http://localhost:3103/art/terminal-city-v3.webp",
+      "requestAt": 10657.155418,
+      "wallTime": 1793070364.320572,
+      "type": "Other",
+      "initiator": "script",
+      "priority": "VeryLow",
+      "bodyBytes": 424368,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/webp",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10657.750669,
+      "encodedBytes": 424652,
+      "endAt": 10663.890486
+    },
+    {
+      "url": "http://localhost:3103/art/traveler-v2.webp",
+      "requestAt": 10657.159021,
+      "wallTime": 1793070364.321811,
+      "type": "Other",
+      "initiator": "script",
+      "priority": "VeryLow",
+      "bodyBytes": 146618,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/webp",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10657.751663,
+      "encodedBytes": 146902,
+      "endAt": 10660.500222
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/00gaover4.c8k.css",
+      "requestAt": 10657.160448,
+      "wallTime": 1793070364.323949,
+      "type": "Stylesheet",
+      "initiator": "script",
+      "priority": "VeryHigh",
+      "bodyBytes": 84,
+      "finished": true,
+      "status": 200,
+      "mimeType": "text/css",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10657.766348,
+      "encodedBytes": 415,
+      "endAt": 10657.765137
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0~zgp8vb3uar..js",
+      "requestAt": 10657.161891,
+      "wallTime": 1793070364.324518,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 2521,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10657.813419,
+      "encodedBytes": 2900,
+      "endAt": 10657.811812
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/13gohym5ig4eu.js",
+      "requestAt": 10657.162245,
+      "wallTime": 1793070364.324879,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 69006,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10659.329493,
+      "encodedBytes": 69386,
+      "endAt": 10659.326694
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0az8v9.mk0sj_.js",
+      "requestAt": 10657.162905,
+      "wallTime": 1793070364.325531,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 127575,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10660.313688,
+      "encodedBytes": 127955,
+      "endAt": 10660.311578
+    },
+    {
+      "url": "http://localhost:3103/geometry/atrium.set.gz?v=15c00771e136c23b",
+      "requestAt": 10660.378907,
+      "wallTime": 1793070367.543293,
+      "type": "Fetch",
+      "initiator": "script",
+      "priority": "High",
+      "bodyBytes": 129912,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/gzip",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10661.896355,
+      "encodedBytes": 130202,
+      "endAt": 10663.189949
+    },
+    {
+      "url": "http://localhost:3103/film/arrival-portrait-end.webp?v=set-v8",
+      "requestAt": 10660.393025,
+      "wallTime": 1793070367.555596,
+      "type": "Image",
+      "initiator": "parser",
+      "priority": "Low",
+      "bodyBytes": 185790,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/webp",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10661.736694,
+      "encodedBytes": 186074,
+      "endAt": 10663.843602
+    },
+    {
+      "url": "http://localhost:3103/art/terminal-city-v3.webp",
+      "requestAt": 10660.620662,
+      "wallTime": 1793070367.803411,
+      "type": "Image",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 0,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/webp",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10661.737435,
+      "encodedBytes": 244,
+      "endAt": 10663.890747
+    },
+    {
+      "url": "http://localhost:3103/art/traveler-v2.webp",
+      "requestAt": 10661.37317,
+      "wallTime": 1793070368.540938,
+      "type": "Image",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 0,
+      "finished": true,
+      "status": 200,
+      "mimeType": "image/webp",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10661.968107,
+      "encodedBytes": 244,
+      "endAt": 10661.966729
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0a5gz0i0vtu.5.js",
+      "requestAt": 10661.81281,
+      "wallTime": 1793070368.981911,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 3228,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10662.469873,
+      "encodedBytes": 3607,
+      "endAt": 10662.468877
+    },
+    {
+      "url": "http://localhost:3103/_next/static/chunks/0mg62qm-l7g2m.js",
+      "requestAt": 10661.82092,
+      "wallTime": 1793070368.983618,
+      "type": "Script",
+      "initiator": "script",
+      "priority": "Low",
+      "bodyBytes": 3898,
+      "finished": true,
+      "status": 200,
+      "mimeType": "application/javascript",
+      "fromDiskCache": false,
+      "fromServiceWorker": false,
+      "responseAt": 10662.612355,
+      "encodedBytes": 4277,
+      "endAt": 10662.608955
+    }
+  ],
+  "errors": [],
+  "warnings": [
+    {
+      "type": "warning",
+      "text": "The resource http://localhost:3103/_next/static/chunks/0lsng_xvc72zj.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.",
+      "url": "http://localhost:3103/"
+    },
+    {
+      "type": "warning",
+      "text": "The resource http://localhost:3103/_next/static/chunks/0lsng_xvc72zj.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.",
+      "url": "http://localhost:3103/"
+    },
+    {
+      "type": "warning",
+      "text": "The resource http://localhost:3103/_next/static/chunks/0lsng_xvc72zj.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.",
+      "url": "http://localhost:3103/"
+    },
+    {
+      "type": "warning",
+      "text": "The resource http://localhost:3103/_next/static/chunks/0lsng_xvc72zj.css was preloaded using link preload but not used within a few seconds from the window's load event. Please make sure it has an appropriate `as` value and it is preloaded intentionally.",
+      "url": "http://localhost:3103/"
+    }
+  ],
+  "localServiceDiagnostics": [
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:3103/_vercel/insights/script.js"
+    }
+  ]
+}

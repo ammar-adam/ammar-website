@@ -85,7 +85,7 @@ function flightValue(progress:number,read:(key:CameraKey)=>number){
 export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number; lookYaw?:number; lookPitch?:number }
 export interface TerminalModel {
  scene:THREE.Scene; camera:THREE.PerspectiveCamera; photos:THREE.Object3D[];
- update:(state:TerminalWorldState)=>void; dispose:()=>void;
+ update:(state:TerminalWorldState)=>void; takePendingProgramRoots:()=>THREE.Object3D[]; dispose:()=>void;
 }
 
 export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{shadowMapSize?:number}={}):TerminalModel {
@@ -222,8 +222,10 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const carouselBase=new THREE.Mesh(cylinderGeometry,ink);carouselBase.scale.set(1.9,.65,2.7);carouselBase.position.set(10.5,.35,-26.2);scene.add(carouselBase);
  const carouselCore=new THREE.Mesh(cylinderGeometry,steel);carouselCore.scale.set(1.05,.68,1.7);carouselCore.position.set(10.5,.8,-26.2);scene.add(carouselCore);
  const beltTreads=new THREE.InstancedMesh(unitBox,dark,64);scene.add(beltTreads);const beltDummy=new THREE.Object3D();
- const updateBelt=(time:number)=>{for(let n=0;n<64;n++){const angle=n/64*Math.PI*2+time*.17;beltDummy.position.set(10.5+Math.cos(angle)*1.45,.76,-26.2+Math.sin(angle)*2.1);beltDummy.rotation.y=Math.atan2(-1.45*Math.sin(angle),2.1*Math.cos(angle));beltDummy.scale.set(.78,.11,.22);beltDummy.updateMatrix();beltTreads.setMatrixAt(n,beltDummy.matrix);}beltTreads.instanceMatrix.needsUpdate=true;beltTreads.computeBoundingSphere();};updateBelt(0);
- const checkinCases:THREE.Group[]=[];
+ // The complete oval plus each rotated tread fits this fixed conservative sphere.
+ beltTreads.boundingSphere=new THREE.Sphere(new THREE.Vector3(10.5,.76,-26.2),2.55);
+ const updateBelt=(time:number)=>{for(let n=0;n<64;n++){const angle=n/64*Math.PI*2+time*.17;beltDummy.position.set(10.5+Math.cos(angle)*1.45,.76,-26.2+Math.sin(angle)*2.1);beltDummy.rotation.y=Math.atan2(-1.45*Math.sin(angle),2.1*Math.cos(angle));beltDummy.scale.set(.78,.11,.22);beltDummy.updateMatrix();beltTreads.setMatrixAt(n,beltDummy.matrix);}beltTreads.instanceMatrix.needsUpdate=true;};updateBelt(0);
+ const checkinCases:THREE.Group[]=[];let checkinUpdated=false;
  const caseShell=keepGeometry(new RoundedBoxGeometry(.82,.96,.52,5,.11));
  for(let i=0;i<6;i++){
   const luggage=new THREE.Group();scene.add(luggage);
@@ -426,13 +428,19 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  // and let the normal room culler hide these independent room groups.
  const setDressing:FilmSet[]=[];
  const pendingSets=new Set<string>(),settledSets=new Set<string>();
+ const pendingProgramRoots:THREE.Object3D[]=[];
+ function attachPreparedLater(roots:THREE.Object3D[],name:string){
+  const wrapper=new THREE.Group();wrapper.name=name;wrapper.visible=false;wrapper.userData.programsReady=false;wrapper.userData.unwrapAfterWarm=name!=="checkin-reference-wrapper";
+  wrapper.add(...roots);scene.add(wrapper);pendingProgramRoots.push(wrapper);invalidate();
+ }
  let setTime=0,setReduced=false;
  function requestSet(name:Parameters<typeof loadFilmSet>[0]){
   if(pendingSets.has(name))return;
   pendingSets.add(name);
   void loadFilmSet(name,palette.materials).then(set=>{
    if(dead){set.dispose();return;}
-   set.update(setTime,setReduced);setDressing.push(set);scene.add(...set.groups);
+   set.update(setTime,setReduced);setDressing.push(set);
+   if(name==="atrium")scene.add(...set.groups);else attachPreparedLater(set.groups,`${name}-prepared-furnishings`);
    settledSets.add(name);invalidate();
   }).catch(error=>{
    if(dead)return;
@@ -448,21 +456,23 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   if(requestedReferences.has(zone))return;requestedReferences.add(zone);
   // Room installations share the reference lifecycle, but build only near that room.
   void import("./film-room-art").then(module=>module.createFilmRoomArt(palette.materials,zone)).then(set=>{
-   if(dead){set.dispose();return;}referenceSets.push(set);scene.add(...set.groups);invalidate();
+   if(dead){set.dispose();return;}referenceSets.push(set);attachPreparedLater(set.groups,`${zone}-prepared-room-art`);
   }).catch(error=>console.warn(`Terminal ${zone} architectural art unavailable.`,error));
   const task=zone==="checkin"?import("./film-counter-references").then(module=>module.createCounterReferences(palette.materials,terminalReferences,invalidate))
    :zone==="security"?import("./film-security-references").then(module=>module.createSecurityReferences(palette.materials,terminalReferences,invalidate))
    :zone==="concourse"?import("./film-concourse-references").then(module=>module.createConcourseReferences(palette.materials,terminalReferences,invalidate))
    :import("./film-gate-references").then(module=>module.createGateReferences(palette.materials,terminalReferences,invalidate));
   void task.then(set=>{if(dead){set.dispose();return;}referenceSets.push(set);
-   if(zone==="checkin"){counterReferences=set as typeof counterReferences;const wrapper=new THREE.Group();wrapper.name="checkin-reference-wrapper";wrapper.add(...set.groups);scene.add(wrapper);}
-   else{scene.add(...set.groups);if(zone==="gate")gateReferences=set as typeof gateReferences;}
+   if(zone==="checkin")counterReferences=set as typeof counterReferences;
+   if(zone==="gate")gateReferences=set as typeof gateReferences;
+   attachPreparedLater(set.groups,zone==="checkin"?"checkin-reference-wrapper":`${zone}-prepared-references`);
    invalidate();
   }).catch(error=>console.warn(`Terminal ${zone} references unavailable.`,error));
  }
  const travelerBounds=new THREE.Box3();
  const temp=new THREE.Vector3(),look=new THREE.Vector3(),right=new THREE.Vector3(),up=new THREE.Vector3(),forward=new THREE.Vector3();
  return {scene,camera,photos,
+  takePendingProgramRoots(){return pendingProgramRoots.splice(0);},
   update(state){
    for(const [src,entry]of deferredTextures)if(!entry.started&&state.t>=entry.at)startTexture(src,entry);
    architecture.update(state.t,Math.abs(state.lookYaw??0)>.12);
@@ -487,24 +497,33 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    key.position.set(32,16,camera.position.z+12);key.target.position.set(0,0,camera.position.z-20);key.target.updateMatrixWorld();
    const checkin=clamp((p-.24)/.193),security=clamp((p-.45)/.185);
    deskLights.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});activeCompanyBoards.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});counterScreens.forEach((mesh,i)=>{mesh.visible=i===state.experienceIndex;});
-   checkinIsland.update({time:state.time,progress:checkin,selectedIndex:state.experienceIndex,reduced:state.reduced});
-   checkinCases.forEach((group,i)=>{const angle=i/checkinCases.length*Math.PI*2+(state.reduced?0:(state.time??0)*.17)+checkin*.6;group.position.set(10.5+Math.cos(angle)*1.45,.84,-26.2+Math.sin(angle)*2.1);group.rotation.y=-angle;});
+   // Initialize even for a deep link, then leave hidden check-in belts alone.
+   // Their absolute-time motion resumes at the correct pose when returning.
+   if(p<.45||!checkinUpdated){
+    checkinUpdated=true;
+    checkinIsland.update({time:state.time,progress:checkin,selectedIndex:state.experienceIndex,reduced:state.reduced});
+    checkinCases.forEach((group,i)=>{const angle=i/checkinCases.length*Math.PI*2+(state.reduced?0:(state.time??0)*.17)+checkin*.6;group.position.set(10.5+Math.cos(angle)*1.45,.84,-26.2+Math.sin(angle)*2.1);group.rotation.y=-angle;});
+    updateBelt(state.reduced?0:state.time??0);
+   }
    projectScreens.forEach((mesh,i)=>{mesh.visible=i===state.projectIndex;const image=(mesh.material as THREE.MeshBasicMaterial).map?.image as {width?:number;height?:number}|undefined;if(image?.width&&image?.height){const aspect=image.width/image.height;mesh.scale.set(Math.min(2.8,1.8*aspect),Math.min(1.8,2.8/aspect),1);}});
    projectMonitor.rotation.y=state.reduced?0:Math.sin(security*Math.PI*2)*.07;
    trays.forEach((group,i)=>{const travel=state.reduced?i*1.7:((state.time??0)*.34+i*1.9+security*2.2)%7.5;group.visible=p>=.43&&p<.65;group.position.z=-37.9-travel;group.rotation.y=0;});
    const scan=state.reduced?.5:(security*4)%1;scanPlane.position.set(archX,1.65,-42.55-scan*.9);scanBar.position.set(archX,3,-42.55-scan*.9);scanPlane.visible=scanBar.visible=p>=.45&&p<.64;
-   animateAirport(state.time??0,state.reduced);updateBelt(state.reduced?0:state.time??0);
+   animateAirport(state.time??0,state.reduced);
    transitionTravelers.forEach((guest,index)=>{guest.arms[0].rotation.x=state.reduced?-.16:-.16+Math.sin((state.time??0)*.45+index)*.06;});
    setTime=state.time??0;setReduced=state.reduced;
-   if(p>=.34)requestSet("airside");
-   if(p>=.52)requestSet("concourse");
+   if(p>=.29)requestSet("airside");
+   if(p>=.45)requestSet("concourse");
    for(const set of setDressing)set.update(setTime,setReduced);
-   if(p>=.16)requestReferences("checkin");if(p>=.34)requestReferences("security");if(p>=.54)requestReferences("concourse");if(p>=.76)requestReferences("gate");
+   if(p>=.16)requestReferences("checkin");if(p>=.29)requestReferences("security");if(p>=.45)requestReferences("concourse");if(p>=.65)requestReferences("gate");
    counterReferences?.updateSelection(state.experienceIndex);gateReferences?.updateProgress(p);
    for(const set of referenceSets)set.update(setTime,setReduced);
    scene.userData.ready=(Boolean(scene.userData.ready)||settledSets.has(p<.45?"atrium":p<.65?"airside":p<.86?"concourse":"airside"))&&Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=p<.24?"atrium":p<.45?"checkin":p<.65?"security":p<.86?"concourse":"gate";
    aircraft.position.set(-8+flight*38,3.5+flight*15,-128-flight*22);aircraft.rotation.set(0,flight*-.08,flight*.14);
-   const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=travelerKey.visible=travelerRim.visible=visible;
+   const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=visible;
+   // Keep NUM_POINT_LIGHTS stable when the hero exits: changing visibility
+   // invalidates every room shader; zero intensity preserves the same lighting.
+   travelerKey.intensity=visible?12:0;travelerRim.intensity=visible?4:0;
    if(visible){
     camera.getWorldDirection(forward);right.setFromMatrixColumn(camera.matrixWorld,0);up.setFromMatrixColumn(camera.matrixWorld,1);
     const distance=4.4+.4*Math.sin(hero*Math.PI),lateral=state.aspect<.8?-.12+Math.sin(hero*Math.PI*2)*.44:1.35+Math.sin(hero*Math.PI*2)*1.25;

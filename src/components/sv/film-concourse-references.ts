@@ -16,12 +16,17 @@ const C = { cream: "#f4ecd8", ink: "#0d0f1f", shadow: "#2b3566", blue: "#3a4f8a"
 const lathe = (points: readonly (readonly [number, number])[], segments = 14) => new THREE.LatheGeometry(points.map(([r, y]) => new THREE.Vector2(r, y)), segments);
 
 /** Original objects, allusions and quiet airport signs. Loaded only for the concourse. */
-export function createConcourseReferences(palette: FilmMaterialPalette, references: readonly ConcourseReference[], invalidate: () => void): FilmSet {
+export async function createConcourseReferences(palette: FilmMaterialPalette, references: readonly ConcourseReference[], invalidate: () => void): Promise<FilmSet> {
   const records = new Map(references.filter(item => item.stop === "concourse").map(item => [item.id, item]));
   const groups: THREE.Group[] = [], builders: Builder[] = [];
   const geometry = new Set<THREE.BufferGeometry>(), materials = new Set<THREE.Material>(), textures = new Set<THREE.Texture>();
   const instances: THREE.InstancedMesh[] = [], animated: ((time: number) => void)[] = [], repaint: (() => void)[] = [];
   let disposed = false;
+  const construction: (() => void)[] = [];
+  const yieldTask = () => {
+    const scheduler = (globalThis as typeof globalThis & { scheduler?: { yield: () => Promise<void> } }).scheduler;
+    return scheduler?.yield ? scheduler.yield() : new Promise<void>(resolve => setTimeout(resolve, 0));
+  };
   const keep = <T extends THREE.BufferGeometry>(item: T) => { ensurePaintUV(item); geometry.add(item); return item; };
   const sphere = keep(new THREE.SphereGeometry(1, 12, 8));
   const cylinder = keep(new THREE.CylinderGeometry(1, 1, 1, 12));
@@ -60,8 +65,13 @@ export function createConcourseReferences(palette: FilmMaterialPalette, referenc
     const record = records.get(id); if (!record) return undefined;
     const builder = createSetBuilder(palette, id); builders.push(builder);
     builder.root.userData = { referenceId: id, referenceLabel: record.note, referencePriority: record.priority, referenceDwell: record.dwell };
-    draw(builder, record); const root = builder.finish();
-    root.position.set(...record.position); root.rotation.set(...record.rotation); root.scale.set(...record.scale);
+    // Reserve the original root order, but defer the expensive geometry/paint.
+    // No caller consumes make()'s return before the completed set is returned.
+    const root = builder.root;
+    construction.push(() => {
+      draw(builder, record); builder.finish();
+      root.position.set(...record.position); root.rotation.set(...record.rotation); root.scale.set(...record.scale);
+    });
     groups.push(root); return root;
   };
   function artwork(parent: THREE.Object3D, id: string, width: number, height: number, position: SetVector, draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void, text: { text: string; pixels: number; y: number }[] = [], rotation: SetVector = [0, 0, 0], resolution: readonly [number, number] = [1024, 640]) {
@@ -618,10 +628,16 @@ export function createConcourseReferences(palette: FilmMaterialPalette, referenc
       poster.name="painted-cinema-poster";
     });
   });
+  // Each complete reference remains atomic; yield between references so the
+  // current room can keep rendering while this approaching room is prepared.
+  for (const construct of construction) { await yieldTask(); construct(); }
+  construction.length = 0;
+
   // Preserve each reference anchor/label for QA and selection-free exploration,
   // but merge all fixed palette geometry by bay. Human silhouettes and shelf
   // objects therefore cost material draws, not one draw per limb or trinket.
   const batches = new Map<number, THREE.Group>();
+  let regrouped = 0;
   for (const root of [...groups]) {
     if (!root.userData.referenceId) continue;
     root.updateMatrixWorld(true);
@@ -637,13 +653,20 @@ export function createConcourseReferences(palette: FilmMaterialPalette, referenc
       fixed.push(object);
     });
     for (const object of fixed) { const world = object.matrixWorld.clone(); object.removeFromParent(); world.decompose(object.position, object.quaternion, object.scale); batch.add(object); }
+    if (++regrouped % 3 === 0) await yieldTask();
   }
-  for (const batch of batches.values()) { combineShared(batch); groups.push(batch); }
+  for (const batch of batches.values()) { await yieldTask(); combineShared(batch); groups.push(batch); }
   // Drawing with the already-installed font avoids an extra font download.
   void document.fonts?.load("700 100px FilmHand").then(() => { if (!disposed) { repaint.forEach(paint => paint()); invalidate(); } });
+  let lastAnimationFrame = -1;
   return {
     groups,
-    update(time, reduced) { const value = reduced ? 0 : time; animated.forEach(animate => animate(value)); },
+    update(time, reduced) {
+      const frame = reduced ? 0 : Math.floor(time * 12);
+      if (frame === lastAnimationFrame) return;
+      lastAnimationFrame = frame;
+      const value = reduced ? 0 : time; animated.forEach(animate => animate(value));
+    },
     dispose() { if (disposed) return; disposed = true; builders.forEach(builder => builder.dispose()); instances.forEach(instance => instance.dispose()); geometry.forEach(item => item.dispose()); materials.forEach(item => item.dispose()); textures.forEach(item => item.dispose()); groups.forEach(group => group.clear()); },
   };
 }

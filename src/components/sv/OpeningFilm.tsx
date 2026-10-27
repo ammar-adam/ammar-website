@@ -49,7 +49,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
     if (connection?.saveData || /^(slow-)?2g$/.test(connection?.effectiveType ?? "")) return;
     let timer = 0, queued = false;
     const warm = () => {
-      // Wait until the remaining film is buffered. Fetch only the three
+      // Wait until the remaining film is buffered. Fetch only the two
       // first-room textures and module; never construct the world or its GPU here.
       if (media.ended) return;
       if (media.paused || media.readyState < 3) { timer = window.setTimeout(warm, 500); return; }
@@ -60,7 +60,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
         }
       }
       if (buffered < Math.max(0, media.duration - media.currentTime - .08)) { timer = window.setTimeout(warm, 500); return; }
-      for (const href of ["/art/terminal-city-v3.webp", "/art/terminal-paint-material.webp", "/art/traveler-v2.webp"]) {
+      for (const href of ["/art/terminal-city-v3.webp", "/art/traveler-v2.webp"]) {
         const hint = document.createElement("link");
         hint.rel = "prefetch"; hint.as = "image"; hint.fetchPriority = "low"; hint.href = href;
         // Finish in-flight prefetches across the film-to-world handoff.

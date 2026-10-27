@@ -1,0 +1,39 @@
+{
+  "states": [
+    {
+      "name": "desktop",
+      "fallback": "0",
+      "warming": "0",
+      "stage": "checkin",
+      "progress": "0.2600",
+      "camera": "1.78,1.89,-18.87",
+      "drawCalls": "277",
+      "looking": "false",
+      "lookYaw": "0.000",
+      "lookPitch": "0.000"
+    },
+    {
+      "name": "mobile",
+      "fallback": "0",
+      "warming": "0",
+      "stage": "checkin",
+      "progress": "0.2601",
+      "camera": "3.45,1.90,-16.90",
+      "drawCalls": "244",
+      "looking": "false",
+      "lookYaw": "0.000",
+      "lookPitch": "0.000"
+    }
+  ],
+  "errors": [],
+  "localServiceDiagnostics": [
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:3103/_vercel/insights/script.js"
+    },
+    {
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:3103/_vercel/insights/script.js"
+    }
+  ]
+}

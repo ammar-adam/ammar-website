@@ -208,6 +208,8 @@ export function createFilmCheckin(materials: FilmMaterialPalette): FilmCheckin {
   const treadGeometry = roundBox(1.11, .045, .18, .012); owned.add(treadGeometry);
   const treads = new THREE.InstancedMesh(treadGeometry, materials.steel, 22);
   treads.castShadow = treads.receiveShadow = true; instances.push(treads); root.add(treads);
+  // Fixed bounds contain every tread over the full .205m wrap cycle.
+  treads.boundingSphere = new THREE.Sphere(new THREE.Vector3(3.55, .565, -1.50), 2.5);
   const dummy = new THREE.Object3D();
 
   const suitcase = new THREE.Group(); root.add(suitcase);
@@ -239,7 +241,6 @@ export function createFilmCheckin(materials: FilmMaterialPalette): FilmCheckin {
       dummy.updateMatrix(); treads.setMatrixAt(i, dummy.matrix);
     }
     treads.instanceMatrix.needsUpdate = true;
-    treads.computeBoundingSphere();
     const cycle = (time * .055 + progress * .26) % 1;
     const moving = THREE.MathUtils.smoothstep(cycle, .20, .94);
     suitcase.position.set(3.55, .60, .42 - moving * 3.62);

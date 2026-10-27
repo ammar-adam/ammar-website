@@ -7,6 +7,7 @@ import * as THREE from "three";
 import {createFilmTerminal} from "./film-terminal";
 export {prepareTerminalSetGeometry} from "./film-set-assets";
 import {createRoomVisibility} from "./room-visibility";
+import {createTerminalProgramWarmup} from "./terminal-program-warmup";
 import {TERMINAL_POST_FRAGMENT,TERMINAL_POST_VERTEX} from "./terminal-post";
 
 type Props={active?:boolean;t:MotionValue<number>;reduced:boolean;experienceIndex:number;projectIndex:number;departure:MotionValue<number>;onReady?:()=>void;allowLook?:boolean;onLook?:()=>void};
@@ -42,6 +43,8 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
   const postScene=new THREE.Scene(),postCamera=new THREE.OrthographicCamera(-1,1,1,-1,0,1);
   const postMaterial=new THREE.ShaderMaterial({vertexShader:TERMINAL_POST_VERTEX,fragmentShader:TERMINAL_POST_FRAGMENT,uniforms:{uScene:{value:target.texture},uDepth:{value:target.depthTexture},uResolution:{value:new THREE.Vector2(1,1)},uProjectionInverse:{value:new THREE.Matrix4()},uIntensity:{value:.45},uMotion:{value:0},uTime:{value:0}},depthTest:false,depthWrite:false});
   const quadGeometry=new THREE.PlaneGeometry(2,2);postScene.add(new THREE.Mesh(quadGeometry,postMaterial));
+  const programWarmup=createTerminalProgramWarmup(renderer,target,world.scene,world.camera,schedule);
+  let backgroundQueued=false;
   let width=0,height=0,lastAmbient=0,lastProgress=-1;const started=performance.now();
   const look={yaw:0,pitch:0,pointer:-1,x:0,y:0,dragged:false};
   const reset=()=>{if(look.pointer!==-1&&surface.hasPointerCapture(look.pointer))surface.releasePointerCapture(look.pointer);look.yaw=0;look.pitch=0;look.pointer=-1;element.dataset.looking="false";surface.style.cursor=view.current.allowLook?"grab":"default";schedule();};
@@ -81,7 +84,10 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
     const postPrograms=renderer.compileAsync(postScene,postCamera);
     void Promise.all([scenePrograms,postPrograms]).then(()=>{
      if(dead||lost||generation!==compileGeneration)return;
-     compiling=false;compiled=true;schedule();
+     compiling=false;compiled=true;
+     // One snapshot of the existing future rooms; no full-scene traversal in draw.
+     if(!backgroundQueued){backgroundQueued=true;programWarmup.enqueue(world.scene,false);}
+     programWarmup.resume();schedule();
     }).catch(failed);
    }catch(error){renderer.setRenderTarget(null);failed(error);}
   }
@@ -97,7 +103,9 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    const rush=Math.exp(-Math.pow((progress-.055)/.027,2))*.75+Math.exp(-Math.pow((progress-.145)/.026,2))*.9;
    postMaterial.uniforms.uMotion.value=state.reduced||!moving||progress>=.24?0:Math.min(1,rush);postMaterial.uniforms.uTime.value=state.reduced?0:(performance.now()-started)/1000;lastProgress=progress;
    postMaterial.uniforms.uProjectionInverse.value.copy(world.camera.projectionMatrixInverse);
+   for(const root of world.takePendingProgramRoots())programWarmup.enqueue(root);
    if(!compiled){if(world.scene.userData.ready)warmPrograms();return;}
+   programWarmup.resume();element!.dataset.warming=String(programWarmup.pendingCount);
    renderer.setRenderTarget(target);renderer.render(world.scene,world.camera);const calls=renderer.info.render.calls;renderer.setRenderTarget(null);renderer.render(postScene,postCamera);
    element!.dataset.fallback=world.scene.userData.ready?"0":"1";element!.dataset.stage=world.scene.userData.stage;element!.dataset.progress=motionValues.current.t.get().toFixed(4);element!.dataset.camera=world.camera.position.toArray().map(n=>n.toFixed(2)).join(",");element!.dataset.drawCalls=String(calls);surface!.style.opacity=world.scene.userData.ready?"1":"0";
    element!.dataset.looking=String(Math.abs(look.yaw)+Math.abs(look.pitch)>.03);element!.dataset.lookYaw=look.yaw.toFixed(3);element!.dataset.lookPitch=look.pitch.toFixed(3);
@@ -105,12 +113,12 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    if(state.active&&!state.reduced)frame=requestAnimationFrame(ambient);
   }
   function ambient(now:number){frame=0;if(dead||lost||document.hidden)return;if(dirty){lastAmbient=now;draw();return;}if(!view.current.active||view.current.reduced)return;if(now-lastAmbient>=1000/30){lastAmbient=now;draw();}else frame=requestAnimationFrame(ambient);}
-  const lose=(event:Event)=>{event.preventDefault();lost=true;compileGeneration++;compiled=false;compiling=false;compileFailed=false;cancelAnimationFrame(frame);frame=0;element.dataset.fallback="1";surface.style.opacity="0";};
+  const lose=(event:Event)=>{event.preventDefault();lost=true;compileGeneration++;compiled=false;compiling=false;compileFailed=false;backgroundQueued=false;programWarmup.pause();cancelAnimationFrame(frame);frame=0;element.dataset.fallback="1";surface.style.opacity="0";};
   const restore=()=>{lost=false;schedule();};
   const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else schedule();};
   surface.addEventListener("webglcontextlost",lose);surface.addEventListener("webglcontextrestored",restore);document.addEventListener("visibilitychange",visibility);
   const resize=new ResizeObserver(schedule);resize.observe(element);schedule();
-  return()=>{dead=true;compileGeneration++;resetLook.current=()=>{};surface.removeEventListener("pointerdown",down);surface.removeEventListener("pointermove",move);surface.removeEventListener("pointerup",up);surface.removeEventListener("pointercancel",up);surface.removeEventListener("dblclick",reset);window.removeEventListener("keydown",keys);scheduleRef.current=()=>{};cancelAnimationFrame(frame);resize.disconnect();surface.removeEventListener("webglcontextlost",lose);surface.removeEventListener("webglcontextrestored",restore);document.removeEventListener("visibilitychange",visibility);world.dispose();quadGeometry.dispose();postMaterial.dispose();target.depthTexture?.dispose();target.dispose();renderer.dispose();if(!lost&&!surface.isConnected)renderer.forceContextLoss();};
+  return()=>{dead=true;compileGeneration++;programWarmup.dispose();resetLook.current=()=>{};surface.removeEventListener("pointerdown",down);surface.removeEventListener("pointermove",move);surface.removeEventListener("pointerup",up);surface.removeEventListener("pointercancel",up);surface.removeEventListener("dblclick",reset);window.removeEventListener("keydown",keys);scheduleRef.current=()=>{};cancelAnimationFrame(frame);resize.disconnect();surface.removeEventListener("webglcontextlost",lose);surface.removeEventListener("webglcontextrestored",restore);document.removeEventListener("visibilitychange",visibility);world.dispose();quadGeometry.dispose();postMaterial.dispose();target.depthTexture?.dispose();target.dispose();renderer.dispose();if(!lost&&!surface.isConnected)renderer.forceContextLoss();};
  },[]);
  return <div ref={root} className="terminal-world" data-fallback="1" style={{position:"absolute",inset:0,overflow:"hidden",backgroundColor:"#112c43"}}><canvas ref={canvas} tabIndex={allowLook?0:-1} aria-label="Airport view. In the concourse, drag or use left and right arrow keys to look around. Escape resets the view." style={{display:"block",width:"100%",height:"100%",opacity:0,cursor:allowLook?"grab":"default",touchAction:"pan-y"}} /></div>;
 }
