@@ -30,6 +30,7 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
       if (!event.persisted) return;
       cancel();
       setStatus("ready");
+      onReset?.();
     };
     // A restored page must never replay a pending scan or retain a torn pass.
     window.addEventListener("pagehide", cancel);
@@ -39,14 +40,16 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
       window.removeEventListener("pagehide", cancel);
       window.removeEventListener("pageshow", restore);
     };
-  }, []);
+  }, [onReset]);
 
   function scan(event: MouseEvent<HTMLAnchorElement>) {
     // Keep the browser's normal new-tab/window behavior for modified activation.
     if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (busy.current) { event.preventDefault(); return; }
-    // The native anchor opens the PDF in this same click's user activation.
-    // The original tab keeps the authored scan / tear / departure sequence.
+    // Reduced motion uses the native same-tab PDF link immediately. Otherwise
+    // finish the visible sequence here before navigation; no popup is required.
+    if (reduced) { onReset?.(); return; }
+    event.preventDefault();
     timers.current.forEach(clearTimeout);
     onReset?.();
     busy.current = true;
@@ -58,13 +61,16 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
         setStatus("departing");
         onDeparture();
       }, DEPARTURE_MS),
-      setTimeout(() => { setStatus("opening"); busy.current = false; }, OPEN_MS),
+      setTimeout(() => {
+        setStatus("opening");
+        window.location.assign(RESUME);
+      }, OPEN_MS),
     ];
   }
 
   const detached = status === "tearing" || status === "departing" || status === "opening";
-  const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? "Pass accepted" : status === "departing" ? "Departing" : status === "opening" ? "Résumé opened" : "Scan & open resume";
-  const announcement = status === "scanning" ? "Résumé opened in a new tab. Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure." : status === "opening" ? "Résumé opened in a new tab. You can scan again." : "Scan the boarding pass to open the résumé PDF in a new tab.";
+  const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? "Pass accepted" : status === "departing" ? "Departing" : status === "opening" ? "Opening résumé" : reduced ? "Open resume" : "Scan & open resume";
+  const announcement = status === "scanning" ? "Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure. Opening the résumé next." : status === "opening" ? "Opening résumé PDF." : reduced ? "Open the résumé PDF." : "Scan the boarding pass. The résumé PDF opens after the two-second departure.";
 
   return <div className={`bp-scene${reduced ? " bp-reduced" : ""}`} data-scan-status={status} data-scan-duration={SCAN_MS} data-departure-delay={DEPARTURE_MS} data-animation-duration={OPEN_MS}>
     <div className="bp-layout">
@@ -86,9 +92,9 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
         <div className="bp-stub">
           <div className="bp-stub-header"><span>RESUME / PDF</span><strong>AMM01</strong></div>
           <div className="bp-stub-passenger"><span>ADAM / AMMAR</span><strong>YKF <i aria-hidden="true">→</i> NEXT</strong></div>
-          <a className="bp-scanner" data-scan-trigger="true" data-scan-status={status} href={RESUME} target="_blank" rel="noopener noreferrer" aria-label="Scan boarding pass and open Ammar Adam’s résumé PDF in a new tab" aria-busy={status !== "ready" && status !== "opening"} onClick={scan}>
+          <a className="bp-scanner" data-scan-trigger="true" data-scan-status={status} href={RESUME} aria-label={reduced ? "Open Ammar Adam’s résumé PDF" : "Scan boarding pass and open Ammar Adam’s résumé PDF after a two-second departure"} aria-busy={status !== "ready"} onClick={scan}>
             <span className="bp-barcode" aria-hidden="true"><span className="bp-code-bars" />{status === "scanning" && <span key={scanNumber} className="bp-scan-line" style={{ animationDuration: `${SCAN_MS}ms` }} />}<span className="bp-code-number">AMM01 / AMMAR-ADAM / 01A</span></span>
-            <span className="bp-scan-label">{label}<b aria-hidden="true">↗</b></span>
+            <span className="bp-scan-label">{label}<b aria-hidden="true">→</b></span>
           </a>
           <div className="bp-clearance" aria-hidden="true"><i /><span>{status === "scanning" ? "READING BARCODE" : status === "tearing" ? "PASS ACCEPTED" : status === "departing" || status === "opening" ? "CLEARED FOR DEPARTURE" : "TWO SECONDS TO DEPARTURE"}</span></div>
         </div>

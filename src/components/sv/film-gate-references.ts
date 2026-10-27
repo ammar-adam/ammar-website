@@ -23,18 +23,18 @@ const glyph = (letter:string) => Math.max(0, GLYPHS.indexOf(letter));
 
 /** A mechanical fixture: recessed cassettes, spindle hardware, and two-sided
  * individual half-leaves. Its single atlas contains only printed glyphs. */
-export function createGateReferences(palette:FilmMaterialPalette, references:readonly TerminalReference[], invalidate:()=>void):FilmSet & {updateProgress:(progress:number)=>void} {
+export function createGateReferences(palette:FilmMaterialPalette, references:readonly TerminalReference[], invalidate:()=>void):FilmSet & {updateDeparture:(departure:number)=>void} {
  const reference=references.find(item=>item.id==="gate-departures")!;
  const routes=reference.text!.map(line=>line.split("|"));
- const decaIndex=routes.findIndex(row=>row[0]==="DECA");
- const rotating=routes.map((_,index)=>index).filter(index=>index!==decaIndex);
+ const rowCount=Math.min(5,routes.length);
+ if(!rowCount)throw new Error("The gate departure board needs at least one route.");
  const set=createSetBuilder(palette,"mechanical-departures-board"),root=set.root;
  root.position.set(...reference.position);root.rotation.set(...reference.rotation);root.scale.set(...reference.scale);
  root.userData={referenceId:reference.id,referenceLabel:reference.note,referenceDwell:reference.dwell,referenceStop:"gate",routeCount:routes.length};
  const groups:THREE.Group[]=[root],geometries=new Set<THREE.BufferGeometry>(),instances:THREE.InstancedMesh[]=[];
  const keep=<T extends THREE.BufferGeometry>(geometry:T)=>{ensurePaintUV(geometry);geometries.add(geometry);return geometry;};
  const ownedSets=[set];
- let disposed=false,lastTime=0,lastFrame=-1,progress=0,clockStart:number|undefined,lastCycle=0,deca="CANCELLED",reduced=false;
+ let disposed=false,lastFrame=-1,clockStart:number|undefined,lastCycle=0;
 
  // A shallow powder-coated cabinet. The dark inset is behind the cassette
  // lips; warm metal is a narrow reveal, not a bright rectangle around a UI.
@@ -78,7 +78,7 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
  };
  material.customProgramCacheKey=()=>`${baseKey}-mechanical-glyph-v2`;
  protectFilmRegistration(material);
- const white=new THREE.Color("#ffffff"),gold=new THREE.Color("#ffd9a0"),red=new THREE.Color("#ff514e");
+ const white=new THREE.Color("#ffffff"),gold=new THREE.Color("#ffd9a0");
  const transform=new THREE.Object3D(),rotation=new THREE.Quaternion(),axis=new THREE.Vector3(1,0,0),offset=new THREE.Vector3();
  function plates(parent:THREE.Object3D,items:GlyphPlate[],name:string){
   const geometry=keep(new THREE.PlaneGeometry(1,1));
@@ -91,9 +91,9 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
   items.forEach((item,index)=>{transform.position.set(item.x,item.y,item.z);transform.rotation.set(0,0,0);transform.scale.set(item.width,item.height,1);transform.updateMatrix();mesh.setMatrixAt(index,transform.matrix);mesh.setColorAt(index,item.tint??white);});
   mesh.instanceMatrix.setUsage(THREE.DynamicDrawUsage);mesh.computeBoundingSphere();parent.add(mesh);return{mesh,from,next};
  }
- const rowSources=[...rotating.slice(0,4),decaIndex],cellPositions:{x:number;y:number;column:number;slot:number}[]=[];
+ const rowSources=Array.from({length:rowCount},(_,index)=>index),cellPositions:{x:number;y:number;column:number;slot:number}[]=[];
  const fixedItems:GlyphPlate[]=[],movingItems:GlyphPlate[]=[],headings:PrintedWord[]=[];
- for(let row=0;row<5;row++)for(const [columnIndex,column]of COLUMNS.entries())for(let slot=0;slot<column.count;slot++){
+ for(let row=0;row<rowCount;row++)for(const [columnIndex,column]of COLUMNS.entries())for(let slot=0;slot<column.count;slot++){
   const x=column.start+slot*PITCH,y=.54-row*.55;cellPositions.push({x,y,column:columnIndex,slot});
   for(const half of [0,1])fixedItems.push({x,y:y+(half?HALF_CENTER:-HALF_CENTER),z:.040,width:TILE_WIDTH,height:HALF_HEIGHT,glyph:0,half});
   movingItems.push({x,y,z:.052,width:0,height:0,glyph:0,next:0,half:1,flip:1});
@@ -120,16 +120,16 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
  });
  for(const mesh of [cassette,spindles,pins]){mesh.computeBoundingSphere();root.add(mesh);}
  const current=new Uint16Array(cellPositions.length),flips=new Map<number,Flip>();
- function rowStrings(row:number){const source=routes[rowSources[row]],status=rowSources[row]===decaIndex?deca:source[2];return[source[0],source[1],status].map(value=>value.toUpperCase());}
+ function rowStrings(row:number){return routes[rowSources[row]].map(value=>value.toUpperCase());}
  function updateMetadata(){
   fixed.mesh.userData.referenceText=[...headings,...rowSources.flatMap((_,row)=>rowStrings(row).map((text,column)=>({text,center:[COLUMNS[column].start+(COLUMNS[column].count-1)*PITCH/2,.54-row*.55,0],unitHeight:TILE_HEIGHT*74/96})))];
-  root.userData.displayedRoutes=rowSources.map(index=>routes[index][0]);root.userData.decaStatus=deca;
+  root.userData.displayedRoutes=rowSources.map(index=>routes[index][0]);
  }
  function hideLeaf(index:number){transform.position.set(0,0,0);transform.rotation.set(0,0,0);transform.scale.set(0,0,0);transform.updateMatrix();moving.mesh.setMatrixAt(index,transform.matrix);}
  function settle(index:number,value:number){fixed.from.setX(index*2,value);fixed.from.setX(index*2+1,value);current[index]=value;hideLeaf(index);flips.delete(index);}
  function changeRow(row:number,animate:boolean,time:number){
   const strings=rowStrings(row);let cell=row*CELLS_PER_ROW;
-  COLUMNS.forEach((column,columnIndex)=>{const text=strings[columnIndex].padEnd(column.count," ").slice(0,column.count),tint=columnIndex===2?(rowSources[row]===decaIndex&&deca==="CANCELLED"?red:gold):white;
+  COLUMNS.forEach((column,columnIndex)=>{const text=strings[columnIndex].padEnd(column.count," ").slice(0,column.count),tint=columnIndex===2?gold:white;
    [...text].forEach((letter,slot)=>{
     const target=glyph(letter),index=cell++,old=current[index];
     fixed.mesh.setColorAt(index*2,tint);fixed.mesh.setColorAt(index*2+1,tint);moving.mesh.setColorAt(index,tint);
@@ -152,9 +152,11 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
  }
  invalidate();
  return{groups,update(time,isReduced){
-  if(disposed)return;lastTime=time;reduced=isReduced;const frame=Math.floor(time*12);if(frame===lastFrame)return;lastFrame=frame;
-  if(progress>=.86){if(clockStart===undefined)clockStart=time;const cycle=Math.floor((time-clockStart)/3);
-   while(lastCycle<cycle){lastCycle++;const row=(lastCycle-1)%4;rowSources[row]=rotating[(3+lastCycle)%rotating.length];changeRow(row,!isReduced&&lastCycle===cycle,time);}
+  if(disposed)return;const frame=Math.floor(time*12);if(frame===lastFrame)return;lastFrame=frame;
+  if(!isReduced&&root.visible){if(clockStart===undefined)clockStart=time;const cycle=Math.floor((time-clockStart)/3);
+   // Catch up only the visible rows after returning from a background tab.
+   lastCycle=Math.max(lastCycle,cycle-rowCount);
+   while(lastCycle<cycle){lastCycle++;const row=(lastCycle-1)%rowCount;rowSources[row]=(rowCount-1+lastCycle)%routes.length;changeRow(row,lastCycle===cycle,time);}
   }
   let changed=false;for(const[index,flip]of flips){const phase=isReduced?1:Math.max(0,Math.min(1,(time-flip.start-flip.delay)/.42));
    if(phase>=1){settle(index,flip.to);changed=true;continue;}
@@ -162,9 +164,13 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
    transform.position.set(cell.x+offset.x,cell.y+offset.y,.052+offset.z);transform.quaternion.copy(rotation);transform.scale.set(TILE_WIDTH,HALF_HEIGHT,1);transform.updateMatrix();moving.mesh.setMatrixAt(index,transform.matrix);changed=true;
   }
   if(changed){fixed.from.needsUpdate=true;moving.mesh.instanceMatrix.needsUpdate=true;}
- },updateProgress(value){
-  progress=value;const next=value<.91?"CANCELLED":value<.96?"BOARDING":"ARRIVED";
-  if(next!==deca){deca=next;changeRow(4,!reduced,lastTime);lastFrame=-1;invalidate();}
+ },updateDeparture(value){
+  // The suspended fixture rises on its mounts before the plane crosses the
+  // window. This only follows the triggered departure, never the scroll path.
+  const t=Math.max(0,Math.min(1,value/.20)),lift=t*t*(3-2*t);
+  root.position.y=reference.position[1]+lift*6.2;
+  root.rotation.x=reference.rotation[0]-lift*.12;
+  root.userData.departureClearance=lift;
  },dispose(){if(disposed)return;disposed=true;ownedSets.forEach(builder=>builder.dispose());instances.forEach(mesh=>mesh.dispose());geometries.forEach(geometry=>geometry.dispose());material.dispose();texture.dispose();flips.clear();}};
 }
 

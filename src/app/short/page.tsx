@@ -4,7 +4,7 @@ import "./short.css";
 
 export const metadata: Metadata = {
   title: "Ammar Adam — the short version",
-  description: "CS & Finance at Waterloo. AI engineering, projects, and the people I build with.",
+  description: "I study CS + Finance at Waterloo. Here's what I've built and where I've worked.",
 };
 
 export default function ShortPage() {

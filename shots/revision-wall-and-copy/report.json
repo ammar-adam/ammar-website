@@ -1,0 +1,467 @@
+{
+  "errors": [],
+  "shots": [
+    {
+      "name": "desktop",
+      "file": "desktop-intro-0.png",
+      "text": "Alright.\n\nLET'S DO THIS ONE MORE TIME."
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-intro-3.png",
+      "text": "MY NAME'S\n\nAMMAR\nADAM.\n\nAND I STUDY CS + FINANCE AT WATERLOO."
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-intro-5.png",
+      "text": "I LIKE MAKING\n\nTHINGS\nHAPPEN.\n\nSOMETIMES I WRITE CODE. SOMETIMES I BRING PEOPLE TOGETHER."
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-261.png",
+      "progress": 0.261,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nI WAS SIXTEEN WHEN I STARTED.\n\nAlpen Capital\n\nM&A Summer Analyst, Dubai\n\nI learned to model deals as the firm's youngest intern.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.2610",
+        "camera": "1.79,1.89,-18.89",
+        "drawCalls": "277",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-303.png",
+      "progress": 0.303,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nTHEN I GOT TO BUILD THE TOOLS.\n\nDataStealth\n\nProduct Engineering Intern, Mississauga\n\nI built product demos and automated competitor research.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.3031",
+        "camera": "2.70,1.82,-20.25",
+        "drawCalls": "200",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-345.png",
+      "progress": 0.345,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nTURNS OUT I LIKE MAKING USEFUL THINGS.\n\nSagard\n\nAI Engineer\n\nI build AI tools for the legal and compliance team.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.3450",
+        "camera": "3.37,1.82,-20.87",
+        "drawCalls": "203",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-387.png",
+      "progress": 0.387,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nNOW I'M FINDING OTHER PEOPLE WHO BUILD.\n\nOpenAI\n\nFounding Builder Lead\n\nI find student builders and help them ship.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.3869",
+        "camera": "5.38,1.90,-21.79",
+        "drawCalls": "207",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-428.png",
+      "progress": 0.428,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nAND BACKING THOSE BUILDERS.\n\nPear VC\n\nFellow\n\nI scout and support early-stage founders.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.4281",
+        "camera": "8.03,1.90,-21.17",
+        "drawCalls": "184",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-485.png",
+      "progress": 0.485,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nYOUR GPS COULD USE A BETTER VOICE.\n\nBackseat\n\nI made character voices you can add to Waze in one tap.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.4850",
+        "camera": "1.79,1.75,-34.39",
+        "drawCalls": "247",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-535.png",
+      "progress": 0.535,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nTHEN I TRIED BUILDING AN AI STOCK ANALYST.\n\nRocketShip\n\nI built an AI research tool and tested its stock picks.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.5350",
+        "camera": "2.50,1.75,-35.72",
+        "drawCalls": "233",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-580.png",
+      "progress": 0.58,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nI ALSO LIKE GETTING PEOPLE TOGETHER.\n\nWaterloo Venture Group\n\nManaging Director\n\nI run Waterloo's student venture community.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.5800",
+        "camera": "2.74,1.75,-36.98",
+        "drawCalls": "229",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-625.png",
+      "progress": 0.625,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nSO WE PUT ON A WEEK OF EVENTS.\n\nWaterloo Tech Week / Hack the North\n\nI organized Tech Week and helped run Hack the North.\n\nDetails\n↗\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.6250",
+        "camera": "1.60,1.75,-39.06",
+        "drawCalls": "204",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-745.png",
+      "progress": 0.745,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗\n\nDrag to look around",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "concourse",
+        "progress": "0.7450",
+        "camera": "0.50,2.20,-65.30",
+        "drawCalls": "281",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-805.png",
+      "progress": 0.805,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗\n\nDrag to look around",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "concourse",
+        "progress": "0.8050",
+        "camera": "0.61,2.20,-75.70",
+        "drawCalls": "207",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "desktop",
+      "file": "desktop-940.png",
+      "progress": 0.94,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nAnd that’s me.\n\nThe story’s\nstill going.\na/a\nAMMAR ADAM\nBOARDING PASS\nPASSENGER\nADAM / AMMAR\nComputer Science & Finance · Waterloo\nFROM\nYKF\nWATERLOO\nTO\nNEXT\nWHAT’S NEXT\nFLIGHT\nAMM01\nGATE\n05\nSEAT\n01A\nDOCUMENT\nRESUME\nAMMARADAM.COM\nKEEP THIS PART\nRESUME / PDF\nAMM01\nADAM / AMMAR\nYKF → NEXT\nAMM01 / AMMAR-ADAM / 01A\nScan & open resume\n→\nTWO SECONDS TO DEPARTURE\nSay hello\n↗\nLinkedIn\nGitHub\nX\nEmail\n\nScan the boarding pass. The résumé PDF opens after the two-second departure.\n\na/a\nIntro\nCheck-in\nSecurity\nConcourse\nGate\nShort version\nRésumé\n↗",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "gate",
+        "progress": "0.9400",
+        "camera": "0.50,1.80,-87.00",
+        "drawCalls": "174",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-intro-0.png",
+      "text": "Alright.\n\nLET'S DO THIS ONE MORE TIME."
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-intro-3.png",
+      "text": "MY NAME'S\n\nAMMAR\nADAM.\n\nAND I STUDY CS + FINANCE AT WATERLOO."
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-intro-5.png",
+      "text": "I LIKE MAKING\n\nTHINGS\nHAPPEN.\n\nSOMETIMES I WRITE CODE. SOMETIMES I BRING PEOPLE TOGETHER."
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-261.png",
+      "progress": 0.261,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nI WAS SIXTEEN WHEN I STARTED.\n\nAlpen Capital\n\nM&A Summer Analyst, Dubai\n\nI learned to model deals as the firm's youngest intern.\n\nDetails\n↗\na/a\nCheck-in\nMenu\n\nScroll ↓",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.2610",
+        "camera": "3.45,1.90,-16.91",
+        "drawCalls": "243",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-303.png",
+      "progress": 0.303,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nTHEN I GOT TO BUILD THE TOOLS.\n\nDataStealth\n\nProduct Engineering Intern, Mississauga\n\nI built product demos and automated competitor research.\n\nDetails\n↗\na/a\nCheck-in\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.3030",
+        "camera": "3.45,1.90,-17.13",
+        "drawCalls": "177",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-345.png",
+      "progress": 0.345,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nTURNS OUT I LIKE MAKING USEFUL THINGS.\n\nSagard\n\nAI Engineer\n\nI build AI tools for the legal and compliance team.\n\nDetails\n↗\na/a\nCheck-in\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.3449",
+        "camera": "3.45,1.90,-17.34",
+        "drawCalls": "180",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-387.png",
+      "progress": 0.387,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nNOW I'M FINDING OTHER PEOPLE WHO BUILD.\n\nOpenAI\n\nFounding Builder Lead\n\nI find student builders and help them ship.\n\nDetails\n↗\na/a\nCheck-in\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.3870",
+        "camera": "3.45,1.90,-17.56",
+        "drawCalls": "192",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-428.png",
+      "progress": 0.428,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nAND BACKING THOSE BUILDERS.\n\nPear VC\n\nFellow\n\nI scout and support early-stage founders.\n\nDetails\n↗\na/a\nCheck-in\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "checkin",
+        "progress": "0.4280",
+        "camera": "3.45,1.90,-17.77",
+        "drawCalls": "174",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-485.png",
+      "progress": 0.485,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nYOUR GPS COULD USE A BETTER VOICE.\n\nBackseat\n\nI made character voices you can add to Waze in one tap.\n\nDetails\n↗\na/a\nSecurity\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.4850",
+        "camera": "5.05,1.85,-33.67",
+        "drawCalls": "228",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-535.png",
+      "progress": 0.535,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nTHEN I TRIED BUILDING AN AI STOCK ANALYST.\n\nRocketShip\n\nI built an AI research tool and tested its stock picks.\n\nDetails\n↗\na/a\nSecurity\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.5350",
+        "camera": "5.05,1.85,-33.91",
+        "drawCalls": "228",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-580.png",
+      "progress": 0.58,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nI ALSO LIKE GETTING PEOPLE TOGETHER.\n\nWaterloo Venture Group\n\nManaging Director\n\nI run Waterloo's student venture community.\n\nDetails\n↗\na/a\nSecurity\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.5800",
+        "camera": "5.05,1.85,-34.13",
+        "drawCalls": "228",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-625.png",
+      "progress": 0.625,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nSO WE PUT ON A WEEK OF EVENTS.\n\nWaterloo Tech Week / Hack the North\n\nI organized Tech Week and helped run Hack the North.\n\nDetails\n↗\na/a\nSecurity\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "security",
+        "progress": "0.6250",
+        "camera": "5.05,1.85,-34.35",
+        "drawCalls": "228",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-745.png",
+      "progress": 0.745,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\na/a\nConcourse\nMenu\n\nDrag to look around",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "concourse",
+        "progress": "0.7450",
+        "camera": "4.00,2.20,-63.30",
+        "drawCalls": "241",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-805.png",
+      "progress": 0.805,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\na/a\nConcourse\nMenu\n\nDrag to look around",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "concourse",
+        "progress": "0.8049",
+        "camera": "4.11,2.20,-73.70",
+        "drawCalls": "187",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    },
+    {
+      "name": "mobile",
+      "file": "mobile-940.png",
+      "progress": 0.94,
+      "text": "Ammar Adam — I study CS + Finance at Waterloo\nSkip to the short version\n\nAnd that’s me.\n\nThe story’s\nstill going.\na/a\nAMMAR ADAM\nBOARDING PASS\nPASSENGER\nADAM / AMMAR\nComputer Science & Finance · Waterloo\nFROM\nYKF\nWATERLOO\nTO\nNEXT\nWHAT’S NEXT\nFLIGHT\nAMM01\nGATE\n05\nSEAT\n01A\nDOCUMENT\nRESUME\nAMMARADAM.COM\nKEEP THIS PART\nAMM01 / AMMAR-ADAM / 01A\nScan & open resume\n→\nTWO SECONDS TO DEPARTURE\nSay hello\n↗\nLinkedIn\nGitHub\nX\nEmail\n\nScan the boarding pass. The résumé PDF opens after the two-second departure.\n\na/a\nGate\nMenu",
+      "overflow": false,
+      "world": {
+        "fallback": "0",
+        "warming": "0",
+        "stage": "gate",
+        "progress": "0.9400",
+        "camera": "0.50,1.80,-87.00",
+        "drawCalls": "160",
+        "looking": "false",
+        "lookYaw": "0.000",
+        "lookPitch": "0.000"
+      }
+    }
+  ]
+}

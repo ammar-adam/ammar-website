@@ -199,7 +199,7 @@ export function SpiderVerse() {
   }, [jump]);
 
   return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-chapter={chapter} data-world-ready={ready} data-scroll-hint={scrollHint} data-intro-playing={intro && !reduced}>
-    <h1 className="tj-sr-only">Ammar Adam — CS & Finance at Waterloo</h1>
+    <h1 className="tj-sr-only">Ammar Adam — I study CS + Finance at Waterloo</h1>
     <Link className="tj-skip" href="/short">Skip to the short version</Link>
     <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">

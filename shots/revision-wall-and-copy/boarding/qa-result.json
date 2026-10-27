@@ -1,0 +1,120 @@
+{
+  "sameTabAfterTwoSeconds": true,
+  "duplicateClickGuard": true,
+  "reducedImmediate": true,
+  "modifiedClickNative": true,
+  "leavingCancels": true,
+  "historyRestores": true,
+  "pdfStatus": 200,
+  "pdfType": "application/pdf",
+  "requestDelay": 2126,
+  "records": [
+    {
+      "phase": "ready",
+      "status": "ready",
+      "camera": "0.50,1.80,-87.00",
+      "ticketOpacity": "1",
+      "stubTransform": "none",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "scanning",
+      "elapsed": 364,
+      "status": "scanning",
+      "camera": "0.50,1.80,-87.00",
+      "ticketOpacity": "1",
+      "stubTransform": "none",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "tearing",
+      "elapsed": 913,
+      "status": "tearing",
+      "camera": "0.50,1.80,-87.00",
+      "ticketOpacity": "1",
+      "stubTransform": "matrix(0.999992, -0.00410506, 0.00410506, 0.999992, 5.91199, -0.544004)",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "departing",
+      "elapsed": 1713,
+      "status": "departing",
+      "camera": "0.98,2.47,-90.35",
+      "ticketOpacity": "0",
+      "stubTransform": "matrix(0.997564, 0.0697565, -0.0697565, 0.997564, 30, 14)",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "after-pdf-request",
+      "elapsed": 2202,
+      "status": "opening",
+      "camera": "1.00,2.50,-90.50",
+      "ticketOpacity": "0",
+      "stubTransform": "matrix(0.997564, 0.0697565, -0.0697565, 0.997564, 30, 14)",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "restored",
+      "status": "ready",
+      "camera": "0.50,1.80,-87.00",
+      "ticketOpacity": "1",
+      "stubTransform": "none",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "reduced",
+      "elapsed": 34,
+      "status": "ready",
+      "camera": "0.50,1.80,-87.00",
+      "ticketOpacity": "1",
+      "stubTransform": "none",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    },
+    {
+      "phase": "modified-native",
+      "popupUrl": "http://localhost:3101/Ammar_Adam.pdf",
+      "status": "ready",
+      "camera": "0.60,1.80,-87.03",
+      "ticketOpacity": "1",
+      "stubTransform": "none",
+      "href": "/Ammar_Adam.pdf",
+      "target": null
+    }
+  ],
+  "errors": [],
+  "note": "The PDF navigation was intentionally intercepted in the animation proof; an independent real GET verified HTTP200/application-pdf.",
+  "phone": {
+    "requestDelay": 2104,
+    "records": [
+      {
+        "phase": "scan",
+        "elapsed": 355,
+        "status": "scanning",
+        "camera": "0.50,1.80,-87.00",
+        "opacity": "1"
+      },
+      {
+        "phase": "tear",
+        "elapsed": 915,
+        "status": "tearing",
+        "camera": "0.50,1.80,-87.00",
+        "opacity": "1"
+      },
+      {
+        "phase": "takeoff",
+        "elapsed": 1712,
+        "status": "departing",
+        "camera": "0.98,2.47,-90.34",
+        "opacity": "0"
+      }
+    ],
+    "errors": []
+  }
+}

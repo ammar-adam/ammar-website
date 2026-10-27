@@ -343,7 +343,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const concourseLine=canvasTexture((ctx,W,H)=>{
   ctx.clearRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 52px FilmHand, cursive";
   ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.fillText("I do everything on purpose. Look around.",W/2,H/2,W-30);
+  ctx.fillText("There’s a bit of me in here. Take a look around.",W/2,H/2,W-30);
  },1024,128);
  const concourseIntroRoot=new THREE.Group();scene.add(concourseIntroRoot);
  const transom=new THREE.Mesh(unitBox,ink);transom.scale.set(6.65,.98,.12);transom.position.z=-.09;concourseIntroRoot.add(transom);
@@ -388,7 +388,9 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  }
 
  // Final gate desk, glazing, and an actual jetway leading out to the aircraft.
- sign("GATE 05","BOARDING",3.2,4.8,-102,7.4,1.2);
+ const gateWayfinding=new THREE.Group();gateWayfinding.name="retracting-gate-wayfinding";gateWayfinding.position.set(3.2,4.8,-102);scene.add(gateWayfinding);
+ meshBlock(7.58,1.38,.2,ink,gateWayfinding,0,0,-.12);plane(7.4,1.2,label("GATE 05","BOARDING"),gateWayfinding);
+ for(const x of [-2.59,2.59]){const mount=new THREE.Mesh(cylinderGeometry,steel);mount.scale.set(.035,3.3,.035);mount.position.set(x,2.25,0);gateWayfinding.add(mount);}
  block(3.4,1.1,1.1,-5,.56,-95,concrete,[0,0,0],true);block(3.6,.14,1.4,-5,1.17,-95,ink,[0,0,0],true);block(3.2,.6,.08,-5,.7,-94.42,cyan);
  for(let fin=0;fin<15;fin++)block(.035,.63,.04,-6.48+fin*.212,.62,-94.36,walnut);
  block(3.25,.04,.10,-5,.32,-94.34,gold);block(3.25,.04,.10,-5,1.02,-94.34,cream);
@@ -489,7 +491,11 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    if(state.aspect<.8&&p>=.24&&p<=.440){const enter=smooth(clamp((p-.24)/.012)),exit=smooth(clamp((p-.433)/.007)),weight=enter*(1-exit);camera.position.lerp(temp.set(3.45,1.9,mix(-16.8,-17.8,clamp((p-.24)/.193))),weight);look.lerp(temp.set(3.8,.3,-26.1),weight);camera.fov=mix(camera.fov,74,weight);}
    if(state.aspect<.8&&p>=.445&&p<=.641){const enter=smooth(clamp((p-.445)/.01)),travel=clamp((p-.45)/.185),exit=smooth(clamp((p-.635)/.006));temp.set(5.05,1.85,mix(-33.5,-34.4,travel)).lerp(new THREE.Vector3(1.3,1.75,-44.6),exit);camera.position.lerp(temp,enter);temp.set(5.05,-.05,-40.6).lerp(new THREE.Vector3(-5.5,1.8,-47.5),exit);look.lerp(temp,enter);}
    if(state.aspect<.8&&p>=.649&&p<=.846){const enter=smooth(clamp((p-.649)/.01)),exit=1-smooth(clamp((p-.816)/.01)),weight=enter*exit;camera.position.x+=3.5*weight;camera.position.z+=2*weight;look.x-=4.4*weight;look.y-=.9*weight;camera.fov=mix(camera.fov,92,weight);}
-   const flight=clamp(state.departure);if(flight&&!state.reduced){camera.position.lerp(temp.set(1,2.5,-90.5),smooth(flight));look.lerp(temp.set(5,4,-126),flight);}
+   const flight=clamp(state.departure);if(flight&&!state.reduced){
+    camera.position.lerp(temp.set(1,2.5,-90.5),smooth(flight));look.lerp(temp.set(5,4,-126),flight);
+    // A portrait frame follows the plane once the gate fixtures clear the glass.
+    if(state.aspect<.8)look.lerp(temp.set(-8+flight*38,3.5+flight*15,-128-flight*22),smooth(clamp(flight/.30)));
+   }
    camera.up.set(0,1,0);camera.lookAt(look);camera.rotateZ(state.reduced?0:cameraRoll*(state.aspect<.8?.65:1));camera.updateProjectionMatrix();camera.updateMatrixWorld();
    // Practical spill sits at existing displays; only the light changes rooms.
    const practical=p<.45?[[3.45,2.4,-25.8],[-3,5.3,-23.8]]:p<.65?[[5.05,2.35,-40.2],[1.3,2.8,-43]]:p<.86?[[-10.7,2.4,p<.715?-57:p<.785?-67.5:-78],[-4.8,5.3,p<.715?-55.5:p<.785?-66:-76.5]]:[[4.4,3.1,-94],[0,4.5,-101]];
@@ -516,7 +522,8 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    if(p>=.45)requestSet("concourse");
    for(const set of setDressing)set.update(setTime,setReduced);
    if(p>=.16)requestReferences("checkin");if(p>=.29)requestReferences("security");if(p>=.45)requestReferences("concourse");if(p>=.65)requestReferences("gate");
-   counterReferences?.updateSelection(state.experienceIndex);gateReferences?.updateProgress(p);
+   counterReferences?.updateSelection(state.experienceIndex);gateReferences?.updateDeparture(state.reduced?0:flight);
+   const gateLift=state.reduced?0:smooth(clamp(flight/.20));gateWayfinding.position.y=4.8+gateLift*6.2;
    for(const set of referenceSets)set.update(setTime,setReduced);
    scene.userData.ready=(Boolean(scene.userData.ready)||settledSets.has(p<.45?"atrium":p<.65?"airside":p<.86?"concourse":"airside"))&&Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=p<.24?"atrium":p<.45?"checkin":p<.65?"security":p<.86?"concourse":"gate";
    aircraft.position.set(-8+flight*38,3.5+flight*15,-128-flight*22);aircraft.rotation.set(0,flight*-.08,flight*.14);

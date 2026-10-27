@@ -11,7 +11,7 @@ const mono = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "500", "600", 
 
 export const metadata: Metadata = {
   title: "Ammar Adam",
-  description: "Ammar Adam. CS & Finance at Waterloo. Building AI tools, exploring finance, and bringing student builders together.",
+  description: "I'm Ammar Adam. I study CS + Finance at Waterloo, build AI tools, and bring student builders together.",
 };
 
 export const viewport: Viewport = {

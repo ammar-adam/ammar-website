@@ -601,10 +601,6 @@ export async function createConcourseReferences(palette: FilmMaterialPalette, re
     combineShared(ball); moving(ball); moving(rig.rightArm);
     animated.push(time => { const phase = Math.floor(time * 12) / 12 * 3.0; ball.position.y = .20 + Math.abs(Math.sin(phase)) * .72; rig.rightArm.rotation.x = -.10 - Math.abs(Math.sin(phase)) * .20; });
   });
-  make("concourse-prayer-room", (b, r) => {
-    sign(b, r, 3.35, .95, [0, 0, 0], { size: 140 });
-    for (const side of [-1, 1]) b.rod([side * 1.15, .52, -.05], [side * 1.15, 2.15, -.05], .025, "steel");
-  });
   for (const id of ["concourse-wings-flyer", "concourse-london-board", "concourse-record-picks"]) make(id, (b, r) => sign(b, r, id.includes("record") ? 2.65 : 2.05, id.includes("record") ? 1.55 : 1.10, [0, 0, 0], { cream: true, hand: true, size: id.includes("record") ? 99 : 125 }));
   make("concourse-cinema-posters", (b, r) => {
     (r.text ?? []).forEach((title, index) => {

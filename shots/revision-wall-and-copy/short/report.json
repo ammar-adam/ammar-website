@@ -1,0 +1,2112 @@
+{
+  "url": "http://localhost:3101/short",
+  "at": "2026-10-27T03:50:24.068Z",
+  "results": [
+    {
+      "name": "desktop-900",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "document": {
+        "width": 1440,
+        "height": 900
+      },
+      "content": {
+        "x": 180,
+        "y": 0,
+        "width": 1080,
+        "height": 900,
+        "bottom": 900,
+        "right": 1260
+      },
+      "footer": {
+        "x": 180,
+        "y": 582.375,
+        "width": 1080,
+        "height": 44,
+        "bottom": 626.375,
+        "right": 1260
+      },
+      "intro": "I study CS + Finance at Waterloo. I build software and bring people together.",
+      "headings": [
+        "PlaceRoleWhat I did",
+        "PlaceRoleWhat I did"
+      ],
+      "rows": [
+        {
+          "name": "OpenAI",
+          "line": "I find student builders and help them ship.",
+          "x": 180,
+          "y": 179.59375,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 215.78125,
+          "right": 1260
+        },
+        {
+          "name": "Sagard",
+          "line": "I build AI tools for legal and compliance.",
+          "x": 180,
+          "y": 215.78125,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 251.96875,
+          "right": 1260
+        },
+        {
+          "name": "DataStealth",
+          "line": "I built product demos and automated competitor research.",
+          "x": 180,
+          "y": 251.96875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 288.15625,
+          "right": 1260
+        },
+        {
+          "name": "Alpen Capital",
+          "line": "I joined at sixteen as the firm's youngest intern.",
+          "x": 180,
+          "y": 288.15625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 324.34375,
+          "right": 1260
+        },
+        {
+          "name": "Pear VC",
+          "line": "I scout and support early-stage founders.",
+          "x": 180,
+          "y": 324.34375,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 360.03125,
+          "right": 1260
+        },
+        {
+          "name": "Backseat",
+          "line": "I made character voices you can add to Waze in one tap.",
+          "x": 180,
+          "y": 424.125,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 460.3125,
+          "right": 1260
+        },
+        {
+          "name": "RocketShip",
+          "line": "I built an AI research tool and tested its stock picks.",
+          "x": 180,
+          "y": 460.3125,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 496.5,
+          "right": 1260
+        },
+        {
+          "name": "Waterloo Venture Group",
+          "line": "I run Waterloo's student venture community.",
+          "x": 180,
+          "y": 496.5,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 532.6875,
+          "right": 1260
+        },
+        {
+          "name": "Waterloo Tech Week / Hack the North",
+          "line": "I organized Tech Week and helped run Hack the North.",
+          "x": 180,
+          "y": 532.6875,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 568.375,
+          "right": 1260
+        }
+      ],
+      "links": [
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "x": 1017.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1061.890625
+        },
+        {
+          "text": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "x": 1061.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1105.890625
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "x": 1105.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1149.890625
+        },
+        {
+          "text": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "x": 1149.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1193.890625
+        },
+        {
+          "text": "Résumé",
+          "href": "http://localhost:3101/Ammar_Adam.pdf",
+          "x": 1207.890625,
+          "y": 40,
+          "width": 52.109375,
+          "height": 44,
+          "bottom": 84,
+          "right": 1260
+        },
+        {
+          "text": "OpenAI",
+          "href": "https://openai.com/",
+          "x": 180,
+          "y": 186.09375,
+          "width": 56.28125,
+          "height": 23.1875,
+          "bottom": 209.28125,
+          "right": 236.28125
+        },
+        {
+          "text": "Sagard",
+          "href": "https://www.sagard.com/",
+          "x": 180,
+          "y": 222.28125,
+          "width": 53.53125,
+          "height": 23.1875,
+          "bottom": 245.46875,
+          "right": 233.53125
+        },
+        {
+          "text": "DataStealth",
+          "href": "https://datastealth.io/",
+          "x": 180,
+          "y": 258.46875,
+          "width": 87.796875,
+          "height": 23.1875,
+          "bottom": 281.65625,
+          "right": 267.796875
+        },
+        {
+          "text": "Alpen Capital",
+          "href": "https://alpencapital.com/",
+          "x": 180,
+          "y": 294.65625,
+          "width": 100.546875,
+          "height": 23.1875,
+          "bottom": 317.84375,
+          "right": 280.546875
+        },
+        {
+          "text": "Pear VC",
+          "href": "https://pear.vc/",
+          "x": 180,
+          "y": 330.84375,
+          "width": 60.203125,
+          "height": 23.1875,
+          "bottom": 354.03125,
+          "right": 240.203125
+        },
+        {
+          "text": "Backseat",
+          "href": "https://backseatnav.com/",
+          "x": 180,
+          "y": 430.625,
+          "width": 69.671875,
+          "height": 23.1875,
+          "bottom": 453.8125,
+          "right": 249.671875
+        },
+        {
+          "text": "RocketShip",
+          "href": "https://rocketshipstocks.vercel.app/",
+          "x": 180,
+          "y": 466.8125,
+          "width": 85.34375,
+          "height": 23.1875,
+          "bottom": 490,
+          "right": 265.34375
+        },
+        {
+          "text": "Waterloo Venture Group",
+          "href": "https://www.waterloovg.com/",
+          "x": 180,
+          "y": 503,
+          "width": 181.71875,
+          "height": 23.1875,
+          "bottom": 526.1875,
+          "right": 361.71875
+        },
+        {
+          "text": "Waterloo Tech Week / Hack the North",
+          "href": "https://waterlootechweek.ca/",
+          "x": 180,
+          "y": 539.1875,
+          "width": 283.28125,
+          "height": 23.1875,
+          "bottom": 562.375,
+          "right": 463.28125
+        },
+        {
+          "text": "Back to the terminal",
+          "href": "http://localhost:3101/",
+          "x": 180,
+          "y": 582.375,
+          "width": 128.453125,
+          "height": 44,
+          "bottom": 626.375,
+          "right": 308.453125
+        }
+      ],
+      "typography": {
+        "body": {
+          "size": "16px",
+          "lineHeight": "23.2px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        },
+        "role": {
+          "size": "14px",
+          "lineHeight": "21px",
+          "color": "rgba(244, 236, 216, 0.85)",
+          "weight": "400"
+        },
+        "intro": {
+          "size": "17px",
+          "lineHeight": "25.5px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        }
+      },
+      "mural": true,
+      "scrim": "linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.79) 48%, rgba(0, 0, 0, 0.82))",
+      "icons": [
+        {
+          "name": "LinkedIn",
+          "title": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "svg": true,
+          "x": 1017.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1061.890625
+        },
+        {
+          "name": "X",
+          "title": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "svg": true,
+          "x": 1061.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1105.890625
+        },
+        {
+          "name": "GitHub",
+          "title": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "svg": true,
+          "x": 1105.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1149.890625
+        },
+        {
+          "name": "Email Ammar",
+          "title": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "svg": true,
+          "x": 1149.890625,
+          "y": 40,
+          "width": 44,
+          "height": 44,
+          "bottom": 84,
+          "right": 1193.890625
+        }
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "failures": []
+    },
+    {
+      "name": "desktop-780",
+      "viewport": {
+        "width": 1440,
+        "height": 780
+      },
+      "document": {
+        "width": 1440,
+        "height": 780
+      },
+      "content": {
+        "x": 180,
+        "y": 0,
+        "width": 1080,
+        "height": 780,
+        "bottom": 780,
+        "right": 1260
+      },
+      "footer": {
+        "x": 180,
+        "y": 577.46875,
+        "width": 1080,
+        "height": 44,
+        "bottom": 621.46875,
+        "right": 1260
+      },
+      "intro": "I study CS + Finance at Waterloo. I build software and bring people together.",
+      "headings": [
+        "PlaceRoleWhat I did",
+        "PlaceRoleWhat I did"
+      ],
+      "rows": [
+        {
+          "name": "OpenAI",
+          "line": "I find student builders and help them ship.",
+          "x": 180,
+          "y": 174.6875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 210.875,
+          "right": 1260
+        },
+        {
+          "name": "Sagard",
+          "line": "I build AI tools for legal and compliance.",
+          "x": 180,
+          "y": 210.875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 247.0625,
+          "right": 1260
+        },
+        {
+          "name": "DataStealth",
+          "line": "I built product demos and automated competitor research.",
+          "x": 180,
+          "y": 247.0625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 283.25,
+          "right": 1260
+        },
+        {
+          "name": "Alpen Capital",
+          "line": "I joined at sixteen as the firm's youngest intern.",
+          "x": 180,
+          "y": 283.25,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 319.4375,
+          "right": 1260
+        },
+        {
+          "name": "Pear VC",
+          "line": "I scout and support early-stage founders.",
+          "x": 180,
+          "y": 319.4375,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 355.125,
+          "right": 1260
+        },
+        {
+          "name": "Backseat",
+          "line": "I made character voices you can add to Waze in one tap.",
+          "x": 180,
+          "y": 419.21875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 455.40625,
+          "right": 1260
+        },
+        {
+          "name": "RocketShip",
+          "line": "I built an AI research tool and tested its stock picks.",
+          "x": 180,
+          "y": 455.40625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 491.59375,
+          "right": 1260
+        },
+        {
+          "name": "Waterloo Venture Group",
+          "line": "I run Waterloo's student venture community.",
+          "x": 180,
+          "y": 491.59375,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 527.78125,
+          "right": 1260
+        },
+        {
+          "name": "Waterloo Tech Week / Hack the North",
+          "line": "I organized Tech Week and helped run Hack the North.",
+          "x": 180,
+          "y": 527.78125,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 563.46875,
+          "right": 1260
+        }
+      ],
+      "links": [
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "x": 1017.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1061.890625
+        },
+        {
+          "text": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "x": 1061.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1105.890625
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "x": 1105.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1149.890625
+        },
+        {
+          "text": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "x": 1149.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1193.890625
+        },
+        {
+          "text": "Résumé",
+          "href": "http://localhost:3101/Ammar_Adam.pdf",
+          "x": 1207.890625,
+          "y": 35.09375,
+          "width": 52.109375,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1260
+        },
+        {
+          "text": "OpenAI",
+          "href": "https://openai.com/",
+          "x": 180,
+          "y": 181.1875,
+          "width": 56.28125,
+          "height": 23.1875,
+          "bottom": 204.375,
+          "right": 236.28125
+        },
+        {
+          "text": "Sagard",
+          "href": "https://www.sagard.com/",
+          "x": 180,
+          "y": 217.375,
+          "width": 53.53125,
+          "height": 23.1875,
+          "bottom": 240.5625,
+          "right": 233.53125
+        },
+        {
+          "text": "DataStealth",
+          "href": "https://datastealth.io/",
+          "x": 180,
+          "y": 253.5625,
+          "width": 87.796875,
+          "height": 23.1875,
+          "bottom": 276.75,
+          "right": 267.796875
+        },
+        {
+          "text": "Alpen Capital",
+          "href": "https://alpencapital.com/",
+          "x": 180,
+          "y": 289.75,
+          "width": 100.546875,
+          "height": 23.1875,
+          "bottom": 312.9375,
+          "right": 280.546875
+        },
+        {
+          "text": "Pear VC",
+          "href": "https://pear.vc/",
+          "x": 180,
+          "y": 325.9375,
+          "width": 60.203125,
+          "height": 23.1875,
+          "bottom": 349.125,
+          "right": 240.203125
+        },
+        {
+          "text": "Backseat",
+          "href": "https://backseatnav.com/",
+          "x": 180,
+          "y": 425.71875,
+          "width": 69.671875,
+          "height": 23.1875,
+          "bottom": 448.90625,
+          "right": 249.671875
+        },
+        {
+          "text": "RocketShip",
+          "href": "https://rocketshipstocks.vercel.app/",
+          "x": 180,
+          "y": 461.90625,
+          "width": 85.34375,
+          "height": 23.1875,
+          "bottom": 485.09375,
+          "right": 265.34375
+        },
+        {
+          "text": "Waterloo Venture Group",
+          "href": "https://www.waterloovg.com/",
+          "x": 180,
+          "y": 498.09375,
+          "width": 181.71875,
+          "height": 23.1875,
+          "bottom": 521.28125,
+          "right": 361.71875
+        },
+        {
+          "text": "Waterloo Tech Week / Hack the North",
+          "href": "https://waterlootechweek.ca/",
+          "x": 180,
+          "y": 534.28125,
+          "width": 283.28125,
+          "height": 23.1875,
+          "bottom": 557.46875,
+          "right": 463.28125
+        },
+        {
+          "text": "Back to the terminal",
+          "href": "http://localhost:3101/",
+          "x": 180,
+          "y": 577.46875,
+          "width": 128.453125,
+          "height": 44,
+          "bottom": 621.46875,
+          "right": 308.453125
+        }
+      ],
+      "typography": {
+        "body": {
+          "size": "16px",
+          "lineHeight": "23.2px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        },
+        "role": {
+          "size": "14px",
+          "lineHeight": "21px",
+          "color": "rgba(244, 236, 216, 0.85)",
+          "weight": "400"
+        },
+        "intro": {
+          "size": "17px",
+          "lineHeight": "25.5px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        }
+      },
+      "mural": true,
+      "scrim": "linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.79) 48%, rgba(0, 0, 0, 0.82))",
+      "icons": [
+        {
+          "name": "LinkedIn",
+          "title": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "svg": true,
+          "x": 1017.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1061.890625
+        },
+        {
+          "name": "X",
+          "title": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "svg": true,
+          "x": 1061.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1105.890625
+        },
+        {
+          "name": "GitHub",
+          "title": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "svg": true,
+          "x": 1105.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1149.890625
+        },
+        {
+          "name": "Email Ammar",
+          "title": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "svg": true,
+          "x": 1149.890625,
+          "y": 35.09375,
+          "width": 44,
+          "height": 44,
+          "bottom": 79.09375,
+          "right": 1193.890625
+        }
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "failures": []
+    },
+    {
+      "name": "laptop-768",
+      "viewport": {
+        "width": 1366,
+        "height": 768
+      },
+      "document": {
+        "width": 1366,
+        "height": 768
+      },
+      "content": {
+        "x": 143,
+        "y": 0,
+        "width": 1080,
+        "height": 768,
+        "bottom": 768,
+        "right": 1223
+      },
+      "footer": {
+        "x": 143,
+        "y": 576.921875,
+        "width": 1080,
+        "height": 44,
+        "bottom": 620.921875,
+        "right": 1223
+      },
+      "intro": "I study CS + Finance at Waterloo. I build software and bring people together.",
+      "headings": [
+        "PlaceRoleWhat I did",
+        "PlaceRoleWhat I did"
+      ],
+      "rows": [
+        {
+          "name": "OpenAI",
+          "line": "I find student builders and help them ship.",
+          "x": 143,
+          "y": 174.140625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 210.328125,
+          "right": 1223
+        },
+        {
+          "name": "Sagard",
+          "line": "I build AI tools for legal and compliance.",
+          "x": 143,
+          "y": 210.328125,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 246.515625,
+          "right": 1223
+        },
+        {
+          "name": "DataStealth",
+          "line": "I built product demos and automated competitor research.",
+          "x": 143,
+          "y": 246.515625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 282.703125,
+          "right": 1223
+        },
+        {
+          "name": "Alpen Capital",
+          "line": "I joined at sixteen as the firm's youngest intern.",
+          "x": 143,
+          "y": 282.703125,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 318.890625,
+          "right": 1223
+        },
+        {
+          "name": "Pear VC",
+          "line": "I scout and support early-stage founders.",
+          "x": 143,
+          "y": 318.890625,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 354.578125,
+          "right": 1223
+        },
+        {
+          "name": "Backseat",
+          "line": "I made character voices you can add to Waze in one tap.",
+          "x": 143,
+          "y": 418.671875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 454.859375,
+          "right": 1223
+        },
+        {
+          "name": "RocketShip",
+          "line": "I built an AI research tool and tested its stock picks.",
+          "x": 143,
+          "y": 454.859375,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 491.046875,
+          "right": 1223
+        },
+        {
+          "name": "Waterloo Venture Group",
+          "line": "I run Waterloo's student venture community.",
+          "x": 143,
+          "y": 491.046875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 527.234375,
+          "right": 1223
+        },
+        {
+          "name": "Waterloo Tech Week / Hack the North",
+          "line": "I organized Tech Week and helped run Hack the North.",
+          "x": 143,
+          "y": 527.234375,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 562.921875,
+          "right": 1223
+        }
+      ],
+      "links": [
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "x": 980.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1024.890625
+        },
+        {
+          "text": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "x": 1024.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1068.890625
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "x": 1068.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1112.890625
+        },
+        {
+          "text": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "x": 1112.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1156.890625
+        },
+        {
+          "text": "Résumé",
+          "href": "http://localhost:3101/Ammar_Adam.pdf",
+          "x": 1170.890625,
+          "y": 34.546875,
+          "width": 52.109375,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1223
+        },
+        {
+          "text": "OpenAI",
+          "href": "https://openai.com/",
+          "x": 143,
+          "y": 180.640625,
+          "width": 56.28125,
+          "height": 23.1875,
+          "bottom": 203.828125,
+          "right": 199.28125
+        },
+        {
+          "text": "Sagard",
+          "href": "https://www.sagard.com/",
+          "x": 143,
+          "y": 216.828125,
+          "width": 53.53125,
+          "height": 23.1875,
+          "bottom": 240.015625,
+          "right": 196.53125
+        },
+        {
+          "text": "DataStealth",
+          "href": "https://datastealth.io/",
+          "x": 143,
+          "y": 253.015625,
+          "width": 87.796875,
+          "height": 23.1875,
+          "bottom": 276.203125,
+          "right": 230.796875
+        },
+        {
+          "text": "Alpen Capital",
+          "href": "https://alpencapital.com/",
+          "x": 143,
+          "y": 289.203125,
+          "width": 100.546875,
+          "height": 23.1875,
+          "bottom": 312.390625,
+          "right": 243.546875
+        },
+        {
+          "text": "Pear VC",
+          "href": "https://pear.vc/",
+          "x": 143,
+          "y": 325.390625,
+          "width": 60.203125,
+          "height": 23.1875,
+          "bottom": 348.578125,
+          "right": 203.203125
+        },
+        {
+          "text": "Backseat",
+          "href": "https://backseatnav.com/",
+          "x": 143,
+          "y": 425.171875,
+          "width": 69.671875,
+          "height": 23.1875,
+          "bottom": 448.359375,
+          "right": 212.671875
+        },
+        {
+          "text": "RocketShip",
+          "href": "https://rocketshipstocks.vercel.app/",
+          "x": 143,
+          "y": 461.359375,
+          "width": 85.34375,
+          "height": 23.1875,
+          "bottom": 484.546875,
+          "right": 228.34375
+        },
+        {
+          "text": "Waterloo Venture Group",
+          "href": "https://www.waterloovg.com/",
+          "x": 143,
+          "y": 497.546875,
+          "width": 181.71875,
+          "height": 23.1875,
+          "bottom": 520.734375,
+          "right": 324.71875
+        },
+        {
+          "text": "Waterloo Tech Week / Hack the North",
+          "href": "https://waterlootechweek.ca/",
+          "x": 143,
+          "y": 533.734375,
+          "width": 283.28125,
+          "height": 23.1875,
+          "bottom": 556.921875,
+          "right": 426.28125
+        },
+        {
+          "text": "Back to the terminal",
+          "href": "http://localhost:3101/",
+          "x": 143,
+          "y": 576.921875,
+          "width": 128.453125,
+          "height": 44,
+          "bottom": 620.921875,
+          "right": 271.453125
+        }
+      ],
+      "typography": {
+        "body": {
+          "size": "16px",
+          "lineHeight": "23.2px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        },
+        "role": {
+          "size": "14px",
+          "lineHeight": "21px",
+          "color": "rgba(244, 236, 216, 0.85)",
+          "weight": "400"
+        },
+        "intro": {
+          "size": "17px",
+          "lineHeight": "25.5px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        }
+      },
+      "mural": true,
+      "scrim": "linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.79) 48%, rgba(0, 0, 0, 0.82))",
+      "icons": [
+        {
+          "name": "LinkedIn",
+          "title": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "svg": true,
+          "x": 980.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1024.890625
+        },
+        {
+          "name": "X",
+          "title": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "svg": true,
+          "x": 1024.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1068.890625
+        },
+        {
+          "name": "GitHub",
+          "title": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "svg": true,
+          "x": 1068.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1112.890625
+        },
+        {
+          "name": "Email Ammar",
+          "title": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "svg": true,
+          "x": 1112.890625,
+          "y": 34.546875,
+          "width": 44,
+          "height": 44,
+          "bottom": 78.546875,
+          "right": 1156.890625
+        }
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "failures": []
+    },
+    {
+      "name": "laptop-720",
+      "viewport": {
+        "width": 1280,
+        "height": 720
+      },
+      "document": {
+        "width": 1280,
+        "height": 720
+      },
+      "content": {
+        "x": 100,
+        "y": 0,
+        "width": 1080,
+        "height": 720,
+        "bottom": 720,
+        "right": 1180
+      },
+      "footer": {
+        "x": 100,
+        "y": 574.765625,
+        "width": 1080,
+        "height": 44,
+        "bottom": 618.765625,
+        "right": 1180
+      },
+      "intro": "I study CS + Finance at Waterloo. I build software and bring people together.",
+      "headings": [
+        "PlaceRoleWhat I did",
+        "PlaceRoleWhat I did"
+      ],
+      "rows": [
+        {
+          "name": "OpenAI",
+          "line": "I find student builders and help them ship.",
+          "x": 100,
+          "y": 171.984375,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 208.171875,
+          "right": 1180
+        },
+        {
+          "name": "Sagard",
+          "line": "I build AI tools for legal and compliance.",
+          "x": 100,
+          "y": 208.171875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 244.359375,
+          "right": 1180
+        },
+        {
+          "name": "DataStealth",
+          "line": "I built product demos and automated competitor research.",
+          "x": 100,
+          "y": 244.359375,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 280.546875,
+          "right": 1180
+        },
+        {
+          "name": "Alpen Capital",
+          "line": "I joined at sixteen as the firm's youngest intern.",
+          "x": 100,
+          "y": 280.546875,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 316.734375,
+          "right": 1180
+        },
+        {
+          "name": "Pear VC",
+          "line": "I scout and support early-stage founders.",
+          "x": 100,
+          "y": 316.734375,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 352.421875,
+          "right": 1180
+        },
+        {
+          "name": "Backseat",
+          "line": "I made character voices you can add to Waze in one tap.",
+          "x": 100,
+          "y": 416.515625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 452.703125,
+          "right": 1180
+        },
+        {
+          "name": "RocketShip",
+          "line": "I built an AI research tool and tested its stock picks.",
+          "x": 100,
+          "y": 452.703125,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 488.890625,
+          "right": 1180
+        },
+        {
+          "name": "Waterloo Venture Group",
+          "line": "I run Waterloo's student venture community.",
+          "x": 100,
+          "y": 488.890625,
+          "width": 1080,
+          "height": 36.1875,
+          "bottom": 525.078125,
+          "right": 1180
+        },
+        {
+          "name": "Waterloo Tech Week / Hack the North",
+          "line": "I organized Tech Week and helped run Hack the North.",
+          "x": 100,
+          "y": 525.078125,
+          "width": 1080,
+          "height": 35.6875,
+          "bottom": 560.765625,
+          "right": 1180
+        }
+      ],
+      "links": [
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "x": 937.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 981.890625
+        },
+        {
+          "text": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "x": 981.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1025.890625
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "x": 1025.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1069.890625
+        },
+        {
+          "text": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "x": 1069.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1113.890625
+        },
+        {
+          "text": "Résumé",
+          "href": "http://localhost:3101/Ammar_Adam.pdf",
+          "x": 1127.890625,
+          "y": 32.390625,
+          "width": 52.109375,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1180
+        },
+        {
+          "text": "OpenAI",
+          "href": "https://openai.com/",
+          "x": 100,
+          "y": 178.484375,
+          "width": 56.28125,
+          "height": 23.1875,
+          "bottom": 201.671875,
+          "right": 156.28125
+        },
+        {
+          "text": "Sagard",
+          "href": "https://www.sagard.com/",
+          "x": 100,
+          "y": 214.671875,
+          "width": 53.53125,
+          "height": 23.1875,
+          "bottom": 237.859375,
+          "right": 153.53125
+        },
+        {
+          "text": "DataStealth",
+          "href": "https://datastealth.io/",
+          "x": 100,
+          "y": 250.859375,
+          "width": 87.796875,
+          "height": 23.1875,
+          "bottom": 274.046875,
+          "right": 187.796875
+        },
+        {
+          "text": "Alpen Capital",
+          "href": "https://alpencapital.com/",
+          "x": 100,
+          "y": 287.046875,
+          "width": 100.546875,
+          "height": 23.1875,
+          "bottom": 310.234375,
+          "right": 200.546875
+        },
+        {
+          "text": "Pear VC",
+          "href": "https://pear.vc/",
+          "x": 100,
+          "y": 323.234375,
+          "width": 60.203125,
+          "height": 23.1875,
+          "bottom": 346.421875,
+          "right": 160.203125
+        },
+        {
+          "text": "Backseat",
+          "href": "https://backseatnav.com/",
+          "x": 100,
+          "y": 423.015625,
+          "width": 69.671875,
+          "height": 23.1875,
+          "bottom": 446.203125,
+          "right": 169.671875
+        },
+        {
+          "text": "RocketShip",
+          "href": "https://rocketshipstocks.vercel.app/",
+          "x": 100,
+          "y": 459.203125,
+          "width": 85.34375,
+          "height": 23.1875,
+          "bottom": 482.390625,
+          "right": 185.34375
+        },
+        {
+          "text": "Waterloo Venture Group",
+          "href": "https://www.waterloovg.com/",
+          "x": 100,
+          "y": 495.390625,
+          "width": 181.71875,
+          "height": 23.1875,
+          "bottom": 518.578125,
+          "right": 281.71875
+        },
+        {
+          "text": "Waterloo Tech Week / Hack the North",
+          "href": "https://waterlootechweek.ca/",
+          "x": 100,
+          "y": 531.578125,
+          "width": 283.28125,
+          "height": 23.1875,
+          "bottom": 554.765625,
+          "right": 383.28125
+        },
+        {
+          "text": "Back to the terminal",
+          "href": "http://localhost:3101/",
+          "x": 100,
+          "y": 574.765625,
+          "width": 128.453125,
+          "height": 44,
+          "bottom": 618.765625,
+          "right": 228.453125
+        }
+      ],
+      "typography": {
+        "body": {
+          "size": "16px",
+          "lineHeight": "23.2px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        },
+        "role": {
+          "size": "14px",
+          "lineHeight": "21px",
+          "color": "rgba(244, 236, 216, 0.85)",
+          "weight": "400"
+        },
+        "intro": {
+          "size": "17px",
+          "lineHeight": "25.5px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        }
+      },
+      "mural": true,
+      "scrim": "linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.79) 48%, rgba(0, 0, 0, 0.82))",
+      "icons": [
+        {
+          "name": "LinkedIn",
+          "title": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "svg": true,
+          "x": 937.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 981.890625
+        },
+        {
+          "name": "X",
+          "title": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "svg": true,
+          "x": 981.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1025.890625
+        },
+        {
+          "name": "GitHub",
+          "title": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "svg": true,
+          "x": 1025.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1069.890625
+        },
+        {
+          "name": "Email Ammar",
+          "title": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "svg": true,
+          "x": 1069.890625,
+          "y": 32.390625,
+          "width": 44,
+          "height": 44,
+          "bottom": 76.390625,
+          "right": 1113.890625
+        }
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "failures": []
+    },
+    {
+      "name": "compact-740",
+      "viewport": {
+        "width": 1100,
+        "height": 740
+      },
+      "document": {
+        "width": 1100,
+        "height": 740
+      },
+      "content": {
+        "x": 48,
+        "y": 0,
+        "width": 1004,
+        "height": 740,
+        "bottom": 740,
+        "right": 1052
+      },
+      "footer": {
+        "x": 48,
+        "y": 598.859375,
+        "width": 1004,
+        "height": 44,
+        "bottom": 642.859375,
+        "right": 1052
+      },
+      "intro": "I study CS + Finance at Waterloo. I build software and bring people together.",
+      "headings": [
+        "PlaceRoleWhat I did",
+        "PlaceRoleWhat I did"
+      ],
+      "rows": [
+        {
+          "name": "OpenAI",
+          "line": "I find student builders and help them ship.",
+          "x": 48,
+          "y": 172.890625,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 209.078125,
+          "right": 1052
+        },
+        {
+          "name": "Sagard",
+          "line": "I build AI tools for legal and compliance.",
+          "x": 48,
+          "y": 209.078125,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 245.265625,
+          "right": 1052
+        },
+        {
+          "name": "DataStealth",
+          "line": "I built product demos and automated competitor research.",
+          "x": 48,
+          "y": 245.265625,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 281.453125,
+          "right": 1052
+        },
+        {
+          "name": "Alpen Capital",
+          "line": "I joined at sixteen as the firm's youngest intern.",
+          "x": 48,
+          "y": 281.453125,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 317.640625,
+          "right": 1052
+        },
+        {
+          "name": "Pear VC",
+          "line": "I scout and support early-stage founders.",
+          "x": 48,
+          "y": 317.640625,
+          "width": 1004,
+          "height": 35.6875,
+          "bottom": 353.328125,
+          "right": 1052
+        },
+        {
+          "name": "Backseat",
+          "line": "I made character voices you can add to Waze in one tap.",
+          "x": 48,
+          "y": 417.421875,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 453.609375,
+          "right": 1052
+        },
+        {
+          "name": "RocketShip",
+          "line": "I built an AI research tool and tested its stock picks.",
+          "x": 48,
+          "y": 453.609375,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 489.796875,
+          "right": 1052
+        },
+        {
+          "name": "Waterloo Venture Group",
+          "line": "I run Waterloo's student venture community.",
+          "x": 48,
+          "y": 489.796875,
+          "width": 1004,
+          "height": 36.1875,
+          "bottom": 525.984375,
+          "right": 1052
+        },
+        {
+          "name": "Waterloo Tech Week / Hack the North",
+          "line": "I organized Tech Week and helped run Hack the North.",
+          "x": 48,
+          "y": 525.984375,
+          "width": 1004,
+          "height": 58.875,
+          "bottom": 584.859375,
+          "right": 1052
+        }
+      ],
+      "links": [
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "x": 809.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 853.890625
+        },
+        {
+          "text": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "x": 853.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 897.890625
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "x": 897.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 941.890625
+        },
+        {
+          "text": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "x": 941.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 985.890625
+        },
+        {
+          "text": "Résumé",
+          "href": "http://localhost:3101/Ammar_Adam.pdf",
+          "x": 999.890625,
+          "y": 33.296875,
+          "width": 52.109375,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 1052
+        },
+        {
+          "text": "OpenAI",
+          "href": "https://openai.com/",
+          "x": 48,
+          "y": 179.390625,
+          "width": 56.28125,
+          "height": 23.1875,
+          "bottom": 202.578125,
+          "right": 104.28125
+        },
+        {
+          "text": "Sagard",
+          "href": "https://www.sagard.com/",
+          "x": 48,
+          "y": 215.578125,
+          "width": 53.53125,
+          "height": 23.1875,
+          "bottom": 238.765625,
+          "right": 101.53125
+        },
+        {
+          "text": "DataStealth",
+          "href": "https://datastealth.io/",
+          "x": 48,
+          "y": 251.765625,
+          "width": 87.796875,
+          "height": 23.1875,
+          "bottom": 274.953125,
+          "right": 135.796875
+        },
+        {
+          "text": "Alpen Capital",
+          "href": "https://alpencapital.com/",
+          "x": 48,
+          "y": 287.953125,
+          "width": 100.546875,
+          "height": 23.1875,
+          "bottom": 311.140625,
+          "right": 148.546875
+        },
+        {
+          "text": "Pear VC",
+          "href": "https://pear.vc/",
+          "x": 48,
+          "y": 324.140625,
+          "width": 60.203125,
+          "height": 23.1875,
+          "bottom": 347.328125,
+          "right": 108.203125
+        },
+        {
+          "text": "Backseat",
+          "href": "https://backseatnav.com/",
+          "x": 48,
+          "y": 423.921875,
+          "width": 69.671875,
+          "height": 23.1875,
+          "bottom": 447.109375,
+          "right": 117.671875
+        },
+        {
+          "text": "RocketShip",
+          "href": "https://rocketshipstocks.vercel.app/",
+          "x": 48,
+          "y": 460.109375,
+          "width": 85.34375,
+          "height": 23.1875,
+          "bottom": 483.296875,
+          "right": 133.34375
+        },
+        {
+          "text": "Waterloo Venture Group",
+          "href": "https://www.waterloovg.com/",
+          "x": 48,
+          "y": 496.296875,
+          "width": 181.71875,
+          "height": 23.1875,
+          "bottom": 519.484375,
+          "right": 229.71875
+        },
+        {
+          "text": "Waterloo Tech Week / Hack the North",
+          "href": "https://waterlootechweek.ca/",
+          "x": 48,
+          "y": 532.484375,
+          "width": 271.15625,
+          "height": 46.375,
+          "bottom": 578.859375,
+          "right": 319.15625
+        },
+        {
+          "text": "Back to the terminal",
+          "href": "http://localhost:3101/",
+          "x": 48,
+          "y": 598.859375,
+          "width": 128.453125,
+          "height": 44,
+          "bottom": 642.859375,
+          "right": 176.453125
+        }
+      ],
+      "typography": {
+        "body": {
+          "size": "16px",
+          "lineHeight": "23.2px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        },
+        "role": {
+          "size": "14px",
+          "lineHeight": "21px",
+          "color": "rgba(244, 236, 216, 0.85)",
+          "weight": "400"
+        },
+        "intro": {
+          "size": "17px",
+          "lineHeight": "25.5px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        }
+      },
+      "mural": true,
+      "scrim": "linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.79) 48%, rgba(0, 0, 0, 0.82))",
+      "icons": [
+        {
+          "name": "LinkedIn",
+          "title": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "svg": true,
+          "x": 809.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 853.890625
+        },
+        {
+          "name": "X",
+          "title": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "svg": true,
+          "x": 853.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 897.890625
+        },
+        {
+          "name": "GitHub",
+          "title": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "svg": true,
+          "x": 897.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 941.890625
+        },
+        {
+          "name": "Email Ammar",
+          "title": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "svg": true,
+          "x": 941.890625,
+          "y": 33.296875,
+          "width": 44,
+          "height": 44,
+          "bottom": 77.296875,
+          "right": 985.890625
+        }
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "failures": []
+    },
+    {
+      "name": "phone",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "document": {
+        "width": 390,
+        "height": 1516
+      },
+      "content": {
+        "x": 20,
+        "y": 0,
+        "width": 350,
+        "height": 1515.59375,
+        "bottom": 1515.59375,
+        "right": 370
+      },
+      "footer": {
+        "x": 20,
+        "y": 1447.59375,
+        "width": 350,
+        "height": 44,
+        "bottom": 1491.59375,
+        "right": 370
+      },
+      "intro": "I study CS + Finance at Waterloo. I build software and bring people together.",
+      "headings": [
+        "PlaceRoleWhat I did",
+        "PlaceRoleWhat I did"
+      ],
+      "rows": [
+        {
+          "name": "OpenAI",
+          "line": "I find student builders and help them ship.",
+          "x": 20,
+          "y": 226.796875,
+          "width": 350,
+          "height": 118,
+          "bottom": 344.796875,
+          "right": 370
+        },
+        {
+          "name": "Sagard",
+          "line": "I build AI tools for legal and compliance.",
+          "x": 20,
+          "y": 344.796875,
+          "width": 350,
+          "height": 118,
+          "bottom": 462.796875,
+          "right": 370
+        },
+        {
+          "name": "DataStealth",
+          "line": "I built product demos and automated competitor research.",
+          "x": 20,
+          "y": 462.796875,
+          "width": 350,
+          "height": 142,
+          "bottom": 604.796875,
+          "right": 370
+        },
+        {
+          "name": "Alpen Capital",
+          "line": "I joined at sixteen as the firm's youngest intern.",
+          "x": 20,
+          "y": 604.796875,
+          "width": 350,
+          "height": 118,
+          "bottom": 722.796875,
+          "right": 370
+        },
+        {
+          "name": "Pear VC",
+          "line": "I scout and support early-stage founders.",
+          "x": 20,
+          "y": 722.796875,
+          "width": 350,
+          "height": 118,
+          "bottom": 840.796875,
+          "right": 370
+        },
+        {
+          "name": "Backseat",
+          "line": "I made character voices you can add to Waze in one tap.",
+          "x": 20,
+          "y": 887.59375,
+          "width": 350,
+          "height": 142,
+          "bottom": 1029.59375,
+          "right": 370
+        },
+        {
+          "name": "RocketShip",
+          "line": "I built an AI research tool and tested its stock picks.",
+          "x": 20,
+          "y": 1029.59375,
+          "width": 350,
+          "height": 142,
+          "bottom": 1171.59375,
+          "right": 370
+        },
+        {
+          "name": "Waterloo Venture Group",
+          "line": "I run Waterloo's student venture community.",
+          "x": 20,
+          "y": 1171.59375,
+          "width": 350,
+          "height": 118,
+          "bottom": 1289.59375,
+          "right": 370
+        },
+        {
+          "name": "Waterloo Tech Week / Hack the North",
+          "line": "I organized Tech Week and helped run Hack the North.",
+          "x": 20,
+          "y": 1289.59375,
+          "width": 350,
+          "height": 142,
+          "bottom": 1431.59375,
+          "right": 370
+        }
+      ],
+      "links": [
+        {
+          "text": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "x": 20,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 64
+        },
+        {
+          "text": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "x": 64,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 108
+        },
+        {
+          "text": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "x": 108,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 152
+        },
+        {
+          "text": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "x": 152,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 196
+        },
+        {
+          "text": "Résumé",
+          "href": "http://localhost:3101/Ammar_Adam.pdf",
+          "x": 212,
+          "y": 138,
+          "width": 52.109375,
+          "height": 44,
+          "bottom": 182,
+          "right": 264.109375
+        },
+        {
+          "text": "OpenAI",
+          "href": "https://openai.com/",
+          "x": 20,
+          "y": 235.796875,
+          "width": 56.28125,
+          "height": 44,
+          "bottom": 279.796875,
+          "right": 76.28125
+        },
+        {
+          "text": "Sagard",
+          "href": "https://www.sagard.com/",
+          "x": 20,
+          "y": 353.796875,
+          "width": 53.53125,
+          "height": 44,
+          "bottom": 397.796875,
+          "right": 73.53125
+        },
+        {
+          "text": "DataStealth",
+          "href": "https://datastealth.io/",
+          "x": 20,
+          "y": 471.796875,
+          "width": 87.796875,
+          "height": 44,
+          "bottom": 515.796875,
+          "right": 107.796875
+        },
+        {
+          "text": "Alpen Capital",
+          "href": "https://alpencapital.com/",
+          "x": 20,
+          "y": 613.796875,
+          "width": 100.546875,
+          "height": 44,
+          "bottom": 657.796875,
+          "right": 120.546875
+        },
+        {
+          "text": "Pear VC",
+          "href": "https://pear.vc/",
+          "x": 20,
+          "y": 731.796875,
+          "width": 60.203125,
+          "height": 44,
+          "bottom": 775.796875,
+          "right": 80.203125
+        },
+        {
+          "text": "Backseat",
+          "href": "https://backseatnav.com/",
+          "x": 20,
+          "y": 896.59375,
+          "width": 69.671875,
+          "height": 44,
+          "bottom": 940.59375,
+          "right": 89.671875
+        },
+        {
+          "text": "RocketShip",
+          "href": "https://rocketshipstocks.vercel.app/",
+          "x": 20,
+          "y": 1038.59375,
+          "width": 85.34375,
+          "height": 44,
+          "bottom": 1082.59375,
+          "right": 105.34375
+        },
+        {
+          "text": "Waterloo Venture Group",
+          "href": "https://www.waterloovg.com/",
+          "x": 20,
+          "y": 1180.59375,
+          "width": 181.71875,
+          "height": 44,
+          "bottom": 1224.59375,
+          "right": 201.71875
+        },
+        {
+          "text": "Waterloo Tech Week / Hack the North",
+          "href": "https://waterlootechweek.ca/",
+          "x": 20,
+          "y": 1298.59375,
+          "width": 283.28125,
+          "height": 44,
+          "bottom": 1342.59375,
+          "right": 303.28125
+        },
+        {
+          "text": "Back to the terminal",
+          "href": "http://localhost:3101/",
+          "x": 20,
+          "y": 1447.59375,
+          "width": 128.453125,
+          "height": 44,
+          "bottom": 1491.59375,
+          "right": 148.453125
+        }
+      ],
+      "typography": {
+        "body": {
+          "size": "16px",
+          "lineHeight": "24px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        },
+        "role": {
+          "size": "14px",
+          "lineHeight": "21px",
+          "color": "rgba(244, 236, 216, 0.85)",
+          "weight": "400"
+        },
+        "intro": {
+          "size": "17px",
+          "lineHeight": "25.5px",
+          "color": "rgb(244, 236, 216)",
+          "weight": "400"
+        }
+      },
+      "mural": true,
+      "scrim": "linear-gradient(rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.79) 48%, rgba(0, 0, 0, 0.82))",
+      "icons": [
+        {
+          "name": "LinkedIn",
+          "title": "LinkedIn",
+          "href": "https://www.linkedin.com/in/ammar-adam/",
+          "svg": true,
+          "x": 20,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 64
+        },
+        {
+          "name": "X",
+          "title": "X",
+          "href": "https://x.com/ammaradam_5807?s=11",
+          "svg": true,
+          "x": 64,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 108
+        },
+        {
+          "name": "GitHub",
+          "title": "GitHub",
+          "href": "https://github.com/ammar-adam",
+          "svg": true,
+          "x": 108,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 152
+        },
+        {
+          "name": "Email Ammar",
+          "title": "Email Ammar",
+          "href": "mailto:ammar.adam@uwaterloo.ca",
+          "svg": true,
+          "x": 152,
+          "y": 138,
+          "width": 44,
+          "height": 44,
+          "bottom": 182,
+          "right": 196
+        }
+      ],
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)",
+      "errors": [],
+      "failures": []
+    }
+  ]
+}

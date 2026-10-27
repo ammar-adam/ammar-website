@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { createWallPaint } from "./film-wall-paint";
 import type { FilmMaterialPalette } from "./film-materials";
 import { ensurePaintUV } from "./film-paint-uv";
 import { createSetBuilder, type FilmSet, type SetMaterial, type SetVector } from "./film-set-builder";
@@ -123,7 +124,7 @@ function ceilingBaffle(set: Builder, center: SetVector, width: number, depth: nu
 
 /** Four coordinated physical installations; call only as each room approaches.
  * Fixed geometry merges into a small number of palette/shadow batches per room. */
-export function createFilmRoomArt(palette: FilmMaterialPalette, room: FilmArtRoom): FilmSet {
+export async function createFilmRoomArt(palette: FilmMaterialPalette, room: FilmArtRoom): Promise<FilmSet> {
   const set = createSetBuilder(palette, `architectural-art-${room}`);
   const front = (position: SetVector) => localSurface(set, position);
   const left = (position: SetVector) => localSurface(set, position, [0, Math.PI / 2, 0]);
@@ -132,13 +133,13 @@ export function createFilmRoomArt(palette: FilmMaterialPalette, room: FilmArtRoo
     // A folded canopy and tall city casting grow from the scale of the check-in
     // hall. Everything stops well before the right-hand exit x[8,13].
     for (let n = 0; n < 4; n++) ceilingBaffle(set, [-1.25 + n * .38, 6.8 + n * .14, -25.1 - n * 1.32], 12.4 - n * 1.0, .46, .68, n % 2 ? "ivory" : "steel", -.07);
-    cityRelief(front([-2.15, 5.0, -30.47]), 16.0, 4.3, 0);
+    // The back wall now carries directly painted city graffiti.
     cityRelief(left([-13.35, 4.20, -25.1]), 7.8, 3.9, 1);
     niche(left([-13.25, 3.40, -19.5]), 2.30, 3.1, 0);
   } else if (room === "security") {
     // The measured spacing echoes the screening lane's engineered rhythm.
     for (let n = 0; n < 5; n++) ceilingBaffle(set, [3.9, 6.85 + (n % 2) * .10, -39.9 - n * 1.48], 10.6, .34, .38, n % 2 ? "ivory" : "steel");
-    cityRelief(front([4.50, 5.20, -48.47]), 14.8, 3.6, 1);
+    // The back wall now carries directly painted city graffiti.
     const chart = left([-13.30, 4.0, -41.1]);
     cityRelief(chart, 7.5, 3.8, 2);
     niche(left([-13.25, 3.55, -35.4]), 2.4, 3.2, 1);
@@ -155,13 +156,13 @@ export function createFilmRoomArt(palette: FilmMaterialPalette, room: FilmArtRoo
     niche(front([-12.40, 3.67, -83.12]), 1.55, 2.15, 0);
     cityRelief(left([-13.25, 7.38, -67.6]), 26.5, .82, 2);
     // Movie posters and 05 wayfinding end below y5; this upper relief clears both.
-    cityRelief(front([-3.5, 7.05, -83.45]), 17.5, 1.55, 0);
+    // The upper back wall carries Karachi street art above the movie posters.
   } else {
     // Quiet broad sails settle the final room. Rear detailing stays entirely on
     // the solid transom above y9, preserving glass, aircraft and painted skyline.
     ceilingBaffle(set, [-2.1, 7.20, -96.3], 12.6, .72, .58, "ivory", .08);
     ceilingBaffle(set, [-.8, 7.72, -99.1], 10.2, .43, .48, "steel", .08);
-    cityRelief(left([-13.30, 4.2, -96.7]), 8.6, 4.4, 0);
+    // Paper-plane graffiti is painted directly on this solid return wall.
     niche(left([-13.24, 3.55, -89.7]), 2.65, 3.35, 2);
     for (const x of [-6.9, 6.9]) cityRelief(front([x, 9.45, -103.82]), 4.4, .62, x < 0 ? 1 : 2);
     // Substantial collar pieces add depth to existing rear mullions, not glass.
@@ -174,5 +175,7 @@ export function createFilmRoomArt(palette: FilmMaterialPalette, room: FilmArtRoo
   const root = set.finish(); root.userData.architecturalArt = room;
   root.userData.drawCalls = root.children.length;
   root.userData.design = room === "checkin" ? "Folded city canopy" : room === "security" ? "Measured screening ribs" : room === "concourse" ? "Connected retail frieze" : "Quiet horizon sails";
-  return { groups: [root], update() {}, dispose: set.dispose };
+  const paint = await createWallPaint(palette, room);
+  root.add(paint.root);
+  return { groups: [root], update() {}, dispose() { paint.dispose(); set.dispose(); } };
 }

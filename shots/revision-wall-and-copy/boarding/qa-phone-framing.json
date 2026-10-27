@@ -1,0 +1,24 @@
+{
+  "requestDelay": 2330,
+  "records": [
+    {
+      "phase": "scan",
+      "elapsed": 364,
+      "status": "scanning",
+      "camera": "0.50,1.80,-87.00"
+    },
+    {
+      "phase": "tear",
+      "elapsed": 917,
+      "status": "tearing",
+      "camera": "0.50,1.80,-87.00"
+    },
+    {
+      "phase": "takeoff",
+      "elapsed": 1710,
+      "status": "departing",
+      "camera": "0.97,2.46,-90.31"
+    }
+  ],
+  "errors": []
+}

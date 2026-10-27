@@ -118,3 +118,13 @@
  .bp-ticket[data-stub-detached="true"] .bp-stub,.bp-ticket[data-stub-detached="true"] .bp-main { animation:none;transform:none; }
 }
 
+
+/* Once the perforation has separated, clear the window for the takeoff. */
+.bp-ticket { transition:opacity 220ms ease,translate 380ms cubic-bezier(.2,.65,.25,1); }
+.bp-introduction,.bp-contact { transition:opacity 250ms ease; }
+.bp-scene[data-scan-status="departing"] .bp-ticket,.bp-scene[data-scan-status="opening"] .bp-ticket { opacity:0;translate:0 90px;pointer-events:none; }
+.bp-scene[data-scan-status="departing"] .bp-introduction,.bp-scene[data-scan-status="opening"] .bp-introduction,.bp-scene[data-scan-status="departing"] .bp-contact,.bp-scene[data-scan-status="opening"] .bp-contact { opacity:.15;pointer-events:none; }
+.bp-reduced .bp-ticket,.bp-reduced .bp-introduction,.bp-reduced .bp-contact { transition:none; }
+@media(prefers-reduced-motion:reduce) {
+ .bp-ticket,.bp-introduction,.bp-contact { transition:none; }
+}

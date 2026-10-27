@@ -1,0 +1,75 @@
+{
+  "branch": "ref: refs/heads/spiderverse-airport",
+  "assets": [
+    {
+      "file": "public/film/arrival-portrait.mp4",
+      "match": true,
+      "expected": "0d2d9b91e825dd9ee83378876f4551a20e33f8d552adde7aeef59b7d8eb18ffa",
+      "actual": "0d2d9b91e825dd9ee83378876f4551a20e33f8d552adde7aeef59b7d8eb18ffa",
+      "bytes": 3225764
+    },
+    {
+      "file": "public/film/arrival-portrait.webp",
+      "match": true,
+      "expected": "f3a651d2b7268609022d04a5b45f88dab7c43d5d16d6ec22452883a2dff32c0a",
+      "actual": "f3a651d2b7268609022d04a5b45f88dab7c43d5d16d6ec22452883a2dff32c0a",
+      "bytes": 258430
+    },
+    {
+      "file": "public/film/arrival-desktop-av1.mp4",
+      "match": true,
+      "expected": "ca68f6b322fe6b607b79f0dea4fcbda3a84824d1ae6205f3beb6e3ba0a8c7650",
+      "actual": "ca68f6b322fe6b607b79f0dea4fcbda3a84824d1ae6205f3beb6e3ba0a8c7650",
+      "bytes": 4770251
+    },
+    {
+      "file": "public/art/terminal-city-v3.webp",
+      "match": true,
+      "expected": "816ff9aeb64f5ff9e60230c8e06c9b126a4358a345b07098ec04e574e903c146",
+      "actual": "816ff9aeb64f5ff9e60230c8e06c9b126a4358a345b07098ec04e574e903c146",
+      "bytes": 424368
+    },
+    {
+      "file": "public/film/arrival-desktop.mp4",
+      "match": true,
+      "expected": "817791898007898d2d27dc0b25ed93726d90256716d968bc2bd7942f848a5281",
+      "actual": "817791898007898d2d27dc0b25ed93726d90256716d968bc2bd7942f848a5281",
+      "bytes": 8067497
+    },
+    {
+      "file": "public/film/arrival-portrait-av1.mp4",
+      "match": true,
+      "expected": "9b084db25d74143dcd00078ea482d87fa5a0e91466a3001fc5a7ae342635cd3b",
+      "actual": "9b084db25d74143dcd00078ea482d87fa5a0e91466a3001fc5a7ae342635cd3b",
+      "bytes": 2369867
+    },
+    {
+      "file": "public/film/arrival-desktop.webp",
+      "match": true,
+      "expected": "7db0709a00988e69d97d9f14017c75c9e70e5edbaa5fe201a0d94cf4026f90cf",
+      "actual": "7db0709a00988e69d97d9f14017c75c9e70e5edbaa5fe201a0d94cf4026f90cf",
+      "bytes": 416658
+    },
+    {
+      "file": "public/film/arrival-portrait-end.webp",
+      "match": true,
+      "expected": "35741a017d46afc8716311166bce14891d78311dea3f25aa42a637c35ccc8281",
+      "actual": "35741a017d46afc8716311166bce14891d78311dea3f25aa42a637c35ccc8281",
+      "bytes": 185790
+    },
+    {
+      "file": "public/film/arrival-desktop-end.webp",
+      "match": true,
+      "expected": "651eb310959558452a4ed8ac8f347dedfc1db9ec3ed6bc8415ad6001d2a01add",
+      "actual": "651eb310959558452a4ed8ac8f347dedfc1db9ec3ed6bc8415ad6001d2a01add",
+      "bytes": 288738
+    }
+  ],
+  "camera": {
+    "normalization": "LF CAMERA declaration, including closing semicolon and one trailing newline",
+    "expected": "cddf8d8f90f58a5e3c058d288ad291c115325929e06d6be94fec0be18a4405d4",
+    "actual": "cddf8d8f90f58a5e3c058d288ad291c115325929e06d6be94fec0be18a4405d4",
+    "match": true
+  },
+  "allMatch": true
+}
