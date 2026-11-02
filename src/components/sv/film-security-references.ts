@@ -1,3 +1,5 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 import * as THREE from "three";
 import type { FilmMaterialPalette } from "./film-materials";
 import type { FilmSet } from "./film-set-builder";
@@ -44,8 +46,8 @@ export function createSecurityReferences(palette: FilmMaterialPalette, reference
     set.box([.56, .39, .010], [-.15, .551, .06], "ivory", [-Math.PI / 2, 0, .06]);
     print(.54, .37, (ctx, w, h) => {
       printBase(ctx, w, h); ctx.fillStyle = REFERENCE_INK; ctx.fillRect(w * .065, h * .04, w * .87, h * .015);
-      printText(ctx, "CORNER", h * .205, w * .065, h * .18);
-      printText(ctx, "TAKEN QUICKLY", h * .16, w * .065, h * .39);
+      printText(ctx, PAINTED_COPY.corner, h * .205, w * .065, h * .18);
+      printText(ctx, PAINTED_COPY.takenQuickly, h * .16, w * .065, h * .39);
       ctx.fillStyle = REFERENCE_BLUE; ctx.fillRect(w * .065, h * .53, w * .39, h * .36);
       ctx.strokeStyle = REFERENCE_GOLD; ctx.lineWidth = 3; ctx.strokeRect(w * .11, h * .59, w * .28, h * .21);
       for (let column = 0; column < 2; column++) for (let line = 0; line < 6; line++) { ctx.fillStyle = REFERENCE_INK; ctx.fillRect(w * (.52 + column * .225), h * (.55 + line * .061), w * .17, h * .009); }
@@ -89,7 +91,7 @@ export function createSecurityReferences(palette: FilmMaterialPalette, reference
       ctx.strokeStyle = REFERENCE_BLUE; ctx.lineWidth = 4; ctx.strokeRect(w * .07, h * .10, w * .86, h * .79);
       ctx.fillStyle = REFERENCE_BLUE; ctx.fillRect(w * .15, h * .23, w * .70, h * .54);
       // Plain typesetting is deliberately unlike a commercial wrapper logo.
-      printText(ctx, "Oreo", h * .23, w * .23, h * .43, REFERENCE_CREAM);
+      printText(ctx, PAINTED_COPY.oreo, h * .23, w * .23, h * .43, REFERENCE_CREAM);
       ctx.fillStyle = REFERENCE_INK; ctx.beginPath(); ctx.ellipse(w * .69, h * .65, w * .085, h * .052, -.15, 0, Math.PI * 2); ctx.fill();
       ctx.strokeStyle = REFERENCE_CREAM; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(w * .61, h * .66); ctx.lineTo(w * .77, h * .64); ctx.stroke();
     }, [{ text: "Oreo", height: .168, center: [-.16, .051, 0] }], [0, .68, .03], [0, 0, 0], true);

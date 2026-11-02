@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useCallback, useEffect, useRef, useSyncExternalStore, type ReactNode } from "react";
 import { motion, useMotionValue, useTransform, type MotionValue } from "framer-motion";
 import "./intro-sequence.css";
@@ -19,12 +21,12 @@ export function IntroSequence({ p, reduced, onEnter }: { p: MotionValue<number>;
   });
 
   if (reduced) return <div className="ix-root ix-reduced" data-intro-beat={beat}>
-    <div className="ix-static-copy"><p className="sv-eyebrow">ALRIGHT. LET’S DO THIS ONE MORE TIME.</p><h1>I’m <span>Ammar Adam.</span></h1><p>I study CS &amp; Finance at Waterloo.<br />I build AI tools at Sagard and bring student builders together.</p><button onClick={onEnter}>Here’s the story so far <span aria-hidden="true">↗</span></button></div>
+    <div className="ix-static-copy"><p className="sv-eyebrow">{PAINTED_COPY.alrightLetSDoThisOneMoreTime}</p><h1>{PAINTED_COPY.iM}<span>{PAINTED_COPY.ammarAdamLabel}</span></h1><p>{PAINTED_COPY.iStudyCsAmpFinanceAtWaterloo}<br />{PAINTED_COPY.iBuildAiToolsAtSagardAndBring}</p><button onClick={onEnter}>{PAINTED_COPY.hereSTheStorySoFar}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span></button></div>
     <img className="ix-static-kid" src="/art/traveler-v2.webp" width={683} height={1024} alt="" aria-hidden="true" />
   </div>;
 
   return <div className="ix-root" data-intro-beat={beat}>
-    <h1 className="ix-sr-only">I’m Ammar Adam. CS &amp; Finance at Waterloo. I build AI tools at Sagard and bring student builders together.</h1>
+    <h1 className="ix-sr-only">{PAINTED_COPY.iMAmmarAdamCsAmpFinanceAt}</h1>
     <motion.div className="ix-floor-streak" style={{ x: floorX }} aria-hidden="true" />
     <div className="ix-architecture" aria-hidden="true">
       <TerminalFlyby p={p} start={.025} end={.29} side={1} label="GATES 01—03" />
@@ -34,27 +36,27 @@ export function IntroSequence({ p, reduced, onEnter }: { p: MotionValue<number>;
     <SwingTraveler p={p} />
     <motion.div className="ix-speed-lines" style={{ opacity: speed }} aria-hidden="true"><i /><i /><i /><i /><i /></motion.div>
     <IntroBeat p={p} index={0} active={beat===0}>
-      <div className="ix-type ix-opener"><p className="ix-overline">AMMAR ADAM / TAKE 01</p><p className="ix-opener-word">ALRIGHT.</p><span className="ix-handwritten">Let’s do this</span><p className="ix-coral">ONE MORE<br />TIME.</p></div>
+      <div className="ix-type ix-opener"><p className="ix-overline">{PAINTED_COPY.ammarAdamTake01}</p><p className="ix-opener-word">{PAINTED_COPY.alright}</p><span className="ix-handwritten">{PAINTED_COPY.letSDoThis}</span><p className="ix-coral">{PAINTED_COPY.oneMore}<br />{PAINTED_COPY.time}</p></div>
     </IntroBeat>
     <IntroBeat p={p} index={1} active={beat===1}>
-      <div className="ix-type ix-name"><p className="ix-overline">MY NAME IS</p><p>AMMAR<br /><span className="ix-coral">ADAM.</span></p><span className="ix-name-caption">Hey. Good to meet you.</span></div>
+      <div className="ix-type ix-name"><p className="ix-overline">{PAINTED_COPY.myNameIs}</p><p>{PAINTED_COPY.ammar}<br /><span className="ix-coral">{PAINTED_COPY.adam}</span></p><span className="ix-name-caption">{PAINTED_COPY.heyGoodToMeetYou}</span></div>
     </IntroBeat>
     <IntroBeat p={p} index={2} active={beat===2}>
       <Montage p={p} start={.34} end={.49} src="/ABOUT10.jpg" caption="CS & FINANCE / WATERLOO" variant="study" />
-      <div className="ix-type ix-fact"><p className="ix-overline">I STUDY</p><p>CS &amp;<br /><span className="ix-coral">FINANCE.</span></p><span className="ix-subtitle">at the University of Waterloo.</span></div>
+      <div className="ix-type ix-fact"><p className="ix-overline">{PAINTED_COPY.iStudy}</p><p>{PAINTED_COPY.csAmp}<br /><span className="ix-coral">{PAINTED_COPY.finance}</span></p><span className="ix-subtitle">{PAINTED_COPY.atTheUniversityOfWaterloo}</span></div>
     </IntroBeat>
     <IntroBeat p={p} index={3} active={beat===3}>
       <Montage p={p} start={.49} end={.64} src="/SAGARD.jpg" caption="SAGARD / AI ENGINEER" variant="work" />
-      <div className="ix-type ix-fact"><p className="ix-overline">MOST DAYS</p><p>I BUILD<br /><span className="ix-coral">AI TOOLS.</span></p><span className="ix-subtitle">For the people doing the work.</span></div>
+      <div className="ix-type ix-fact"><p className="ix-overline">{PAINTED_COPY.mostDays}</p><p>{PAINTED_COPY.iBuild}<br /><span className="ix-coral">{PAINTED_COPY.aiTools}</span></p><span className="ix-subtitle">{PAINTED_COPY.forThePeopleDoingTheWork}</span></div>
     </IntroBeat>
     <IntroBeat p={p} index={4} active={beat===4}>
       <Montage p={p} start={.64} end={.80} src="/HTN_ORGANIZER.jpg" caption="HACK THE NORTH / WATERLOO TECH WEEK" variant="people" />
-      <div className="ix-type ix-builders"><p className="ix-overline">AND WHEN I’M NOT DOING THAT</p><p>I BRING<br /><span className="ix-coral">BUILDERS</span><br />TOGETHER.</p><span className="ix-subtitle">Good things tend to start with good people.</span></div>
+      <div className="ix-type ix-builders"><p className="ix-overline">{PAINTED_COPY.andWhenIMNotDoingThat}</p><p>{PAINTED_COPY.iBring}<br /><span className="ix-coral">{PAINTED_COPY.builders}</span><br />{PAINTED_COPY.together}</p><span className="ix-subtitle">{PAINTED_COPY.goodThingsTendToStartWithGoodPeople}</span></div>
     </IntroBeat>
     <IntroBeat p={p} index={5} active={beat===5}>
-      <div className="ix-type ix-outro"><p className="ix-overline">THAT’S THE SHORT VERSION.</p><p>HERE’S<br />THE STORY<br /><span className="ix-coral">SO FAR.</span></p></div>
+      <div className="ix-type ix-outro"><p className="ix-overline">{PAINTED_COPY.thatSTheShortVersion}</p><p>{PAINTED_COPY.hereS}<br />{PAINTED_COPY.theStory}<br /><span className="ix-coral">{PAINTED_COPY.soFar}</span></p></div>
     </IntroBeat>
-    <div className="ix-controls"><span className="ix-count">0{beat+1} <i>/ 06</i></span><div className="ix-beat-ticks" aria-hidden="true">{INTRO_CUTS.slice(0,-1).map((_,i)=><span key={i} className={i===beat?"is-active":""} />)}</div><button onClick={onEnter}>Skip to the work <span aria-hidden="true">↗</span></button></div>
+    <div className="ix-controls"><span className="ix-count">{PAINTED_COPY.label0}{beat+1} <i>{PAINTED_COPY.label06}</i></span><div className="ix-beat-ticks" aria-hidden="true">{INTRO_CUTS.slice(0,-1).map((_,i)=><span key={i} className={i===beat?"is-active":""} />)}</div><button onClick={onEnter}>{PAINTED_COPY.skipToTheWork}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span></button></div>
   </div>;
 }
 
@@ -172,7 +174,7 @@ function TerminalFlyby({p,start,end,side,label}:{p:MotionValue<number>;start:num
   const opacity=useTransform(local,[0,.06,.86,1],[0,.9,.9,0]);
   return <motion.div className="ix-gantry" style={{z,rotate,x,opacity}}>
     <div className="ix-gantry-cross"><i /><i /><i /></div><div className="ix-gantry-post ix-gantry-post-left" /><div className="ix-gantry-post ix-gantry-post-right" />
-    <div className={`ix-flying-sign ${side<0?"ix-flying-sign-left":""}`}><small>TERMINAL A</small><strong>{label}<b>↗</b></strong></div>
+    <div className={`ix-flying-sign ${side<0?"ix-flying-sign-left":""}`}><small>{PAINTED_COPY.terminalA}</small><strong>{label}<b>{PAINTED_COPY.arrowLabel}</b></strong></div>
   </motion.div>;
 }
 

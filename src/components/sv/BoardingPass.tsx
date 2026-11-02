@@ -1,8 +1,10 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
-import { UI_COPY } from "@/data/copy";
+import { SCAN_CLEARANCE, UI_COPY } from "@/data/copy";
 import { siteConfig } from "@/data/site";
 import "./boarding-pass.css";
 
@@ -70,7 +72,7 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
   }
 
   const detached = status === "tearing" || status === "departing" || status === "opening";
-  const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? "Pass accepted" : status === "departing" ? "Departing" : status === "opening" ? "Opening résumé" : reduced ? "Open resume" : "Scan & open resume";
+  const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? SCAN_CLEARANCE[1] : status === "departing" ? "Departing" : status === "opening" ? "Opening résumé" : reduced ? "Open resume" : "Scan & open resume";
   const announcement = status === "scanning" ? "Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure. Opening the résumé next." : status === "opening" ? "Opening résumé PDF." : reduced ? "Open the résumé PDF." : UI_COPY.boardingHelper;
 
   return <div className={`bp-scene${reduced ? " bp-reduced" : ""}`} data-scan-status={status} data-scan-duration={SCAN_MS} data-departure-delay={DEPARTURE_MS} data-animation-duration={OPEN_MS}>
@@ -82,28 +84,28 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
 
       <motion.article className="bp-ticket" aria-label="Ammar Adam’s resume boarding pass" data-scan-status={status} data-stub-detached={detached} style={{ y, rotate }}>
         <div className="bp-main">
-          <div className="bp-airline"><strong><i className="bp-monogram" aria-hidden="true">a<span>/</span>a</i> AMMAR ADAM</strong><span>BOARDING PASS</span></div>
+          <div className="bp-airline"><strong><i className="bp-monogram" aria-hidden="true">a<span>/</span>a</i> {PAINTED_COPY.ammarAdam}</strong><span>{PAINTED_COPY.boardingPass}</span></div>
           <div className="bp-main-content">
-            <div className="bp-passenger"><span>PASSENGER</span><strong>ADAM / AMMAR</strong><small>Computer Science &amp; Finance · Waterloo</small></div>
-            <div className="bp-route"><div><span>FROM</span><strong>YKF</strong><small>WATERLOO</small></div><div className="bp-route-line" aria-hidden="true"><i /><svg viewBox="0 0 24 24"><path d="M21 12 3 3l2 7 10 2-10 2-2 7z" fill="currentColor" /></svg><i /></div><div><span>TO</span><strong>NEXT</strong><small>WHAT’S NEXT</small></div></div>
-            <dl className="bp-details"><div><dt>FLIGHT</dt><dd>AMM01</dd></div><div><dt>GATE</dt><dd>05</dd></div><div><dt>SEAT</dt><dd>01A</dd></div><div><dt>DOCUMENT</dt><dd>RESUME</dd></div></dl>
-            <div className="bp-paper-footer"><span>AMMARADAM.COM</span><span>KEEP THIS PART</span></div>
+            <div className="bp-passenger"><span>{PAINTED_COPY.passenger}</span><strong>{PAINTED_COPY.adamAmmar}</strong><small>{PAINTED_COPY.computerScienceAmpFinanceWaterloo}</small></div>
+            <div className="bp-route"><div><span>{PAINTED_COPY.from}</span><strong>YKF</strong><small>{PAINTED_COPY.waterloo}</small></div><div className="bp-route-line" aria-hidden="true"><i /><svg viewBox="0 0 24 24"><path d="M21 12 3 3l2 7 10 2-10 2-2 7z" fill="currentColor" /></svg><i /></div><div><span>{PAINTED_COPY.to}</span><strong>{PAINTED_COPY.next}</strong><small>{PAINTED_COPY.whatSNext}</small></div></div>
+            <dl className="bp-details"><div><dt>{PAINTED_COPY.flight}</dt><dd>AMM01</dd></div><div><dt>{PAINTED_COPY.gate}</dt><dd>{PAINTED_COPY.label05}</dd></div><div><dt>{PAINTED_COPY.seat}</dt><dd>01A</dd></div><div><dt>{PAINTED_COPY.document}</dt><dd>{PAINTED_COPY.resume}</dd></div></dl>
+            <div className="bp-paper-footer"><span>{PAINTED_COPY.ammaradamCom}</span><span>{PAINTED_COPY.keepThisPart}</span></div>
           </div>
         </div>
         <div className="bp-stub">
-          <div className="bp-stub-header"><span>RESUME / PDF</span><strong>AMM01</strong></div>
-          <div className="bp-stub-passenger"><span>ADAM / AMMAR</span><strong>YKF <i aria-hidden="true">→</i> NEXT</strong></div>
+          <div className="bp-stub-header"><span>{PAINTED_COPY.resumePdf}</span><strong>AMM01</strong></div>
+          <div className="bp-stub-passenger"><span>{PAINTED_COPY.adamAmmar}</span><strong>YKF <i aria-hidden="true">{PAINTED_COPY.arrow}</i> {PAINTED_COPY.next}</strong></div>
           <a className="bp-scanner" data-scan-trigger="true" data-scan-status={status} href={RESUME} aria-label={reduced ? "Open Ammar Adam’s résumé PDF" : "Scan boarding pass and open Ammar Adam’s résumé PDF after a two-second departure"} aria-busy={status !== "ready"} onClick={scan}>
-            <span className="bp-barcode" aria-hidden="true"><span className="bp-code-bars" />{status === "scanning" && <span key={scanNumber} className="bp-scan-line" style={{ animationDuration: `${SCAN_MS}ms` }} />}<span className="bp-code-number">AMM01 / AMMAR-ADAM / 01A</span></span>
-            <span className="bp-scan-label">{label}<b aria-hidden="true">→</b></span>
+            <span className="bp-barcode" aria-hidden="true"><span className="bp-code-bars" />{status === "scanning" && <span key={scanNumber} className="bp-scan-line" style={{ animationDuration: `${SCAN_MS}ms` }} />}<span className="bp-code-number">{PAINTED_COPY.amm01AmmarAdam01a}</span></span>
+            <span className="bp-scan-label">{label}<b aria-hidden="true">{PAINTED_COPY.arrow}</b></span>
           </a>
-          <div className="bp-clearance" aria-hidden="true"><i /><span>{status === "scanning" ? "READING BARCODE" : status === "tearing" ? "PASS ACCEPTED" : status === "departing" || status === "opening" ? "CLEARED FOR DEPARTURE" : "TWO SECONDS TO DEPARTURE"}</span></div>
+          <div className="bp-clearance" aria-hidden="true"><i /><span>{status === "scanning" ? SCAN_CLEARANCE[0] : status === "tearing" ? SCAN_CLEARANCE[1] : status === "departing" || status === "opening" ? SCAN_CLEARANCE[2] : SCAN_CLEARANCE[3]}</span></div>
         </div>
       </motion.article>
 
       <div className="bp-contact">
         <a className="bp-hello" href={siteConfig.socialLinks.email}>{UI_COPY.hello}</a>
-        <nav className="bp-socials" aria-label="Find Ammar online"><a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer">GitHub</a><a href={siteConfig.socialLinks.x} target="_blank" rel="noreferrer">X</a><a href={siteConfig.socialLinks.email}>Email</a></nav>
+        <nav className="bp-socials" aria-label="Find Ammar online"><a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noreferrer">{PAINTED_COPY.linkedin}</a><a href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer">{PAINTED_COPY.github}</a><a href={siteConfig.socialLinks.x} target="_blank" rel="noreferrer">X</a><a href={siteConfig.socialLinks.email}>{PAINTED_COPY.email}</a></nav>
       </div>
     </div>
     <p className="bp-announcement" role="status" aria-live="polite" aria-atomic="true">{announcement}</p>

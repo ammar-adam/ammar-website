@@ -1,3 +1,5 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 import * as THREE from "three";
 import { careerArrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
@@ -149,8 +151,8 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  (outside.material as THREE.MeshBasicMaterial).fog=false;(runway.material as THREE.MeshBasicMaterial).fog=false;
  // Projected pools of coloured window light are laid onto the floor in perspective.
  for(let z=-5;z>-105;z-=12){block(14,.013,4,6.8,.025,z,keepMaterial(new THREE.MeshBasicMaterial({color:"#ff8b6f",transparent:true,opacity:.17,depthWrite:false})),[0,.32,0]);block(11,.014,.14,7.7,.028,z+2.4,lightWarm,[0,.32,0]);}
- sign("DEPARTURES  /  A01—A09","TERMINAL A",0,6.5,0,10,1.6);
- sign("CHECK-IN","01  /  EXPERIENCE",-4,5.6,-24,11,1.5);
+ sign(PAINTED_COPY.departuresA01A09,PAINTED_COPY.terminalA,0,6.5,0,10,1.6);
+ sign(PAINTED_COPY.checkIn,PAINTED_COPY.label01ExperienceLabel,-4,5.6,-24,11,1.5);
  // The opening flight enters through an open, full-height atrium portal.
  // Glazing flanks the route; neither the camera nor traveller crosses a pane.
  block(58,.3,38,0,-.28,32,concrete);
@@ -158,7 +160,7 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  for(const x of [-14,-9,-4,3,12,14]){block(.27,12.7,.4,x,6.35,14,steel,[0,0,0],true);block(.04,11.7,.06,x+.19,6,14.25,lightCyan);}
  for(const y of [3.5,7,11.7]){block(17,.15,.25,-5.5,y,14,steel);block(2,.15,.25,13,y,14,steel);}
  block(10.2,.3,6.8,7.5,11.9,16.4,dark,[0,0,0],true);block(10.2,.08,.12,7.5,11.7,19.8,lightWarm);
- const entrance=plane(10.6,1.3,label("TERMINAL A","DEPARTURES","#f6d6a2"));entrance.position.set(-5.3,9.3,14.3);
+ const entrance=plane(10.6,1.3,label(PAINTED_COPY.terminalA,PAINTED_COPY.departuresLabel,"#f6d6a2"));entrance.position.set(-5.3,9.3,14.3);
 
  // Offset vestibules break every long sightline. The route bends around these
  // actual walls; the next room cannot be seen through the current station.
@@ -168,7 +170,7 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  block(.55,6.1,3.1,7.95,3.05,-32.3,steel,[0,0,0],true);
  block(21,.22,.18,-3.2,1.25,-30.62,cyan);
  for(let x=-12;x<8;x+=2.2){block(.06,7.5,.07,x,4.7,-30.61,magenta);}
- sign("SECURITY  →","ALL GATES",10.4,4.7,-30.5,4.5,1.05);
+ sign(PAINTED_COPY.security,PAINTED_COPY.allGates,10.4,4.7,-30.5,4.5,1.05);
  block(28,.26,15.2,0,6.9,-41.4,dark);
  for(const z of [-35,-39,-43,-47]){block(28,.22,.2,0,6.68,z,steel);block(6,.035,.3,5.1,6.52,z,lightCyan);}
  block(18,6.8,.6,5,3.4,-49,steel,[0,0,0],true);
@@ -177,14 +179,14 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  block(.5,4.25,3.5,-3.95,2.1,-50.2,magenta,[0,0,0],true);
  block(17,.16,.07,5.3,1.15,-48.65,lightCyan);
  for(const x of [0,4,8,12]){block(.07,5.4,.08,x,3.4,-48.64,ink);block(2.8,.1,.09,x,5.8,-48.6,lightWarm);}
- sign("←  A1—A12","DEPARTURES",-8.7,3.65,-48.55,6,1);
+ sign(PAINTED_COPY.a1A12,PAINTED_COPY.departuresLabel,-8.7,3.65,-48.55,6,1);
  block(21,9.7,.65,-3.5,4.85,-84,steel,[0,0,0],true);
  block(2,9.7,.65,13,4.85,-84,steel);
  block(5,5.25,.75,9.5,7.1,-84,ink);
  block(.55,4.6,3.8,6.95,2.3,-85.55,magenta,[0,0,0],true);
  block(20,.18,.08,-3.5,1.15,-83.62,cyan);
- sign("GATE 05  →","BOARDING",9.5,3.75,-83.5,4.1,.95);
- sign("GATES 04—06  →","DEPARTURES",.5,4.6,-83.5,8,1.25);
+ sign(PAINTED_COPY.gate05Label,PAINTED_COPY.boarding,9.5,3.75,-83.5,4.1,.95);
+ sign(PAINTED_COPY.gates0406Label,PAINTED_COPY.departuresLabel,.5,4.6,-83.5,8,1.25);
 
  // Five actual check-in stations: plinth, front fascia, countertop, luggage
  // scale and a desk monitor, backed by distinct airline-style display boards.
@@ -229,7 +231,7 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  const archZ=-43,archX=1.3;
  block(.48,3.35,.95,archX-1.5,1.68,archZ,cream,[0,0,0],true);block(.48,3.35,.95,archX+1.5,1.68,archZ,cream,[0,0,0],true);block(3.5,.48,.95,archX,3.18,archZ,ink,[0,0,0],true);
  for(const x of [archX-1.26,archX+1.26]){block(.045,2.8,.07,x,1.47,archZ+.5,lightCyan);block(.045,2.8,.07,x,1.47,archZ-.5,magenta);}
- block(2.5,.035,.14,archX,.025,archZ,gold);sign("SECURITY","AIRSIDE SCREENING",.6,5.6,-40,8,1.45);
+ block(2.5,.035,.14,archX,.025,archZ,gold);sign(PAINTED_COPY.securityLabel,PAINTED_COPY.airsideScreening,.6,5.6,-40,8,1.45);
  // X-ray tunnel, rubber entrance strips, conveyor rollers and monitor stand.
  block(2.35,2.1,2.8,6.2,1.35,-43,steel,[0,0,0],true);block(1.66,1.35,.07,6.2,1.15,-41.55,ink);
  for(let i=0;i<9;i++)block(.145,1.17,.05,5.55+i*.165,1.13,-41.49,dark,[0,0,(i%3-1)*.025]);
@@ -297,7 +299,7 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  block(1.3,.8,.75,-10.7,1.72,-67,steel,[0,0,0],true);block(1.18,.16,.86,-10.7,2.15,-67,ink);block(.9,.12,.3,-10.7,1.47,-66.65,lightWarm);
  for(let n=0;n<5;n++){solid(cylinderGeometry,cream,-8.8+n*.28,1.45,-67,.10,.26,.10);solid(cylinderGeometry,sage,-8.8+n*.28,1.585,-67,.085,.018,.085);}
  solid(cylinderGeometry,steel,-12,1.47,-67.1,.56,.38,.56);solid(cylinderGeometry,terracotta,-12,1.67,-67.1,.49,.025,.49);
- const menu=plane(1.55,1.8,label("NIHARI","KHI  /  SLOW COOKED","#e4c27d",512,640));menu.position.set(-12.1,3,-68.9);
+ const menu=plane(1.55,1.8,label(PAINTED_COPY.nihari,PAINTED_COPY.khiSlowCooked,"#e4c27d",512,640));menu.position.set(-12.1,3,-68.9);
  const steam=Array.from({length:4},(_,i)=>solid(round,keepMaterial(new THREE.MeshBasicMaterial({color:"#efdfc4",transparent:true,opacity:.14,depthWrite:false})),-12,2.05+i*.26,-67.1,.1,.18,.1));
  // Warm café furniture and a small screen playing the station vignette.
  for(const [x,z] of [[6.1,-66.5],[6.4,-70.5],[5.8,-63.3]]){solid(cylinderGeometry,walnut,x,1.02,z,.67,.12,.67);rod([x,.04,z],[x,.98,z],.08,steel);for(const dx of [-.95,.95]){block(.62,.12,.65,x+dx,.57,z,sage);block(.62,.65,.12,x+dx,.94,z-.3,sage);rod([x+dx,.05,z],[x+dx,.52,z],.04,steel);}}
@@ -305,7 +307,7 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  // Books, tiny skyline models and luggage tags fill the Toronto shop.
  for(const shelfY of [1.8,2.55,3.3]){block(.8,.1,6.1,-13,shelfY,-78.8,walnut);for(let n=0;n<12;n++)block(.23,.42,.15,-12.75,shelfY+.26,-81.4+n*.46,n%3===0?coral:n%3===1?sage:cream);}
  for(let n=0;n<5;n++){solid(cylinderGeometry,steel,-11+n*.7,1.7,-78,.035,.8,.035);solid(cylinderGeometry,cream,-11+n*.7,1.77,-78,.14,.1,.14);}
- for(const [i,city] of ["TORONTO","MISSISSAUGA"].entries()){block(.84,.42,.045,-8.4+i*1.05,1.52,-77.75,cream);const postcard=plane(.76,.34,label(city,"POSTCARDS","#e4c79c",512,192));postcard.position.set(-8.4+i*1.05,1.52,-77.72);}
+ for(const [i,city] of ["TORONTO","MISSISSAUGA"].entries()){block(.84,.42,.045,-8.4+i*1.05,1.52,-77.75,cream);const postcard=plane(.76,.34,label(city,PAINTED_COPY.postcards,"#e4c79c",512,192));postcard.position.set(-8.4+i*1.05,1.52,-77.72);}
  // An off-side recreation corner keeps the basketball reference incidental.
  block(6.2,.035,8,9.6,.07,-75.7,terracotta);for(const x of [6.6,12.6])block(.055,.025,7.8,x,.1,-75.7,cream);for(const z of [-71.8,-79.6])block(6,.025,.055,9.6,.1,z,cream);
  rod([12.5,0,-77.8],[12.5,4.1,-77.8],.065,steel);block(.1,1.25,1.9,12.4,3.7,-77.8,cream);const hoop=solid(keepGeometry(new THREE.TorusGeometry(.36,.025,6,18)),coral,11.95,3.25,-77.8);hoop.rotation.x=Math.PI/2;
@@ -321,7 +323,7 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  const cook=person(cream,-9.4,-57.7,.3);const barista=person(sage,-10,-68.6,.1);const customer=person(coral,6.2,-65.5,-.5,paleSkin);
  const loader=person(gold,7.6,-38.7,-Math.PI/2);const queueGuest=person(sage,-1.1,-40.8,.3,paleSkin);
  const loadBag=new THREE.Group();scene.add(loadBag);meshBlock(.6,.65,.4,coral,loadBag,0,.33,0);meshBlock(.27,.05,.12,ink,loadBag,0,.72,0);
- const pusher=person(coral,1.8,-59,Math.PI);const jersey=plane(.42,.5,label("66","", "#ffffff",256,256),pusher.root);jersey.position.set(0,1.18,-.18);jersey.rotation.y=Math.PI;
+ const pusher=person(coral,1.8,-59,Math.PI);const jersey=plane(.42,.5,label(PAINTED_COPY.label66,"", "#ffffff",256,256),pusher.root);jersey.position.set(0,1.18,-.18);jersey.rotation.y=Math.PI;
  const cart=new THREE.Group();scene.add(cart);meshBlock(.95,.1,1.3,steel,cart,0,.3,0);for(const x of [-.5,.5])for(const z of [-.65,.65]){meshBlock(.045,.85,.045,steel,cart,x,.72,z);solid(cylinderGeometry,ink,x,.15,z,.12,.08,.12,cart).rotation.z=Math.PI/2;}meshBlock(1.05,.045,.045,steel,cart,0,1.15,.65);meshBlock(.65,.8,.47,gold,cart,0,.75,-.1);meshBlock(.55,.5,.44,magenta,cart,0,1.39,-.1);
  const player=person(coral,9.1,-75.2,.8,paleSkin);const defender=person(dark,10.6,-77.4,-1.5);const ball=solid(round,terracotta,9,1,-75,.16,.16,.16);
  const walkers=[person(dark,2.7,-57,Math.PI),person(sage,3.5,-72,0,paleSkin)];
@@ -338,9 +340,9 @@ export function createTerminalModel(invalidate:()=>void):TerminalModel {
  for(const side of [-1,1])for(let i=0;i<4;i++){const x=side*8.4-2.1+i*1.4;block(1.12,.16,.94,x,.72,-91,dark);block(1.12,1,.16,x,1.21,-91.47,dark,[-.11,0,0]);rod([x,0,-91],[x,.6,-91],.05,steel);}
 
  // Final gate desk, glazing, and an actual jetway leading out to the aircraft.
- sign("GATE 05  /  STILL BOARDING","05  /  NEXT CHAPTER",3.2,4.8,-102,7.4,1.2);
+ sign(PAINTED_COPY.gate05StillBoarding,PAINTED_COPY.label05NextChapter,3.2,4.8,-102,7.4,1.2);
  block(3.4,1.1,1.1,-5,.56,-95,concrete,[0,0,0],true);block(3.6,.14,1.4,-5,1.17,-95,ink,[0,0,0],true);block(3.2,.6,.08,-5,.7,-94.42,coral);
- const gateLogo=plane(2.9,.5,label("AMMAR ADAM","", "#ffc978",1024,128));gateLogo.position.set(-5,.73,-94.36);
+ const gateLogo=plane(2.9,.5,label(PAINTED_COPY.ammarAdam,"", "#ffc978",1024,128));gateLogo.position.set(-5,.73,-94.36);
  for(let x=-14;x<=14;x+=3.5){block(.18,9.5,.2,x,4.75,-104,steel);if(Math.abs(x)>1)block(3.3,8.4,.04,x+1.75,4.8,-104.02,glass);}
  for(const y of [3,6,9])block(28,.14,.14,0,y,-104,steel);
  block(3.1,.35,21,0,.15,-113,concrete);for(const x of [-1.7,1.7]){block(.18,3,21,x,1.6,-113,steel);for(let z=-104;z>-124;z-=2.7){block(.14,3.2,.12,x,1.7,z,ink);block(.04,2.4,2.5,x,1.65,z-1.35,glass);}}block(3.7,.2,21,0,3.3,-113,dark);

@@ -1,3 +1,5 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 /* Cel-shaded figures and props drawn as SVG: flat fills, one hard shadow
    tone, 2px ink on the silhouette, a rim only on the lit side in the plate's
    key colour. `mono` renders a drawing in one colour (echo copies). No logos,
@@ -266,8 +268,8 @@ export function Jersey({ className = "" }: { className?: string }) {
       <path d="M10 30 L40 10 L120 10 L150 30 L136 48 L124 40 L124 110 L36 110 L36 40 L24 48 Z" fill="#c8102e" stroke={INK} strokeWidth="2.5" strokeLinejoin="round" />
       <path d="M36 40 L36 110 L60 110 L60 44 Z" fill="#8c0a1f" />
       <path d="M40 10 L60 10 C66 20 94 20 100 10 L120 10 L118 14 C100 26 60 26 42 14 Z" fill="#8c0a1f" />
-      <text x="82" y="62" textAnchor="middle" fontFamily="var(--font-anton), Impact, sans-serif" fontSize="11" fill="#f4ecd8" letterSpacing="0.5">ALEXANDER-ARNOLD</text>
-      <text x="82" y="100" textAnchor="middle" fontFamily="var(--font-anton), Impact, sans-serif" fontSize="40" fill="#f4ecd8">66</text>
+      <text x="82" y="62" textAnchor="middle" fontFamily="var(--font-anton), Impact, sans-serif" fontSize="11" fill="#f4ecd8" letterSpacing="0.5">{PAINTED_COPY.alexanderArnold}</text>
+      <text x="82" y="100" textAnchor="middle" fontFamily="var(--font-anton), Impact, sans-serif" fontSize="40" fill="#f4ecd8">{PAINTED_COPY.label66}</text>
     </svg>
   );
 }

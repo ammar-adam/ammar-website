@@ -1,3 +1,5 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 import * as THREE from "three";
 import { projects } from "@/data/departures";
 import { memorySequence } from "./memorySequence";
@@ -64,7 +66,7 @@ export function createPaintedTerminal(invalidate: () => void): TerminalModel {
   const labelCanvas = document.createElement("canvas"); labelCanvas.width = 1024; labelCanvas.height = 80;
   const labelContext = labelCanvas.getContext("2d")!;
   labelContext.fillStyle = "#27343c"; labelContext.font = "500 25px Arial"; labelContext.textAlign = "center";
-  labelContext.fillText("A FEW THINGS I WANT TO REMEMBER", 512, 48);
+  labelContext.fillText(PAINTED_COPY.aFewThingsIWantToRemember, 512, 48);
   const labelTexture = new THREE.CanvasTexture(labelCanvas); labelTexture.colorSpace = THREE.SRGBColorSpace; textures.push(labelTexture);
   const label = mesh(5.0, .39, keepMaterial(new THREE.MeshBasicMaterial({ map: labelTexture, transparent: true })), display); label.position.set(0, -2.70, .015);
   const frames = memorySequence.map(memory => {

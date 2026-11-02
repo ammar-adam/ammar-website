@@ -47,7 +47,7 @@
   font-weight: 500;
   line-height: 1.5;
   letter-spacing: .1em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .terminal-directory .td-eyebrow { margin: 0 0 10px; color: var(--td-amber); }
 .terminal-directory h2 {
@@ -57,7 +57,7 @@
   line-height: 1.1;
   font-weight: 400;
   letter-spacing: .015em;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .terminal-directory .td-intro { margin: 12px 0 0; color: var(--td-muted); font-size: 13px; line-height: 1.6; }
 .terminal-directory .td-close {
@@ -119,14 +119,14 @@
 .terminal-directory .td-contact-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; }
 .terminal-directory .td-resume { padding: 26px; background: var(--td-ivory); color: var(--td-navy); }
 .terminal-directory .td-resume .td-eyebrow { display: block; color: #5c503b; }
-.terminal-directory .td-resume h3 { margin: 30px 0 14px; font-family: var(--font-anton), Impact, sans-serif; font-size: 38px; line-height: 1.1; font-weight: 400; text-transform: uppercase; }
+.terminal-directory .td-resume h3 { margin: 30px 0 14px; font-family: var(--font-anton), Impact, sans-serif; font-size: 38px; line-height: 1.1; font-weight: 400; text-transform: none; }
 .terminal-directory .td-resume p { max-width: 26ch; margin: 0 0 28px; font-size: 13px; line-height: 1.65; }
 .terminal-directory .td-resume a { display: flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 48px; padding: 12px 14px; border: 1px solid var(--td-navy); font-size: 12px; font-weight: 650; }
 .terminal-directory .td-resume a:hover { background: var(--td-navy); color: var(--td-ivory); }
 .terminal-directory .td-resume a:focus-visible { outline-color: var(--td-navy); }
 .terminal-directory .td-contacts { border-top: 1px solid var(--td-rule); }
 .terminal-directory .td-contacts > a { position: relative; display: flex; flex-direction: column; justify-content: center; gap: 8px; min-height: 88px; padding: 17px 34px 17px 0; border-bottom: 1px solid var(--td-rule); }
-.terminal-directory .td-contact-label { color: var(--td-muted); font-family: var(--font-jb), "Courier New", monospace; font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.terminal-directory .td-contact-label { color: var(--td-muted); font-family: var(--font-jb), "Courier New", monospace; font-size: 10px; text-transform: none; letter-spacing: .08em; }
 .terminal-directory .td-contact-value { font-size: 14px; overflow-wrap: anywhere; }
 .terminal-directory .td-contact-arrow { position: absolute; right: 4px; top: 36px; color: var(--td-amber); font-size: 20px; }
 .terminal-directory .td-contacts > a:hover .td-contact-value { color: var(--td-amber); }

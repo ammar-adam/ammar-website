@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useEffect, useId, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { careerArrivals as arrivals } from "@/data/arrivals";
@@ -75,12 +77,12 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
     >
       <header className="td-header">
         <div>
-          <p className="td-eyebrow">AMMAR ADAM / PORTFOLIO</p>
-          <h2 id={`${id}-title`}>All the work.</h2>
-          <p id={`${id}-intro`} className="td-intro">The work, the projects, and a way to say hello.</p>
+          <p className="td-eyebrow">{PAINTED_COPY.ammarAdamPortfolio}</p>
+          <h2 id={`${id}-title`}>{PAINTED_COPY.allTheWork}</h2>
+          <p id={`${id}-intro`} className="td-intro">{PAINTED_COPY.theWorkTheProjectsAndAWayTo}</p>
         </div>
         <button type="button" className="td-close" onClick={onClose}>
-          <span>Close</span><span aria-hidden="true">×</span>
+          <span>{PAINTED_COPY.close}</span><span aria-hidden="true">{PAINTED_COPY.arrowLabelLabelLabelLabelLabelLabel}</span>
         </button>
       </header>
 
@@ -112,7 +114,7 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
           tabIndex={0}
           hidden={activeTab !== "experience"}
         >
-          <p className="td-section-label">Experience <span>Where I&apos;ve worked</span></p>
+          <p className="td-section-label">{PAINTED_COPY.experience}<span>{PAINTED_COPY.whereIAposVeWorked}</span></p>
           <div className="td-grid">
             {arrivals.map((arrival, index) => (
               <article className="td-card" key={arrival.slug}>
@@ -122,9 +124,9 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
                 <p className="td-description">{arrival.impact}</p>
                 <p className="td-description td-detail">{arrival.details}</p>
                 <div className="td-links">
-                  {arrival.fromUrl && <a href={arrival.fromUrl} target="_blank" rel="noreferrer">Website <span aria-hidden="true">↗</span><span className="td-sr-only"> for {arrival.from} (opens in a new tab)</span></a>}
+                  {arrival.fromUrl && <a href={arrival.fromUrl} target="_blank" rel="noreferrer">{PAINTED_COPY.website}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span><span className="td-sr-only"> {PAINTED_COPY.for}{arrival.from} {PAINTED_COPY.opensInANewTab}</span></a>}
                   {arrival.links?.filter((link) => link.url !== arrival.fromUrl).map((link) => (
-                    <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span><span className="td-sr-only"> (opens in a new tab)</span></a>
+                    <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span><span className="td-sr-only"> {PAINTED_COPY.opensInANewTab}</span></a>
                   ))}
                 </div>
               </article>
@@ -140,7 +142,7 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
           tabIndex={0}
           hidden={activeTab !== "projects"}
         >
-          <p className="td-section-label">Projects <span>Things I&apos;ve built</span></p>
+          <p className="td-section-label">{PAINTED_COPY.projects}<span>{PAINTED_COPY.thingsIAposVeBuilt}</span></p>
           <div className="td-grid">
             {projects.map((project) => (
               <article className="td-card" key={project.slug}>
@@ -150,7 +152,7 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
                 <p className="td-description">{project.shortDesc}</p>
                 <div className="td-links">
                   {project.seats.flatMap((seat) => seat.links ?? []).map((link) => (
-                    <a key={`${project.slug}-${link.url}`} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">↗</span><span className="td-sr-only"> for {project.name} (opens in a new tab)</span></a>
+                    <a key={`${project.slug}-${link.url}`} href={link.url} target="_blank" rel="noreferrer">{link.label} <span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span><span className="td-sr-only"> {PAINTED_COPY.for}{project.name} {PAINTED_COPY.opensInANewTab}</span></a>
                   ))}
                 </div>
               </article>
@@ -166,21 +168,21 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
           tabIndex={0}
           hidden={activeTab !== "contact"}
         >
-          <p className="td-section-label">Contact <span>Let&apos;s talk</span></p>
+          <p className="td-section-label">{PAINTED_COPY.contact}<span>{PAINTED_COPY.letAposSTalk}</span></p>
           <div className="td-contact-grid">
             <div className="td-resume">
-              <span className="td-eyebrow">AMMAR ADAM</span>
-              <h3>The one-page version.</h3>
-              <p>CS &amp; Finance at the University of Waterloo.</p>
-              <a href="/Ammar_Adam.pdf" target="_blank" rel="noreferrer">Open my resume <span aria-hidden="true">↗</span><span className="td-sr-only"> (PDF, opens in a new tab)</span></a>
+              <span className="td-eyebrow">{PAINTED_COPY.ammarAdam}</span>
+              <h3>{PAINTED_COPY.theOnePageVersion}</h3>
+              <p>{PAINTED_COPY.csAmpFinanceAtTheUniversityOfWaterloo}</p>
+              <a href="/Ammar_Adam.pdf" target="_blank" rel="noreferrer">{PAINTED_COPY.openMyResume}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span><span className="td-sr-only"> {PAINTED_COPY.pdfOpensInANewTab}</span></a>
             </div>
             <div className="td-contacts">
               {socialLinks.map((link) => (
                 <a key={link.label} href={link.href} target={link.href.startsWith("mailto:") ? undefined : "_blank"} rel={link.href.startsWith("mailto:") ? undefined : "noreferrer"}>
                   <span className="td-contact-label">{link.label}</span>
                   <span className="td-contact-value">{link.value}</span>
-                  <span className="td-contact-arrow" aria-hidden="true">↗</span>
-                  {!link.href.startsWith("mailto:") && <span className="td-sr-only"> (opens in a new tab)</span>}
+                  <span className="td-contact-arrow" aria-hidden="true">{PAINTED_COPY.arrowLabel}</span>
+                  {!link.href.startsWith("mailto:") && <span className="td-sr-only"> {PAINTED_COPY.opensInANewTab}</span>}
                 </a>
               ))}
             </div>
@@ -188,7 +190,7 @@ export function TerminalDirectory({ open, onClose, initialTab = "experience" }: 
         </section>
       </div>
 
-      <footer className="td-footer"><span>Ammar Adam</span><Link href="/credits">Visual credits <span aria-hidden="true">↗</span></Link></footer>
+      <footer className="td-footer"><span>{PAINTED_COPY.ammarAdam}</span><Link href="/credits">{PAINTED_COPY.visualCredits}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span></Link></footer>
     </dialog>
   );
 }

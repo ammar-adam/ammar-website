@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import Link from "next/link";
 import { useEffect, useId, useRef, useState } from "react";
 import { JourneyNavigation } from "./JourneyNavigation";
@@ -9,8 +11,8 @@ import "./journey-navigation.css";
 
 function HeaderLinks() {
   return <div className="journey-shortcuts">
-    <Link href="/short">About me</Link>
-    <a href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">Résumé</a>
+    <Link href="/short">{PAINTED_COPY.aboutMe}</Link>
+    <a href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">{PAINTED_COPY.rSum}</a>
     <SocialLinks />
   </div>;
 }
@@ -58,9 +60,9 @@ export function JourneyHeader({ chapter, onNavigate }: { chapter: number; onNavi
         <span className="journey-current-chapter">{CHAPTERS[chapter].short}</span>
       </div>
       <div className="journey-desktop-shortcuts"><HeaderLinks /></div>
-      <Link className="journey-mobile-short" href="/short">About me</Link>
+      <Link className="journey-mobile-short" href="/short">{PAINTED_COPY.aboutMe}</Link>
       <button ref={trigger} className="journey-menu-button" type="button" aria-label={open ? "Close navigation menu" : "Open navigation menu"} aria-expanded={open} aria-controls={menuId} onClick={() => setOpen(value => !value)}>
-        <span>Menu</span><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d={open ? "m4 4 10 10M14 4 4 14" : "M2 5h14M2 9h14M2 13h14"} fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
+        <span>{PAINTED_COPY.menu}</span><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d={open ? "m4 4 10 10M14 4 4 14" : "M2 5h14M2 9h14M2 13h14"} fill="none" stroke="currentColor" strokeWidth="1.5" /></svg>
       </button>
     </div>
     <div id={menuId} className="journey-mobile-menu" hidden={!open} onKeyDown={event => {
