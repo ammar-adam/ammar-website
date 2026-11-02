@@ -1,3 +1,5 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 import * as THREE from "three";
 import { ensurePaintUV } from "./film-paint-uv";
 
@@ -362,7 +364,7 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     gatePaint.beginPath(); gatePaint.moveTo(28, 135); gatePaint.lineTo(1410, 81);
     gatePaint.lineTo(1506, 494); gatePaint.lineTo(50, 561); gatePaint.closePath(); gatePaint.fill();
     gatePaint.fillStyle = "#f4dfb0"; gatePaint.font = "700 370px Arial";
-    gatePaint.fillText("05", 115, 465);
+    gatePaint.fillText(PAINTED_COPY.label05, 115, 465);
     gatePaint.lineWidth = 41; gatePaint.lineCap = "square"; gatePaint.strokeStyle = "#f4dfb0";
     gatePaint.beginPath(); gatePaint.moveTo(769, 328); gatePaint.lineTo(1310, 328);
     gatePaint.moveTo(1150, 178); gatePaint.lineTo(1310, 328); gatePaint.lineTo(1150, 478); gatePaint.stroke();
@@ -434,6 +436,43 @@ export function createFilmArchitecture(materials: FilmArchitectureMaterials, inv
     }
   }
 
+  // Terminal infrastructure uses the existing room/material instance buckets.
+  // Break up the upper wall/soffit without filling the card's foreground zone.
+  for (let z=-19;z>-84;z-=3.2) {
+    const zone=zoneAt(z);
+    for(const y of [1.2,2.4,3.6,4.8,6.0,7.2])block("steel",[.018,.018,3.14],[-13.86,y,z],false,zone);
+    block("steel",[.02,7.4,.025],[-13.86,3.9,z],false,zone);
+    for(const x of [-8,-2,4]){
+      const y=roofY(x)-.26;
+      block("steel",[.15,.12,3.2],[x,y,z],false,zone);
+      block("dark",[.45,.09,.45],[x,y-.12,z],false,zone);
+      block("warmLight",[.31,.018,.31],[x,y-.18,z],false,zone);
+      block("steel",[.65,.25,.4],[x+1,y-.16,z],false,zone);
+      rod("steel",[x+1,y-.29,z],[x+1,y-.40,z],.035,false,zone);
+    }
+    block("steel",[.35,.25,3.2],[-10,roofY(-10)-.32,z],false,zone);
+    for(let rib=0;rib<5;rib++)block("ink",[.37,.025,.025],[-10,roofY(-10)-.46,z-1.4+rib*.6],false,zone);
+  }
+  for(const [z,zone] of [[-31,1],[-49,2],[-84,3]] as const){
+    for(const y of [5.0,6.2,7.4])block("steel",[27,.035,.055],[0,y,z+.19],false,zone);
+    for(let x=-12;x<=12;x+=3)block("steel",[.027,3.2,.055],[x,6.4,z+.20],false,zone);
+    for(const x of [-10,6]){
+      block("dark",[1.6,.56,.10],[x,6.7,z+.22],false,zone);
+      for(let n=0;n<8;n++)block("steel",[1.5,.022,.03],[x,6.48+n*.06,z+.28],false,zone);
+    }
+  }
+  // Recessed staff window: corridor, baggage cart, glazing and service door.
+  for(const z of [-28,-46,-77]){
+    const zone=zoneAt(z);
+    block("dark",[.08,2.2,3.2],[-13.73,2.4,z],false,zone);
+    for(const y of [1.3,3.5])block("gold",[.12,.09,3.3],[-13.64,y,z],false,zone);
+    for(const zz of [z-1.6,z+1.6])block("steel",[.12,2.2,.10],[-13.64,2.4,zz],false,zone);
+    block("glass",[.025,2.05,3.08],[-13.57,2.4,z],false,zone);
+    block("steel",[.03,.12,1.4],[-13.61,1.7,z],false,zone);
+    for(const zz of [z-.6,z+.6])block("ink",[.04,.65,.06],[-13.60,1.7,zz],false,zone);
+    block("dark",[.06,2.55,1.15],[-13.70,1.28,z+2.5],false,zone);
+    block("gold",[.10,.08,.18],[-13.61,1.3,z+2.85],false,zone);
+  }
   // Two small drawing batches per room share the existing palette. These add
   // actual surface linework without an extra render pass or per-frame work.
   rooms.forEach(({ group, batches, drawing }) => {

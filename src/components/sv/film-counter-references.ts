@@ -1,3 +1,5 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 import * as THREE from "three";
 import type { FilmMaterialPalette } from "./film-materials";
 import type { FilmSet } from "./film-set-builder";
@@ -12,7 +14,7 @@ export function createCounterReferences(palette: FilmMaterialPalette, references
   const selected: { root: THREE.Group; index: number }[] = [];
   const add = (id: string, index: number, build: (assembly: ReturnType<typeof createReferenceAssembly>) => void) => {
     const row = references.find(reference => reference.id === id); if (!row) return;
-    const assembly = createReferenceAssembly(palette, row); build(assembly); assembly.finish(); assemblies.push(assembly); selected.push({ root: assembly.root, index });
+    const assembly = createReferenceAssembly(palette, row); build(assembly); assembly.finish(); if(id==="alpen-difc")assembly.root.scale.multiplyScalar(.55); assemblies.push(assembly); selected.push({ root: assembly.root, index });
   };
 
   add("alpen-difc", 0, ({ set, print }) => {
@@ -20,10 +22,7 @@ export function createCounterReferences(palette: FilmMaterialPalette, references
     set.box([.22, .04, .20], [0, .02, -.10], "steel", [0, 0, 0], .025);
     set.rod([0, .04, -.10], [0, 1.02, -.10], .017, "gold");
     set.rod([0, 1.02, -.10], [0, 1.02, .03], .017, "gold");
-    set.rod([0, 1.0, .03], [-.19, .67, .04], .024, "coral");
-    set.rod([0, 1.0, .03], [.19, .67, .04], .024, "coral");
-    set.rod([-.19, .67, .04], [0, .52, .04], .024, "coral");
-    set.rod([.19, .67, .04], [0, .52, .04], .024, "coral");
+    set.add(new THREE.TorusGeometry(.19,.013,5,20), "steel", [0,.79,.04], [0,0,0], [.68,1.3,1]);
     set.add(new THREE.TorusGeometry(.038, .009, 5, 12), "steel", [0, .54, .055]);
     set.box([.66, .69, .025], [0, .25, .065], "ivory", [0, 0, 0], .035);
     set.box([.09, .065, .038], [0, .59, .065], "steel", [0, 0, 0], .012);
@@ -39,20 +38,16 @@ export function createCounterReferences(palette: FilmMaterialPalette, references
   });
 
   add("alpen-model", 0, ({ set, print }) => {
-    set.box([1.02, .045, .38], [0, .025, -.12], "steel", [0, 0, 0], .025);
-    set.rod([-.43, .04, -.20], [-.43, .85, -.19], .016, "gold");
-    set.rod([.43, .04, -.20], [.43, .85, -.19], .016, "gold");
-    set.box([.99, .93, .025], [0, .50, -.05], "ivory", [-.16, 0, 0]);
-    set.box([.19, .035, .055], [0, .97, -.12], "steel", [-.16, 0, 0], .008);
-    print(.94, .88, (ctx, w, h) => {
-      printBase(ctx, w, h); printText(ctx, "FINANCIAL", h * .155, w * .07, h * .13); printText(ctx, "MODEL", h * .155, w * .07, h * .30);
+    set.box([.99, .012, .88], [0, .018, 0], "ivory");
+    print(.94, .84, (ctx, w, h) => {
+      printBase(ctx, w, h);
       ctx.strokeStyle = REFERENCE_BLUE; ctx.lineWidth = 2;
       for (let y = 0; y < 7; y++) { ctx.beginPath(); ctx.moveTo(w * .07, h * (.44 + y * .073)); ctx.lineTo(w * .93, h * (.44 + y * .073)); ctx.stroke(); }
       for (let x = 0; x < 4; x++) { ctx.beginPath(); ctx.moveTo(w * (.07 + x * .285), h * .44); ctx.lineTo(w * (.07 + x * .285), h * .88); ctx.stroke(); }
       ctx.fillStyle = REFERENCE_BLUE;
       for (let y = 0; y < 5; y++) for (let x = 0; x < 3; x++) ctx.fillRect(w * (.09 + x * .285), h * (.47 + y * .073), w * (.11 + ((x + y) % 3) * .035), h * .012);
       ctx.fillStyle = REFERENCE_GOLD; ctx.fillRect(w * .07, h * .87, w * .86, h * .036);
-    }, [{ text: "FINANCIAL", height: .136, center: [0, .325, 0] }, { text: "MODEL", height: .136, center: [0, .176, 0] }], [0, .50, -.028], [-.16, 0, 0]);
+    }, [], [0, .027, 0], [-Math.PI/2, 0, 0]);
   });
 
   add("alpen-business-cards", 0, ({ set }) => {
@@ -66,7 +61,7 @@ export function createCounterReferences(palette: FilmMaterialPalette, references
     set.rod([0, .05, -.12], [0, .43, -.12], .055, "steel");
     set.box([1.55, 1.0, .12], [0, .79, -.04], "ink", [0, 0, 0], .055);
     print(1.43, .88, (ctx, w, h) => {
-      printBase(ctx, w, h, true); printText(ctx, "SALES", h * .19, w * .055, h * .16, REFERENCE_CREAM);
+      printBase(ctx, w, h, true); printText(ctx, PAINTED_COPY.sales, h * .19, w * .055, h * .16, REFERENCE_CREAM);
       ctx.strokeStyle = REFERENCE_BLUE; ctx.lineWidth = 3;
       for (let n = 0; n < 4; n++) { ctx.beginPath(); ctx.moveTo(w * .06, h * (.43 + n * .13)); ctx.lineTo(w * .69, h * (.43 + n * .13)); ctx.stroke(); }
       const bars = [.18, .29, .24, .44, .50, .60];
@@ -85,7 +80,7 @@ export function createCounterReferences(palette: FilmMaterialPalette, references
       // Only the named document, a red rubber stamp, and its attached note.
       ctx.save(); ctx.translate(w * .27, h * .67); ctx.rotate(-.16); ctx.strokeStyle = REFERENCE_RED; ctx.lineWidth = 8; ctx.strokeRect(-w * .19, -h * .115, w * .38, h * .23); printText(ctx, "KYC", h * .16, -w * .14, 0, REFERENCE_RED); ctx.restore();
       ctx.fillStyle = REFERENCE_GOLD; ctx.fillRect(w * .51, h * .47, w * .45, h * .40);
-      printText(ctx, "Doppel", h * .165, w * .54, h * .64);
+      printText(ctx, PAINTED_COPY.doppel, h * .165, w * .54, h * .64);
     }, [{ text: "KYC", height: .232, center: [-.28, .224, 0] }, { text: "KYC", height: .138, center: [-.24, -.146, 0] }, { text: "Doppel", height: .142, center: [.24, -.12, 0] }], [0, .49, .058], [-.08, 0, 0]);
     set.add(new THREE.CylinderGeometry(.065, .08, .19, 12), "walnut", [.67, .14, .08]);
     set.box([.25, .055, .15], [.67, .045, .08], "coral", [0, -.12, 0], .016);
@@ -100,7 +95,7 @@ export function createCounterReferences(palette: FilmMaterialPalette, references
     set.box([.77, .72, .035], [0, .55, .04], "ivory", [0, 0, 0], .035);
     set.box([.10, .06, .05], [0, .91, .04], "steel", [0, 0, 0], .012);
     print(.70, .65, (ctx, w, h) => {
-      printBase(ctx, w, h); printText(ctx, "DevDay", h * .23, w * .045, h * .30);
+      printBase(ctx, w, h); printText(ctx, PAINTED_COPY.devday, h * .23, w * .045, h * .30);
       ctx.fillStyle = REFERENCE_RED; ctx.fillRect(w * .055, h * .54, w * .89, h * .12);
       ctx.fillStyle = REFERENCE_INK; for (let n = 0; n < 16; n++) ctx.fillRect(w * (.07 + n * .054), h * .79, w * (n % 2 ? .015 : .023), h * .08);
     }, [{ text: "DevDay", height: .150, center: [0, .13, 0] }], [0, .55, .060]);

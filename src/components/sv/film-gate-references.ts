@@ -1,3 +1,4 @@
+import { FLAP_COLUMNS } from "@/data/copy";
 import * as THREE from "three";
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
 import type { FilmMaterialPalette } from "./film-materials";
@@ -6,13 +7,13 @@ import { ensurePaintUV } from "./film-paint-uv";
 import type { TerminalReference } from "@/data/references";
 import { protectFilmRegistration } from "./terminal-post";
 
-const GLYPHS = " ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789→—-/·¾…";
+const GLYPHS = " ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789→—-/·¾…";
 const ATLAS_COLUMNS = 16, ATLAS_ROWS = Math.ceil(GLYPHS.length / ATLAS_COLUMNS);
 const TILE_WIDTH = .164, TILE_HEIGHT = .42, HALF_HEIGHT = .206, HALF_CENTER = .107;
 const COLUMNS = [
- { label: "ROUTE", left: -5.22, right: -3.50, count: 9 },
- { label: "DESTINATION", left: -3.20, right: 3.02, count: 35 },
- { label: "STATUS", left: 3.48, right: 5.20, count: 9 },
+ { label: FLAP_COLUMNS[0], left: -5.22, right: -3.50, count: 9 },
+ { label: FLAP_COLUMNS[1], left: -3.20, right: 3.02, count: 35 },
+ { label: FLAP_COLUMNS[2], left: 3.48, right: 5.20, count: 9 },
 ].map(column=>{
  // Every cassette stays inside its column, with a clear gutter on either
  // side of the dividers even when all 35 destination characters are occupied.
@@ -21,7 +22,7 @@ const COLUMNS = [
 });
 const CELLS_PER_ROW = COLUMNS.reduce((sum, column) => sum + column.count, 0);
 const fitColumnText=(value:string,count:number)=>{
- const letters=Array.from(value.trim().replace(/\s+/g," ").toUpperCase());
+ const letters=Array.from(value.trim().replace(/\s+/g," "));
  return letters.length>count?[...letters.slice(0,count-1),"…"].join(""):letters.join("");
 };
 type PrintedWord = { text: string; center: [number,number,number]; unitHeight: number };
@@ -156,7 +157,7 @@ varying vec2 vGateUv;varying vec4 vGateGlyph;`)
  if(optional){
   const small=createSetBuilder(palette,"small-gate-wayfinding");ownedSets.push(small);small.root.position.set(...optional.position);small.root.rotation.set(...optional.rotation);small.root.scale.set(...optional.scale);small.root.userData={referenceId:optional.id,referenceDwell:optional.dwell};
   small.box([1.40,.50,.075],[0,0,-.065],"dark",[0,0,0],.035);
-  const label="GATE 9¾",items:GlyphPlate[]=[...label].map((letter,index)=>({x:-.48+index*.16,y:0,z:-.021,width:.15,height:.38,glyph:glyph(letter),half:2}));
+  const label="Gate 9¾",items:GlyphPlate[]=[...label].map((letter,index)=>({x:-.48+index*.16,y:0,z:-.021,width:.15,height:.38,glyph:glyph(letter),half:2}));
   const letters=plates(small.root,items,"small-gate-letters");letters.mesh.userData={referenceId:optional.id,referenceText:[{text:"Gate 9¾",center:[0,0,0],unitHeight:.38*74/96}]};small.finish();groups.push(small.root);
  }
  invalidate();

@@ -1,4 +1,8 @@
+
+import { PAINTED_COPY } from "@/data/copy";
 import * as THREE from "three";
+import { journeyAt } from "@/data/journeyState";
+import { SHOP_COPY, UI_COPY } from "@/data/copy";
 import { careerArrivals } from "@/data/arrivals";
 import { projects } from "@/data/departures";
 import { memorySequence } from "./memorySequence";
@@ -12,6 +16,7 @@ import type { FilmSet } from "./film-set-builder";
 import { terminalReferences } from "@/data/references";
 import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
 import { createFilmAircraft } from "./film-aircraft";
+import { createTerminalDressing } from "./terminal-dressing";
 import { createFilmCheckin } from "./film-checkin";
 
 import { RoundedBoxGeometry } from "three/addons/geometries/RoundedBoxGeometry.js";
@@ -47,8 +52,8 @@ const CAMERA:CameraKey[] = [
  {at:.72,position:[.8,2.2,-63.6],target:[-3,2.9,-81],roll:0,fov:69},
  {at:.745,position:[.5,2.2,-65.3],target:[-3.5,2.8,-82],roll:0,fov:69},
  {at:.775,position:[.8,2.2,-71],target:[-3,2.8,-86],roll:.015,fov:70},
- {at:.79,position:[.8,2.2,-74.6],target:[-3,2.9,-90],roll:0,fov:69},
- {at:.815,position:[.5,2.2,-76.3],target:[-3.5,2.8,-90],roll:0,fov:69},
+ {at:.79,position:[.8,2.2,-74.6],target:[1,3.7,-86],roll:0,fov:69},
+ {at:.815,position:[.5,2.2,-76.3],target:[3,3.8,-85],roll:0,fov:69},
  {at:.826,position:[2.5,2.1,-78],target:[8.8,2.2,-84],roll:.015,fov:68},
  {at:.837,position:[7.3,1.9,-79.7],target:[9.4,2.1,-88],roll:.018,fov:65},
  {at:.846,position:[9.4,1.9,-81.7],target:[9.4,2.1,-92],roll:0,fov:63},
@@ -83,7 +88,7 @@ function railValue(keys:CameraKey[],progress:number,read:(key:CameraKey)=>number
 const flightValue=(progress:number,read:(key:CameraKey)=>number)=>railValue(FLIGHT_KEYS,progress,read);
 
 
-export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number; lookYaw?:number; lookPitch?:number }
+export interface TerminalWorldState { t:number; time?:number; reduced:boolean; experienceIndex:number; projectIndex:number; departure:number; aspect:number; viewportHeight?:number; lookYaw?:number; lookPitch?:number }
 export interface TerminalModel {
  scene:THREE.Scene; camera:THREE.PerspectiveCamera; photos:THREE.Object3D[];
  update:(state:TerminalWorldState)=>void; takePendingProgramRoots:()=>THREE.Object3D[]; dispose:()=>void;
@@ -123,6 +128,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const concrete=palette.materials.ivory,cream=palette.materials.ivory,magenta=palette.materials.coral;
  const toon=(color:string)=>keepMaterial(palette.createSurface(color,{roughness:.82,metalness:.08,paint:.95}));
  const architecture=createFilmArchitecture(palette.materials);scene.add(architecture.root);
+ const terminalDressing=createTerminalDressing(palette.materials,invalidate);terminalDressing.groups.forEach(group=>scene.add(group));
 
  const outline=keepMaterial(new THREE.LineBasicMaterial({color:"#091122",transparent:true,opacity:.72}));
  scene.add(new THREE.HemisphereLight("#3a4f8a","#2b3566",.22));
@@ -161,13 +167,13 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  block(120,.30,90,0,-.285,96,concrete);
  block(280,.20,175,20,-.55,-191,concrete);
  for(let z=-115;z>-220;z-=12){block(.16,.015,6,-12,-.435,z,gold);block(.13,.015,6,-11.4,-.434,z,cream);}
- sign("DEPARTURES  →","TERMINAL A",-7,7.7,5,7.2,1.1);
- sign("CHECK-IN","01—05",-4,5.6,-24,10,1.35);
- sign("SECURITY  →","ALL GATES",10.4,4.7,-30.5,4.5,1.05);
- sign("←  A1—A12","DEPARTURES",-8.7,3.65,-48.55,6,1);
- sign("GATES 04—06","DEPARTURES  →",9.4,5.6,-83.4,4.7,.95);
+ sign(PAINTED_COPY.departures,PAINTED_COPY.terminalA,-7,7.7,5,7.2,1.1);
+ sign(PAINTED_COPY.checkIn,"01—05",-4,5.6,-24,10,1.35);
+ sign(PAINTED_COPY.security,PAINTED_COPY.allGates,10.4,4.7,-30.5,4.5,1.05);
+ sign(PAINTED_COPY.a1A12,PAINTED_COPY.departuresLabel,-8.7,3.65,-48.55,6,1);
+ sign(PAINTED_COPY.gates0406,PAINTED_COPY.departures,9.4,5.6,-83.4,4.7,.95);
  block(58,.3,38,0,-.28,32,concrete);
- const entrance=plane(10.6,1.3,label("TERMINAL A","DEPARTURES","#f6d6a2"));entrance.position.set(-5.3,9.3,14.3);
+ const entrance=plane(10.6,1.3,label(PAINTED_COPY.terminalA,PAINTED_COPY.departuresLabel,"#f6d6a2"));entrance.position.set(-5.3,9.3,14.3);
  // Entry frontage is real glazing and steel. The full-height x4.0–10.5 span
  // stays open for the authored flight. These additions never cast shadows.
  const entryRoof=(x:number)=>8+3.6*(1-(x/14)**2);
@@ -193,7 +199,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   for(const y of [.07,2.95])block(1.53,.055,.075,x,y,13.89,steel);
   block(.038,.43,.10,x+(x<4?.59:-.59),1.40,13.83,steel);
  }
- const entryReverse=plane(10.6,1.3,label("ENTRY","","#f6d6a2"));
+ const entryReverse=plane(10.6,1.3,label(PAINTED_COPY.entry,"","#f6d6a2"));
  entryReverse.name="arrival-entry-interior-sign";entryReverse.position.set(-5.3,9.3,14.285);entryReverse.rotation.y=Math.PI;
 
  // Five actual check-in stations: plinth, front fascia, countertop, luggage
@@ -208,8 +214,8 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   block(.6,.3,.5,x+.77,.17,z+1.0,dark,[0,0,0],true);block(.63,.05,1.4,x+.77,.35,z+1.0,steel);
   for(let n=0;n<9;n++)rod([x+.48,.4,z+.4+n*.13],[x+1.04,.4,z+.4+n*.13],.035,ink);
   block(.12,.45,.12,x-.45,1.28,z,steel);block(.68,.45,.08,x-.45,1.57,z+.02,ink,[0,0,0],true);
-  const screen=plane(.59,.34,label("0"+(i+1),entry.origin.toUpperCase(),"#5de1e7",512,256));screen.position.set(x-.45,1.57,z+.07);
-  const board=plane(1.3,.55,label(String(i+1).padStart(2,"0"),entry.origin.toUpperCase(),"#d4c2a0"));board.position.set(x,3.45,z-.75);
+  const screen=plane(.59,.34,label("0"+(i+1),entry.origin,"#5de1e7",512,256));screen.position.set(x-.45,1.57,z+.07);
+  const board=plane(1.3,.55,label(String(i+1).padStart(2,"0"),entry.origin,"#d4c2a0"));board.position.set(x,3.45,z-.75);
   block(1.45,.66,.14,x,3.45,z-.89,ink,[0,0,0],true);
   const indicator=new THREE.Mesh(unitBox,lightWarm);indicator.scale.set(2.38,.08,.09);indicator.position.set(x,1.13,z+.8);scene.add(indicator);deskLights.push(indicator);
   const number=plane(.56,.35,label("0"+(i+1),"", "#ffc66f",256,128));number.position.set(x,.53,z+.63);
@@ -217,8 +223,8 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  // A close service island makes the selected destination unmistakable. Its
  // large board and counter monitor change together with the directory choice.
  const checkinIsland=createFilmCheckin(palette.materials);checkinIsland.root.position.set(3.45,0,-26.1);scene.add(checkinIsland.root);
- const activeCompanyBoards=careerArrivals.map((entry,i)=>{const image=plane(3.52,.94,label(entry.from.toUpperCase(),`0${i+1}  /  ${entry.origin.toUpperCase()}`,"#76e2e6",1536,384),checkinIsland.boardAnchor);image.position.z=.01;return image;});
- const counterScreens=careerArrivals.map((entry,i)=>{const image=plane(.94,.54,label(String(i+1).padStart(2,"0"),entry.from.toUpperCase(),"#65dbed",512,256),checkinIsland.monitorAnchor);image.position.z=.01;return image;});
+ const activeCompanyBoards=careerArrivals.map((entry,i)=>{const image=plane(3.52,.94,label(entry.from,`0${i+1}  /  ${entry.origin}`,"#76e2e6",1536,384),checkinIsland.boardAnchor);image.position.z=.01;return image;});
+ const counterScreens=careerArrivals.map((entry,i)=>{const image=plane(.94,.54,label(String(i+1).padStart(2,"0"),entry.from,"#65dbed",512,256),checkinIsland.monitorAnchor);image.position.z=.01;return image;});
  // An oval luggage carousel turns continuously while this room is visible.
  const carouselBase=new THREE.Mesh(cylinderGeometry,ink);carouselBase.scale.set(1.9,.65,2.7);carouselBase.position.set(10.5,.35,-26.2);scene.add(carouselBase);
  const carouselCore=new THREE.Mesh(cylinderGeometry,steel);carouselCore.scale.set(1.05,.68,1.7);carouselCore.position.set(10.5,.8,-26.2);scene.add(carouselCore);
@@ -249,7 +255,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const archZ=-43,archX=1.3;
  block(.48,3.35,.95,archX-1.5,1.68,archZ,cream,[0,0,0],true);block(.48,3.35,.95,archX+1.5,1.68,archZ,cream,[0,0,0],true);block(3.5,.48,.95,archX,3.18,archZ,ink,[0,0,0],true);
  for(const x of [archX-1.26,archX+1.26]){block(.045,2.8,.07,x,1.47,archZ+.5,lightCyan);block(.045,2.8,.07,x,1.47,archZ-.5,magenta);}
- block(2.5,.035,.14,archX,.025,archZ,gold);sign("SECURITY","AIRSIDE SCREENING",.6,5.6,-40,8,1.45);
+ block(2.5,.035,.14,archX,.025,archZ,gold);sign(PAINTED_COPY.securityLabel,PAINTED_COPY.airsideScreening,.6,5.6,-40,8,1.45);
  // X-ray tunnel, rubber entrance strips, conveyor rollers and monitor stand.
  block(2.35,2.1,2.8,6.2,1.35,-43,cream,[0,0,0],true);block(1.66,1.35,.07,6.2,1.15,-41.55,ink);
  // Layered enamel skins, a service panel and ventilation replace the plain cube.
@@ -265,8 +271,30 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  block(2.05,.25,7.7,6.2,.68,-42,ink,[0,0,0],true);for(let i=0;i<34;i++)rod([5.25,.83,-38.3-i*.22],[7.15,.83,-38.3-i*.22],.055,i%3?steel:cyan);
  for(const z of [-39,-45]){block(.16,.7,.16,5.4,.35,z,steel);block(.16,.7,.16,7,.35,z,steel);}
  block(.2,1.5,.2,5.05,.75,-40.6,steel);
- const projectMonitor=new THREE.Group();projectMonitor.position.set(5.05,2.35,-40.6);scene.add(projectMonitor);meshBlock(3,2,.18,ink,projectMonitor);meshBlock(2.9,.05,.2,lightCyan,projectMonitor,0,-1.02,0);
- const projectScreens=projects.map(project=>{const screen=project.slug==="backseat"?canvasTexture((ctx,W,H)=>{ctx.fillStyle="#0d0f1f";ctx.fillRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 76px Arial";ctx.fillText("Backseat",55,115);ctx.strokeStyle="#ffd9a0";ctx.lineWidth=8;ctx.beginPath();for(let x=60;x<W-60;x+=8){const y=H*.58+Math.sin(x*.055)*Math.sin(x*.011)*H*.19;if(x===60)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();},1024,640):texture(project.screenshot,.34);const image=plane(2.8,1.8,screen,projectMonitor);image.position.z=.11;return image;});
+ const projectMonitor=new THREE.Group();projectMonitor.position.set(5.05,2.35,-40.6);scene.add(projectMonitor);
+ const monitorCase=new THREE.Group();projectMonitor.add(monitorCase);meshBlock(3,2,.18,ink,monitorCase);meshBlock(2.9,.05,.2,lightCyan,monitorCase,0,-1.02,0);
+ const projectScreens=projects.map(project=>{const image=plane(2.8,1.8,texture(project.screenshot,.34),projectMonitor);image.position.z=.11;return image;});
+ // A real open laptop rests in the foreground return tray. The landing page is
+ // an unpainted 1600px texture; the case alone uses the terminal's toon palette.
+ const laptop=new THREE.Group();laptop.name="backseat-tray-laptop";laptop.position.set(5.05,.92,-40.25);scene.add(laptop);
+ meshBlock(4.10,.13,2.65,steel,laptop,0,0,.45);
+ for(const x of [-2.04,2.04])meshBlock(.09,.25,2.65,ink,laptop,x,.10,.45);
+ meshBlock(3.78,.13,2.16,dark,laptop,0,.20,.40);
+ meshBlock(3.56,.035,1.68,steel,laptop,0,.28,.40);
+ const keyboard=new THREE.InstancedMesh(unitBox,ink,48),keyPose=new THREE.Object3D();laptop.add(keyboard);
+ for(let row=0;row<4;row++)for(let key=0;key<12;key++){keyPose.position.set(-1.39+key*.25,.31,-.10+row*.20);keyPose.scale.set(.21,.015,.15);keyPose.updateMatrix();keyboard.setMatrixAt(row*12+key,keyPose.matrix);}keyboard.computeBoundingSphere();
+ meshBlock(.82,.012,.39,dark,laptop,0,.313,1.00);
+ meshBlock(3.78,2.22,.11,ink,laptop,0,1.36,-.45).rotation.x=-.09;
+ const laptopScreen=plane(3.56,2.0025,texture("/plates/backseat-landing.webp",.34),laptop);laptopScreen.position.set(0,1.36,-.377);laptopScreen.rotation.x=-.09;
+ const screenMaterial=laptopScreen.material as THREE.MeshBasicMaterial;protectFilmRegistration(screenMaterial);
+ // A separate mask suppresses print/edge processing only on this screenshot.
+ const baseCompile=screenMaterial.onBeforeCompile,baseKey=screenMaterial.customProgramCacheKey();
+ screenMaterial.onBeforeCompile=(shader,renderer)=>{baseCompile.call(screenMaterial,shader,renderer);shader.fragmentShader=shader.fragmentShader.replace("gl_FragColor.a = 0.0;","gl_FragColor.a = 0.4;");};
+ screenMaterial.customProgramCacheKey=()=>baseKey+"-clean-screen";
+ const reflection=plane(3.38,1.85,texture("/plates/backseat-landing.webp",.34),laptop,true);reflection.position.set(0,.078,.48);reflection.rotation.x=-Math.PI/2;
+ (reflection.material as THREE.MeshBasicMaterial).opacity=.075;(reflection.material as THREE.MeshBasicMaterial).depthWrite=false;
+ const glowMaterial=keepMaterial(new THREE.MeshBasicMaterial({color:"#ffe5a4",transparent:true,opacity:.045,depthWrite:false}));
+ const glow=new THREE.Mesh(planeGeometry,glowMaterial);glow.scale.set(3.9,2.3,1);glow.position.set(0,1.36,-.43);laptop.add(glow);
  const trays:THREE.Group[]=[];
  projects.forEach((project,i)=>{
   const group=new THREE.Group();scene.add(group);group.position.set(6.2,.98,-38.4-i*1.35);
@@ -281,7 +309,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
   }else{
    meshBlock(.8,.08,.84,cream,group,0,.17,0);meshBlock(.65,.025,.33,coral,group,0,.225,-.17);for(const x of [-.28,.28])meshBlock(.045,.045,.42,cyan,group,x,.24,.37);
   }
-  const tag=plane(1.32,.28,label(project.flightCode,project.name.toUpperCase(),"#ffe89c",768,160),group);tag.position.set(0,.18,.54);trays.push(group);
+  const tag=plane(1.32,.28,label(project.flightCode,project.name,"#ffe89c",768,160),group);tag.position.set(0,.18,.54);trays.push(group);
  });
  const scanMaterial=keepMaterial(new THREE.MeshBasicMaterial({color:"#60e9f0",transparent:true,opacity:.17,side:THREE.DoubleSide,depthWrite:false}));
  const scanPlane=new THREE.Mesh(planeGeometry,scanMaterial);scanPlane.scale.set(2.5,2.72,1);scene.add(scanPlane);
@@ -292,7 +320,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const round=keepGeometry(new THREE.SphereGeometry(1,10,7));
  const solid=(geometry:THREE.BufferGeometry,mat:THREE.Material,x:number,y:number,z:number,sx=1,sy=1,sz=1,parent:THREE.Object3D=scene)=>{const mesh=new THREE.Mesh(geometry,mat);mesh.position.set(x,y,z);mesh.scale.set(sx,sy,sz);parent.add(mesh);return mesh;};
  const photos:THREE.Object3D[]=[];
- const shops=[{code:"A02",city:"KARACHI / RIDGEWAY",name:"KITCHEN",finish:coral,trim:gold},{code:"A03",city:"DUBAI",name:"CAFÉ",finish:sage,trim:gold},{code:"A04",city:"YYZ",name:"SOUVENIRS",finish:dark,trim:cyan}];
+ const shops=SHOP_COPY.map((shop,i)=>({...shop,finish:[coral,sage,dark][i],trim:i===2?cyan:gold}));
  shops.forEach((shop,i)=>{
   const z=-57-i*11;
   block(8.9,.12,10.4,-9.3,.065,z,tile);block(.35,6.7,10.5,-13.55,3.35,z,shop.finish);
@@ -332,7 +360,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    });
   }
   // Gate seating lives opposite each shop, behind the open walking lane.
-  block(.22,4.0,.22,4.7,2,z,steel);const gate=plane(2.6,1.0,label(shop.code,"GATE","#7bdce9",768,256));gate.position.set(4.7,3.5,z+.15);
+  block(.22,4.0,.22,4.7,2,z,steel);const gate=plane(2.6,1.0,label(shop.code,PAINTED_COPY.gate,"#7bdce9",768,256));gate.position.set(4.7,3.5,z+.15);
   for(let seat=0;seat<4;seat++){const x=6.4+seat*1.6,upholstery=seat%3===0?coral:cyan;
    block(1.25,.18,.92,x,.66,z,upholstery,[0,0,0],true);block(1.25,.95,.18,x,1.2,z-.45,upholstery,[-.12,0,0]);
    block(1.12,.035,.04,x,1.62,z-.39,gold);block(1.12,.025,.04,x,.77,z+.44,cream);
@@ -345,12 +373,14 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  const concourseLine=canvasTexture((ctx,W,H)=>{
   ctx.clearRect(0,0,W,H);ctx.fillStyle="#f4ecd8";ctx.font="700 72px FilmHand, cursive";
   ctx.textAlign="center";ctx.textBaseline="middle";
-  ctx.fillText("There’s a bit of me in here.",W/2,H*.29,W-64);
-  ctx.fillText("Take a look around.",W/2,H*.72,W-64);
+  ctx.fillText(UI_COPY.concourse[0],W/2,H*.29,W-64);
+  ctx.fillText(UI_COPY.concourse[1],W/2,H*.72,W-64);
  },1024,256);
  const concourseIntroRoot=new THREE.Group();scene.add(concourseIntroRoot);
  const transom=new THREE.Mesh(unitBox,ink);transom.scale.set(6.24,1.70,.12);transom.position.z=-.09;concourseIntroRoot.add(transom);
  for(const x of [-2.3,2.3]){const hanger=new THREE.Mesh(cylinderGeometry,steel);hanger.scale.set(.023,2.8,.023);hanger.position.set(x,1.85,-.09);concourseIntroRoot.add(hanger);}
+ transom.material=keepMaterial(ink.clone());
+ for(const child of concourseIntroRoot.children)if(child instanceof THREE.Mesh&&child!==transom)child.material=keepMaterial(steel.clone());
  const concourseLettering=plane(6.0,1.46,concourseLine,concourseIntroRoot,true);
  concourseLettering.name="concourse-painted-introduction";
  concourseIntroRoot.position.set(-.55,4.40,-61.5);
@@ -392,12 +422,12 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
 
  // Final gate desk, glazing, and an actual jetway leading out to the aircraft.
  const gateWayfinding=new THREE.Group();gateWayfinding.name="retracting-gate-wayfinding";gateWayfinding.position.set(3.2,4.8,-102);scene.add(gateWayfinding);
- meshBlock(7.58,1.38,.2,ink,gateWayfinding,0,0,-.12);plane(7.4,1.2,label("GATE 05","BOARDING"),gateWayfinding);
+ meshBlock(7.58,1.38,.2,ink,gateWayfinding,0,0,-.12);plane(7.4,1.2,label(PAINTED_COPY.gate05,PAINTED_COPY.boarding),gateWayfinding);
  for(const x of [-2.59,2.59]){const mount=new THREE.Mesh(cylinderGeometry,steel);mount.scale.set(.035,3.3,.035);mount.position.set(x,2.25,0);gateWayfinding.add(mount);}
  block(3.4,1.1,1.1,-5,.56,-95,concrete,[0,0,0],true);block(3.6,.14,1.4,-5,1.17,-95,ink,[0,0,0],true);block(3.2,.6,.08,-5,.7,-94.42,cyan);
  for(let fin=0;fin<15;fin++)block(.035,.63,.04,-6.48+fin*.212,.62,-94.36,walnut);
  block(3.25,.04,.10,-5,.32,-94.34,gold);block(3.25,.04,.10,-5,1.02,-94.34,cream);
- const gateLogo=plane(2.9,.5,label("AMMAR ADAM","", "#ffc978",1024,128));gateLogo.position.set(-5,.73,-94.29);
+ const gateLogo=plane(2.9,.5,label(PAINTED_COPY.ammarAdam,"", "#ffc978",1024,128));gateLogo.position.set(-5,.73,-94.29);
  for(let x=-14;x<=14;x+=3.5){block(.18,9.5,.2,x,4.75,-104,steel);if(Math.abs(x)>1)block(3.3,8.4,.04,x+1.75,4.8,-104.02,glass);}
  for(const y of [3,6,9])block(28,.14,.14,0,y,-104,steel);
  block(3.1,.35,21,0,.15,-113,concrete);for(const x of [-1.7,1.7]){block(.18,3,21,x,1.6,-113,steel);for(let z=-104;z>-124;z-=2.7){block(.14,3.2,.12,x,1.7,z,ink);block(.04,2.4,2.5,x,1.65,z-1.35,glass);}}block(3.7,.2,21,0,3.3,-113,dark);
@@ -479,7 +509,10 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
  return {scene,camera,photos,
   takePendingProgramRoots(){return pendingProgramRoots.splice(0);},
   update(state){
+   const shared=journeyAt(state.t);state.experienceIndex=shared.chapter===1?shared.item:0;state.projectIndex=shared.chapter===2?shared.item:0;
+   scene.userData.stop=shared.stop;
    for(const [src,entry]of deferredTextures)if(!entry.started&&state.t>=entry.at)startTexture(src,entry);
+   terminalDressing.update(state.time??0,state.reduced);
    architecture.update(state.t,Math.abs(state.lookYaw??0)>.12);
    let p=clamp(state.t);if(state.reduced)p=p<.24?.20:p<.45?.30:p<.65?.49:p<.72?.665:p<.79?.735:p<.86?.805:.94;
    const next=CAMERA.findIndex(key=>key.at>=p),b=CAMERA[next<0?CAMERA.length-1:next],a=CAMERA[Math.max(0,(next<0?CAMERA.length-1:next)-1)];const f=a===b?0:smooth((p-a.at)/(b.at-a.at));
@@ -524,6 +557,12 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
     if(state.aspect<.8)look.lerp(temp.set(-8+flight*38,3.5+flight*15,-128-flight*22),smooth(clamp(flight/.30)));
    }
    camera.up.set(0,1,0);camera.lookAt(look);camera.rotateZ(state.reduced?0:cameraRoll*(state.aspect<.8?.65:1));camera.updateProjectionMatrix();camera.updateMatrixWorld();
+   // Fade the entire hanging sign before any part reaches the header's 120px zone.
+   const signTop=new THREE.Vector3(0,.85,0).applyMatrix4(concourseIntroRoot.matrixWorld).project(camera);
+   const topPixels=(1-signTop.y)*.5*(state.viewportHeight??900);
+   const signOpacity=p>=.635&&p<.715?clamp((topPixels-120)/70):0;
+   concourseIntroRoot.visible=signOpacity>0;
+   concourseIntroRoot.traverse(node=>{if(node instanceof THREE.Mesh){const mat=node.material as THREE.Material;mat.transparent=true;mat.opacity=signOpacity;}});
    // Practical spill sits at existing displays; only the light changes rooms.
    const practical=p<.45?[[3.45,2.4,-25.8],[-3,5.3,-23.8]]:p<.65?[[5.05,2.35,-40.2],[1.3,2.8,-43]]:p<.86?[[-10.7,2.4,p<.715?-57:p<.785?-67.5:-78],[-4.8,5.3,p<.715?-55.5:p<.785?-66:-76.5]]:[[4.4,3.1,-94],[0,4.5,-101]];
    screenSpill.position.set(...practical[0] as V3);signSpill.position.set(...practical[1] as V3);
@@ -539,6 +578,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
     updateBelt(state.reduced?0:state.time??0);
    }
    projectScreens.forEach((mesh,i)=>{mesh.visible=i===state.projectIndex;const image=(mesh.material as THREE.MeshBasicMaterial).map?.image as {width?:number;height?:number}|undefined;if(image?.width&&image?.height){const aspect=image.width/image.height;mesh.scale.set(Math.min(2.8,1.8*aspect),Math.min(1.8,2.8/aspect),1);}});
+   laptop.visible=state.projectIndex===0&&shared.chapter===2;monitorCase.visible=state.projectIndex!==0;projectScreens[0].visible=false;
    projectMonitor.rotation.y=state.reduced?0:Math.sin(security*Math.PI*2)*.07;
    trays.forEach((group,i)=>{const travel=state.reduced?i*1.7:((state.time??0)*.34+i*1.9+security*2.2)%7.5;group.visible=p>=.43&&p<.65;group.position.z=-37.9-travel;group.rotation.y=0;});
    const scan=state.reduced?.5:(security*4)%1;scanPlane.position.set(archX,1.65,-42.55-scan*.9);scanBar.position.set(archX,3,-42.55-scan*.9);scanPlane.visible=scanBar.visible=p>=.45&&p<.64;
@@ -552,7 +592,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    counterReferences?.updateSelection(state.experienceIndex);gateReferences?.updateDeparture(state.reduced?0:flight);
    const gateLift=state.reduced?0:smooth(clamp(flight/.20));gateWayfinding.position.y=4.8+gateLift*6.2;
    for(const set of referenceSets)set.update(setTime,setReduced);
-   scene.userData.ready=(Boolean(scene.userData.ready)||settledSets.has(p<.45?"atrium":p<.65?"airside":p<.86?"concourse":"airside"))&&Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=p<.24?"atrium":p<.45?"checkin":p<.65?"security":p<.86?"concourse":"gate";
+   scene.userData.ready=(Boolean(scene.userData.ready)||settledSets.has(p<.45?"atrium":p<.65?"airside":p<.86?"concourse":"airside"))&&Boolean(textureCache.get("/art/terminal-city-v3.webp")?.userData.settled)&&Boolean(palette.texture.userData.settled)&&Boolean(traveler.root.userData.paintLoaded||traveler.root.userData.paintError);scene.userData.stage=shared.stage;
    aircraft.position.set(-8+flight*38,3.5+flight*15,-128-flight*22);aircraft.rotation.set(0,flight*-.08,flight*.14);
    const hero=clamp(p/.24),landing=smooth(clamp((hero-.72)/.15));const visible=p<.275&&!state.reduced;traveler.root.visible=visible;
    // Keep NUM_POINT_LIGHTS stable when the hero exits: changing visibility
@@ -575,6 +615,6 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
    // must not drag the character around with the camera.
    camera.rotateY(state.lookYaw??0);camera.rotateX(state.lookPitch??0);camera.updateMatrixWorld();
   },
-  dispose(){dead=true;referenceSets.forEach(set=>set.dispose());setDressing.forEach(set=>set.dispose());traveler.dispose();checkinIsland.dispose();airliner.dispose();architecture.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
+  dispose(){dead=true;referenceSets.forEach(set=>set.dispose());setDressing.forEach(set=>set.dispose());traveler.dispose();checkinIsland.dispose();airliner.dispose();terminalDressing.dispose();architecture.dispose();palette.dispose();scene.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();if(object instanceof THREE.DirectionalLight)object.dispose();});for(const tx of textures)tx.dispose();for(const mat of materials)mat.dispose();for(const geometry of geometries)geometry.dispose();scene.clear();}
  };
 }

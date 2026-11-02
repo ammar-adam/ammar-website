@@ -65,7 +65,8 @@ void main(){
  vec3 above=texture2D(uScene,vUv+dy).rgb,below=texture2D(uScene,vUv-dy).rgb;
  float gradient=length(vec2(filmLuma(right)-filmLuma(left),filmLuma(above)-filmLuma(below)));
  vec3 shadowInk=vec3(.004,.005,.014);
- c=mix(c,shadowInk,clamp(contour*1.22*uIntensity,0.,.78));
+ float cleanScreen=1.-smoothstep(.015,.06,abs(original.a-.4));
+ c=mix(c,shadowInk,clamp(contour*1.22*uIntensity,0.,.78)*(1.-cleanScreen));
 
  // One 45-degree screen, 4.5px at a 1080px image height. It lives only inside
  // shadow transitions: no dots on a flat wall, solid black or bright lettering.
@@ -80,7 +81,7 @@ void main(){
  float dotInk=1.-smoothstep(radius-dotAA*.5,radius+dotAA*.5,length(fract(printGrid)-.5));
  vec3 printHue=c*vec3(.51,.53,.61);
  float printDepth=mix(1.,.15,smoothstep(8.,45.,distanceToCamera));
- c=mix(c,printHue,dotInk*transition*printDepth*.68*uIntensity);
+ c=mix(c,printHue,dotInk*transition*printDepth*.68*uIntensity*(1.-cleanScreen));
 
  // The colour target's alpha is a registration mask. Characters and signage
  // write zero there; their ink remains intact but their R/B never separate.
