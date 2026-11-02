@@ -557,6 +557,7 @@ export function createFilmTerminal(invalidate:()=>void,{shadowMapSize=1536}:{sha
     if(state.aspect<.8)look.lerp(temp.set(-8+flight*38,3.5+flight*15,-128-flight*22),smooth(clamp(flight/.30)));
    }
    camera.up.set(0,1,0);camera.lookAt(look);camera.rotateZ(state.reduced?0:cameraRoll*(state.aspect<.8?.65:1));camera.updateProjectionMatrix();camera.updateMatrixWorld();
+   terminalDressing.updateView(camera,state.viewportHeight??900);
    // Fade the entire hanging sign before any part reaches the header's 120px zone.
    const signTop=new THREE.Vector3(0,.85,0).applyMatrix4(concourseIntroRoot.matrixWorld).project(camera);
    const topPixels=(1-signTop.y)*.5*(state.viewportHeight??900);

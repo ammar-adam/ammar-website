@@ -6,8 +6,9 @@ import type { FilmSet } from "./film-set-builder";
 import { BACKGROUND_ROUTES, BANNER_LINES, TERMINAL_COPY } from "@/data/copy";
 
 /** Quiet fixtures on upper/background surfaces; no foreground UI or new lights. */
-export function createTerminalDressing(palette: FilmMaterialPalette, invalidate:()=>void):FilmSet {
+export function createTerminalDressing(palette: FilmMaterialPalette, invalidate:()=>void):FilmSet & {updateView:(camera:THREE.Camera,height:number)=>void} {
  const owned:ReturnType<typeof createReferenceAssembly>[]=[],groups:THREE.Group[]=[];
+ const fadeMaterials:THREE.Material[]=[],fadeFixtures:{root:THREE.Group;halfHeight:number;materials:THREE.Material[]}[]=[];
  const animated:((time:number,reduced:boolean)=>void)[]=[];
  const fixture=(id:string,position:[number,number,number],build:(a:ReturnType<typeof createReferenceAssembly>)=>void,rotation:[number,number,number]=[0,0,0])=>{
   const a=createReferenceAssembly(palette,{id,stop:"background",position,rotation,scale:[1,1,1],priority:"B",note:id});
@@ -56,6 +57,12 @@ export function createTerminalDressing(palette: FilmMaterialPalette, invalidate:
  // Reuse the mechanical split-flap assembly, including its tick animation.
  const board=createGateReferences(palette,[{id:"gate-departures",stop:"security",position:[8.4,5.8,-48.5],rotation:[0,0,0],scale:[.33,.33,.33],priority:"B",note:"Background connections board",done:true,dwell:.55,text:BACKGROUND_ROUTES}],invalidate);
  groups.push(...board.groups);
+ // The added lettering stays below the persistent header at every camera angle.
+ for(const root of groups.filter(group=>/^(reference-wayfinding-|reference-world-clocks)/.test(group.name))){
+  const own:THREE.Material[]=[];
+  root.traverse(node=>{if(node instanceof THREE.Mesh){const original=node.material as THREE.Material;const material=original.clone();material.onBeforeCompile=original.onBeforeCompile;material.customProgramCacheKey=original.customProgramCacheKey;material.transparent=true;node.material=material;own.push(material);fadeMaterials.push(material);}});
+  fadeFixtures.push({root,halfHeight:root.name.includes("clocks")?.55:.35,materials:own});
+ }
  // Hanging banners and suspended folded paper planes between the arches.
  for(const [i,z] of [-25,-41,-61,-73].entries()){
   fixture(`hanging-banner-${i}`,[-7.8,7.9,z],({set,print})=>{
@@ -74,5 +81,6 @@ export function createTerminalDressing(palette: FilmMaterialPalette, invalidate:
  // Soft skylight wedges: transparent geometry, no extra shadow/light passes.
  const shafts:THREE.Mesh[]=[];const shaftGeo=new THREE.PlaneGeometry(1,1);const shaftMat=new THREE.MeshBasicMaterial({color:"#ffdc9a",transparent:true,opacity:.018,depthWrite:false,side:THREE.DoubleSide,blending:THREE.AdditiveBlending});
  for(const z of [-26,-42,-62,-75]){const a=fixture(`skylight-${z}`,[7,5,z],()=>{});const shaft=new THREE.Mesh(shaftGeo,shaftMat);shaft.scale.set(2,9,1);shaft.rotation.z=-.38;a.root.add(shaft);shafts.push(shaft);}
- return {groups,update(time,reduced){board.update(time,reduced);for(const update of animated)update(time,reduced);},dispose(){owned.forEach(a=>a.dispose());board.dispose();planes.dispose();geometry.dispose();planeMat.dispose();shaftGeo.dispose();shaftMat.dispose();}};
+ const probe=new THREE.Vector3();
+ return {groups,updateView(camera,height){for(const fixture of fadeFixtures){fixture.root.updateMatrixWorld();probe.set(0,fixture.halfHeight,0).applyMatrix4(fixture.root.matrixWorld).project(camera);const top=(1-probe.y)*height*.5,opacity=Math.max(0,Math.min(1,(top-120)/55));fixture.root.visible=probe.z<1&&opacity>0;fixture.materials.forEach(mat=>{mat.opacity=opacity;});}},update(time,reduced){board.update(time,reduced);for(const update of animated)update(time,reduced);},dispose(){owned.forEach(a=>a.dispose());fadeMaterials.forEach(m=>m.dispose());board.dispose();planes.dispose();geometry.dispose();planeMat.dispose();shaftGeo.dispose();shaftMat.dispose();}};
 }

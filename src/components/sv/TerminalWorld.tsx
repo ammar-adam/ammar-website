@@ -137,7 +137,7 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    if(!ready&&world.scene.userData.ready){ready=true;state.onReady?.();}
    if(state.active&&!state.reduced)frame=requestAnimationFrame(ambient);
   }
-  function ambient(now:number){frame=0;if(dead||lost||document.hidden||!view.current.active)return;if(dirty){lastAmbient=now;draw(now);return;}if(view.current.reduced)return;if(now-lastAmbient>=1000/(touchBudget?30:60)){lastAmbient=now;draw(now);}else frame=requestAnimationFrame(ambient);}
+  function ambient(now:number){frame=0;if(dead||lost||document.hidden||!view.current.active)return;if(dirty){lastAmbient=now;draw(now);return;}if(view.current.reduced)return;if(now-lastAmbient>=1000/(touchBudget?30:60)-.5){lastAmbient=now;draw(now);}else frame=requestAnimationFrame(ambient);}
   const lose=(event:Event)=>{event.preventDefault();lost=true;compileGeneration++;compiled=false;compiling=false;compileFailed=false;backgroundQueued=false;programWarmup.pause();cancelAnimationFrame(frame);frame=0;element.dataset.fallback="1";surface.style.opacity="0";};
   const restore=()=>{lost=false;schedule();};
   const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else schedule();};
