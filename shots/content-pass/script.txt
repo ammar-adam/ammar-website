@@ -1,0 +1,95 @@
+Intro
+Alright.
+Let's do this one more time.
+
+My name's
+Ammar Adam.
+CS and Finance at Waterloo.
+
+Born and raised in Toronto. Most of my family is a long flight away, so I've spent a lot of my life in places like this.
+
+And finding
+My people.
+Builders, founders, friends.
+
+Come on. I'll show you.
+
+Check-in
+
+At sixteen I was in Dubai, building models for real M&A deals.
+Alpen Capital · M&A Summer Analyst, Dubai
+Modelled M&A deals in Dubai as the firm's youngest intern.
+Details
+
+Spreadsheets were cool. Building the thing was cooler.
+DataStealth · Product Engineering Intern
+Built product demos for sales and automated competitor research.
+Details
+
+Then I wanted to build things people use every day.
+Sagard · AI Engineer
+Built AI tools for the legal and compliance team.
+Details
+
+Then I found the best part: other people who build.
+OpenAI · Founding Builder Lead
+Finding the best student builders in North America and helping them ship.
+Details
+
+And sometimes I get to back them early.
+Pear VC · Fellow
+Scouting and supporting founders at their earliest stages.
+Details
+
+Security
+
+Everybody's got a bag. Here's what's in mine.
+
+Some things I built because I wanted them to exist.
+Backseat · Creator
+Character voices for Waze, installed in one tap.
+Details
+
+Some I built to see if I could.
+RocketShip · Creator
+AI agents that write equity research, graded with honest evals.
+Details
+
+But the best things I've built are made of people.
+Waterloo Venture Group · Managing Director
+Running Waterloo's student venture community.
+Details
+
+Give Waterloo's builders a week and the whole city shows up.
+Waterloo Tech Week / Hack the North · Organizer
+Organized Tech Week and helped run Hack the North.
+Details
+
+Concourse
+There's a bit of me in here.
+Take a look around.
+
+Gate
+And that's me.
+The story's still going.
+
+Boarding pass
+Ammar Adam · Boarding pass
+Passenger · Adam / Ammar
+Computer Science & Finance · Waterloo
+From · YKF · Waterloo
+To · Next · What’s next
+Flight · AMM01
+Gate · 05
+Seat · 01A
+Document · Resume
+Scan & open resume
+Two seconds to departure
+Say hello
+LinkedIn · GitHub · X · Email
+
+Persistent controls
+a/a · Intro · Check-in · Security · Concourse · Gate
+About me · Résumé · LinkedIn · X · GitHub · Email
+Mobile: About me · Menu · Back · chapter name · Next (Gate at final concourse stop)
+Skip intro · Drag to look around

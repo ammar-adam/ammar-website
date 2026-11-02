@@ -1,0 +1,2930 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Ammar Adam — Content and polish report</title><style>*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:#f5f2ea;color:#182332;font:16px/1.6 system-ui,sans-serif}header,section{max-width:1240px;margin:auto;padding:48px 36px}header{padding-top:72px;border-bottom:1px solid #c9c6bd}h1{font-size:clamp(36px,5vw,68px);line-height:1.08;letter-spacing:-.05em;max-width:850px;margin:16px 0 24px}h2{font-size:30px;line-height:1.25;letter-spacing:-.03em}h3{font-size:22px;margin:26px 0 12px}h4{margin-bottom:10px}.lead{font-size:20px;max-width:920px}.eyebrow,.note,figcaption{font-size:13px;color:#5d636a}a{color:#245c7b;text-underline-offset:3px}nav{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.stats article{padding:24px;background:#e7e4da;border-radius:8px}.stats strong{display:block;font-size:35px}.stats span{font-size:14px}section{border-bottom:1px solid #d1cfc6}code{background:#e9e5da;padding:2px 5px;border-radius:3px;font-size:.9em}table{border-collapse:collapse;width:100%;background:#fff8}td,th{text-align:left;padding:10px 15px;border-bottom:1px solid #d1cfc6}.script{font:16px/1.8 ui-monospace,monospace;white-space:pre-wrap;overflow-wrap:anywhere;background:#fff9;padding:28px;border-left:3px solid #bb704e}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0}img{display:block;width:100%;height:auto}figcaption{padding:7px 0 14px}details{padding:12px 0}summary{cursor:pointer;font-weight:600}.stop{padding:20px 0 36px;border-bottom:1px solid #d6d1c7}.frame{overflow:hidden;background:#101a2b}.wall .frame{height:230px}.wall img{transform:translateY(-13%)}.ceiling .frame{height:150px}.sweep{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.phones{grid-template-columns:repeat(7,1fr)}.phones figcaption{text-align:center}li{margin:10px 0}pre:not(.script){white-space:pre-wrap} @media(max-width:750px){header,section{padding:30px 20px}.pair,.stats{grid-template-columns:1fr}.sweep{grid-template-columns:1fr 1fr}.phones{grid-template-columns:repeat(3,1fr)}.script{font-size:14px;padding:18px}}</style><body><header><p class="eyebrow">Ammaradam.com · Local content and polish pass · November 2, 2026</p><h1>The airport, with a clearer story.</h1><p class="lead">Revised copy, shared descriptions, the Backseat laptop, terminal set dressing, and synchronized journey controls. Saved on <code>spiderverse-airport</code>. Nothing pushed or merged.</p><nav><a href="#checks">Checks</a><a href="#script">Full script</a><a href="#comparison">Before / after</a><a href="#sweep">Scroll sweep</a><a href="#short">Short page</a><a href="#notes">Notes</a></nav></header><section id="checks"><h2>Verification</h2><div class="stats"><article><strong>101/101</strong><span>Phone scroll positions match</span></article><article><strong>21/21</strong><span>Desktop scroll positions match</span></article><article><strong>900px</strong><span>/short height at 1440 × 900</span></article></div><p>Chrome with <code>--use-angle=default --enable-gpu</code>, at 1440 × 900 and 390 × 844. The phone check scrolls from 0% through 100% in 1% steps and compares the rendered world stop, chapter, card, and navigation label. All 70–75% samples pass. No page exceptions were captured.</p><p>Production build and TypeScript passed with <code>next build --webpack</code>; <code>eslint src --quiet</code> passed. Desktop dwell-card opacity readings are 1; changed stops fade in over 180ms. The mobile counter is removed. The boarding-pass helper is screen-reader only. Screenshots cover every 5% at both sizes, the exact named stops, the intro beats, the drawer, and /short.</p><h3>Frame cadence after the timing fix</h3><table><thead><tr><th>Scene</th><th>1440 × 900</th><th>390 × 844 emulation</th></tr></thead><tbody><tr><td>alpen</td><td>60.1 fps</td><td>30.2 fps</td></tr><tr><td>backseat</td><td>59.6 fps</td><td>30.1 fps</td></tr><tr><td>wvg</td><td>59.8 fps</td><td>29.7 fps</td></tr><tr><td>concourse</td><td>59.9 fps</td><td>29.7 fps</td></tr></tbody></table><p class="note">Measured on the Intel Arc 140V GPU in headless Chrome. Phone emulation uses the same desktop GPU; a physical mid-range phone was not available, so its frame rate is not certified here. The four resting samples last 3.5 seconds each. Before the scheduler correction, a strict timestamp threshold reduced the measured cadence to about 40 / 22 fps.</p><p><a href="shots/content-pass/verification.json">Raw scroll and height results</a> · <a href="shots/content-pass/performance.json">Frame measurements</a></p></section><section id="script"><h2>Every narration and card line, in reading order</h2><p>The main walkthrough text is below without code or commentary. Drawer facts and the /short wording follow separately.</p><pre class="script">Intro
+Alright.
+Let&#x27;s do this one more time.
+
+My name&#x27;s
+Ammar Adam.
+CS and Finance at Waterloo.
+
+Born and raised in Toronto. Most of my family is a long flight away, so I&#x27;ve spent a lot of my life in places like this.
+
+And finding
+My people.
+Builders, founders, friends.
+
+Come on. I&#x27;ll show you.
+
+Check-in
+
+At sixteen I was in Dubai, building models for real M&amp;A deals.
+Alpen Capital · M&amp;A Summer Analyst, Dubai
+Modelled M&amp;A deals in Dubai as the firm&#x27;s youngest intern.
+Details
+
+Spreadsheets were cool. Building the thing was cooler.
+DataStealth · Product Engineering Intern
+Built product demos for sales and automated competitor research.
+Details
+
+Then I wanted to build things people use every day.
+Sagard · AI Engineer
+Built AI tools for the legal and compliance team.
+Details
+
+Then I found the best part: other people who build.
+OpenAI · Founding Builder Lead
+Finding the best student builders in North America and helping them ship.
+Details
+
+And sometimes I get to back them early.
+Pear VC · Fellow
+Scouting and supporting founders at their earliest stages.
+Details
+
+Security
+
+Everybody&#x27;s got a bag. Here&#x27;s what&#x27;s in mine.
+
+Some things I built because I wanted them to exist.
+Backseat · Creator
+Character voices for Waze, installed in one tap.
+Details
+
+Some I built to see if I could.
+RocketShip · Creator
+AI agents that write equity research, graded with honest evals.
+Details
+
+But the best things I&#x27;ve built are made of people.
+Waterloo Venture Group · Managing Director
+Running Waterloo&#x27;s student venture community.
+Details
+
+Give Waterloo&#x27;s builders a week and the whole city shows up.
+Waterloo Tech Week / Hack the North · Organizer
+Organized Tech Week and helped run Hack the North.
+Details
+
+Concourse
+There&#x27;s a bit of me in here.
+Take a look around.
+
+Gate
+And that&#x27;s me.
+The story&#x27;s still going.
+
+Boarding pass
+Ammar Adam · Boarding pass
+Passenger · Adam / Ammar
+Computer Science &amp; Finance · Waterloo
+From · YKF · Waterloo
+To · Next · What’s next
+Flight · AMM01
+Gate · 05
+Seat · 01A
+Document · Resume
+Scan &amp; open resume
+Two seconds to departure
+Say hello
+LinkedIn · GitHub · X · Email
+
+Persistent controls
+a/a · Intro · Check-in · Security · Concourse · Gate
+About me · Résumé · LinkedIn · X · GitHub · Email
+Mobile: About me · Menu · Back · chapter name · Next (Gate at final concourse stop)
+Skip intro · Drag to look around</pre><p><a href="shots/content-pass/script.txt">Plain text script</a></p></section><section id="comparison"><h2>Before and after at every stop</h2><p>Before views come from the original local commit <code>445a047</code>. After views use the final pass. Open a pair’s wall and ceiling views to compare those surfaces separately; click an image for the full-resolution screenshot.</p><article class="stop"><h3>Alpen Capital</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-alpen.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-alpen.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-alpen.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-alpen.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-alpen.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-alpen.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-alpen.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-alpen.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-alpen.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-alpen.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-alpen.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-alpen.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>DataStealth</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-datastealth.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-datastealth.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-datastealth.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-datastealth.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-datastealth.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-datastealth.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-datastealth.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-datastealth.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-datastealth.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-datastealth.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-datastealth.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-datastealth.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Sagard</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-sagard.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-sagard.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-sagard.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-sagard.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-sagard.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-sagard.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-sagard.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-sagard.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-sagard.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-sagard.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-sagard.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-sagard.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>OpenAI</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-openai.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-openai.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-openai.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-openai.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-openai.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-openai.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-openai.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-openai.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-openai.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-openai.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-openai.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-openai.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Pear VC</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-pear.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-pear.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-pear.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-pear.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-pear.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-pear.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-pear.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-pear.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-pear.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-pear.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-pear.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-pear.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Backseat</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-backseat.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-backseat.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-backseat.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-backseat.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-backseat.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-backseat.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-backseat.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-backseat.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-backseat.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-backseat.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-backseat.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-backseat.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>RocketShip</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-rocketship.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-rocketship.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-rocketship.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-rocketship.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-rocketship.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-rocketship.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-rocketship.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-rocketship.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-rocketship.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-rocketship.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-rocketship.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-rocketship.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Waterloo Venture Group</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-wvg.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-wvg.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-wvg.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-wvg.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-wvg.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-wvg.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-wvg.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-wvg.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-wvg.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-wvg.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-wvg.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-wvg.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Waterloo Tech Week / Hack the North</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-techweek.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-techweek.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-techweek.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-techweek.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-techweek.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-techweek.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-techweek.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-techweek.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-techweek.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-techweek.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-techweek.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-techweek.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Concourse invitation</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-concourse-1.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-1.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-1.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-1.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-concourse-1.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-1.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-1.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-1.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-concourse-1.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-1.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-1.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-1.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Concourse middle</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-concourse-2.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-2.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-2.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-2.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-concourse-2.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-2.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-2.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-2.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-concourse-2.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-2.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-2.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-2.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Concourse gate approach</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-concourse-3.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-3.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-3.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-3.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-concourse-3.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-3.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-3.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-3.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-concourse-3.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-concourse-3.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-concourse-3.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-concourse-3.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article><article class="stop"><h3>Gate</h3><div class="pair"><figure class=""><a href="shots/content-pass/before/stop-gate.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-gate.webp" alt="Before" loading="lazy"></div></a><figcaption>Before</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-gate.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-gate.webp" alt="After" loading="lazy"></div></a><figcaption>After</figcaption></figure></div><details><summary>Wall and ceiling comparison</summary><h4>Wall</h4><div class="pair wall"><figure class=""><a href="shots/content-pass/before/stop-gate.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-gate.webp" alt="Before — wall" loading="lazy"></div></a><figcaption>Before — wall</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-gate.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-gate.webp" alt="After — wall" loading="lazy"></div></a><figcaption>After — wall</figcaption></figure></div><h4>Ceiling</h4><div class="pair ceiling"><figure class=""><a href="shots/content-pass/before/stop-gate.webp" target="_blank"><div class="frame"><img src="shots/content-pass/before/stop-gate.webp" alt="Before — ceiling" loading="lazy"></div></a><figcaption>Before — ceiling</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/stop-gate.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/stop-gate.webp" alt="After — ceiling" loading="lazy"></div></a><figcaption>After — ceiling</figcaption></figure></div></details></article></section><section><h2>Backseat and Alpen close inspection</h2><p>Backseat now uses the live landing page captured at 1600 × 900. Its headline remains readable in the resting desktop shot. The screenshot itself has no halftone or posterization: only the laptop case uses the terminal material system, with a soft glow and low-opacity reflection. The same WebP is in the drawer. Alpen’s propped financial-model board has become a flat printed spreadsheet; the smaller ID hangs from a grey loop instead of the large red diamond shape.</p><div class="pair"><figure class=""><a href="shots/content-pass/backseat-live.webp" target="_blank"><div class="frame"><img src="shots/content-pass/backseat-live.webp" alt="Live Backseat landing page — above the fold" loading="lazy"></div></a><figcaption>Live Backseat landing page — above the fold</figcaption></figure><figure class=""><a href="shots/content-pass/backseat-drawer.webp" target="_blank"><div class="frame"><img src="shots/content-pass/backseat-drawer.webp" alt="Backseat drawer — same landing page image" loading="lazy"></div></a><figcaption>Backseat drawer — same landing page image</figcaption></figure></div></section><section id="sweep"><h2>Every 5% of scroll</h2><p>The entire sweep was inspected through contact sheets, plus full-size views at each named stop.</p><h3>Desktop</h3><div class="sweep"><figure class=""><a href="shots/content-pass/desktop/000.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/000.webp" alt="0%" loading="lazy"></div></a><figcaption>0%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/005.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/005.webp" alt="5%" loading="lazy"></div></a><figcaption>5%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/010.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/010.webp" alt="10%" loading="lazy"></div></a><figcaption>10%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/015.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/015.webp" alt="15%" loading="lazy"></div></a><figcaption>15%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/020.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/020.webp" alt="20%" loading="lazy"></div></a><figcaption>20%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/025.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/025.webp" alt="25%" loading="lazy"></div></a><figcaption>25%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/030.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/030.webp" alt="30%" loading="lazy"></div></a><figcaption>30%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/035.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/035.webp" alt="35%" loading="lazy"></div></a><figcaption>35%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/040.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/040.webp" alt="40%" loading="lazy"></div></a><figcaption>40%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/045.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/045.webp" alt="45%" loading="lazy"></div></a><figcaption>45%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/050.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/050.webp" alt="50%" loading="lazy"></div></a><figcaption>50%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/055.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/055.webp" alt="55%" loading="lazy"></div></a><figcaption>55%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/060.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/060.webp" alt="60%" loading="lazy"></div></a><figcaption>60%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/065.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/065.webp" alt="65%" loading="lazy"></div></a><figcaption>65%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/070.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/070.webp" alt="70%" loading="lazy"></div></a><figcaption>70%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/075.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/075.webp" alt="75%" loading="lazy"></div></a><figcaption>75%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/080.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/080.webp" alt="80%" loading="lazy"></div></a><figcaption>80%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/085.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/085.webp" alt="85%" loading="lazy"></div></a><figcaption>85%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/090.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/090.webp" alt="90%" loading="lazy"></div></a><figcaption>90%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/095.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/095.webp" alt="95%" loading="lazy"></div></a><figcaption>95%</figcaption></figure><figure class=""><a href="shots/content-pass/desktop/100.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/100.webp" alt="100%" loading="lazy"></div></a><figcaption>100%</figcaption></figure></div><h3>Phone</h3><div class="sweep phones"><figure class=""><a href="shots/content-pass/mobile/000.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/000.webp" alt="0%" loading="lazy"></div></a><figcaption>0%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/005.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/005.webp" alt="5%" loading="lazy"></div></a><figcaption>5%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/010.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/010.webp" alt="10%" loading="lazy"></div></a><figcaption>10%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/015.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/015.webp" alt="15%" loading="lazy"></div></a><figcaption>15%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/020.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/020.webp" alt="20%" loading="lazy"></div></a><figcaption>20%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/025.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/025.webp" alt="25%" loading="lazy"></div></a><figcaption>25%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/030.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/030.webp" alt="30%" loading="lazy"></div></a><figcaption>30%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/035.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/035.webp" alt="35%" loading="lazy"></div></a><figcaption>35%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/040.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/040.webp" alt="40%" loading="lazy"></div></a><figcaption>40%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/045.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/045.webp" alt="45%" loading="lazy"></div></a><figcaption>45%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/050.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/050.webp" alt="50%" loading="lazy"></div></a><figcaption>50%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/055.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/055.webp" alt="55%" loading="lazy"></div></a><figcaption>55%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/060.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/060.webp" alt="60%" loading="lazy"></div></a><figcaption>60%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/065.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/065.webp" alt="65%" loading="lazy"></div></a><figcaption>65%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/070.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/070.webp" alt="70%" loading="lazy"></div></a><figcaption>70%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/075.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/075.webp" alt="75%" loading="lazy"></div></a><figcaption>75%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/080.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/080.webp" alt="80%" loading="lazy"></div></a><figcaption>80%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/085.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/085.webp" alt="85%" loading="lazy"></div></a><figcaption>85%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/090.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/090.webp" alt="90%" loading="lazy"></div></a><figcaption>90%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/095.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/095.webp" alt="95%" loading="lazy"></div></a><figcaption>95%</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/100.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/100.webp" alt="100%" loading="lazy"></div></a><figcaption>100%</figcaption></figure></div></section><section id="short"><h2>/short</h2><p>Layout and skyline retained. Both bio lines and all nine descriptions now read from the central copy source. The original Waterloo, Beli, and Liverpool inline links and icons are retained. At desktop heights of 821–940px, row gaps tighten from 18px to 11px so the longer copy and icons still fit. Desktop is one screen at 1440 × 900. Phone content is 1754px tall at 390 × 844.</p><div class="pair"><figure class=""><a href="shots/content-pass/desktop/short.webp" target="_blank"><div class="frame"><img src="shots/content-pass/desktop/short.webp" alt="1440 × 900 — one screen" loading="lazy"></div></a><figcaption>1440 × 900 — one screen</figcaption></figure><figure class=""><a href="shots/content-pass/mobile/short.webp" target="_blank"><div class="frame"><img src="shots/content-pass/mobile/short.webp" alt="390 × 844 — full page" loading="lazy"></div></a><figcaption>390 × 844 — full page</figcaption></figure></div><details><summary>Read all /short text</summary><pre class="script">Skip to content
+Ammar Adam
+
+CS and Finance at Waterloo 
+.
+
+I build AI tools, bring builders together, and back founders early. Outside of that: cooking, eating 
+, soccer 
+, and trying anything once.
+
+Résumé
+Experience
+OpenAI
+
+Founding Builder Lead
+
+Finding the best student builders in North America and helping them ship.
+
+Sagard
+
+AI Engineer
+
+Built AI tools for legal and compliance that cut KYC prep from weeks to hours.
+
+DataStealth
+
+Product Engineering Intern
+
+Built product demos for sales and automated competitor research.
+
+Alpen Capital
+
+M&amp;A Summer Analyst, Dubai
+
+Modelled M&amp;A deals in Dubai at 16 as the firm&#x27;s youngest intern.
+
+Pear VC
+
+Fellow
+
+Scouting and supporting founders at their earliest stages.
+
+Built
+Backseat
+
+Creator
+
+Character voices for Waze, installed in one tap.
+
+RocketShip
+
+Creator
+
+AI agents that write equity research, graded with honest evals.
+
+Waterloo Venture Group
+
+Managing Director
+
+Running Waterloo&#x27;s student venture community.
+
+Waterloo Tech Week / Hack the North
+
+Organizer
+
+Organized Tech Week and helped run Hack the North.
+
+Back to the terminal</pre></details></section><section><h2>Details drawers</h2><p>Existing detailed facts were retained, with no new achievement claims. These are separate from the short film cards.</p><details><summary>Alpen Capital</summary><p>I supported $50M+ in deal flow on buy- and sell-side equity advisory.</p><p>I joined at sixteen as the firm&#x27;s youngest intern and learned financial modelling and investment research.</p></details><details><summary>DataStealth</summary><p>I built a demo environment covering 8 product capabilities, bringing setup time down from months to hours.</p><p>I also automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%.</p></details><details><summary>Sagard</summary><p>I build AI tools for the legal and compliance team at Sagard, a $46B AUM asset manager.</p><p>I&#x27;m leading the rollout of a 6-tool Legal AI Hub and extending Doppel, a computer-use agent powered by a local LLM. As an intern, I cut KYC package prep from weeks to hours.</p></details><details><summary>OpenAI</summary><p>I&#x27;m one of 5 Founding Builder Leads selected across North America.</p><p>I find student builders and help them get started with OpenAI&#x27;s developer tools.</p></details><details><summary>Pear VC</summary><p>At Pear, I help early-stage founders.</p><p>I scout early-stage startups and evaluate their teams.</p></details><details><summary>Backseat</summary><p>I made character voices you can install in one tap.</p><p>You pick a character, then add its voice to Waze in one tap. I wrote the open-source SDK behind it after reverse-engineering Waze&#x27;s undocumented voice format. It handles text-to-speech, source separation and round-trip checks across all 43 prompts.</p></details><details><summary>RocketShip</summary><p>I built an AI equity research tool, then put its results to the test.</p><p>I combined stock screening, a 5-agent LLM debate, live news and portfolio optimization. When I ran walk-forward tests, a simple momentum baseline beat the LLM ranker and exposed inflated backtests.</p></details><details><summary>Waterloo Venture Group</summary><p>I run a student venture community with 1,300+ members. We&#x27;ve helped 30+ students join startups and helped founders raise $13.9M.</p><p>I help founders with market research and partner introductions, including Smoov&#x27;s expansion beyond the US.</p></details><details><summary>Waterloo Tech Week / Hack the North</summary><p>I organized Waterloo Tech Week across 70 events.</p><p>I raised $6K+ from sponsors including Citadel, HRT and Shopify, reached out to 60+ companies, and moderated a founder panel and fireside chat.</p></details></section><section id="notes"><h2>Implementation notes and limits</h2><ul><li>Copy is consolidated in <code>src/data/copy.ts</code>; compatibility exports preserve existing imports. Film and /short share the canonical <code>desc</code> records.</li><li>Sagard uses the supplied film exception. Alpen’s film card omits the numeric age to respect the no-stats rule; the supplied “At sixteen…” narration and the /short age remain.</li><li>The supplied Backseat and RocketShip descriptions were kept verbatim even though they do not start with verbs. Proper names use sentence case under the general rule; IATA codes, acronyms, flight identifiers, the a/a mark, and baked film artwork keep their conventional forms.</li><li>The new five-beat intro uses the existing footage at half speed to leave reading time for the Toronto line. No film asset was regenerated.</li><li>New upper-wall signs fade before the top 120px header region. The original concourse sign has the same clearance behavior. Concourse camera targets lift slightly toward the TV and seating at the gate approach.</li><li>New fixtures include travel posters, wayfinding, a qibla arrow, real-time Toronto/Dubai/Karachi clocks, reused mechanical split-flap routes, panel and tile seams, vents, staff windows, skylight shafts, banners, a slowly turning instanced paper-plane flock, and ceiling infrastructure. Repeated structural parts use existing instance batches.</li><li>Physical-phone frame rate remains unverified. The “about 20% blank plane” criterion was assessed visually, not by automatic segmentation.</li><li>No missing personal facts were filled in. No employment dates or new usage/revenue figures were added.</li><li>The default Turbopack compiler passed earlier builds, then encountered a cached font-import failure on the last run. The final production verification used Next’s supported Webpack compiler successfully.</li></ul><h3>Local commits</h3><pre>90abdf7 Retain original short-page bio links while keeping desktop fit
+b203d91 Preserve punctuation and proper names in centralized labels
+83bb043 Meet frame cadence targets and keep new signs clear of header
+5e4b2e3 Read remaining component labels from central copy
+2f12f85 Show Backseat laptop and dress terminal walls and ceilings
+5a206d1 Unify card and camera stop selection and keep dwell cards opaque
+fe3e8cc Centralize terminal copy and apply sentence case throughout
+c082824 Revise journey narration and share portfolio descriptions
+</pre><p>No push, merge, deployment, or external publication was performed.</p></section><section><details><summary>Complete centralized text and scenery registry</summary><p>This appendix includes retained legacy data as well as active scene labels.</p><pre class="script">{
+  &quot;arrivals&quot;: [
+    {
+      &quot;slug&quot;: &quot;alpen-capital&quot;,
+      &quot;from&quot;: &quot;Alpen Capital&quot;,
+      &quot;fromUrl&quot;: &quot;https://alpencapital.com/&quot;,
+      &quot;image&quot;: &quot;/ALPENCAPITAL.jpg&quot;,
+      &quot;origin&quot;: &quot;Dubai&quot;,
+      &quot;title&quot;: &quot;M&amp;A Analyst&quot;,
+      &quot;detailTitle&quot;: &quot;Mergers &amp; Acquisitions Summer Analyst&quot;,
+      &quot;impact&quot;: &quot;I supported $50M+ in deal flow on buy- and sell-side equity advisory.&quot;,
+      &quot;details&quot;: &quot;I joined at sixteen as the firm&#x27;s youngest intern and learned financial modelling and investment research.&quot;,
+      &quot;status&quot;: &quot;Bags ready&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;datastealth&quot;,
+      &quot;from&quot;: &quot;DataStealth&quot;,
+      &quot;fromUrl&quot;: &quot;https://datastealth.io/&quot;,
+      &quot;image&quot;: &quot;/DATASTEALTH.jpg&quot;,
+      &quot;origin&quot;: &quot;Mississauga&quot;,
+      &quot;title&quot;: &quot;Product Engineering&quot;,
+      &quot;detailTitle&quot;: &quot;Product Engineering Intern&quot;,
+      &quot;impact&quot;: &quot;I built a demo environment covering 8 product capabilities, bringing setup time down from months to hours.&quot;,
+      &quot;details&quot;: &quot;I also automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%.&quot;,
+      &quot;status&quot;: &quot;Bags ready&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;sagard&quot;,
+      &quot;from&quot;: &quot;Sagard&quot;,
+      &quot;fromUrl&quot;: &quot;https://www.sagard.com/&quot;,
+      &quot;image&quot;: &quot;/SAGARD.jpg&quot;,
+      &quot;origin&quot;: &quot;Toronto&quot;,
+      &quot;title&quot;: &quot;AI Engineer&quot;,
+      &quot;detailTitle&quot;: &quot;AI Engineer (Contract) Â· prev. AI Engineering Intern&quot;,
+      &quot;impact&quot;: &quot;I build AI tools for the legal and compliance team at Sagard, a $46B AUM asset manager.&quot;,
+      &quot;details&quot;: &quot;I&#x27;m leading the rollout of a 6-tool Legal AI Hub and extending Doppel, a computer-use agent powered by a local LLM. As an intern, I cut KYC package prep from weeks to hours.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;waterloo-venture&quot;,
+      &quot;from&quot;: &quot;Waterloo Venture Group&quot;,
+      &quot;fromUrl&quot;: &quot;https://www.waterloovg.com/&quot;,
+      &quot;image&quot;: &quot;/WATERLOOVG.jpg&quot;,
+      &quot;origin&quot;: &quot;Waterloo&quot;,
+      &quot;title&quot;: &quot;Managing Director&quot;,
+      &quot;detailTitle&quot;: &quot;Managing Director&quot;,
+      &quot;impact&quot;: &quot;I run a student venture community with 1,300+ members. We&#x27;ve helped 30+ students join startups and helped founders raise $13.9M.&quot;,
+      &quot;details&quot;: &quot;I help founders with market research and partner introductions, including Smoov&#x27;s expansion beyond the US.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;hack-the-north&quot;,
+      &quot;from&quot;: &quot;Waterloo Tech Week / Hack the North&quot;,
+      &quot;fromUrl&quot;: &quot;https://waterlootechweek.ca/&quot;,
+      &quot;image&quot;: &quot;/HTN_ORGANIZER.jpg&quot;,
+      &quot;origin&quot;: &quot;Waterloo&quot;,
+      &quot;title&quot;: &quot;Organizer&quot;,
+      &quot;detailTitle&quot;: &quot;Organizer Â· Waterloo Tech Week &amp; Hack the North&quot;,
+      &quot;impact&quot;: &quot;I organized Waterloo Tech Week across 70 events.&quot;,
+      &quot;details&quot;: &quot;I raised $6K+ from sponsors including Citadel, HRT and Shopify, reached out to 60+ companies, and moderated a founder panel and fireside chat.&quot;,
+      &quot;status&quot;: &quot;Bags ready&quot;,
+      &quot;links&quot;: [
+        {
+          &quot;label&quot;: &quot;Waterloo Tech Week&quot;,
+          &quot;url&quot;: &quot;https://waterlootechweek.ca/&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Hack the North&quot;,
+          &quot;url&quot;: &quot;https://hackthenorth.com/&quot;
+        },
+        {
+          &quot;label&quot;: &quot;Techyon&quot;,
+          &quot;url&quot;: &quot;https://techyon.org/&quot;
+        }
+      ]
+    },
+    {
+      &quot;slug&quot;: &quot;openai&quot;,
+      &quot;from&quot;: &quot;OpenAI&quot;,
+      &quot;fromUrl&quot;: &quot;https://openai.com/&quot;,
+      &quot;image&quot;: &quot;/OPENAI.jpg&quot;,
+      &quot;origin&quot;: &quot;San Francisco&quot;,
+      &quot;title&quot;: &quot;Founding Builder Lead&quot;,
+      &quot;detailTitle&quot;: &quot;Founding Builder Lead&quot;,
+      &quot;impact&quot;: &quot;I&#x27;m one of 5 Founding Builder Leads selected across North America.&quot;,
+      &quot;details&quot;: &quot;I find student builders and help them get started with OpenAI&#x27;s developer tools.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;pear-vc&quot;,
+      &quot;from&quot;: &quot;Pear VC&quot;,
+      &quot;fromUrl&quot;: &quot;https://pear.vc/&quot;,
+      &quot;image&quot;: &quot;/PEARVC.jpg&quot;,
+      &quot;origin&quot;: &quot;Palo Alto&quot;,
+      &quot;title&quot;: &quot;Fellow&quot;,
+      &quot;detailTitle&quot;: &quot;Pear VC Fellow&quot;,
+      &quot;impact&quot;: &quot;At Pear, I help early-stage founders.&quot;,
+      &quot;details&quot;: &quot;I scout early-stage startups and evaluate their teams.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    }
+  ],
+  &quot;careerArrivals&quot;: [
+    {
+      &quot;slug&quot;: &quot;alpen-capital&quot;,
+      &quot;from&quot;: &quot;Alpen Capital&quot;,
+      &quot;fromUrl&quot;: &quot;https://alpencapital.com/&quot;,
+      &quot;image&quot;: &quot;/ALPENCAPITAL.jpg&quot;,
+      &quot;origin&quot;: &quot;Dubai&quot;,
+      &quot;title&quot;: &quot;M&amp;A Analyst&quot;,
+      &quot;detailTitle&quot;: &quot;Mergers &amp; Acquisitions Summer Analyst&quot;,
+      &quot;impact&quot;: &quot;I supported $50M+ in deal flow on buy- and sell-side equity advisory.&quot;,
+      &quot;details&quot;: &quot;I joined at sixteen as the firm&#x27;s youngest intern and learned financial modelling and investment research.&quot;,
+      &quot;status&quot;: &quot;Bags ready&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;datastealth&quot;,
+      &quot;from&quot;: &quot;DataStealth&quot;,
+      &quot;fromUrl&quot;: &quot;https://datastealth.io/&quot;,
+      &quot;image&quot;: &quot;/DATASTEALTH.jpg&quot;,
+      &quot;origin&quot;: &quot;Mississauga&quot;,
+      &quot;title&quot;: &quot;Product Engineering&quot;,
+      &quot;detailTitle&quot;: &quot;Product Engineering Intern&quot;,
+      &quot;impact&quot;: &quot;I built a demo environment covering 8 product capabilities, bringing setup time down from months to hours.&quot;,
+      &quot;details&quot;: &quot;I also automated competitor comparisons from 10,000-word research documents, cutting product research time by about 40%.&quot;,
+      &quot;status&quot;: &quot;Bags ready&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;sagard&quot;,
+      &quot;from&quot;: &quot;Sagard&quot;,
+      &quot;fromUrl&quot;: &quot;https://www.sagard.com/&quot;,
+      &quot;image&quot;: &quot;/SAGARD.jpg&quot;,
+      &quot;origin&quot;: &quot;Toronto&quot;,
+      &quot;title&quot;: &quot;AI Engineer&quot;,
+      &quot;detailTitle&quot;: &quot;AI Engineer (Contract) Â· prev. AI Engineering Intern&quot;,
+      &quot;impact&quot;: &quot;I build AI tools for the legal and compliance team at Sagard, a $46B AUM asset manager.&quot;,
+      &quot;details&quot;: &quot;I&#x27;m leading the rollout of a 6-tool Legal AI Hub and extending Doppel, a computer-use agent powered by a local LLM. As an intern, I cut KYC package prep from weeks to hours.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;openai&quot;,
+      &quot;from&quot;: &quot;OpenAI&quot;,
+      &quot;fromUrl&quot;: &quot;https://openai.com/&quot;,
+      &quot;image&quot;: &quot;/OPENAI.jpg&quot;,
+      &quot;origin&quot;: &quot;San Francisco&quot;,
+      &quot;title&quot;: &quot;Founding Builder Lead&quot;,
+      &quot;detailTitle&quot;: &quot;Founding Builder Lead&quot;,
+      &quot;impact&quot;: &quot;I&#x27;m one of 5 Founding Builder Leads selected across North America.&quot;,
+      &quot;details&quot;: &quot;I find student builders and help them get started with OpenAI&#x27;s developer tools.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;pear-vc&quot;,
+      &quot;from&quot;: &quot;Pear VC&quot;,
+      &quot;fromUrl&quot;: &quot;https://pear.vc/&quot;,
+      &quot;image&quot;: &quot;/PEARVC.jpg&quot;,
+      &quot;origin&quot;: &quot;Palo Alto&quot;,
+      &quot;title&quot;: &quot;Fellow&quot;,
+      &quot;detailTitle&quot;: &quot;Pear VC Fellow&quot;,
+      &quot;impact&quot;: &quot;At Pear, I help early-stage founders.&quot;,
+      &quot;details&quot;: &quot;I scout early-stage startups and evaluate their teams.&quot;,
+      &quot;status&quot;: &quot;Bags loading&quot;
+    }
+  ],
+  &quot;projects&quot;: [
+    {
+      &quot;slug&quot;: &quot;backseat&quot;,
+      &quot;name&quot;: &quot;Backseat&quot;,
+      &quot;year&quot;: &quot;2026&quot;,
+      &quot;destination&quot;: &quot;Recalculating&quot;,
+      &quot;flightCode&quot;: &quot;BKS26&quot;,
+      &quot;routeName&quot;: &quot;I made character voices you can install in one tap.&quot;,
+      &quot;gate&quot;: &quot;E&quot;,
+      &quot;status&quot;: &quot;Boarding&quot;,
+      &quot;shortDesc&quot;: &quot;You pick a character, then add its voice to Waze in one tap. I wrote the open-source SDK behind it after reverse-engineering Waze&#x27;s undocumented voice format. It handles text-to-speech, source separation and round-trip checks across all 43 prompts.&quot;,
+      &quot;screenshot&quot;: &quot;/plates/backseat-landing.webp&quot;,
+      &quot;seats&quot;: [
+        {
+          &quot;id&quot;: &quot;main&quot;,
+          &quot;label&quot;: &quot;Links&quot;,
+          &quot;content&quot;: &quot;&quot;,
+          &quot;links&quot;: [
+            {
+              &quot;label&quot;: &quot;View Project&quot;,
+              &quot;url&quot;: &quot;https://backseatnav.com/&quot;
+            },
+            {
+              &quot;label&quot;: &quot;GitHub&quot;,
+              &quot;url&quot;: &quot;https://github.com/ammar-adam/waze-voice-sdk&quot;
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &quot;slug&quot;: &quot;rocketship&quot;,
+      &quot;name&quot;: &quot;Rocketship&quot;,
+      &quot;year&quot;: &quot;2026&quot;,
+      &quot;destination&quot;: &quot;To the moon!&quot;,
+      &quot;flightCode&quot;: &quot;RS493&quot;,
+      &quot;routeName&quot;: &quot;I built an AI equity research tool, then put its results to the test.&quot;,
+      &quot;gate&quot;: &quot;A&quot;,
+      &quot;status&quot;: &quot;Boarding&quot;,
+      &quot;shortDesc&quot;: &quot;I combined stock screening, a 5-agent LLM debate, live news and portfolio optimization. When I ran walk-forward tests, a simple momentum baseline beat the LLM ranker and exposed inflated backtests.&quot;,
+      &quot;screenshot&quot;: &quot;/ROCKETSHIP-current.webp&quot;,
+      &quot;seats&quot;: [
+        {
+          &quot;id&quot;: &quot;main&quot;,
+          &quot;label&quot;: &quot;Links&quot;,
+          &quot;content&quot;: &quot;&quot;,
+          &quot;links&quot;: [
+            {
+              &quot;label&quot;: &quot;View Project&quot;,
+              &quot;url&quot;: &quot;https://rocketshipstocks.vercel.app/&quot;
+            },
+            {
+              &quot;label&quot;: &quot;GitHub&quot;,
+              &quot;url&quot;: &quot;https://github.com/ammar-adam/rocketship&quot;
+            },
+            {
+              &quot;label&quot;: &quot;Demo&quot;,
+              &quot;url&quot;: &quot;https://www.loom.com/share/9df9303e6d7742838730fdc1ff5bff29&quot;
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &quot;slug&quot;: &quot;waterloo-venture&quot;,
+      &quot;name&quot;: &quot;Waterloo Venture Group&quot;,
+      &quot;year&quot;: &quot;&quot;,
+      &quot;destination&quot;: &quot;Student founders&quot;,
+      &quot;flightCode&quot;: &quot;WVG01&quot;,
+      &quot;routeName&quot;: &quot;I bring student founders together.&quot;,
+      &quot;gate&quot;: &quot;C&quot;,
+      &quot;status&quot;: &quot;Boarding&quot;,
+      &quot;shortDesc&quot;: &quot;I run a student venture community with 1,300+ members. We&#x27;ve helped 30+ students join startups and helped founders raise $13.9M. I help founders with market research and partner introductions, including Smoov&#x27;s expansion beyond the US.&quot;,
+      &quot;screenshot&quot;: &quot;/WATERLOOVG.jpg&quot;,
+      &quot;stackTag&quot;: &quot;Community / venture&quot;,
+      &quot;seats&quot;: [
+        {
+          &quot;id&quot;: &quot;main&quot;,
+          &quot;label&quot;: &quot;Links&quot;,
+          &quot;content&quot;: &quot;&quot;,
+          &quot;links&quot;: [
+            {
+              &quot;label&quot;: &quot;Visit WVG&quot;,
+              &quot;url&quot;: &quot;https://www.waterloovg.com/&quot;
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &quot;slug&quot;: &quot;waterloo-tech-week&quot;,
+      &quot;name&quot;: &quot;Waterloo Tech Week / Hack the North&quot;,
+      &quot;year&quot;: &quot;&quot;,
+      &quot;destination&quot;: &quot;A week of builders&quot;,
+      &quot;flightCode&quot;: &quot;WTW70&quot;,
+      &quot;routeName&quot;: &quot;I helped get a whole city building.&quot;,
+      &quot;gate&quot;: &quot;D&quot;,
+      &quot;status&quot;: &quot;Boarding&quot;,
+      &quot;shortDesc&quot;: &quot;I organized Waterloo Tech Week across 70 events, raised $6K+ in sponsorship, and moderated founder conversations.&quot;,
+      &quot;screenshot&quot;: &quot;/HTN_ORGANIZER.jpg&quot;,
+      &quot;stackTag&quot;: &quot;Community / events&quot;,
+      &quot;seats&quot;: [
+        {
+          &quot;id&quot;: &quot;main&quot;,
+          &quot;label&quot;: &quot;Links&quot;,
+          &quot;content&quot;: &quot;&quot;,
+          &quot;links&quot;: [
+            {
+              &quot;label&quot;: &quot;Tech Week&quot;,
+              &quot;url&quot;: &quot;https://waterlootechweek.ca/&quot;
+            },
+            {
+              &quot;label&quot;: &quot;Hack the North&quot;,
+              &quot;url&quot;: &quot;https://hackthenorth.com/&quot;
+            },
+            {
+              &quot;label&quot;: &quot;Techyon&quot;,
+              &quot;url&quot;: &quot;https://techyon.org/&quot;
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  &quot;archivedProjects&quot;: [
+    {
+      &quot;slug&quot;: &quot;canadaclip&quot;,
+      &quot;name&quot;: &quot;CanadaClip&quot;,
+      &quot;year&quot;: &quot;2026&quot;,
+      &quot;destination&quot;: &quot;Canadian SMBs&quot;,
+      &quot;flightCode&quot;: &quot;Cc24&quot;,
+      &quot;routeName&quot;: &quot;iOS App Clip + AI Merchant Dashboard&quot;,
+      &quot;gate&quot;: &quot;A&quot;,
+      &quot;status&quot;: &quot;Boarding&quot;,
+      &quot;shortDesc&quot;: &quot;iOS App Clip that takes the big-brand product links AI assistants recommend and points them to Canadian small businesses instead. Includes merchant onboarding and Gemini product matching.&quot;,
+      &quot;screenshot&quot;: &quot;/CANADACLIP.mp4&quot;,
+      &quot;seats&quot;: [
+        {
+          &quot;id&quot;: &quot;main&quot;,
+          &quot;label&quot;: &quot;Links&quot;,
+          &quot;content&quot;: &quot;&quot;,
+          &quot;links&quot;: [
+            {
+              &quot;label&quot;: &quot;GitHub&quot;,
+              &quot;url&quot;: &quot;https://github.com/ammar-adam/canada-clip-hackcanada&quot;
+            },
+            {
+              &quot;label&quot;: &quot;Demo&quot;,
+              &quot;url&quot;: &quot;https://youtu.be/JzYwfPrcPtM?si=v9hC_aww9t8z7gmK&quot;
+            }
+          ]
+        }
+      ]
+    },
+    {
+      &quot;slug&quot;: &quot;risk-optimized-equity-system&quot;,
+      &quot;name&quot;: &quot;Risk-Optimized Portfolio&quot;,
+      &quot;year&quot;: &quot;2025&quot;,
+      &quot;destination&quot;: &quot;Low Volatility&quot;,
+      &quot;flightCode&quot;: &quot;Beta16&quot;,
+      &quot;routeName&quot;: &quot;Portfolio construction for risk-averse investors&quot;,
+      &quot;gate&quot;: &quot;C&quot;,
+      &quot;status&quot;: &quot;Departed&quot;,
+      &quot;shortDesc&quot;: &quot;Portfolio builder for risk-averse investors. Estimates volatility and covariance, then solves for the lowest-risk allocation with convex optimization.&quot;,
+      &quot;screenshot&quot;: &quot;/RISKFREE.png&quot;,
+      &quot;seats&quot;: [
+        {
+          &quot;id&quot;: &quot;main&quot;,
+          &quot;label&quot;: &quot;Links&quot;,
+          &quot;content&quot;: &quot;&quot;,
+          &quot;links&quot;: [
+            {
+              &quot;label&quot;: &quot;GitHub&quot;,
+              &quot;url&quot;: &quot;https://github.com/ammar-adam/risk-optimized-equity-system&quot;
+            },
+            {
+              &quot;label&quot;: &quot;Demo&quot;,
+              &quot;url&quot;: &quot;https://www.loom.com/share/f9d68d48cef5487896156f55c5669271&quot;
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  &quot;INTRO_COPY&quot;: [
+    {
+      &quot;pre&quot;: &quot;&quot;,
+      &quot;lines&quot;: [
+        &quot;Alright.&quot;
+      ],
+      &quot;aside&quot;: &quot;Let&#x27;s do this one more time.&quot;
+    },
+    {
+      &quot;pre&quot;: &quot;My name&#x27;s&quot;,
+      &quot;lines&quot;: [
+        &quot;Ammar&quot;,
+        &quot;Adam.&quot;
+      ],
+      &quot;aside&quot;: &quot;CS and Finance at Waterloo.&quot;
+    },
+    {
+      &quot;pre&quot;: &quot;&quot;,
+      &quot;lines&quot;: [],
+      &quot;aside&quot;: &quot;Born and raised in Toronto. Most of my family is a long flight away, so I&#x27;ve spent a lot of my life in places like this.&quot;
+    },
+    {
+      &quot;pre&quot;: &quot;And finding&quot;,
+      &quot;lines&quot;: [
+        &quot;My people.&quot;
+      ],
+      &quot;aside&quot;: &quot;Builders, founders, friends.&quot;
+    },
+    {
+      &quot;pre&quot;: &quot;&quot;,
+      &quot;lines&quot;: [],
+      &quot;aside&quot;: &quot;Come on. I&#x27;ll show you.&quot;
+    }
+  ],
+  &quot;INTRO_BEATS&quot;: [
+    0,
+    0.8,
+    1.7,
+    4.1,
+    5.1
+  ],
+  &quot;EXPERIENCE_COPY&quot;: [
+    {
+      &quot;slug&quot;: &quot;alpen-capital&quot;,
+      &quot;name&quot;: &quot;Alpen Capital&quot;,
+      &quot;role&quot;: &quot;M&amp;A Summer Analyst, Dubai&quot;,
+      &quot;tag&quot;: &quot;At sixteen I was in Dubai, building models for real M&amp;A deals.&quot;,
+      &quot;desc&quot;: &quot;Modelled M&amp;A deals in Dubai at 16 as the firm&#x27;s youngest intern.&quot;,
+      &quot;filmDesc&quot;: &quot;Modelled M&amp;A deals in Dubai as the firm&#x27;s youngest intern.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;datastealth&quot;,
+      &quot;name&quot;: &quot;DataStealth&quot;,
+      &quot;role&quot;: &quot;Product Engineering Intern&quot;,
+      &quot;tag&quot;: &quot;Spreadsheets were cool. Building the thing was cooler.&quot;,
+      &quot;desc&quot;: &quot;Built product demos for sales and automated competitor research.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;sagard&quot;,
+      &quot;name&quot;: &quot;Sagard&quot;,
+      &quot;role&quot;: &quot;AI Engineer&quot;,
+      &quot;tag&quot;: &quot;Then I wanted to build things people use every day.&quot;,
+      &quot;desc&quot;: &quot;Built AI tools for legal and compliance that cut KYC prep from weeks to hours.&quot;,
+      &quot;filmDesc&quot;: &quot;Built AI tools for the legal and compliance team.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;openai&quot;,
+      &quot;name&quot;: &quot;OpenAI&quot;,
+      &quot;role&quot;: &quot;Founding Builder Lead&quot;,
+      &quot;tag&quot;: &quot;Then I found the best part: other people who build.&quot;,
+      &quot;desc&quot;: &quot;Finding the best student builders in North America and helping them ship.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;pear-vc&quot;,
+      &quot;name&quot;: &quot;Pear VC&quot;,
+      &quot;role&quot;: &quot;Fellow&quot;,
+      &quot;tag&quot;: &quot;And sometimes I get to back them early.&quot;,
+      &quot;desc&quot;: &quot;Scouting and supporting founders at their earliest stages.&quot;
+    }
+  ],
+  &quot;PROJECT_COPY&quot;: [
+    {
+      &quot;slug&quot;: &quot;backseat&quot;,
+      &quot;name&quot;: &quot;Backseat&quot;,
+      &quot;role&quot;: &quot;Creator&quot;,
+      &quot;tag&quot;: &quot;Some things I built because I wanted them to exist.&quot;,
+      &quot;desc&quot;: &quot;Character voices for Waze, installed in one tap.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;rocketship&quot;,
+      &quot;name&quot;: &quot;RocketShip&quot;,
+      &quot;role&quot;: &quot;Creator&quot;,
+      &quot;tag&quot;: &quot;Some I built to see if I could.&quot;,
+      &quot;desc&quot;: &quot;AI agents that write equity research, graded with honest evals.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;waterloo-venture&quot;,
+      &quot;name&quot;: &quot;Waterloo Venture Group&quot;,
+      &quot;role&quot;: &quot;Managing Director&quot;,
+      &quot;tag&quot;: &quot;But the best things I&#x27;ve built are made of people.&quot;,
+      &quot;desc&quot;: &quot;Running Waterloo&#x27;s student venture community.&quot;
+    },
+    {
+      &quot;slug&quot;: &quot;waterloo-tech-week&quot;,
+      &quot;name&quot;: &quot;Waterloo Tech Week / Hack the North&quot;,
+      &quot;role&quot;: &quot;Organizer&quot;,
+      &quot;tag&quot;: &quot;Give Waterloo&#x27;s builders a week and the whole city shows up.&quot;,
+      &quot;desc&quot;: &quot;Organized Tech Week and helped run Hack the North.&quot;
+    }
+  ],
+  &quot;SHORT_COPY&quot;: {
+    &quot;bio&quot;: &quot;CS and Finance at Waterloo.&quot;,
+    &quot;personal&quot;: &quot;I build AI tools, bring builders together, and back founders early. Outside of that: cooking, eating, soccer, and trying anything once.&quot;,
+    &quot;name&quot;: &quot;Ammar Adam&quot;,
+    &quot;experience&quot;: &quot;Experience&quot;,
+    &quot;built&quot;: &quot;Built&quot;,
+    &quot;resume&quot;: &quot;Résumé&quot;,
+    &quot;back&quot;: &quot;Back to the terminal&quot;
+  },
+  &quot;UI_COPY&quot;: {
+    &quot;details&quot;: &quot;Details&quot;,
+    &quot;close&quot;: &quot;Close&quot;,
+    &quot;experience&quot;: &quot;Experience&quot;,
+    &quot;projects&quot;: &quot;Projects&quot;,
+    &quot;company&quot;: &quot;Company website&quot;,
+    &quot;creator&quot;: &quot;Creator&quot;,
+    &quot;security&quot;: &quot;Everybody&#x27;s got a bag. Here&#x27;s what&#x27;s in mine.&quot;,
+    &quot;concourse&quot;: [
+      &quot;There&#x27;s a bit of me in here.&quot;,
+      &quot;Take a look around.&quot;
+    ],
+    &quot;ending&quot;: &quot;And that&#x27;s me.&quot;,
+    &quot;endingTitle&quot;: [
+      &quot;The story&#x27;s&quot;,
+      &quot;still going.&quot;
+    ],
+    &quot;hello&quot;: &quot;Say hello&quot;,
+    &quot;boardingHelper&quot;: &quot;Scan the boarding pass. The résumé PDF opens after the two-second departure.&quot;,
+    &quot;look&quot;: &quot;Drag to look around&quot;,
+    &quot;scroll&quot;: &quot;Scroll&quot;,
+    &quot;skip&quot;: &quot;Skip intro&quot;,
+    &quot;back&quot;: &quot;Back&quot;,
+    &quot;next&quot;: &quot;Next&quot;,
+    &quot;gate&quot;: &quot;Gate&quot;,
+    &quot;chapters&quot;: [
+      &quot;Intro&quot;,
+      &quot;Check-in&quot;,
+      &quot;Security&quot;,
+      &quot;Concourse&quot;,
+      &quot;Gate&quot;
+    ]
+  },
+  &quot;TERMINAL_COPY&quot;: {
+    &quot;cities&quot;: [
+      &quot;London&quot;,
+      &quot;Paris&quot;,
+      &quot;Istanbul&quot;,
+      &quot;New York&quot;,
+      &quot;Seoul&quot;,
+      &quot;Doha&quot;
+    ],
+    &quot;wayfinding&quot;: [
+      &quot;Baggage claim&quot;,
+      &quot;Arrivals&quot;,
+      &quot;Prayer room&quot;,
+      &quot;Gates A1–A12&quot;,
+      &quot;Café&quot;,
+      &quot;Washrooms&quot;
+    ],
+    &quot;clocks&quot;: [
+      {
+        &quot;label&quot;: &quot;Toronto&quot;,
+        &quot;zone&quot;: &quot;America/Toronto&quot;
+      },
+      {
+        &quot;label&quot;: &quot;Dubai&quot;,
+        &quot;zone&quot;: &quot;Asia/Dubai&quot;
+      },
+      {
+        &quot;label&quot;: &quot;Karachi&quot;,
+        &quot;zone&quot;: &quot;Asia/Karachi&quot;
+      }
+    ],
+    &quot;departures&quot;: [
+      &quot;DXB → YYZ&quot;,
+      &quot;DXB → KHI&quot;,
+      &quot;YYZ → LHR&quot;,
+      &quot;DOH → ICN&quot;
+    ],
+    &quot;banner&quot;: &quot;Waterloo Tech Week&quot;,
+    &quot;exit&quot;: &quot;Exit&quot;,
+    &quot;service&quot;: &quot;Staff only&quot;
+  },
+  &quot;siteUrl&quot;: &quot;https://ammaradam.com&quot;,
+  &quot;siteConfig&quot;: {
+    &quot;airportName&quot;: &quot;AFA International Airport&quot;,
+    &quot;siteName&quot;: &quot;AFA International Airport&quot;,
+    &quot;siteUrl&quot;: &quot;https://ammaradam.com&quot;,
+    &quot;navLabels&quot;: {
+      &quot;projects&quot;: &quot;Projects&quot;,
+      &quot;arrivals&quot;: &quot;Experiences&quot;,
+      &quot;about&quot;: &quot;About Me&quot;,
+      &quot;resume&quot;: &quot;Resume&quot;
+    },
+    &quot;heroOneLiner&quot;: &quot;Hi, I&#x27;m Ammar. CS &amp; Finance at Waterloo. Welcome to AFA International.&quot;,
+    &quot;socialLinks&quot;: {
+      &quot;email&quot;: &quot;mailto:ammar.adam@uwaterloo.ca&quot;,
+      &quot;github&quot;: &quot;https://github.com/ammar-adam&quot;,
+      &quot;linkedin&quot;: &quot;https://www.linkedin.com/in/ammar-adam/&quot;,
+      &quot;x&quot;: &quot;https://x.com/ammaradam_5807?s=11&quot;
+    },
+    &quot;checkIn&quot;: {
+      &quot;ctaTerminal&quot;: &quot;Enter Terminal&quot;,
+      &quot;ctaDepartures&quot;: &quot;View Departures&quot;
+    },
+    &quot;tickerIdentifiers&quot;: [
+      &quot;CS &amp; Finance at Waterloo&quot;,
+      &quot;Toronto, Dubai, Karachi&quot;,
+      &quot;AI Engineer at Sagard&quot;,
+      &quot;Founding Builder Lead at OpenAI&quot;,
+      &quot;Probably eating shawarma&quot;
+    ],
+    &quot;heroImageUrl&quot;: &quot;/hero-airport.jpg&quot;,
+    &quot;introBoardingPass&quot;: {
+      &quot;passenger&quot;: &quot;Ammar Adam&quot;,
+      &quot;program&quot;: &quot;Computer Science and Finance&quot;,
+      &quot;institution&quot;: &quot;University of Waterloo&quot;,
+      &quot;focus&quot;: &quot;AI, finance, startups&quot;,
+      &quot;currentStatus&quot;: &quot;In progress&quot;
+    },
+    &quot;checkInIntro&quot;: [
+      &quot;Hi, I&#x27;m Ammar Adam.&quot;,
+      &quot;Welcome to AFA International Airport.&quot;,
+      &quot;I structured this site like a terminal because most of my life feels like movement. Between cities, ideas, projects, and different phases of learning.&quot;,
+      &quot;There is no fixed path here.&quot;,
+      &quot;Some sections show what I am building.&quot;,
+      &quot;Some show what I have already done.&quot;,
+      &quot;Some are just there if you want to look around.&quot;,
+      &quot;If you want the short version, it is on the boarding pass next to this page.&quot;,
+      &quot;Everything else is optional.&quot;
+    ],
+    &quot;photoUrl&quot;: &quot;&quot;,
+    &quot;photoCaption&quot;: {
+      &quot;name&quot;: &quot;&quot;,
+      &quot;subtitle&quot;: &quot;CS + Finance · UW 2A&quot;
+    }
+  },
+  &quot;terminalReferences&quot;: [
+    {
+      &quot;id&quot;: &quot;alpen-difc&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        4.91,
+        1.2,
+        -25.32
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.1,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;DIFC ID card hanging from a physical desk hook.&quot;,
+      &quot;done&quot;: true,
+      &quot;label&quot;: &quot;DIFC&quot;,
+      &quot;dwell&quot;: 0.261
+    },
+    {
+      &quot;id&quot;: &quot;alpen-model&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        3.92,
+        1.2,
+        -25.17
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.06,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Printed spreadsheet lying on the Alpen desk.&quot;,
+      &quot;done&quot;: true,
+      &quot;dwell&quot;: 0.261
+    },
+    {
+      &quot;id&quot;: &quot;alpen-business-cards&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        4.43,
+        1.21,
+        -25.03
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.08,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;Small stack of bone-coloured business cards.&quot;,
+      &quot;done&quot;: true,
+      &quot;dwell&quot;: 0.261
+    },
+    {
+      &quot;id&quot;: &quot;datastealth-dashboard&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        5.43,
+        1.2,
+        -25.67
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.12,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A sales dashboard on a physical customer-facing desk monitor.&quot;,
+      &quot;done&quot;: true,
+      &quot;label&quot;: &quot;Sales&quot;,
+      &quot;dwell&quot;: 0.303
+    },
+    {
+      &quot;id&quot;: &quot;sagard-kyc&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        5.47,
+        1.2,
+        -25.51
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.12,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;KYC folder with a red rubber stamp and a Doppel sticky note.&quot;,
+      &quot;done&quot;: true,
+      &quot;label&quot;: &quot;KYC / Doppel&quot;,
+      &quot;dwell&quot;: 0.345
+    },
+    {
+      &quot;id&quot;: &quot;openai-devday&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        5.99,
+        1.2,
+        -25.79
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.12,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Unbranded DevDay badge hanging at the desk.&quot;,
+      &quot;done&quot;: true,
+      &quot;label&quot;: &quot;DevDay&quot;,
+      &quot;dwell&quot;: 0.387
+    },
+    {
+      &quot;id&quot;: &quot;openai-handheld&quot;,
+      &quot;stop&quot;: &quot;checkin&quot;,
+      &quot;position&quot;: [
+        6.2,
+        1.26,
+        -25.63
+      ],
+      &quot;rotation&quot;: [
+        -0.72,
+        -0.28,
+        0
+      ],
+      &quot;scale&quot;: [
+        0.8,
+        0.8,
+        0.8
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A generic handheld in a small cradle beside the DevDay badge.&quot;,
+      &quot;done&quot;: true,
+      &quot;dwell&quot;: 0.387
+    },
+    {
+      &quot;id&quot;: &quot;security-bat-flip&quot;,
+      &quot;stop&quot;: &quot;security&quot;,
+      &quot;position&quot;: [
+        4.4,
+        0,
+        -38.13
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A baseball bat mid-flip above a separate inspection return belt.&quot;,
+      &quot;done&quot;: true,
+      &quot;dwell&quot;: 0.525
+    },
+    {
+      &quot;id&quot;: &quot;security-corner-newspaper&quot;,
+      &quot;stop&quot;: &quot;security&quot;,
+      &quot;position&quot;: [
+        3.86,
+        0,
+        -39.69
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.06,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;One small folded CORNER TAKEN QUICKLY newspaper on the bench; a low leaning corner flag stays below its backrest.&quot;,
+      &quot;done&quot;: true,
+      &quot;label&quot;: &quot;Corner taken quickly&quot;,
+      &quot;dwell&quot;: 0.525
+    },
+    {
+      &quot;id&quot;: &quot;security-cap-wand&quot;,
+      &quot;stop&quot;: &quot;security&quot;,
+      &quot;position&quot;: [
+        4.13,
+        0.55,
+        -39.3
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.1,
+        0
+      ],
+      &quot;scale&quot;: [
+        0.78,
+        0.78,
+        0.78
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;Blue baseball cap and a wooden wand in a personal belongings tray.&quot;,
+      &quot;done&quot;: true,
+      &quot;dwell&quot;: 0.525
+    },
+    {
+      &quot;id&quot;: &quot;security-yellow-umbrella&quot;,
+      &quot;stop&quot;: &quot;security&quot;,
+      &quot;position&quot;: [
+        3.02,
+        0,
+        -40
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        -0.1
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;A closed yellow umbrella resting beside the lane barrier.&quot;,
+      &quot;done&quot;: true,
+      &quot;dwell&quot;: 0.525
+    },
+    {
+      &quot;id&quot;: &quot;security-xray-biscuits&quot;,
+      &quot;stop&quot;: &quot;security&quot;,
+      &quot;position&quot;: [
+        7.05,
+        2.46,
+        -41.75
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.15,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;A plain biscuit packet on a separate X-ray inspection display, with no wrapper logo.&quot;,
+      &quot;done&quot;: true,
+      &quot;label&quot;: &quot;Oreo&quot;,
+      &quot;dwell&quot;: 0.525
+    },
+    {
+      &quot;id&quot;: &quot;concourse-nihari&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -5.4,
+        0,
+        -58.3
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.08,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Nihari pot stays at the counter; its English/Urdu Karachi still life hangs on the kitchen back wall.&quot;,
+      &quot;text&quot;: [
+        &quot;NIHARI&quot;,
+        &quot;نہاری&quot;,
+        &quot;KARACHI&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -9.85,
+          3.6,
+          -61.18
+        ],
+        &quot;rotation&quot;: [
+          0,
+          0,
+          0
+        ],
+        &quot;size&quot;: [
+          3,
+          1.95
+        ]
+      },
+      &quot;dwell&quot;: 0.674,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-ridgeway&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -4.8,
+        0,
+        -60.4
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.12,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Ridgeway Plaza rotisserie; roast turns slowly in twelve poses each second.&quot;,
+      &quot;text&quot;: [
+        &quot;RIDGEWAY PLAZA&quot;,
+        &quot;shawarma · kafta · arayes&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -13.2,
+          3.6,
+          -58.65
+        ],
+        &quot;rotation&quot;: [
+          0,
+          1.5707963267948966,
+          0
+        ],
+        &quot;size&quot;: [
+          2.85,
+          1.7
+        ]
+      },
+      &quot;dwell&quot;: 0.684,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-mango-matcha&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -5.08,
+        1.325,
+        -69.4
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.08,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Two-layer mango matcha stays on the café counter; its painted label hangs below the leading return-wall photo.&quot;,
+      &quot;text&quot;: [
+        &quot;Mango matcha&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -13.2,
+          1.75,
+          -65.5
+        ],
+        &quot;rotation&quot;: [
+          0,
+          1.5707963267948966,
+          0
+        ],
+        &quot;size&quot;: [
+          2.2,
+          1.1
+        ]
+      },
+      &quot;dwell&quot;: 0.738,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-dubai&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -5.6,
+        0,
+        -71.6
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.1,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Hand rolls stay on the service return; Kokoro, Hashmi&#x27;s and Tong Thai share their original still life below the café back-wall photos.&quot;,
+      &quot;text&quot;: [
+        &quot;Kokoro&quot;,
+        &quot;Hashmi&#x27;s&quot;,
+        &quot;Tong Thai&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -11.2,
+          1.75,
+          -72.19
+        ],
+        &quot;rotation&quot;: [
+          0,
+          0,
+          0
+        ],
+        &quot;size&quot;: [
+          2.8,
+          1.15
+        ]
+      },
+      &quot;dwell&quot;: 0.757,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-thai&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -5.3,
+        0,
+        -75.1
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.08,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Thai bowls stay on the counter; the full Sukhothai, Chiang Mai and Mississauga still life hangs on the next bay&#x27;s clear side wall.&quot;,
+      &quot;text&quot;: [
+        &quot;Sukhothai&quot;,
+        &quot;Chiang Mai,&quot;,
+        &quot;Mississauga&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -13.2,
+          3.5,
+          -76.3
+        ],
+        &quot;rotation&quot;: [
+          0,
+          1.5707963267948966,
+          0
+        ],
+        &quot;size&quot;: [
+          3.05,
+          2
+        ]
+      },
+      &quot;dwell&quot;: 0.777,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-souvenir-shelves&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -7.7,
+        0,
+        -81.5
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Low glass-globe plinth and a stepped shelf for the original, unbranded plush allusions.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.808,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-paris&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -8.75,
+        1.48,
+        -80.65
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Snow globe with a narrow four-legged iron tower silhouette.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.787,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-istanbul&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -7.98,
+        1.48,
+        -80.65
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Snow globe with domes and slender minarets, no sacred-site image.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.799,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-nyc&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -7.21,
+        1.48,
+        -80.65
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Snow globe with a stepped Manhattan tower cluster.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.807,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-london&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -6.44,
+        1.48,
+        -80.65
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Snow globe with a clock tower and a little bridge.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.816,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-seoul&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -8.37,
+        2,
+        -81.55
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Snow globe with a slender observation tower on a hill.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.813,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-montreal&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -7.6,
+        2,
+        -81.55
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Snow globe with clustered stepped Habitat-like cubes.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.816,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;globe-castle&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -6.83,
+        2,
+        -81.55
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A generic turreted castle in a snow globe, with no branded silhouette.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.817,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-yellow-lentil&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -10.3,
+        1.87,
+        -82.1
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.15,
+        -0.06
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Plain yellow lentil plush, no letters or character face.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.799,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-blue-lentil&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -9.5,
+        1.87,
+        -82.1
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.1,
+        0.1
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Plain blue lentil plush beside the yellow one.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.808,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-tiger-tail&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -10.35,
+        2.85,
+        -82.3
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.12,
+        0.12
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A curled warm-yellow plush tail with ink stripes, no character face.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.802,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-cookie-jar&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -9.45,
+        2.63,
+        -82.3
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Blue ceramic cookie jar with an open lid; no eyes or character graphics.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.815,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-black-duck&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -8.5,
+        2.655,
+        -82.3
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.3,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A plain ink-coloured duck plush with a warm beak, no character face.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.816,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-tall-hat-dog&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -10.1,
+        3.51,
+        -82.38
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.12,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A long-eared dog plush with a plain tall hat and no face or branded clothing.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.808,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-mouse-ears&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -8.9,
+        3.88,
+        -82.35
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0.1
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Round costume ears hanging from a metal hook.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.816,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;souvenir-bat-shadow&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -12.72,
+        3.66,
+        -80.55
+      ],
+      &quot;rotation&quot;: [
+        0,
+        1.5707963267948966,
+        -0.04
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;An original animal-bat cutout casts its shadow onto the nearby shop wall under the window key.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.78,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-football-screen&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        10.2,
+        3.8,
+        -63.2
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -1.5707963267948966,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Sports-bar football screen and replay ticker. No club crests.&quot;,
+      &quot;text&quot;: [
+        &quot;LIV 2–1 TOT&quot;,
+        &quot;ALISSON 90+5&#x27;&quot;
+      ],
+      &quot;dwell&quot;: 0.735,
+      &quot;done&quot;: true,
+      &quot;lookDwell&quot;: 0.705,
+      &quot;lookYaw&quot;: -1.409,
+      &quot;lookPitch&quot;: -0.14
+    },
+    {
+      &quot;id&quot;: &quot;concourse-baseball-screen&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        10.2,
+        3.8,
+        -67
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -1.5707963267948966,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Blue-and-cream baseball field coverage, wordmark-free jerseys; Blue Jays text only.&quot;,
+      &quot;text&quot;: [
+        &quot;BLUE JAYS&quot;
+      ],
+      &quot;dwell&quot;: 0.735,
+      &quot;done&quot;: true,
+      &quot;lookDwell&quot;: 0.705,
+      &quot;lookYaw&quot;: -1.409,
+      &quot;lookPitch&quot;: -0.14
+    },
+    {
+      &quot;id&quot;: &quot;concourse-basketball-screen&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        10.2,
+        3.8,
+        -70.8
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -1.5707963267948966,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A basketball&#x27;s arc to a rim with four painted bounce marks, no team logo.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.735,
+      &quot;done&quot;: true,
+      &quot;lookDwell&quot;: 0.705,
+      &quot;lookYaw&quot;: -1.409,
+      &quot;lookPitch&quot;: -0.14
+    },
+    {
+      &quot;id&quot;: &quot;concourse-paper-bear-tv&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        4.55,
+        3.55,
+        -83.05
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        0.86,
+        0.86,
+        0.86
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;An original, abstract paper-cut bear allusion in blue and red, playing on the gate TV; no film still or copied character face.&quot;,
+      &quot;text&quot;: [
+        &quot;Paddington 2&quot;
+      ],
+      &quot;dwell&quot;: 0.821,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;traveller-66&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        6,
+        0,
+        -62.2
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.72,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A traveller in an uncrested red 66 jersey pushing a luggage cart.&quot;,
+      &quot;text&quot;: [
+        &quot;ALEXANDER-&quot;,
+        &quot;ARNOLD&quot;,
+        &quot;66&quot;
+      ],
+      &quot;dwell&quot;: 0.665,
+      &quot;done&quot;: true,
+      &quot;lookDwell&quot;: 0.705,
+      &quot;lookYaw&quot;: -1.409,
+      &quot;lookPitch&quot;: -0.14
+    },
+    {
+      &quot;id&quot;: &quot;traveller-11&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        6.2,
+        0,
+        -69.5
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.7,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Uncrested red SALAH 11 jersey.&quot;,
+      &quot;text&quot;: [
+        &quot;SALAH&quot;,
+        &quot;11&quot;
+      ],
+      &quot;dwell&quot;: 0.695,
+      &quot;done&quot;: true,
+      &quot;lookDwell&quot;: 0.758,
+      &quot;lookYaw&quot;: -1.501,
+      &quot;lookPitch&quot;: -0.13
+    },
+    {
+      &quot;id&quot;: &quot;traveller-4&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        7.7,
+        0,
+        -91
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Uncrested red VAN DIJK 4 jersey.&quot;,
+      &quot;text&quot;: [
+        &quot;VAN DIJK&quot;,
+        &quot;4&quot;
+      ],
+      &quot;dwell&quot;: 0.854,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;traveller-9&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        10.1,
+        0,
+        -92.4
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.12,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Uncrested red FIRMINO 9 jersey.&quot;,
+      &quot;text&quot;: [
+        &quot;FIRMINO&quot;,
+        &quot;9&quot;
+      ],
+      &quot;dwell&quot;: 0.854,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;traveller-10&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        7.1,
+        0,
+        -90.2
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.13,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Uncrested red DEROZAN 10 basketball jersey.&quot;,
+      &quot;text&quot;: [
+        &quot;DEROZAN&quot;,
+        &quot;10&quot;
+      ],
+      &quot;dwell&quot;: 0.85,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;traveller-43&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        9.1,
+        0,
+        -91
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Uncrested red SIAKAM 43 basketball jersey.&quot;,
+      &quot;text&quot;: [
+        &quot;SIAKAM&quot;,
+        &quot;43&quot;
+      ],
+      &quot;dwell&quot;: 0.854,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;traveller-clement&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        6.65,
+        0,
+        -88.8
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0.1,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A blue CLEMENT tee beside the gate approach, no team crest.&quot;,
+      &quot;text&quot;: [
+        &quot;CLEMENT&quot;
+      ],
+      &quot;dwell&quot;: 0.839,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;traveller-bautista&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        6.3,
+        0,
+        -93.5
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.08,
+        0
+      ],
+      &quot;scale&quot;: [
+        1.1,
+        1.1,
+        1.1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A blue BAUTISTA tee further along the gate approach.&quot;,
+      &quot;text&quot;: [
+        &quot;BAUTISTA&quot;
+      ],
+      &quot;dwell&quot;: 0.854,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-football-kids&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        7.4,
+        0,
+        -78.3
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.2,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Two children pass a football in the seating pocket, clear of the camera rail.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.827,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-basketball-player&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        11.4,
+        0,
+        -87.5
+      ],
+      &quot;rotation&quot;: [
+        0,
+        -0.7,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;A traveller bounces a basketball beside the gate seating.&quot;,
+      &quot;text&quot;: [],
+      &quot;dwell&quot;: 0.84,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-wings-flyer&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -13.2,
+        3.55,
+        -55.2
+      ],
+      &quot;rotation&quot;: [
+        0,
+        1.5707963267948966,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;Sultan&#x27;s, Burlington flyer mounted on the kitchen side wall, separate from the food still lifes.&quot;,
+      &quot;text&quot;: [
+        &quot;Sultan&#x27;s,&quot;,
+        &quot;Burlington&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -13.2,
+          3.55,
+          -55.2
+        ],
+        &quot;rotation&quot;: [
+          0,
+          1.5707963267948966,
+          0
+        ],
+        &quot;size&quot;: [
+          2.05,
+          1.1
+        ]
+      },
+      &quot;dwell&quot;: 0.698,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-london-board&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -13.2,
+        1.75,
+        -68.6
+      ],
+      &quot;rotation&quot;: [
+        0,
+        1.5707963267948966,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;Park Room steak-sandwich board mounted below the rear café return-wall photo, without covering the image.&quot;,
+      &quot;text&quot;: [
+        &quot;Steak sandwich,&quot;,
+        &quot;Park Room style&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -13.2,
+          1.75,
+          -68.6
+        ],
+        &quot;rotation&quot;: [
+          0,
+          1.5707963267948966,
+          0
+        ],
+        &quot;size&quot;: [
+          2.2,
+          1.1
+        ]
+      },
+      &quot;dwell&quot;: 0.737,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-record-picks&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -6.5,
+        3.5,
+        -83.17
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;Full staff-picks sleeve mounted on the souvenir back wall, clear of the plush shelf and cinema posters.&quot;,
+      &quot;text&quot;: [
+        &quot;STAFF PICKS&quot;,
+        &quot;Drake · The Weeknd&quot;,
+        &quot;Dave · Atif Aslam&quot;
+      ],
+      &quot;wall&quot;: {
+        &quot;position&quot;: [
+          -6.5,
+          3.5,
+          -83.17
+        ],
+        &quot;rotation&quot;: [
+          0,
+          0,
+          0
+        ],
+        &quot;size&quot;: [
+          2.65,
+          1.55
+        ]
+      },
+      &quot;dwell&quot;: 0.818,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-cinema-posters&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -2.5,
+        3.1,
+        -83.43
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;Original painted travel posters with readable movie titles; no copied poster or character designs.&quot;,
+      &quot;text&quot;: [
+        &quot;Yeh Jawaani Hai Deewani&quot;,
+        &quot;Zindagi Na Milegi Dobara&quot;
+      ],
+      &quot;art&quot;: [
+        &quot;/art/references/himalayan-friends.webp&quot;,
+        &quot;/art/references/coastal-road.webp&quot;
+      ],
+      &quot;dwell&quot;: 0.805,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;concourse-cafe-photos&quot;,
+      &quot;stop&quot;: &quot;concourse&quot;,
+      &quot;position&quot;: [
+        -9.35,
+        3.65,
+        -71.85
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Four large uncropped personal photos on the café back and return walls, without captions.&quot;,
+      &quot;dwell&quot;: 0.735,
+      &quot;done&quot;: true
+    },
+    {
+      &quot;id&quot;: &quot;gate-departures&quot;,
+      &quot;stop&quot;: &quot;gate&quot;,
+      &quot;position&quot;: [
+        3.4,
+        4.7,
+        -98
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        1,
+        1,
+        1
+      ],
+      &quot;priority&quot;: &quot;A&quot;,
+      &quot;note&quot;: &quot;Eleven split-flap routes, cycling a row every three seconds in twelve animation steps per second.&quot;,
+      &quot;dwell&quot;: 0.94,
+      &quot;done&quot;: true,
+      &quot;text&quot;: [
+        &quot;DXB → YYZ|Toronto|BOARDING&quot;,
+        &quot;DXB → KHI|Karachi|ON TIME&quot;,
+        &quot;YYZ → DXB|Dubai|ON TIME&quot;,
+        &quot;LHR|London|BOARDING&quot;,
+        &quot;CDG|Paris|ON TIME&quot;,
+        &quot;IST|Istanbul|ON TIME&quot;,
+        &quot;JFK|New York|ON TIME&quot;,
+        &quot;ICN|Seoul — departed without permission|DEPARTED&quot;,
+        &quot;YUL|MUN — delegate unaccounted for|DEPARTED&quot;,
+        &quot;DOH|Qsuite|ON TIME&quot;,
+        &quot;SIN|The Residence / Changi|ON TIME&quot;
+      ]
+    },
+    {
+      &quot;id&quot;: &quot;gate-nine-three-quarters&quot;,
+      &quot;stop&quot;: &quot;gate&quot;,
+      &quot;position&quot;: [
+        12.75,
+        2.25,
+        -101.8
+      ],
+      &quot;rotation&quot;: [
+        0,
+        0,
+        0
+      ],
+      &quot;scale&quot;: [
+        0.105,
+        0.105,
+        0.105
+      ],
+      &quot;priority&quot;: &quot;B&quot;,
+      &quot;note&quot;: &quot;A tiny Gate 9¾ plaque tucked onto the right window mullion.&quot;,
+      &quot;dwell&quot;: 0.94,
+      &quot;done&quot;: true
+    }
+  ],
+  &quot;PAINTED_COPY&quot;: {
+    &quot;alexanderArnold&quot;: &quot;Alexander-Arnold&quot;,
+    &quot;label66&quot;: &quot;66&quot;,
+    &quot;ammarAdam&quot;: &quot;Ammar Adam&quot;,
+    &quot;boardingPass&quot;: &quot;Boarding pass&quot;,
+    &quot;passenger&quot;: &quot;Passenger&quot;,
+    &quot;adamAmmar&quot;: &quot;Adam / Ammar&quot;,
+    &quot;computerScienceAmpFinanceWaterloo&quot;: &quot;Computer Science &amp; Finance · Waterloo&quot;,
+    &quot;from&quot;: &quot;From&quot;,
+    &quot;waterloo&quot;: &quot;Waterloo&quot;,
+    &quot;to&quot;: &quot;To&quot;,
+    &quot;next&quot;: &quot;Next&quot;,
+    &quot;whatSNext&quot;: &quot;What’s next&quot;,
+    &quot;flight&quot;: &quot;Flight&quot;,
+    &quot;gate&quot;: &quot;Gate&quot;,
+    &quot;label05&quot;: &quot;05&quot;,
+    &quot;seat&quot;: &quot;Seat&quot;,
+    &quot;document&quot;: &quot;Document&quot;,
+    &quot;resume&quot;: &quot;Resume&quot;,
+    &quot;ammaradamCom&quot;: &quot;Ammaradam.com&quot;,
+    &quot;keepThisPart&quot;: &quot;Keep this part&quot;,
+    &quot;resumePdf&quot;: &quot;Resume / PDF&quot;,
+    &quot;arrow&quot;: &quot;→&quot;,
+    &quot;amm01AmmarAdam01a&quot;: &quot;AMM01 / AMMAR-ADAM / 01A&quot;,
+    &quot;linkedin&quot;: &quot;LinkedIn&quot;,
+    &quot;github&quot;: &quot;GitHub&quot;,
+    &quot;email&quot;: &quot;Email&quot;,
+    &quot;label01Experience&quot;: &quot;01 / Experience&quot;,
+    &quot;aFewStops&quot;: &quot;A few stops&quot;,
+    &quot;alongTheWay&quot;: &quot;along the way.&quot;,
+    &quot;arrowLabel&quot;: &quot;↗&quot;,
+    &quot;checkIn&quot;: &quot;Check-in&quot;,
+    &quot;experience&quot;: &quot;Experience&quot;,
+    &quot;label05Stops&quot;: &quot;05 Stops&quot;,
+    &quot;no&quot;: &quot;No.&quot;,
+    &quot;whereWhatIDid&quot;: &quot;Where / what I did&quot;,
+    &quot;counter&quot;: &quot;Counter&quot;,
+    &quot;fullExperience&quot;: &quot;Full experience&quot;,
+    &quot;experienceLabel&quot;: &quot;Experience /&quot;,
+    &quot;aa&quot;: &quot;Aa&quot;,
+    &quot;sales&quot;: &quot;Sales&quot;,
+    &quot;doppel&quot;: &quot;Doppel&quot;,
+    &quot;devday&quot;: &quot;DevDay&quot;,
+    &quot;corner&quot;: &quot;Corner&quot;,
+    &quot;takenQuickly&quot;: &quot;Taken quickly&quot;,
+    &quot;oreo&quot;: &quot;Oreo&quot;,
+    &quot;departures&quot;: &quot;Departures  →&quot;,
+    &quot;terminalA&quot;: &quot;Terminal A&quot;,
+    &quot;security&quot;: &quot;Security  →&quot;,
+    &quot;allGates&quot;: &quot;All gates&quot;,
+    &quot;a1A12&quot;: &quot;←  A1—A12&quot;,
+    &quot;departuresLabel&quot;: &quot;Departures&quot;,
+    &quot;gates0406&quot;: &quot;Gates 04—06&quot;,
+    &quot;entry&quot;: &quot;Entry&quot;,
+    &quot;securityLabel&quot;: &quot;Security&quot;,
+    &quot;airsideScreening&quot;: &quot;Airside screening&quot;,
+    &quot;gate05&quot;: &quot;Gate 05&quot;,
+    &quot;boarding&quot;: &quot;Boarding&quot;,
+    &quot;alrightLetSDoThisOneMoreTime&quot;: &quot;Alright. Let’s do this one more time.&quot;,
+    &quot;iM&quot;: &quot;I’m&quot;,
+    &quot;ammarAdamLabel&quot;: &quot;Ammar Adam.&quot;,
+    &quot;iStudyCsAmpFinanceAtWaterloo&quot;: &quot;I study CS &amp; Finance at Waterloo.&quot;,
+    &quot;iBuildAiToolsAtSagardAndBring&quot;: &quot;I build AI tools at Sagard and bring student builders together.&quot;,
+    &quot;hereSTheStorySoFar&quot;: &quot;Here’s the story so far&quot;,
+    &quot;iMAmmarAdamCsAmpFinanceAt&quot;: &quot;I’m Ammar Adam. CS &amp; Finance at Waterloo. I build AI tools at Sagard and bring student builders together.&quot;,
+    &quot;ammarAdamTake01&quot;: &quot;Ammar Adam / take 01&quot;,
+    &quot;alright&quot;: &quot;Alright.&quot;,
+    &quot;letSDoThis&quot;: &quot;Let’s do this&quot;,
+    &quot;oneMore&quot;: &quot;One more&quot;,
+    &quot;time&quot;: &quot;Time.&quot;,
+    &quot;myNameIs&quot;: &quot;My name is&quot;,
+    &quot;ammar&quot;: &quot;Ammar&quot;,
+    &quot;adam&quot;: &quot;Adam.&quot;,
+    &quot;heyGoodToMeetYou&quot;: &quot;Hey. Good to meet you.&quot;,
+    &quot;iStudy&quot;: &quot;I study&quot;,
+    &quot;csAmp&quot;: &quot;CS &amp;&quot;,
+    &quot;finance&quot;: &quot;Finance.&quot;,
+    &quot;atTheUniversityOfWaterloo&quot;: &quot;at the University of Waterloo.&quot;,
+    &quot;mostDays&quot;: &quot;Most days&quot;,
+    &quot;iBuild&quot;: &quot;I build&quot;,
+    &quot;aiTools&quot;: &quot;AI tools.&quot;,
+    &quot;forThePeopleDoingTheWork&quot;: &quot;For the people doing the work.&quot;,
+    &quot;andWhenIMNotDoingThat&quot;: &quot;And when I’m not doing that&quot;,
+    &quot;iBring&quot;: &quot;I bring&quot;,
+    &quot;builders&quot;: &quot;Builders&quot;,
+    &quot;together&quot;: &quot;Together.&quot;,
+    &quot;goodThingsTendToStartWithGoodPeople&quot;: &quot;Good things tend to start with good people.&quot;,
+    &quot;thatSTheShortVersion&quot;: &quot;That’s the short version.&quot;,
+    &quot;hereS&quot;: &quot;Here’s&quot;,
+    &quot;theStory&quot;: &quot;The story&quot;,
+    &quot;soFar&quot;: &quot;So far.&quot;,
+    &quot;label0&quot;: &quot;0&quot;,
+    &quot;label06&quot;: &quot;/ 06&quot;,
+    &quot;skipToTheWork&quot;: &quot;Skip to the work&quot;,
+    &quot;aboutMe&quot;: &quot;About me&quot;,
+    &quot;rSum&quot;: &quot;Résumé&quot;,
+    &quot;menu&quot;: &quot;Menu&quot;,
+    &quot;arrowLabelLabel&quot;: &quot;←&quot;,
+    &quot;arrowLabelLabelLabel&quot;: &quot;▶&quot;,
+    &quot;playIntro&quot;: &quot;Play intro&quot;,
+    &quot;aFewThingsIWantToRemember&quot;: &quot;A few things I want to remember&quot;,
+    &quot;label03CameraRoll&quot;: &quot;03 / Camera roll&quot;,
+    &quot;andOff&quot;: &quot;And off&quot;,
+    &quot;theClock&quot;: &quot;the clock?&quot;,
+    &quot;aFewMomentsWorthKeeping&quot;: &quot;A few moments worth keeping.&quot;,
+    &quot;label25Photos&quot;: &quot;/ 25 Photos&quot;,
+    &quot;gates&quot;: &quot;Gates&quot;,
+    &quot;label0405&quot;: &quot;04—05&quot;,
+    &quot;arrowLabelLabelLabelLabel&quot;: &quot;↑&quot;,
+    &quot;keepRight&quot;: &quot;Keep right&quot;,
+    &quot;label25&quot;: &quot;/ 25&quot;,
+    &quot;openPhotoGallery&quot;: &quot;Open photo gallery&quot;,
+    &quot;label25PhotosLabel&quot;: &quot;· 25 photos&quot;,
+    &quot;aaLabel&quot;: &quot;Aa /&quot;,
+    &quot;label02SecurityCheckProjects&quot;: &quot;02 / Security check · projects&quot;,
+    &quot;whatIVeBeen&quot;: &quot;What I’ve been&quot;,
+    &quot;building&quot;: &quot;building.&quot;,
+    &quot;fourProjectsTakeALookInside&quot;: &quot;Four projects. Take a look inside.&quot;,
+    &quot;label02&quot;: &quot;02&quot;,
+    &quot;cabinBaggage&quot;: &quot;Cabin baggage&quot;,
+    &quot;xRay02&quot;: &quot;X-ray / 02&quot;,
+    &quot;personalProject&quot;: &quot;Personal project&quot;,
+    &quot;item0&quot;: &quot;Item 0&quot;,
+    &quot;label04&quot;: &quot;/ 04&quot;,
+    &quot;inspectionMonitor&quot;: &quot;Inspection monitor&quot;,
+    &quot;builtByAmmarAdam&quot;: &quot;Built by Ammar Adam&quot;,
+    &quot;tray0&quot;: &quot;Tray 0&quot;,
+    &quot;canadaclip&quot;: &quot;CanadaClip&quot;,
+    &quot;ca&quot;: &quot;Ca ↗&quot;,
+    &quot;bigBrandLink&quot;: &quot;Big-brand link.&quot;,
+    &quot;localAlternative&quot;: &quot;Local alternative.&quot;,
+    &quot;pasteMatchShopLocal&quot;: &quot;Paste → match → shop local&quot;,
+    &quot;ammarAdamIStudyCsFinanceAtWaterloo&quot;: &quot;Ammar Adam — I study CS + Finance at Waterloo&quot;,
+    &quot;skipToAboutMe&quot;: &quot;Skip to About me&quot;,
+    &quot;scroll&quot;: &quot;Scroll&quot;,
+    &quot;arrowLabelLabelLabelLabelLabel&quot;: &quot;↓&quot;,
+    &quot;dragToLookAround&quot;: &quot;Drag to look around&quot;,
+    &quot;departuresA01A09&quot;: &quot;Departures  /  A01—A09&quot;,
+    &quot;label01ExperienceLabel&quot;: &quot;01  /  Experience&quot;,
+    &quot;gate05Label&quot;: &quot;Gate 05  →&quot;,
+    &quot;gates0406Label&quot;: &quot;Gates 04—06  →&quot;,
+    &quot;nihari&quot;: &quot;Nihari&quot;,
+    &quot;khiSlowCooked&quot;: &quot;KHI  /  slow cooked&quot;,
+    &quot;postcards&quot;: &quot;Postcards&quot;,
+    &quot;gate05StillBoarding&quot;: &quot;Gate 05  /  still boarding&quot;,
+    &quot;label05NextChapter&quot;: &quot;05  /  Next chapter&quot;,
+    &quot;ammarAdamPortfolio&quot;: &quot;Ammar Adam / portfolio&quot;,
+    &quot;allTheWork&quot;: &quot;All the work.&quot;,
+    &quot;theWorkTheProjectsAndAWayTo&quot;: &quot;The work, the projects, and a way to say hello.&quot;,
+    &quot;close&quot;: &quot;Close&quot;,
+    &quot;arrowLabelLabelLabelLabelLabelLabel&quot;: &quot;×&quot;,
+    &quot;whereIAposVeWorked&quot;: &quot;Where I&#x27;ve worked&quot;,
+    &quot;website&quot;: &quot;Website&quot;,
+    &quot;for&quot;: &quot;for&quot;,
+    &quot;opensInANewTab&quot;: &quot;(opens in a new tab)&quot;,
+    &quot;projects&quot;: &quot;Projects&quot;,
+    &quot;thingsIAposVeBuilt&quot;: &quot;Things I&#x27;ve built&quot;,
+    &quot;contact&quot;: &quot;Contact&quot;,
+    &quot;letAposSTalk&quot;: &quot;Let&#x27;s talk&quot;,
+    &quot;theOnePageVersion&quot;: &quot;The one-page version.&quot;,
+    &quot;csAmpFinanceAtTheUniversityOfWaterloo&quot;: &quot;CS &amp; Finance at the University of Waterloo.&quot;,
+    &quot;openMyResume&quot;: &quot;Open my resume&quot;,
+    &quot;pdfOpensInANewTab&quot;: &quot;(PDF, opens in a new tab)&quot;,
+    &quot;visualCredits&quot;: &quot;Visual credits&quot;
+  },
+  &quot;BACKGROUND_ROUTES&quot;: [
+    &quot;DXB → YYZ|Toronto|Boarding&quot;,
+    &quot;DXB → KHI|Karachi|On time&quot;,
+    &quot;YYZ → LHR|London|On time&quot;,
+    &quot;DOH → ICN|Seoul|Boarding&quot;
+  ],
+  &quot;BANNER_LINES&quot;: [
+    &quot;Waterloo&quot;,
+    &quot;Tech Week&quot;
+  ],
+  &quot;boardingPassConfig&quot;: {
+    &quot;displayName&quot;: &quot;Ammar Adam&quot;,
+    &quot;resumeFileUrl&quot;: &quot;/Ammar_Adam.pdf&quot;,
+    &quot;ctaLabel&quot;: &quot;Scan barcode to view resume&quot;,
+    &quot;from&quot;: &quot;YYZ&quot;,
+    &quot;to&quot;: &quot;My next adventure&quot;,
+    &quot;flight&quot;: &quot;Wandering&quot;,
+    &quot;tagline&quot;: &quot;AI Engineer @ Sagard&quot;
+  },
+  &quot;loungeRoomContent&quot;: {
+    &quot;window&quot;: {
+      &quot;title&quot;: &quot;Window View&quot;,
+      &quot;paragraphs&quot;: [
+        &quot;Recent reflections on goals, direction, and what comes next.&quot;
+      ],
+      &quot;date&quot;: &quot;October 2026&quot;
+    },
+    &quot;bookshelf&quot;: {
+      &quot;title&quot;: &quot;What I&#x27;m Working On&quot;,
+      &quot;items&quot;: [
+        {
+          &quot;label&quot;: &quot;&quot;,
+          &quot;text&quot;: &quot;Legal AI tooling and computer-use agents at Sagard&quot;
+        },
+        {
+          &quot;label&quot;: &quot;&quot;,
+          &quot;text&quot;: &quot;Scouting student builders for OpenAI&quot;
+        },
+        {
+          &quot;label&quot;: &quot;&quot;,
+          &quot;text&quot;: &quot;Evals for RocketShip&quot;
+        },
+        {
+          &quot;label&quot;: &quot;&quot;,
+          &quot;text&quot;: &quot;Trying to read more&quot;
+        },
+        {
+          &quot;label&quot;: &quot;&quot;,
+          &quot;text&quot;: &quot;Cooking&quot;
+        }
+      ]
+    },
+    &quot;photos&quot;: {
+      &quot;title&quot;: &quot;Moments&quot;,
+      &quot;items&quot;: [
+        {
+          &quot;src&quot;: &quot;/ABOUT1.jpg&quot;,
+          &quot;caption&quot;: &quot;core memory — playing soccer on jeju island&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT2.jpg&quot;,
+          &quot;caption&quot;: &quot;first mun conference in montreal&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT3.jpg&quot;,
+          &quot;caption&quot;: &quot;last time running the culture show&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT4.jpg&quot;,
+          &quot;caption&quot;: &quot;harry potter ride at universal&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT5.jpg&quot;,
+          &quot;caption&quot;: &quot;met king julian and alex at deca icdc&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT6.jpg&quot;,
+          &quot;caption&quot;: &quot;i love toronto sunsets&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT7.jpg&quot;,
+          &quot;caption&quot;: &quot;golf is so fun&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT8.jpg&quot;,
+          &quot;caption&quot;: &quot;disneyland was awesome&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT9.jpg&quot;,
+          &quot;caption&quot;: &quot;last dinner before uni started&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT10.jpg&quot;,
+          &quot;caption&quot;: &quot;roommates&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT11.jpg&quot;,
+          &quot;caption&quot;: &quot;matcha is so good — especially mango matcha&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT12.jpg&quot;,
+          &quot;caption&quot;: &quot;valedictorian speech and grad&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT13.jpg&quot;,
+          &quot;caption&quot;: &quot;first engineering contest (paramount after was delicious)&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT14.jpg&quot;,
+          &quot;caption&quot;: &quot;scoops on the last day of classes&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT15.jpg&quot;,
+          &quot;caption&quot;: &quot;prom!&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT16.jpg&quot;,
+          &quot;caption&quot;: &quot;grad trip&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT17.jpg&quot;,
+          &quot;caption&quot;: &quot;post arcadium breakfast&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT18.jpg&quot;,
+          &quot;caption&quot;: &quot;i don&#x27;t even know it&#x27;s a long story&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT19.jpg&quot;,
+          &quot;caption&quot;: &quot;morning sunrise&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT21.jpg&quot;,
+          &quot;caption&quot;: &quot;openai office&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT22.jpg&quot;,
+          &quot;caption&quot;: &quot;htn 2026!&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT24.jpg&quot;,
+          &quot;caption&quot;: &quot;waterloo tech week&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT25.jpg&quot;,
+          &quot;caption&quot;: &quot;world cup&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT26.jpg&quot;,
+          &quot;caption&quot;: &quot;shenanigans&quot;
+        },
+        {
+          &quot;src&quot;: &quot;/ABOUT27.jpg&quot;,
+          &quot;caption&quot;: &quot;pottery w/ crv&quot;
+        }
+      ]
+    },
+    &quot;table&quot;: {
+      &quot;title&quot;: &quot;What&#x27;s on the table&quot;,
+      &quot;items&quot;: [
+        {
+          &quot;title&quot;: &quot;Café&quot;,
+          &quot;text&quot;: &quot;Iced coffee and matcha experiments. Chicken shawarma hunts. Liverpool kits. Lego sets. CN Tower models.&quot;
+        }
+      ]
+    },
+    &quot;cafe&quot;: {
+      &quot;title&quot;: &quot;Café&quot;,
+      &quot;intro&quot;: &quot;What&#x27;s on the table:&quot;,
+      &quot;items&quot;: [
+        &quot;Iced coffee and matcha experiments&quot;,
+        &quot;Chicken shawarma hunts&quot;,
+        &quot;Liverpool kits&quot;,
+        &quot;Lego sets&quot;,
+        &quot;CN Tower models&quot;
+      ],
+      &quot;cta&quot;: &quot;Take a seat&quot;
+    }
+  },
+  &quot;loungeContent&quot;: {
+    &quot;headline&quot;: &quot;Lounge&quot;,
+    &quot;blurb&quot;: &quot;A few things I care about outside of work.&quot;,
+    &quot;interests&quot;: [
+      &quot;Liverpool&quot;,
+      &quot;Toronto sports&quot;,
+      &quot;Cooking&quot;,
+      &quot;Aviation + terminals&quot;,
+      &quot;Theme parks / immersive design&quot;,
+      &quot;TCF + social impact&quot;,
+      &quot;Airline economics&quot;,
+      &quot;NYT puzzles&quot;
+    ]
+  },
+  &quot;cafeContent&quot;: {
+    &quot;intro&quot;: &quot;You don&#x27;t have to. But if you want to talk — work, ideas, or nothing in particular — the table&#x27;s open.&quot;,
+    &quot;cta&quot;: &quot;Take a seat&quot;,
+    &quot;sayHelloEmail&quot;: &quot;mailto:hello@example.com?subject=Hello&quot;,
+    &quot;askQuestionEmail&quot;: &quot;mailto:hello@example.com?subject=A question&quot;
+  },
+  &quot;stops&quot;: [
+    {
+      &quot;id&quot;: &quot;hall&quot;,
+      &quot;label&quot;: &quot;Arrivals hall&quot;,
+      &quot;walk&quot;: &quot;&quot;
+    },
+    {
+      &quot;id&quot;: &quot;departures&quot;,
+      &quot;label&quot;: &quot;Departures&quot;,
+      &quot;walk&quot;: &quot;1 min walk&quot;
+    },
+    {
+      &quot;id&quot;: &quot;gates&quot;,
+      &quot;label&quot;: &quot;Gates A1–A4&quot;,
+      &quot;walk&quot;: &quot;2 min walk&quot;
+    },
+    {
+      &quot;id&quot;: &quot;lounge&quot;,
+      &quot;label&quot;: &quot;Gate area&quot;,
+      &quot;walk&quot;: &quot;3 min walk&quot;
+    },
+    {
+      &quot;id&quot;: &quot;boarding&quot;,
+      &quot;label&quot;: &quot;Boarding&quot;,
+      &quot;walk&quot;: &quot;4 min walk&quot;
+    }
+  ],
+  &quot;signage&quot;: [
+    {
+      &quot;href&quot;: &quot;#departures&quot;,
+      &quot;label&quot;: &quot;Departures&quot;,
+      &quot;sub&quot;: &quot;Where I&#x27;ve worked&quot;,
+      &quot;arrow&quot;: &quot;→&quot;
+    },
+    {
+      &quot;href&quot;: &quot;#gates&quot;,
+      &quot;label&quot;: &quot;Gates&quot;,
+      &quot;sub&quot;: &quot;What I&#x27;ve built&quot;,
+      &quot;arrow&quot;: &quot;→&quot;
+    },
+    {
+      &quot;href&quot;: &quot;#lounge&quot;,
+      &quot;label&quot;: &quot;Gate area&quot;,
+      &quot;sub&quot;: &quot;About me&quot;,
+      &quot;arrow&quot;: &quot;→&quot;
+    },
+    {
+      &quot;href&quot;: &quot;/Ammar_Adam.pdf&quot;,
+      &quot;label&quot;: &quot;Resume&quot;,
+      &quot;sub&quot;: &quot;One page, PDF&quot;,
+      &quot;arrow&quot;: &quot;↓&quot;,
+      &quot;external&quot;: true
+    }
+  ],
+  &quot;hero&quot;: {
+    &quot;kicker&quot;: &quot;AFA International · Arrivals hall&quot;,
+    &quot;name&quot;: [
+      &quot;Ammar&quot;,
+      &quot;Adam&quot;
+    ],
+    &quot;voice&quot;: &quot;CS &amp; Finance at Waterloo. Building AI tools at Sagard, scouting student builders for OpenAI, shipping things on the side.&quot;
+  },
+  &quot;lounge&quot;: {
+    &quot;intro&quot;: [
+      &quot;I grew up between Toronto, Dubai and Karachi, so a lot of my life happened in departure halls. This site lives in one.&quot;,
+      &quot;When I&#x27;m not building, I&#x27;m hunting for the best shawarma in the GTA or talking about airplanes for longer than anyone asked.&quot;
+    ],
+    &quot;carryOn&quot;: [
+      &quot;Liverpool supporter since I was ten&quot;,
+      &quot;Paddington 2 is the best movie ever made&quot;,
+      &quot;Iced coffee and mango matcha, non-negotiable&quot;,
+      &quot;Ask me about airline economics&quot;
+    ]
+  },
+  &quot;aboutIntro&quot;: &quot;I&#x27;m a second-year CS &amp; Finance student at Waterloo. Right now I&#x27;m building AI tools for the legal team at Sagard and scouting student builders for OpenAI. On the side I ship things like Backseat and RocketShip.&quot;,
+  &quot;aboutPhotos&quot;: [
+    {
+      &quot;src&quot;: &quot;/ABOUT1.jpg&quot;,
+      &quot;caption&quot;: &quot;core memory — playing soccer on jeju island&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT2.jpg&quot;,
+      &quot;caption&quot;: &quot;first mun conference in montreal&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT3.jpg&quot;,
+      &quot;caption&quot;: &quot;last time running the culture show&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT4.jpg&quot;,
+      &quot;caption&quot;: &quot;harry potter ride at universal&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT5.jpg&quot;,
+      &quot;caption&quot;: &quot;met king julian and alex at deca icdc&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT6.jpg&quot;,
+      &quot;caption&quot;: &quot;i love toronto sunsets&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT7.jpg&quot;,
+      &quot;caption&quot;: &quot;golf is so fun&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT8.jpg&quot;,
+      &quot;caption&quot;: &quot;disneyland was awesome&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT9.jpg&quot;,
+      &quot;caption&quot;: &quot;last dinner before uni started&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT10.jpg&quot;,
+      &quot;caption&quot;: &quot;roommates&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT11.jpg&quot;,
+      &quot;caption&quot;: &quot;matcha is so good — especially mango matcha&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT12.jpg&quot;,
+      &quot;caption&quot;: &quot;valedictorian speech and grad&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT13.jpg&quot;,
+      &quot;caption&quot;: &quot;first engineering contest (paramount after was delicious)&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT14.jpg&quot;,
+      &quot;caption&quot;: &quot;scoops on the last day of classes&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT15.jpg&quot;,
+      &quot;caption&quot;: &quot;prom!&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT16.jpg&quot;,
+      &quot;caption&quot;: &quot;grad trip&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT17.jpg&quot;,
+      &quot;caption&quot;: &quot;post arcadium breakfast&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT18.jpg&quot;,
+      &quot;caption&quot;: &quot;i don&#x27;t even know it&#x27;s a long story&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT19.jpg&quot;,
+      &quot;caption&quot;: &quot;morning sunrise&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT21.jpg&quot;,
+      &quot;caption&quot;: &quot;openai office&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT22.jpg&quot;,
+      &quot;caption&quot;: &quot;htn 2026!&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT24.jpg&quot;,
+      &quot;caption&quot;: &quot;waterloo tech week&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT25.jpg&quot;,
+      &quot;caption&quot;: &quot;world cup&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT26.jpg&quot;,
+      &quot;caption&quot;: &quot;shenanigans&quot;
+    },
+    {
+      &quot;src&quot;: &quot;/ABOUT27.jpg&quot;,
+      &quot;caption&quot;: &quot;pottery w/ crv&quot;
+    }
+  ],
+  &quot;aboutMenuItems&quot;: [
+    &quot;Iced coffee and mango matcha (non-negotiable)&quot;,
+    &quot;Chicken shawarma hunts across the GTA&quot;,
+    &quot;Steak nights when I actually have time to cook&quot;,
+    &quot;Cooking experiments that sometimes work&quot;,
+    &quot;Post-hackathon pizza at 2am&quot;
+  ],
+  &quot;aboutFunFacts&quot;: [
+    &quot;Youngest intern at Alpen Capital, at 16&quot;,
+    &quot;Liverpool supporter since I was 10&quot;,
+    &quot;Paddington 2 is the best movie ever made&quot;,
+    &quot;I can talk about airplanes for way too long&quot;,
+    &quot;DECA International Finalist, FBLA National Champion&quot;,
+    &quot;High school valedictorian&quot;,
+    &quot;Toronto sunsets &gt; almost everything else&quot;
+  ],
+  &quot;aboutWhatsUp&quot;: [
+    &quot;Iced coffee and matcha experiments&quot;,
+    &quot;Chicken shawarma hunts&quot;,
+    &quot;Liverpool kits&quot;,
+    &quot;Lego sets&quot;,
+    &quot;CN Tower models&quot;
+  ],
+  &quot;aboutAmenities&quot;: [
+    &quot;Aviation nerd. Ask me about airline economics&quot;,
+    &quot;Liverpool, the Blue Jays and the Raptors&quot;,
+    &quot;How I Met Your Mother is my favourite show&quot;,
+    &quot;Golf, LEGO and the NYT puzzles&quot;
+  ],
+  &quot;aboutFieldnotes&quot;: [
+    {
+      &quot;title&quot;: &quot;Window View&quot;,
+      &quot;date&quot;: &quot;Oct 2026&quot;,
+      &quot;line&quot;: &quot;Recent reflections on goals and direction.&quot;
+    },
+    {
+      &quot;title&quot;: &quot;What I&#x27;m Working On&quot;,
+      &quot;date&quot;: &quot;2026&quot;,
+      &quot;line&quot;: &quot;Legal AI tooling and computer-use agents at Sagard · Scouting student builders for OpenAI&quot;
+    }
+  ],
+  &quot;aboutCaption&quot;: {
+    &quot;name&quot;: &quot;&quot;,
+    &quot;subtitle&quot;: &quot;CS + Finance · UW 2A&quot;
+  },
+  &quot;aboutLocationStamps&quot;: [
+    {
+      &quot;code&quot;: &quot;YYZ&quot;,
+      &quot;url&quot;: &quot;https://www.destinationtoronto.com&quot;
+    },
+    {
+      &quot;code&quot;: &quot;DXB&quot;,
+      &quot;url&quot;: &quot;https://www.visitdubai.com&quot;
+    },
+    {
+      &quot;code&quot;: &quot;KHI&quot;,
+      &quot;url&quot;: &quot;https://en.wikipedia.org/wiki/Karachi&quot;
+    }
+  ],
+  &quot;SHOP_COPY&quot;: [
+    {
+      &quot;code&quot;: &quot;A02&quot;,
+      &quot;city&quot;: &quot;Karachi / Ridgeway&quot;,
+      &quot;name&quot;: &quot;Kitchen&quot;
+    },
+    {
+      &quot;code&quot;: &quot;A03&quot;,
+      &quot;city&quot;: &quot;Dubai&quot;,
+      &quot;name&quot;: &quot;Café&quot;
+    },
+    {
+      &quot;code&quot;: &quot;A04&quot;,
+      &quot;city&quot;: &quot;YYZ&quot;,
+      &quot;name&quot;: &quot;Souvenirs&quot;
+    }
+  ],
+  &quot;FLAP_COLUMNS&quot;: [
+    &quot;Route&quot;,
+    &quot;Destination&quot;,
+    &quot;Status&quot;
+  ],
+  &quot;SCAN_CLEARANCE&quot;: [
+    &quot;Reading barcode&quot;,
+    &quot;Pass accepted&quot;,
+    &quot;Cleared for departure&quot;,
+    &quot;Two seconds to departure&quot;
+  ],
+  &quot;SHORT_BIO_LINKS&quot;: [
+    {
+      &quot;word&quot;: &quot;Waterloo&quot;,
+      &quot;href&quot;: &quot;https://uwaterloo.ca/&quot;,
+      &quot;label&quot;: &quot;University of Waterloo&quot;,
+      &quot;image&quot;: &quot;/art/waterloo-official.png&quot;,
+      &quot;kind&quot;: &quot;waterloo&quot;,
+      &quot;width&quot;: 164,
+      &quot;height&quot;: 189
+    },
+    {
+      &quot;word&quot;: &quot;eating&quot;,
+      &quot;href&quot;: &quot;https://beliapp.com/&quot;,
+      &quot;label&quot;: &quot;Beli&quot;,
+      &quot;image&quot;: &quot;/art/beli-official.png&quot;,
+      &quot;kind&quot;: &quot;beli&quot;,
+      &quot;width&quot;: 300,
+      &quot;height&quot;: 300
+    },
+    {
+      &quot;word&quot;: &quot;soccer&quot;,
+      &quot;href&quot;: &quot;https://www.liverpoolfc.com/&quot;,
+      &quot;label&quot;: &quot;Liverpool FC&quot;,
+      &quot;image&quot;: &quot;/art/liverpool-official.png&quot;,
+      &quot;kind&quot;: &quot;liverpool&quot;,
+      &quot;width&quot;: 136,
+      &quot;height&quot;: 244
+    }
+  ]
+}</pre></details></section></body></html>

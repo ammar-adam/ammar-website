@@ -1,0 +1,62 @@
+{
+  "desktop": [
+    {
+      "name": "alpen",
+      "fps": 60.09855022918391,
+      "drawCalls": 288,
+      "stage": "checkin",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "name": "backseat",
+      "fps": 59.642714456633044,
+      "drawCalls": 294,
+      "stage": "security",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "name": "wvg",
+      "fps": 59.80520590067879,
+      "drawCalls": 266,
+      "stage": "security",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "name": "concourse",
+      "fps": 59.91782697993772,
+      "drawCalls": 324,
+      "stage": "concourse",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    }
+  ],
+  "mobile": [
+    {
+      "name": "alpen",
+      "fps": 30.164195668927974,
+      "drawCalls": 243,
+      "stage": "checkin",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "name": "backseat",
+      "fps": 30.144465931014764,
+      "drawCalls": 267,
+      "stage": "security",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "name": "wvg",
+      "fps": 29.701556475796085,
+      "drawCalls": 266,
+      "stage": "security",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    },
+    {
+      "name": "concourse",
+      "fps": 29.682906641398873,
+      "drawCalls": 267,
+      "stage": "concourse",
+      "renderer": "ANGLE (Intel, Intel(R) Arc(TM) 140V GPU (16GB) (0x000064A0) Direct3D11 vs_5_0 ps_5_0, D3D11)"
+    }
+  ]
+}

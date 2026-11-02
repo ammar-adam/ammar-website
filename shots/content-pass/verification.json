@@ -1,0 +1,2345 @@
+{
+  "mobile": [
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.2405,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 236,
+      "percent": 0,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.24641218122320016,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 238,
+      "percent": 1,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.25238289889415483,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 244,
+      "percent": 2,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.25829508011735497,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 243,
+      "percent": 3,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.26420726134055517,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 243,
+      "percent": 4,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.2701194425637553,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 243,
+      "percent": 5,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.27609016023471,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 192,
+      "percent": 6,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.28200236966824643,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 0.999917,
+      "drawCalls": 184,
+      "percent": 7,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.2879857819905213,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 184,
+      "percent": 8,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.29402843601895734,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 184,
+      "percent": 9,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.30001184834123223,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 185,
+      "percent": 10,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.3059952606635071,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 185,
+      "percent": 11,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.31197867298578197,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 183,
+      "percent": 12,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.31802132701421804,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 182,
+      "percent": 13,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.3240047393364929,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 184,
+      "percent": 14,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.32998815165876777,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 183,
+      "percent": 15,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.33597156398104266,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 183,
+      "percent": 16,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.3420142180094787,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 183,
+      "percent": 17,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.34799763033175357,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 183,
+      "percent": 18,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.3539810426540284,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 183,
+      "percent": 19,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.3600236966824645,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 184,
+      "percent": 20,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.3660071090047393,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 194,
+      "percent": 21,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.3719905213270142,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 194,
+      "percent": 22,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.37797393364928905,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 196,
+      "percent": 23,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.3840165876777251,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 198,
+      "percent": 24,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.38999999999999996,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 200,
+      "percent": 25,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.39598341232227485,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 201,
+      "percent": 26,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.40202606635071086,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 203,
+      "percent": 27,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4080056420672534,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 185,
+      "percent": 28,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4115671970209885,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 184,
+      "percent": 29,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.41512875197472354,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 181,
+      "percent": 30,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4187255698487926,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 182,
+      "percent": 31,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4222871248025276,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 182,
+      "percent": 32,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.42584867975626267,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 185,
+      "percent": 33,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.42944549763033174,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 181,
+      "percent": 34,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.43300394944707743,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 295,
+      "percent": 35,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.434998420221169,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 285,
+      "percent": 36,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4369928909952607,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 273,
+      "percent": 37,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4390071090047393,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 249,
+      "percent": 38,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.44128774542992555,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 246,
+      "percent": 39,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4438520649966148,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 269,
+      "percent": 40,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.446416384563304,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 263,
+      "percent": 41,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.4490011848341232,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 243,
+      "percent": 42,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.44949980252764615,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 258,
+      "percent": 43,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.44999842022116904,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 258,
+      "percent": 44,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.45717106747912434,
+      "card": null,
+      "bar": "Security",
+      "opacity": null,
+      "drawCalls": 271,
+      "percent": 45,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.46429417738659445,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 267,
+      "percent": 46,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.4714172872940645,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 267,
+      "percent": 47,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.47854039720153463,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 267,
+      "percent": 48,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.48573403294967277,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 267,
+      "percent": 49,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.4928571428571428,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 267,
+      "percent": 50,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.49998025276461294,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 268,
+      "percent": 51,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 6,
+      "worldStop": 6,
+      "stage": "security",
+      "progress": 0.5071738885127511,
+      "card": "rocketship",
+      "bar": "Security",
+      "opacity": 0.97636,
+      "drawCalls": 263,
+      "percent": 52,
+      "expected": {
+        "stop": 6,
+        "chapter": 2,
+        "item": 1,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 6,
+      "worldStop": 6,
+      "stage": "security",
+      "progress": 0.5142969984202211,
+      "card": "rocketship",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 263,
+      "percent": 53,
+      "expected": {
+        "stop": 6,
+        "chapter": 2,
+        "item": 1,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 6,
+      "worldStop": 6,
+      "stage": "security",
+      "progress": 0.5214201083276913,
+      "card": "rocketship",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 264,
+      "percent": 54,
+      "expected": {
+        "stop": 6,
+        "chapter": 2,
+        "item": 1,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 6,
+      "worldStop": 6,
+      "stage": "security",
+      "progress": 0.5285432182351614,
+      "card": "rocketship",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 264,
+      "percent": 55,
+      "expected": {
+        "stop": 6,
+        "chapter": 2,
+        "item": 1,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 6,
+      "worldStop": 6,
+      "stage": "security",
+      "progress": 0.5357368539832995,
+      "card": "rocketship",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 264,
+      "percent": 56,
+      "expected": {
+        "stop": 6,
+        "chapter": 2,
+        "item": 1,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 6,
+      "worldStop": 6,
+      "stage": "security",
+      "progress": 0.5428599638907696,
+      "card": "rocketship",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 265,
+      "percent": 57,
+      "expected": {
+        "stop": 6,
+        "chapter": 2,
+        "item": 1,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.5499830737982397,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 265,
+      "percent": 58,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.5571767095463779,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 266,
+      "percent": 59,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.564299819453848,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 266,
+      "percent": 60,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.571422929361318,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 266,
+      "percent": 61,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.5785460392687881,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 265,
+      "percent": 62,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.5857396750169261,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 265,
+      "percent": 63,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.5928627849243963,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 0.999995,
+      "drawCalls": 263,
+      "percent": 64,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.5999858948318664,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 261,
+      "percent": 65,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.6087085308056871,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 259,
+      "percent": 66,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.6175207345971564,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 247,
+      "percent": 67,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.6262465442338073,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 247,
+      "percent": 68,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.6349723538704581,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 237,
+      "percent": 69,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6365059241706161,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 517,
+      "percent": 70,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6380017772511849,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 486,
+      "percent": 71,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6394976303317536,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 417,
+      "percent": 72,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6409934834123223,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 265,
+      "percent": 73,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6436740389678779,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 337,
+      "percent": 74,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6463333333333333,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 423,
+      "percent": 75,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6489926276987888,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 372,
+      "percent": 76,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6493347814639284,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 363,
+      "percent": 77,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6496671932596103,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 356,
+      "percent": 78,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6499996050552923,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 347,
+      "percent": 79,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6654941197121292,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 338,
+      "percent": 80,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6811602597858523,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 332,
+      "percent": 81,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6966728102510094,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 294,
+      "percent": 82,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 10,
+      "worldStop": 10,
+      "stage": "concourse",
+      "progress": 0.7121853607161664,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 278,
+      "percent": 83,
+      "expected": {
+        "stop": 10,
+        "chapter": 3,
+        "item": 1,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 10,
+      "worldStop": 10,
+      "stage": "concourse",
+      "progress": 0.7278515007898895,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 266,
+      "percent": 84,
+      "expected": {
+        "stop": 10,
+        "chapter": 3,
+        "item": 1,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 10,
+      "worldStop": 10,
+      "stage": "concourse",
+      "progress": 0.7433640512550466,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 271,
+      "percent": 85,
+      "expected": {
+        "stop": 10,
+        "chapter": 3,
+        "item": 1,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 10,
+      "worldStop": 10,
+      "stage": "concourse",
+      "progress": 0.7588766017202038,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 274,
+      "percent": 86,
+      "expected": {
+        "stop": 10,
+        "chapter": 3,
+        "item": 1,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 10,
+      "worldStop": 10,
+      "stage": "concourse",
+      "progress": 0.7743891521853609,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 241,
+      "percent": 87,
+      "expected": {
+        "stop": 10,
+        "chapter": 3,
+        "item": 1,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.7900355450236967,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 220,
+      "percent": 88,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.8000078988941548,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 216,
+      "percent": 89,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.8099802527646128,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 208,
+      "percent": 90,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.8193865944482057,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 203,
+      "percent": 91,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.828306702775897,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 199,
+      "percent": 92,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.83713935906116,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 176,
+      "percent": 93,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.845972015346423,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 230,
+      "percent": 94,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.8516221169036334,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 216,
+      "percent": 95,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.8572066350710901,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 212,
+      "percent": 96,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 0.8799368088467615,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 165,
+      "percent": 97,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 0.9198262243285941,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 164,
+      "percent": 98,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 0.9601105845181674,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 164,
+      "percent": 99,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 1,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 164,
+      "percent": 100,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    }
+  ],
+  "desktop": [
+    {
+      "chapter": 0,
+      "stop": -1,
+      "worldStop": -1,
+      "stage": "atrium",
+      "progress": 0.0028791853530404686,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 375,
+      "percent": 0,
+      "expected": {
+        "stop": -1,
+        "chapter": 0,
+        "item": 0,
+        "stage": "atrium"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 0,
+      "stop": -1,
+      "worldStop": -1,
+      "stage": "atrium",
+      "progress": 0.04936982687729625,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 358,
+      "percent": 5,
+      "expected": {
+        "stop": -1,
+        "chapter": 0,
+        "item": 0,
+        "stage": "atrium"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 0,
+      "stop": -1,
+      "worldStop": -1,
+      "stage": "atrium",
+      "progress": 0.09942815136243957,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 351,
+      "percent": 10,
+      "expected": {
+        "stop": -1,
+        "chapter": 0,
+        "item": 0,
+        "stage": "atrium"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 0,
+      "stop": -1,
+      "worldStop": -1,
+      "stage": "atrium",
+      "progress": 0.14942821147531493,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 346,
+      "percent": 15,
+      "expected": {
+        "stop": -1,
+        "chapter": 0,
+        "item": 0,
+        "stage": "atrium"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 0,
+      "stop": -1,
+      "worldStop": -1,
+      "stage": "atrium",
+      "progress": 0.19942815110179682,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 323,
+      "percent": 20,
+      "expected": {
+        "stop": -1,
+        "chapter": 0,
+        "item": 0,
+        "stage": "atrium"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 0,
+      "worldStop": 0,
+      "stage": "checkin",
+      "progress": 0.24942798788188744,
+      "card": "alpen-capital",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 286,
+      "percent": 25,
+      "expected": {
+        "stop": 0,
+        "chapter": 1,
+        "item": 0,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 1,
+      "worldStop": 1,
+      "stage": "checkin",
+      "progress": 0.2993654428651937,
+      "card": "datastealth",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 212,
+      "percent": 30,
+      "expected": {
+        "stop": 1,
+        "chapter": 1,
+        "item": 1,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 2,
+      "worldStop": 2,
+      "stage": "checkin",
+      "progress": 0.3493616103592782,
+      "card": "sagard",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 216,
+      "percent": 35,
+      "expected": {
+        "stop": 2,
+        "chapter": 1,
+        "item": 2,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 3,
+      "worldStop": 3,
+      "stage": "checkin",
+      "progress": 0.39936910334965786,
+      "card": "openai",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 220,
+      "percent": 40,
+      "expected": {
+        "stop": 3,
+        "chapter": 1,
+        "item": 3,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 1,
+      "stop": 4,
+      "worldStop": 4,
+      "stage": "checkin",
+      "progress": 0.44942475143761124,
+      "card": "pear-vc",
+      "bar": "Check-in",
+      "opacity": 1,
+      "drawCalls": 292,
+      "percent": 45,
+      "expected": {
+        "stop": 4,
+        "chapter": 1,
+        "item": 4,
+        "stage": "checkin"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 5,
+      "worldStop": 5,
+      "stage": "security",
+      "progress": 0.4994443897696807,
+      "card": "backseat",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 290,
+      "percent": 50,
+      "expected": {
+        "stop": 5,
+        "chapter": 2,
+        "item": 0,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 7,
+      "worldStop": 7,
+      "stage": "security",
+      "progress": 0.5493800896328124,
+      "card": "waterloo-venture",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 268,
+      "percent": 55,
+      "expected": {
+        "stop": 7,
+        "chapter": 2,
+        "item": 2,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 2,
+      "stop": 8,
+      "worldStop": 8,
+      "stage": "security",
+      "progress": 0.5994316317501934,
+      "card": "waterloo-tech-week",
+      "bar": "Security",
+      "opacity": 1,
+      "drawCalls": 266,
+      "percent": 60,
+      "expected": {
+        "stop": 8,
+        "chapter": 2,
+        "item": 3,
+        "stage": "security"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6494350118815947,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 475,
+      "percent": 65,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 9,
+      "worldStop": 9,
+      "stage": "concourse",
+      "progress": 0.6994274537339208,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 381,
+      "percent": 70,
+      "expected": {
+        "stop": 9,
+        "chapter": 3,
+        "item": 0,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 10,
+      "worldStop": 10,
+      "stage": "concourse",
+      "progress": 0.7493684699180201,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 319,
+      "percent": 75,
+      "expected": {
+        "stop": 10,
+        "chapter": 3,
+        "item": 1,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.7994342906782403,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 241,
+      "percent": 80,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 3,
+      "stop": 11,
+      "worldStop": 11,
+      "stage": "concourse",
+      "progress": 0.8494243735340786,
+      "card": null,
+      "bar": "Concourse",
+      "opacity": null,
+      "drawCalls": 249,
+      "percent": 85,
+      "expected": {
+        "stop": 11,
+        "chapter": 3,
+        "item": 2,
+        "stage": "concourse"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 0.8994248225454393,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 179,
+      "percent": 90,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 0.949425182027663,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 182,
+      "percent": 95,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    },
+    {
+      "chapter": 4,
+      "stop": 12,
+      "worldStop": 12,
+      "stage": "gate",
+      "progress": 0.9994351202107679,
+      "card": null,
+      "opacity": null,
+      "drawCalls": 182,
+      "percent": 100,
+      "expected": {
+        "stop": 12,
+        "chapter": 4,
+        "item": 0,
+        "stage": "gate"
+      },
+      "matches": true
+    }
+  ],
+  "short": {
+    "desktop": {
+      "scrollHeight": 900,
+      "viewport": 900,
+      "contentHeight": 900,
+      "rows": 9,
+      "bioLinks": 3,
+      "lowercaseStyles": 0,
+      "text": "Skip to content\nAmmar Adam\n\nCS and Finance at Waterloo \n.\n\nI build AI tools, bring builders together, and back founders early. Outside of that: cooking, eating \n, soccer \n, and trying anything once.\n\nRésumé\nExperience\nOpenAI\n\nFounding Builder Lead\n\nFinding the best student builders in North America and helping them ship.\n\nSagard\n\nAI Engineer\n\nBuilt AI tools for legal and compliance that cut KYC prep from weeks to hours.\n\nDataStealth\n\nProduct Engineering Intern\n\nBuilt product demos for sales and automated competitor research.\n\nAlpen Capital\n\nM&A Summer Analyst, Dubai\n\nModelled M&A deals in Dubai at 16 as the firm's youngest intern.\n\nPear VC\n\nFellow\n\nScouting and supporting founders at their earliest stages.\n\nBuilt\nBackseat\n\nCreator\n\nCharacter voices for Waze, installed in one tap.\n\nRocketShip\n\nCreator\n\nAI agents that write equity research, graded with honest evals.\n\nWaterloo Venture Group\n\nManaging Director\n\nRunning Waterloo's student venture community.\n\nWaterloo Tech Week / Hack the North\n\nOrganizer\n\nOrganized Tech Week and helped run Hack the North.\n\nBack to the terminal"
+    },
+    "mobile": {
+      "scrollHeight": 1754,
+      "viewport": 844,
+      "contentHeight": 1754.359375,
+      "rows": 9,
+      "bioLinks": 3,
+      "lowercaseStyles": 0,
+      "text": "Skip to content\nAmmar Adam\n\nCS and Finance at Waterloo \n.\n\nI build AI tools, bring builders together, and back founders early. Outside of that: cooking, eating \n, soccer \n, and trying anything once.\n\nRésumé\nExperience\nOpenAI\n\nFounding Builder Lead\n\nFinding the best student builders in North America and helping them ship.\n\nSagard\n\nAI Engineer\n\nBuilt AI tools for legal and compliance that cut KYC prep from weeks to hours.\n\nDataStealth\n\nProduct Engineering Intern\n\nBuilt product demos for sales and automated competitor research.\n\nAlpen Capital\n\nM&A Summer Analyst, Dubai\n\nModelled M&A deals in Dubai at 16 as the firm's youngest intern.\n\nPear VC\n\nFellow\n\nScouting and supporting founders at their earliest stages.\n\nBuilt\nBackseat\n\nCreator\n\nCharacter voices for Waze, installed in one tap.\n\nRocketShip\n\nCreator\n\nAI agents that write equity research, graded with honest evals.\n\nWaterloo Venture Group\n\nManaging Director\n\nRunning Waterloo's student venture community.\n\nWaterloo Tech Week / Hack the North\n\nOrganizer\n\nOrganized Tech Week and helped run Hack the North.\n\nBack to the terminal"
+    }
+  },
+  "performance": {
+    "desktop": {
+      "fps": 59.858733389059104,
+      "drawCalls": 182,
+      "device": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+    },
+    "mobile": {
+      "fps": 29.98081228021214,
+      "drawCalls": 164,
+      "device": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+    }
+  },
+  "errors": []
+}
