@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
+import { UI_COPY } from "@/data/copy";
 import { siteConfig } from "@/data/site";
 import "./boarding-pass.css";
 
@@ -70,13 +71,13 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
 
   const detached = status === "tearing" || status === "departing" || status === "opening";
   const label = status === "scanning" ? "Scanning pass" : status === "tearing" ? "Pass accepted" : status === "departing" ? "Departing" : status === "opening" ? "Opening résumé" : reduced ? "Open resume" : "Scan & open resume";
-  const announcement = status === "scanning" ? "Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure. Opening the résumé next." : status === "opening" ? "Opening résumé PDF." : reduced ? "Open the résumé PDF." : "Scan the boarding pass. The résumé PDF opens after the two-second departure.";
+  const announcement = status === "scanning" ? "Scanning boarding pass." : status === "tearing" ? "Pass accepted. Tearing ticket stub." : status === "departing" ? "Cleared for departure. Opening the résumé next." : status === "opening" ? "Opening résumé PDF." : reduced ? "Open the résumé PDF." : UI_COPY.boardingHelper;
 
   return <div className={`bp-scene${reduced ? " bp-reduced" : ""}`} data-scan-status={status} data-scan-duration={SCAN_MS} data-departure-delay={DEPARTURE_MS} data-animation-duration={OPEN_MS}>
     <div className="bp-layout">
       <div className="bp-introduction">
-        <p className="bp-eyebrow">And that’s me.</p>
-        <h2 className="bp-title">The story’s<br />still going.</h2>
+        <p className="bp-eyebrow">{UI_COPY.ending}</p>
+        <h2 className="bp-title">{UI_COPY.endingTitle[0]}<br />{UI_COPY.endingTitle[1]}</h2>
       </div>
 
       <motion.article className="bp-ticket" aria-label="Ammar Adam’s resume boarding pass" data-scan-status={status} data-stub-detached={detached} style={{ y, rotate }}>
@@ -101,7 +102,7 @@ export function BoardingPass({ p, reduced, onDeparture, onReset }: BoardingPassP
       </motion.article>
 
       <div className="bp-contact">
-        <a className="bp-hello" href={siteConfig.socialLinks.email}>Say hello</a>
+        <a className="bp-hello" href={siteConfig.socialLinks.email}>{UI_COPY.hello}</a>
         <nav className="bp-socials" aria-label="Find Ammar online"><a href={siteConfig.socialLinks.linkedin} target="_blank" rel="noreferrer">LinkedIn</a><a href={siteConfig.socialLinks.github} target="_blank" rel="noreferrer">GitHub</a><a href={siteConfig.socialLinks.x} target="_blank" rel="noreferrer">X</a><a href={siteConfig.socialLinks.email}>Email</a></nav>
       </div>
     </div>

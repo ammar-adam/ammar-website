@@ -1,7 +1,7 @@
 "use client";
 
 import { FilmTitle } from "./FilmTitle";
-import { INTRO_COPY } from "@/data/filmCopy";
+import { INTRO_COPY, introBeatAt, UI_COPY } from "@/data/copy";
 import { JourneyHeader } from "./JourneyHeader";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
@@ -72,7 +72,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
     const media = video.current;
     if (!media || !source) return;
     let active = true;
-    media.muted = true;
+    media.muted = true; media.playbackRate = .5;
     // Safari and data-saving browsers can reject autoplay despite muted +
     // playsInline. Keep the first-frame poster and expose a real play control.
     void media.play().catch((error: unknown) => {
@@ -85,7 +85,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
     const media = video.current;
     if (!media) return;
     if (media.error) media.load();
-    media.muted = true;
+    media.muted = true; media.playbackRate = .5;
     setPlayback("loading");
     void media.play().catch((error: unknown) => {
       if (!(error instanceof DOMException && error.name === "AbortError")) setPlayback("blocked");
@@ -144,16 +144,16 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
 
   return <motion.section className="opening-film" aria-label="Introduction" data-film-profile={selection?.profile} initial={false} exit={{ opacity: 0 }} transition={{ duration: .2 }}>
     <picture className="of-poster"><source media={PORTRAIT_MEDIA} srcSet={`/film/arrival-portrait.webp?v=${FILM_VERSION}`} /><source media={MOBILE_LANDSCAPE_MEDIA} srcSet={`/film/arrival-mobile-landscape.webp?v=${FILM_VERSION}`} /><img src={`/film/arrival-${selection?.profile ?? "desktop"}.webp?v=${FILM_VERSION}`} alt="" /></picture>
-    <video ref={video} className="of-video" data-has-frame={hasFrame} src={source} autoPlay muted playsInline preload="auto" onPlaying={() => { setHasFrame(true); setPlayback("playing"); }} onTimeUpdate={event => { setBeat(event.currentTarget.currentTime >= 4.15 ? 2 : event.currentTarget.currentTime >= 1.85 ? 1 : 0); }} onEnded={onFinish} onError={mediaError} aria-hidden="true" tabIndex={-1} />
+    <video ref={video} className="of-video" data-has-frame={hasFrame} src={source} autoPlay muted playsInline preload="auto" onPlaying={() => { setHasFrame(true); setPlayback("playing"); }} onTimeUpdate={event => { setBeat(introBeatAt(event.currentTarget.currentTime)); }} onEnded={onFinish} onError={mediaError} aria-hidden="true" tabIndex={-1} />
     <div className="of-shade" />
     <JourneyHeader chapter={0} onNavigate={onNavigate} />
-    <div key={beat} className={`of-caption${beat > 0 ? " of-named" : ""}`} aria-live="off">
+    <div key={beat} data-intro-beat={beat} className={`of-caption${caption.lines.length && beat > 0 ? " of-named" : ""}${!caption.lines.length ? " of-aside-only" : ""}`} aria-live="off">
       {caption.pre && <p>{caption.pre}</p>}
       {caption.lines.length > 0 && <h2><FilmTitle words={caption.lines} /></h2>}
       <p>{caption.aside}</p>
     </div>
     {(playback === "blocked" || playback === "error") && <button className="of-play" type="button" onClick={playIntro}><span aria-hidden="true">▶</span> Play intro</button>}
     <span className="of-playback-status" role="status">{playback === "blocked" ? "Autoplay paused. Play the intro or skip to the terminal." : playback === "error" ? "The intro could not load. Play to retry, or skip to the terminal." : ""}</span>
-    <button className="of-skip" type="button" onClick={onFinish}>Skip intro <span aria-hidden="true">→</span></button>
+    <button className="of-skip" type="button" onClick={onFinish}>{UI_COPY.skip} <span aria-hidden="true">→</span></button>
   </motion.section>;
 }
