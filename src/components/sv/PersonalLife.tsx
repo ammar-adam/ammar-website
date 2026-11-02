@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useState } from "react";
 import { motion, useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 import { loungeRoomContent } from "@/data/loungeRoom";
@@ -29,15 +31,15 @@ export function PersonalLife({ p, reduced, onGallery }: PersonalLifeProps) {
   return <div className={`cw-scene ${reduced ? "cw-reduced" : ""}`}>
     <div className="cw-depth-shade" aria-hidden="true" />
     <div className="cw-heading">
-      <p className="sv-eyebrow">03 / CAMERA ROLL</p>
-      <h2>And off<br /><span>the clock?</span></h2>
-      <p className="cw-walk-note">A few moments worth keeping.</p>
+      <p className="sv-eyebrow">{PAINTED_COPY.label03CameraRoll}</p>
+      <h2>{PAINTED_COPY.andOff}<br /><span>{PAINTED_COPY.theClock}</span></h2>
+      <p className="cw-walk-note">{PAINTED_COPY.aFewMomentsWorthKeeping}</p>
     </div>
-    <div className="cw-frame-count" aria-live="off"><span>{String(frame + 1).padStart(2, "0")}{!reduced && frame < 24 ? `—${String(frame + 2).padStart(2, "0")}` : ""}</span><small> / 25 PHOTOS</small></div>
+    <div className="cw-frame-count" aria-live="off"><span>{String(frame + 1).padStart(2, "0")}{!reduced && frame < 24 ? `—${String(frame + 2).padStart(2, "0")}` : ""}</span><small> {PAINTED_COPY.label25Photos}</small></div>
 
     {!reduced ? <>
       <div className="cw-walkway-bed" aria-hidden="true" />
-      <motion.div className="cw-gate" style={{ scale: gateScale, y: gateY }} aria-hidden="true"><span>GATES</span><strong>04—05 <b>↑</b></strong></motion.div>
+      <motion.div className="cw-gate" style={{ scale: gateScale, y: gateY }} aria-hidden="true"><span>{PAINTED_COPY.gates}</span><strong>{PAINTED_COPY.label0405}<b>{PAINTED_COPY.arrowLabelLabelLabelLabel}</b></strong></motion.div>
       <div className="cw-world">
         {Array.from({ length: 22 }, (_, index) => <WalkwayTread key={index} p={journey} index={index} />)}
         {PHOTOS.map((photo, index) => <CorridorPhoto key={photo.src} p={journey} index={index} active={Math.floor(index / 2) === bay} onGallery={onGallery} />)}
@@ -45,10 +47,10 @@ export function PersonalLife({ p, reduced, onGallery }: PersonalLifeProps) {
       </div>
       <div className="cw-glass cw-glass-left" aria-hidden="true" /><div className="cw-glass cw-glass-right" aria-hidden="true" />
       <div className="cw-handrail cw-handrail-left" aria-hidden="true" /><div className="cw-handrail cw-handrail-right" aria-hidden="true" />
-      <div className="cw-walkway-front" aria-hidden="true"><span>KEEP RIGHT</span><i>↑</i></div>
+      <div className="cw-walkway-front" aria-hidden="true"><span>{PAINTED_COPY.keepRight}</span><i>{PAINTED_COPY.arrowLabelLabelLabelLabel}</i></div>
     </> : <div className="cw-still-gallery">
-      <button type="button" className="cw-still-photo" onClick={() => onGallery(still)} aria-label={`Open photo gallery: ${PHOTOS[still].caption}`}><img src={PHOTOS[still].src} alt={PHOTOS[still].caption} width={900} height={700} /><span>{PHOTOS[still].caption}<b aria-hidden="true">↗</b></span></button>
-      <div className="cw-still-nav"><button type="button" aria-label="Previous photo" onClick={() => setStill((still + PHOTOS.length - 1) % PHOTOS.length)}>←</button><span>{String(still + 1).padStart(2, "0")} / 25</span><button type="button" aria-label="Next photo" onClick={() => setStill((still + 1) % PHOTOS.length)}>→</button></div>
+      <button type="button" className="cw-still-photo" onClick={() => onGallery(still)} aria-label={`Open photo gallery: ${PHOTOS[still].caption}`}><img src={PHOTOS[still].src} alt={PHOTOS[still].caption} width={900} height={700} /><span>{PHOTOS[still].caption}<b aria-hidden="true">{PAINTED_COPY.arrowLabel}</b></span></button>
+      <div className="cw-still-nav"><button type="button" aria-label="Previous photo" onClick={() => setStill((still + PHOTOS.length - 1) % PHOTOS.length)}>{PAINTED_COPY.arrowLabelLabel}</button><span>{String(still + 1).padStart(2, "0")} {PAINTED_COPY.label25}</span><button type="button" aria-label="Next photo" onClick={() => setStill((still + 1) % PHOTOS.length)}>{PAINTED_COPY.arrow}</button></div>
     </div>}
 
     <div className="cw-discoveries">
@@ -60,7 +62,7 @@ export function PersonalLife({ p, reduced, onGallery }: PersonalLifeProps) {
       </div>
       <div className="cw-scene-object cw-screen"><img src="/art/film-v1.webp" alt="Paddington 2 on a small gate screen" title="Paddington 2" width={700} height={700} loading="lazy" /></div>
     </div>
-    <button type="button" className="cw-gallery-button" onClick={() => onGallery(frame)}><span>Open photo gallery <small>· 25 photos</small></span><b aria-hidden="true">↗</b></button>
+    <button type="button" className="cw-gallery-button" onClick={() => onGallery(frame)}><span>{PAINTED_COPY.openPhotoGallery}<small>{PAINTED_COPY.label25PhotosLabel}</small></span><b aria-hidden="true">{PAINTED_COPY.arrowLabel}</b></button>
   </div>;
 }
 
@@ -73,7 +75,7 @@ function CorridorPhoto({ p, index, active, onGallery }: { p: MotionValue<number>
   const visibility = useTransform(depth, (z) => z < -2300 || z > 160 ? "hidden" as const : "visible" as const);
   const photo = PHOTOS[index];
   return <motion.button type="button" className="cw-photo" data-photo-index={index} style={{ transform, opacity, visibility, pointerEvents: active ? "auto" : "none" }} tabIndex={active ? 0 : -1} onClick={() => onGallery(index)} aria-label={`Open photo ${index + 1} of 25: ${photo.caption}`}>
-    <span className="cw-photo-top"><span>AA / {String(index + 1).padStart(2, "0")}</span><i aria-hidden="true">↗</i></span>
+    <span className="cw-photo-top"><span>{PAINTED_COPY.aaLabel}{String(index + 1).padStart(2, "0")}</span><i aria-hidden="true">{PAINTED_COPY.arrowLabel}</i></span>
     <img src={photo.src} alt={photo.caption} style={photoFraming(photo.src)} width={900} height={800} loading={index < 4 ? "eager" : "lazy"} decoding="async" />
     <span className="cw-photo-caption">{photo.caption}</span>
     <span className="cw-photo-pole" aria-hidden="true" />

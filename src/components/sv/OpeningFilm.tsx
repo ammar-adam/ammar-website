@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { FilmTitle } from "./FilmTitle";
 import { INTRO_COPY, introBeatAt, UI_COPY } from "@/data/copy";
 import { JourneyHeader } from "./JourneyHeader";
@@ -152,8 +154,8 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
       {caption.lines.length > 0 && <h2><FilmTitle words={caption.lines} /></h2>}
       <p>{caption.aside}</p>
     </div>
-    {(playback === "blocked" || playback === "error") && <button className="of-play" type="button" onClick={playIntro}><span aria-hidden="true">▶</span> Play intro</button>}
+    {(playback === "blocked" || playback === "error") && <button className="of-play" type="button" onClick={playIntro}><span aria-hidden="true">{PAINTED_COPY.arrowLabelLabelLabel}</span> {PAINTED_COPY.playIntro}</button>}
     <span className="of-playback-status" role="status">{playback === "blocked" ? "Autoplay paused. Play the intro or skip to the terminal." : playback === "error" ? "The intro could not load. Play to retry, or skip to the terminal." : ""}</span>
-    <button className="of-skip" type="button" onClick={onFinish}>{UI_COPY.skip} <span aria-hidden="true">→</span></button>
+    <button className="of-skip" type="button" onClick={onFinish}>{UI_COPY.skip} <span aria-hidden="true">{PAINTED_COPY.arrow}</span></button>
   </motion.section>;
 }

@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useEffect, useRef } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { arrivals } from "@/data/arrivals";
@@ -58,15 +60,15 @@ export function CheckInExperience({ p, reduced, onDirectory }: CheckInExperience
   return <div className={`ci-scene${reduced ? " ci-reduced" : ""}`}>
     <div className="ci-terminal-shade" aria-hidden="true" />
     <header className="ci-heading">
-      <p className="sv-eyebrow">01 / EXPERIENCE</p>
-      <h2>A few stops<br /><span>along the way.</span></h2>
+      <p className="sv-eyebrow">{PAINTED_COPY.label01Experience}</p>
+      <h2>{PAINTED_COPY.aFewStops}<br /><span>{PAINTED_COPY.alongTheWay}</span></h2>
     </header>
 
     <div className="ci-layout">
       <motion.div className="ci-board" style={{ y: boardY }}>
         <div className="ci-board-hangers" aria-hidden="true"><i /><i /></div>
-        <div className="ci-board-title"><span className="ci-departure-icon" aria-hidden="true">↗</span><strong>CHECK-IN</strong><span>EXPERIENCE<br /><b>05 STOPS</b></span></div>
-        <div className="ci-board-columns" aria-hidden="true"><span>NO.</span><span>WHERE / WHAT I DID</span><span>COUNTER</span></div>
+        <div className="ci-board-title"><span className="ci-departure-icon" aria-hidden="true">{PAINTED_COPY.arrowLabel}</span><strong>{PAINTED_COPY.checkIn}</strong><span>{PAINTED_COPY.experience}<br /><b>{PAINTED_COPY.label05Stops}</b></span></div>
+        <div className="ci-board-columns" aria-hidden="true"><span>{PAINTED_COPY.no}</span><span>{PAINTED_COPY.whereWhatIDid}</span><span>{PAINTED_COPY.counter}</span></div>
         <div className="ci-board-rows" ref={boardRef} role="group" aria-label="Choose an experience">
           {EXPERIENCE_ORDER.map((slug, index) => {
             const entry = arrivals.find((arrival) => arrival.slug === slug)!;
@@ -79,25 +81,25 @@ export function CheckInExperience({ p, reduced, onDirectory }: CheckInExperience
             </button>;
           })}
         </div>
-        <button type="button" className="ci-full-experience" onClick={onDirectory} aria-label="Open full experience and links"><span>Full experience</span><b aria-hidden="true">↗</b></button>
+        <button type="button" className="ci-full-experience" onClick={onDirectory} aria-label="Open full experience and links"><span>{PAINTED_COPY.fullExperience}</span><b aria-hidden="true">{PAINTED_COPY.arrowLabel}</b></button>
       </motion.div>
 
       <article className="ci-counter" data-work-item={selected} aria-label={`${copy.name} experience`}>
-        <div className="ci-counter-sign"><span>CHECK-IN<br /><b>{copy.name}</b></span><motion.strong style={{ rotateX: flapTurn }}>{counter}</motion.strong></div>
+        <div className="ci-counter-sign"><span>{PAINTED_COPY.checkIn}<br /><b>{copy.name}</b></span><motion.strong style={{ rotateX: flapTurn }}>{counter}</motion.strong></div>
         <motion.div className="ci-monitor" style={{ y: monitorY }}>
-          <div className="ci-monitor-top"><span>AMMAR ADAM</span><span>EXPERIENCE / {counter}</span></div>
+          <div className="ci-monitor-top"><span>{PAINTED_COPY.ammarAdam}</span><span>{PAINTED_COPY.experienceLabel}{counter}</span></div>
           <div className="ci-counter-screen" ref={screenRef}>
             <div className="ci-screen-head">
               <div className="ci-work-image"><img src={current.image} alt={copy.name} width={560} height={747} style={{ objectPosition: framing.position, objectFit: framing.fit }} /><span>{current.origin}</span></div>
               <div className="ci-screen-identity"><strong>{copy.name}</strong><p className="ci-work-role">{current.detailTitle ?? current.title}</p></div>
             </div>
-            <div className="ci-screen-copy"><h3 className="ci-work-result">{copy.result}</h3><p className="ci-work-description">{copy.detail}</p><div className="ci-work-links">{links.map((link) => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</div></div>
+            <div className="ci-screen-copy"><h3 className="ci-work-result">{copy.result}</h3><p className="ci-work-description">{copy.detail}</p><div className="ci-work-links">{links.map((link) => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span></a>)}</div></div>
           </div>
-          <div className="ci-monitor-chin" aria-hidden="true"><i /><span>AA</span></div>
+          <div className="ci-monitor-chin" aria-hidden="true"><i /><span>{PAINTED_COPY.aa}</span></div>
         </motion.div>
         <div className="ci-monitor-stem" aria-hidden="true" />
         <div className="ci-desk-top" aria-hidden="true" />
-        <div className="ci-desk-fascia" aria-hidden="true"><span>AMMAR ADAM</span><strong>{counter}</strong><i /></div>
+        <div className="ci-desk-fascia" aria-hidden="true"><span>{PAINTED_COPY.ammarAdam}</span><strong>{counter}</strong><i /></div>
       </article>
     </div>
   </div>;

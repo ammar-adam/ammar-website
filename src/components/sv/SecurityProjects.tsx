@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useCallback, useSyncExternalStore } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import { projects } from "@/data/departures";
@@ -30,15 +32,15 @@ export function SecurityProjects({ p, reduced }: { p: MotionValue<number>; reduc
   const flap = useTransform(itemP, [0, .13, .25, 1], [reduced ? 0 : -60, reduced ? 0 : 22, 0, 0]);
 
   return <div className="sp-scene" data-project-index={selected} data-scan-state={cleared ? "cleared" : "inspecting"}>
-    <div className="sp-heading"><p className="sv-eyebrow">02 / SECURITY CHECK · PROJECTS</p><h2>What I’ve been<br /><em>building.</em></h2><p>Four projects. Take a look inside.</p></div>
-    <div className="sp-wayfinding" aria-hidden="true"><span>SECURITY</span><b>02</b><i>→</i></div>
+    <div className="sp-heading"><p className="sv-eyebrow">{PAINTED_COPY.label02SecurityCheckProjects}</p><h2>{PAINTED_COPY.whatIVeBeen}<br /><em>{PAINTED_COPY.building}</em></h2><p>{PAINTED_COPY.fourProjectsTakeALookInside}</p></div>
+    <div className="sp-wayfinding" aria-hidden="true"><span>{PAINTED_COPY.securityLabel}</span><b>{PAINTED_COPY.label02}</b><i>{PAINTED_COPY.arrow}</i></div>
     <div className="sp-station">
       <div className="sp-scanner" aria-label={`${current.name} in the project scanner`}>
-        <div className="sp-machine-top"><span><i /> CABIN BAGGAGE</span><strong>X-RAY / 02</strong><b>AA</b></div>
+        <div className="sp-machine-top"><span><i /> {PAINTED_COPY.cabinBaggage}</span><strong>{PAINTED_COPY.xRay02}</strong><b>{PAINTED_COPY.aa}</b></div>
         <div className="sp-aperture">
           <div className="sp-curtain sp-curtain-left" aria-hidden="true" /><div className="sp-curtain sp-curtain-right" aria-hidden="true" />
           <motion.div className="sp-tray" style={{ x: trayX, scale: trayScale }}>
-            <div className="sp-tray-label"><span>PERSONAL PROJECT</span><b>0{selected + 1}</b></div>
+            <div className="sp-tray-label"><span>{PAINTED_COPY.personalProject}</span><b>{PAINTED_COPY.label0}{selected + 1}</b></div>
             <div className="sp-project-image">
               <div className="sp-xray-image" aria-hidden="true"><ProjectImage slug={current.slug} src={current.screenshot} name={current.name} /></div>
               <motion.div className="sp-revealed-image" style={{ clipPath: reveal }}><ProjectImage slug={current.slug} src={current.screenshot} name={current.name} /></motion.div>
@@ -49,22 +51,22 @@ export function SecurityProjects({ p, reduced }: { p: MotionValue<number>; reduc
           <motion.div className="sp-curtain-lip" style={{ rotateX: flap }} aria-hidden="true" />
         </div>
         <div className="sp-roller-bed" aria-hidden="true"><motion.div style={{ x: beltX }} /></div>
-        <div className="sp-machine-bottom"><span>ITEM 0{selected + 1} / 04</span><span className={cleared ? "sp-status is-clear" : "sp-status"}><i />{cleared ? "SCAN COMPLETE" : "SCANNING"}</span></div>
+        <div className="sp-machine-bottom"><span>{PAINTED_COPY.item0}{selected + 1} {PAINTED_COPY.label04}</span><span className={cleared ? "sp-status is-clear" : "sp-status"}><i />{cleared ? "SCAN COMPLETE" : "SCANNING"}</span></div>
         <i className="sp-machine-leg sp-machine-leg-left" aria-hidden="true" /><i className="sp-machine-leg sp-machine-leg-right" aria-hidden="true" />
       </div>
       <article className="sp-monitor" data-project-detail={current.slug}>
-        <div className="sp-monitor-top"><span>INSPECTION MONITOR</span><span>0{selected + 1} / 04</span></div>
+        <div className="sp-monitor-top"><span>{PAINTED_COPY.inspectionMonitor}</span><span>{PAINTED_COPY.label0}{selected + 1} {PAINTED_COPY.label04}</span></div>
         <div className="sp-monitor-content" key={current.slug} tabIndex={0} aria-label={`${current.name} details`}>
           <p className="sp-stack">{copy.type}</p><h3>{current.name}</h3><h4>{copy.title}</h4><p className="sp-description">{copy.line}</p>
-          <div className="sp-links">{current.seats[0].links?.map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label}<span aria-hidden="true">↗</span></a>)}</div>
+          <div className="sp-links">{current.seats[0].links?.map(link => <a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.label}<span aria-hidden="true">{PAINTED_COPY.arrowLabel}</span></a>)}</div>
         </div>
-        <div className="sp-monitor-bottom"><i /> BUILT BY AMMAR ADAM<span>↗</span></div>
+        <div className="sp-monitor-bottom"><i /> {PAINTED_COPY.builtByAmmarAdam}<span>{PAINTED_COPY.arrowLabel}</span></div>
       </article>
     </div>
-    <nav className="sp-selector" aria-label="Select project">{ORDER.map((slug, index) => <button type="button" key={slug} aria-pressed={selected === index} onClick={() => select(index)}><span>TRAY 0{index + 1}</span><strong><span className="sp-name-full">{projects.find(project => project.slug === slug)!.name}</span><span className="sp-name-short">{["Backseat", "Rocketship", "WVG", "WTW / HTN"][index]}</span></strong><b aria-hidden="true">{selected === index ? "↑" : "→"}</b></button>)}</nav>
+    <nav className="sp-selector" aria-label="Select project">{ORDER.map((slug, index) => <button type="button" key={slug} aria-pressed={selected === index} onClick={() => select(index)}><span>{PAINTED_COPY.tray0}{index + 1}</span><strong><span className="sp-name-full">{projects.find(project => project.slug === slug)!.name}</span><span className="sp-name-short">{["Backseat", "Rocketship", "WVG", "WTW / HTN"][index]}</span></strong><b aria-hidden="true">{selected === index ? "↑" : "→"}</b></button>)}</nav>
   </div>;
 }
 
 function ProjectImage({ slug, src, name }: { slug: string; src: string; name: string }) {
-  return slug === "canadaclip" ? <div className="sp-clip-preview"><span>CanadaClip <b>CA ↗</b></span><strong>Big-brand link.<br />Local alternative.</strong><p>PASTE → MATCH → SHOP LOCAL</p></div> : <img src={src} alt={`${name} project preview`} width={1000} height={650} style={{ objectFit: "contain", objectPosition: "center 35%" }} />;
+  return slug === "canadaclip" ? <div className="sp-clip-preview"><span>{PAINTED_COPY.canadaclip}<b>{PAINTED_COPY.ca}</b></span><strong>{PAINTED_COPY.bigBrandLink}<br />{PAINTED_COPY.localAlternative}</strong><p>{PAINTED_COPY.pasteMatchShopLocal}</p></div> : <img src={src} alt={`${name} project preview`} width={1000} height={650} style={{ objectFit: "contain", objectPosition: "center 35%" }} />;
 }

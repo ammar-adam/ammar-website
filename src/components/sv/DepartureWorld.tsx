@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import { useCallback, useSyncExternalStore } from "react";
 import { motion, useTransform, type MotionValue } from "framer-motion";
 import "./departure-world.css";
@@ -17,7 +19,7 @@ export function DepartureWorld({ progress, reduced }: { progress: MotionValue<nu
   return <div className="dw-world" data-departure-state={state} aria-hidden="true">
     <div className="dw-window"><i /><i /><span /></div>
     {!reduced && <motion.img className="dw-aircraft" src="/art/aircraft-departure.webp" width={1000} height={500} alt="" style={{ x, y, scale, rotate, opacity }} />}
-    <div className="dw-gate-sign"><span>GATE</span><strong>05</strong><b className={state === "idle" ? "" : "is-cleared"}>{state === "idle" ? "NOW BOARDING" : "CLEARED FOR DEPARTURE"}<i /></b></div>
+    <div className="dw-gate-sign"><span>{PAINTED_COPY.gate}</span><strong>{PAINTED_COPY.label05}</strong><b className={state === "idle" ? "" : "is-cleared"}>{state === "idle" ? "NOW BOARDING" : "CLEARED FOR DEPARTURE"}<i /></b></div>
     <motion.div className="dw-runway-lights" style={{ opacity: light }}>{Array.from({ length: 13 }, (_, index) => <i key={index} />)}</motion.div>
   </div>;
 }
