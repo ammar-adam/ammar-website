@@ -74,7 +74,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
     const media = video.current;
     if (!media || !source) return;
     let active = true;
-    media.muted = true; media.playbackRate = .5;
+    media.muted = true; media.playbackRate = 1;
     // Safari and data-saving browsers can reject autoplay despite muted +
     // playsInline. Keep the first-frame poster and expose a real play control.
     void media.play().catch((error: unknown) => {
@@ -87,7 +87,7 @@ export function OpeningFilm({ onFinish, onPrepareWorld, onNavigate }: { onFinish
     const media = video.current;
     if (!media) return;
     if (media.error) media.load();
-    media.muted = true; media.playbackRate = .5;
+    media.muted = true; media.playbackRate = 1;
     setPlayback("loading");
     void media.play().catch((error: unknown) => {
       if (!(error instanceof DOMException && error.name === "AbortError")) setPlayback("blocked");

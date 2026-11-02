@@ -297,14 +297,32 @@ export function getProjectBySlug(slug: string): Project | undefined {
 export type IntroCopy = { pre: string; lines: string[]; aside: string };
 export type FilmCardCopy = { slug: string; name: string; role: string; tag: string; desc: string; filmDesc?: string };
 export const INTRO_COPY: readonly IntroCopy[] = [
- {pre: "", lines: ["Alright."], aside: "Let's do this one more time."},
- {pre: "My name's", lines: ["Ammar", "Adam."], aside: "CS and Finance at Waterloo."},
- {pre: "", lines: [], aside: "Born and raised in Toronto. Most of my family is a long flight away, so I've spent a lot of my life in places like this."},
- {pre: "And finding", lines: ["My people."], aside: "Builders, founders, friends."},
- {pre: "", lines: [], aside: "Come on. I'll show you."},
+  {
+    "pre": "",
+    "lines": [
+      "Alright."
+    ],
+    "aside": "Let's do this one more time."
+  },
+  {
+    "pre": "My name's",
+    "lines": [
+      "AMMAR",
+      "ADAM."
+    ],
+    "aside": "And I study CS + Finance at Waterloo."
+  },
+  {
+    "pre": "I like making",
+    "lines": [
+      "THINGS",
+      "HAPPEN."
+    ],
+    "aside": "Sometimes I write code. Sometimes I bring people together."
+  }
 ];
-export const INTRO_BEATS = [0, .8, 1.7, 4.1, 5.1] as const;
-export function introBeatAt(seconds: number) { return INTRO_BEATS.filter(at => seconds >= at).length - 1; }
+export const INTRO_BEATS = [0, 1.85, 4.15] as const;
+export function introBeatAt(seconds: number) { return Math.max(0, INTRO_BEATS.filter(at => seconds >= at).length - 1); }
 export const EXPERIENCE_COPY: readonly FilmCardCopy[] = [
  {slug:"alpen-capital",name:"Alpen Capital",role:"M&A Summer Analyst, Dubai",tag:"At sixteen I was in Dubai, building models for real M&A deals.",desc:"Modelled M&A deals in Dubai at 16 as the firm's youngest intern.",filmDesc:"Modelled M&A deals in Dubai as the firm's youngest intern."},
  {slug:"datastealth",name:"DataStealth",role:"Product Engineering Intern",tag:"Spreadsheets were cool. Building the thing was cooler.",desc:"Built product demos for sales and automated competitor research."},

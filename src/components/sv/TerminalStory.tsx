@@ -11,7 +11,7 @@ import { projects } from "@/data/departures";
 import { INTRO_COPY, EXPERIENCE_COPY, PROJECT_COPY, UI_COPY } from "@/data/copy";
 import "./manifest.css";
 
-const BEATS = [0, .035, .075, .175, .215, .24];
+const BEATS = [0, .055, .175, .24];
 
 export function SpokenIntro({ t, reduced }: { t: MotionValue<number>; reduced: boolean }) {
   const subscribe = useCallback((update: () => void) => t.on("change", update), [t]);

@@ -28,7 +28,7 @@ async function main(){const server=spawn(process.execPath,['node_modules/next/di
  }
  // Verify each new timed caption against the unchanged video footage.
  const page=await browser.newPage({viewport:{width:1440,height:900}});await page.goto('http://127.0.0.1:3103/',{waitUntil:'domcontentloaded',timeout:60000});await page.waitForSelector('video');await page.locator('video').evaluate(v=>v.pause());
- for(const [i,time] of [0,.9,1.9,4.3,5.3].entries()){await page.locator('video').evaluate((v,time)=>{v.currentTime=time;v.dispatchEvent(new Event('timeupdate'));},time);await page.waitForTimeout(200);await saveShot(page,{path:`${out}/intro-${i+1}.png`});}
+ for(const [i,time] of [0,2,4.4].entries()){await page.locator('video').evaluate((v,time)=>{v.currentTime=time;v.dispatchEvent(new Event('timeupdate'));},time);await page.waitForTimeout(200);await saveShot(page,{path:`${out}/intro-${i+1}.png`});}
  const copyContext={exports:{},process};vm.runInNewContext(ts.transpileModule(fs.readFileSync('src/data/copy.ts','utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText,copyContext);fs.writeFileSync(`${out}/copy.json`,JSON.stringify(copyContext.exports,null,2));
  fs.writeFileSync(`${out}/verification.json`,JSON.stringify(results,null,2));if(results.mobile.some(row=>!row.matches)||results.desktop.some(row=>!row.matches)||errors.length)process.exitCode=1;console.log('SUMMARY',JSON.stringify({mobileFailures:results.mobile.filter(x=>!x.matches),desktopFailures:results.desktop.filter(x=>!x.matches),short:Object.fromEntries(Object.entries(results.short).map(([k,v])=>[k,{scrollHeight:v.scrollHeight,rows:v.rows,lowercaseStyles:v.lowercaseStyles}])),performance:results.performance,errors}));
  }finally{await browser?.close();server.kill();}}
