@@ -1,5 +1,7 @@
 "use client";
 
+import { PAINTED_COPY } from "@/data/copy";
+
 import "./terminal-journey.css";
 
 import dynamic from "next/dynamic";
@@ -20,9 +22,11 @@ const prepareTerminalWorld = () => { void loadTerminalWorld().then(module => mod
 const TerminalWorld = dynamic(() => loadTerminalWorld().then(module => module.TerminalWorld), { ssr: false });
 import { SpokenIntro, ExperienceStory, ProjectStory } from "./TerminalStory";
 import { BoardingPass } from "./BoardingPass";
-import { CHAPTERS, CUTS, useSceneProgress, useSelection } from "./timeline";
-import { MobileJourneyControls, MOBILE_STOPS, mobileStopAt } from "./MobileJourneyControls";
+import { CHAPTERS, CUTS, useSceneProgress } from "./timeline";
+import { MobileJourneyControls, MOBILE_STOPS } from "./MobileJourneyControls";
 import "./mobile-airport.css";
+import { JOURNEY_STOPS, journeyStopAt, SECURITY_CARD_START } from "@/data/journeyState";
+import { UI_COPY } from "@/data/copy";
 import { phoneStoryAt, phoneScrollAt } from "./mobile-scroll";
 
 const motionQuery = "(prefers-reduced-motion: reduce)";
@@ -32,7 +36,7 @@ const subscribeMotion = (update: () => void) => {
   return () => query.removeEventListener("change", update);
 };
 const readMotionPreference = () => window.matchMedia(motionQuery).matches;
-const phoneQuery = "(pointer: coarse) and (max-width: 1050px)";
+const phoneQuery = "(max-width: 720px), (pointer: coarse) and (max-width: 1050px)";
 const subscribePhone = (update: () => void) => {
   const query = window.matchMedia(phoneQuery);
   query.addEventListener("change", update);
@@ -77,15 +81,18 @@ export function SpiderVerse() {
     return () => { cancel(); window.removeEventListener("touchstart", cancel); window.removeEventListener("wheel", cancel); };
   }, []);
   const subscribeTimeline = useCallback((update: () => void) => t.on("change", update), [t]);
-  const readChapter = useCallback(() => CUTS.filter(cut => t.get() + .0001 >= cut).length, [t]);
-  const chapter = useSyncExternalStore(subscribeTimeline, readChapter, () => 0);
+  const readStop = useCallback(() => journeyStopAt(t.get()), [t]);
+  const sharedStop = useSyncExternalStore(subscribeTimeline, readStop, () => -1);
+  const selection = JOURNEY_STOPS[sharedStop];
+  const chapter = selection?.chapter ?? 0;
+  const experience = chapter === 1 ? selection.item : 0;
+  const project = chapter === 2 ? selection.item : 0;
+  const mobileStop = Math.max(0, sharedStop);
   const experienceProgress = useSceneProgress(t, 1);
   const projectProgress = useSceneProgress(t, 2);
   const boardingProgress = useSceneProgress(t, 4);
-  const [experience] = useSelection(experienceProgress, 5);
-  const [project] = useSelection(projectProgress, 4);
-  const readMobileStop = useCallback(() => mobileStopAt(t.get()), [t]);
-  const mobileStop = useSyncExternalStore(subscribeTimeline, readMobileStop, () => 0);
+  const readSecurityIntro = useCallback(() => t.get() >= .45 && t.get() < SECURITY_CARD_START, [t]);
+  const securityIntro = useSyncExternalStore(subscribeTimeline, readSecurityIntro, () => false);
   const departure = useMotionValue(0);
   const departureAnimation = useRef<AnimationPlaybackControls | null>(null);
   const resetDeparture = useCallback(() => {
@@ -238,9 +245,9 @@ export function SpiderVerse() {
     return () => { cancelAnimationFrame(frame); window.removeEventListener("hashchange", navigate); };
   }, [jump]);
 
-  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-phone-journey={phone} data-chapter={chapter} data-world-ready={ready} data-scroll-hint={scrollHint} data-intro-playing={intro && !reduced}>
-    <h1 className="tj-sr-only">Ammar Adam — I study CS + Finance at Waterloo</h1>
-    <Link className="tj-skip" href="/short">Skip to About me</Link>
+  return <main className={`tj${reduced ? " tj-reduced" : ""}`} data-shared-stop={sharedStop} data-phone-journey={phone} data-chapter={chapter} data-world-ready={ready} data-scroll-hint={scrollHint} data-intro-playing={intro && !reduced}>
+    <h1 className="tj-sr-only">{PAINTED_COPY.ammarAdamIStudyCsFinanceAtWaterloo}</h1>
+    <Link className="tj-skip" href="/short">{PAINTED_COPY.skipToAboutMe}</Link>
     <div className="tj-track" ref={track} inert={intro && !reduced}>
       <div className="tj-stage">
         {(!intro || reduced || ready) && <TerminalWorld t={t} reduced={reduced} active={!intro && !detailsOpen} experienceIndex={experience} projectIndex={project} departure={departure} onReady={onReady} allowLook={chapter === 3} onLook={dismissLookHint} />}
@@ -248,13 +255,14 @@ export function SpiderVerse() {
         <div className="tj-story-layer">
           {chapter === 0 && <SpokenIntro t={t} reduced={reduced} />}
           {chapter === 1 && <ExperienceStory p={experienceProgress} reduced={reduced} selected={experience} onOpenChange={setDetailsOpen} />}
-          {chapter === 2 && <ProjectStory p={projectProgress} reduced={reduced} selected={project} onOpenChange={setDetailsOpen} />}
+          {chapter === 2 && !securityIntro && <ProjectStory p={projectProgress} reduced={reduced} selected={project} onOpenChange={setDetailsOpen} />}
+          {securityIntro && <div className="security-voice"><p className="mf-readout-label">{UI_COPY.security}</p></div>}
           {chapter === 4 && <BoardingPass p={boardingProgress} reduced={reduced} onDeparture={launchDeparture} onReset={resetDeparture} />}
         </div>
         {(!intro || reduced) && <JourneyHeader chapter={chapter} onNavigate={navigate} />}
         {!intro && chapter > 0 && chapter < 4 && <MobileJourneyControls index={mobileStop} onMove={moveMobile} />}
-        {scrollHint && chapter !== 3 && chapter !== 4 && <p className="tj-scroll-hint" aria-hidden="true">Scroll <span>↓</span></p>}
-        <AnimatePresence>{chapter === 3 && lookHint && <motion.p key="look-hint" className="tj-look-hint" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .2 }}>Drag to look around</motion.p>}</AnimatePresence>
+        {scrollHint && chapter !== 3 && chapter !== 4 && <p className="tj-scroll-hint" aria-hidden="true">{PAINTED_COPY.scroll}<span>{PAINTED_COPY.arrowLabelLabelLabelLabelLabel}</span></p>}
+        <AnimatePresence>{chapter === 3 && lookHint && <motion.p key="look-hint" className="tj-look-hint" aria-hidden="true" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: reduced ? 0 : .2 }}>{PAINTED_COPY.dragToLookAround}</motion.p>}</AnimatePresence>
         <div className="tj-progress" aria-hidden="true"><motion.div style={{ scaleX: t }} />{CUTS.map(cut => <i key={cut} style={{ left: `${cut * 100}%` }} />)}</div>
       </div>
     </div>

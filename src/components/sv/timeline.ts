@@ -4,10 +4,11 @@ import { useRef, useState } from "react";
 import { useMotionValueEvent, useTransform, type MotionValue } from "framer-motion";
 
 export const SEG = {
-  hero: [0, 0.24], checkin: [0.24, 0.45], security: [0.45, 0.65],
-  gate: [0.65, 0.86], boarding: [0.86, 1],
+  hero: [0, 0.24], checkin: [0.24, 0.45], security: [0.45, 0.635],
+  gate: [0.635, 0.86], boarding: [0.86, 1],
 } as const;
-export const CUTS = [0.24, 0.45, 0.65, 0.86];
+export { JOURNEY_CUTS as CUTS } from "@/data/journeyState";
+import { JOURNEY_CUTS as CUTS } from "@/data/journeyState";
 export const CHAPTERS = [
   { id: "top", label: "The introduction", short: "Intro", at: 0 },
   { id: "experience", label: "Check-in", short: "Check-in", at: 0.255 },

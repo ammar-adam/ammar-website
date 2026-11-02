@@ -121,7 +121,7 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    const w=Math.max(1,element!.clientWidth),h=Math.max(1,element!.clientHeight);
    if(w!==width||h!==height){width=w;height=h;renderer.setSize(w,h,false);const size=renderer.getDrawingBufferSize(new THREE.Vector2());target.setSize(size.x,size.y);postMaterial.uniforms.uResolution.value.copy(size);}
    roomVisibility.restore();
-   const state=view.current;world.update({t:motionValues.current.t.get(),departure:motionValues.current.departure.get(),reduced:state.reduced,experienceIndex:state.experienceIndex,projectIndex:state.projectIndex,aspect:w/h,time:(performance.now()-started)/1000,lookYaw:look.yaw,lookPitch:look.pitch});
+   const state=view.current;world.update({t:motionValues.current.t.get(),departure:motionValues.current.departure.get(),reduced:state.reduced,experienceIndex:state.experienceIndex,projectIndex:state.projectIndex,aspect:w/h,viewportHeight:h,time:(performance.now()-started)/1000,lookYaw:look.yaw,lookPitch:look.pitch});
 
    roomVisibility.apply(motionValues.current.t.get(),Math.abs(look.yaw)>.12);
    const progress=motionValues.current.t.get(),moving=Math.abs(progress-lastProgress)>.000015;
@@ -132,12 +132,12 @@ export function TerminalWorld({active=true,t,reduced,experienceIndex,projectInde
    if(!compiled){if(world.scene.userData.ready)warmPrograms();return;}
    programWarmup.resume();element!.dataset.warming=String(programWarmup.pendingCount);
    renderer.setRenderTarget(target);renderer.render(world.scene,world.camera);const calls=renderer.info.render.calls;renderer.setRenderTarget(null);renderer.render(postScene,postCamera);
-   element!.dataset.fallback=world.scene.userData.ready?"0":"1";element!.dataset.stage=world.scene.userData.stage;element!.dataset.progress=motionValues.current.t.get().toFixed(4);element!.dataset.camera=world.camera.position.toArray().map(n=>n.toFixed(2)).join(",");element!.dataset.drawCalls=String(calls);surface!.style.opacity=world.scene.userData.ready?"1":"0";
+   element!.dataset.fallback=world.scene.userData.ready?"0":"1";element!.dataset.stage=world.scene.userData.stage;element!.dataset.stop=String(world.scene.userData.stop);element!.dataset.progress=String(motionValues.current.t.get());element!.dataset.camera=world.camera.position.toArray().map(n=>n.toFixed(2)).join(",");element!.dataset.drawCalls=String(calls);element!.dataset.frames=String(Number(element!.dataset.frames??0)+1);surface!.style.opacity=world.scene.userData.ready?"1":"0";
    element!.dataset.looking=String(Math.abs(look.yaw)+Math.abs(look.pitch)>.03);element!.dataset.lookYaw=look.yaw.toFixed(3);element!.dataset.lookPitch=look.pitch.toFixed(3);
    if(!ready&&world.scene.userData.ready){ready=true;state.onReady?.();}
    if(state.active&&!state.reduced)frame=requestAnimationFrame(ambient);
   }
-  function ambient(now:number){frame=0;if(dead||lost||document.hidden||!view.current.active)return;if(dirty){lastAmbient=now;draw(now);return;}if(view.current.reduced)return;if(now-lastAmbient>=1000/30){lastAmbient=now;draw(now);}else frame=requestAnimationFrame(ambient);}
+  function ambient(now:number){frame=0;if(dead||lost||document.hidden||!view.current.active)return;if(dirty){lastAmbient=now;draw(now);return;}if(view.current.reduced)return;if(now-lastAmbient>=1000/(touchBudget?30:60)){lastAmbient=now;draw(now);}else frame=requestAnimationFrame(ambient);}
   const lose=(event:Event)=>{event.preventDefault();lost=true;compileGeneration++;compiled=false;compiling=false;compileFailed=false;backgroundQueued=false;programWarmup.pause();cancelAnimationFrame(frame);frame=0;element.dataset.fallback="1";surface.style.opacity="0";};
   const restore=()=>{lost=false;schedule();};
   const visibility=()=>{if(document.hidden){cancelAnimationFrame(frame);frame=0;}else schedule();};
