@@ -1,13 +1,24 @@
 "use client";
 
 import Link from "next/link";
-import { SHORT_COPY, EXPERIENCE_COPY, PROJECT_COPY, type FilmCardCopy } from "@/data/copy";
+import Image from "next/image";
+import type { ReactNode } from "react";
+import { SHORT_BIO_LINKS, SHORT_COPY, EXPERIENCE_COPY, PROJECT_COPY, type FilmCardCopy } from "@/data/copy";
 import { getArrivalBySlug } from "@/data/arrivals";
 import { getProjectBySlug } from "@/data/departures";
 import { SocialLinks } from "./SocialLinks";
 
 const experience = ["openai", "sagard", "datastealth", "alpen-capital", "pear-vc"].map(slug => EXPERIENCE_COPY.find(row => row.slug === slug)!);
 const built = PROJECT_COPY;
+
+/** Preserve the original inline links/artwork while the prose stays in one data file. */
+function BioLine({text}:{text:string}) {
+  const parts:ReactNode[]=[];let cursor=0;
+  for(const link of SHORT_BIO_LINKS.map(link=>({...link,index:text.indexOf(link.word)})).filter(link=>link.index>=0).sort((a,b)=>a.index-b.index)){
+    parts.push(text.slice(cursor,link.index));parts.push(<span className="short-brand-phrase" key={link.kind}>{link.word} <a className="short-brand-link" href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} title={link.label}><Image className={`short-brand short-brand-${link.kind}`} src={link.image} alt="" width={link.width} height={link.height} unoptimized /></a></span>);cursor=link.index+link.word.length;
+  }
+  parts.push(text.slice(cursor));return <>{parts}</>;
+}
 
 function EntryList({ rows, kind }: { rows: readonly FilmCardCopy[]; kind: "experience" | "built" }) {
   return <ul className="short-entries" role="list">
@@ -31,8 +42,8 @@ export function ShortPortfolioContent({ idPrefix = "short" }: { idPrefix?: strin
     <header className="short-header" id={`${idPrefix}-about`} tabIndex={-1}>
       <h1>{SHORT_COPY.name}</h1>
       <div className="short-introduction">
-        <p>{SHORT_COPY.bio}</p>
-        <p className="short-personal">{SHORT_COPY.personal}</p>
+        <p><BioLine text={SHORT_COPY.bio} /></p>
+        <p className="short-personal"><BioLine text={SHORT_COPY.personal} /></p>
       </div>
       <nav className="short-socials" aria-label="Profile links">
         <SocialLinks />

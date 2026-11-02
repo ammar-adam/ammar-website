@@ -220,3 +220,6 @@
 @media (prefers-reduced-motion: reduce) {
   .short-page a { transition: none; }
 }
+
+/* Preserve the inline bio links and the existing two-column layout in one screen. */
+@media (min-width:901px) and (min-height:821px) and (max-height:940px){.short-entries{gap:11px}}

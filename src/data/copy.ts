@@ -887,3 +887,5 @@ export const aboutLocationStamps = [
 export const SHOP_COPY = [{code:"A02",city:"Karachi / Ridgeway",name:"Kitchen"},{code:"A03",city:"Dubai",name:"Café"},{code:"A04",city:"YYZ",name:"Souvenirs"}] as const;
 export const FLAP_COLUMNS = ["Route", "Destination", "Status"] as const;
 export const SCAN_CLEARANCE = ["Reading barcode", "Pass accepted", "Cleared for departure", "Two seconds to departure"] as const;
+
+export const SHORT_BIO_LINKS = [{word:"Waterloo",href:"https://uwaterloo.ca/",label:"University of Waterloo",image:"/art/waterloo-official.png",kind:"waterloo",width:164,height:189},{word:"eating",href:"https://beliapp.com/",label:"Beli",image:"/art/beli-official.png",kind:"beli",width:300,height:300},{word:"soccer",href:"https://www.liverpoolfc.com/",label:"Liverpool FC",image:"/art/liverpool-official.png",kind:"liverpool",width:136,height:244}] as const;
