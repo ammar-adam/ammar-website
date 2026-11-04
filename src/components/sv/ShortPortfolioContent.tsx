@@ -15,7 +15,7 @@ const built = PROJECT_COPY;
 function BioLine({text}:{text:string}) {
   const parts:ReactNode[]=[];let cursor=0;
   for(const link of SHORT_BIO_LINKS.map(link=>({...link,index:text.indexOf(link.word)})).filter(link=>link.index>=0).sort((a,b)=>a.index-b.index)){
-    parts.push(text.slice(cursor,link.index));parts.push(<a className="short-brand-phrase short-bio-link" key={link.kind} href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} title={link.label}><span>{link.word}</span><Image className={`short-brand short-brand-${link.kind}`} src={link.image} alt="" width={link.width} height={link.height} unoptimized /><ExternalArrow /></a>);cursor=link.index+link.word.length;
+    parts.push(text.slice(cursor,link.index));parts.push(<span className="short-brand-phrase" key={link.kind}>{link.word} <a className="short-bio-link" href={link.href} target="_blank" rel="noopener noreferrer" aria-label={link.label} title={link.label}><Image className={`short-brand short-brand-${link.kind}`} src={link.image} alt="" width={link.width} height={link.height} unoptimized /></a></span>);cursor=link.index+link.word.length;
   }
   parts.push(text.slice(cursor));return <>{parts}</>;
 }
@@ -53,7 +53,7 @@ export function ShortPortfolioContent({ idPrefix = "short" }: { idPrefix?: strin
         <p className="short-personal"><BioLine text={SHORT_COPY.personal} /></p>
       </div>
       <nav className="short-socials" aria-label="Profile links">
-        <SocialLinks showLabels />
+        <SocialLinks />
         <a className="short-resume" href="/Ammar_Adam.pdf" target="_blank" rel="noopener noreferrer">{SHORT_COPY.resume}<ExternalArrow /></a>
       </nav>
     </header>
