@@ -7,7 +7,7 @@
     "tw": "tailwindcss -i src/app/tailwind.css -o src/app/tw.generated.css --minify",
     "tw:watch": "tailwindcss -i src/app/tailwind.css -o src/app/tw.generated.css --watch",
     "prebuild": "npm run bake:sets && npm run tw",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "lint": "eslint",
     "bake:sets": "node scripts/bake-terminal-sets.cjs"
