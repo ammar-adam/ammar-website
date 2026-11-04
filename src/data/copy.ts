@@ -324,17 +324,17 @@ export const INTRO_COPY: readonly IntroCopy[] = [
 export const INTRO_BEATS = [0, 1.85, 4.15] as const;
 export function introBeatAt(seconds: number) { return Math.max(0, INTRO_BEATS.filter(at => seconds >= at).length - 1); }
 export const EXPERIENCE_COPY: readonly FilmCardCopy[] = [
- {slug:"alpen-capital",name:"Alpen Capital",role:"M&A Summer Analyst, Dubai",tag:"At sixteen I was in Dubai, building models for real M&A deals.",desc:"Modelled M&A deals in Dubai at 16 as the firm's youngest intern.",filmDesc:"Modelled M&A deals in Dubai as the firm's youngest intern."},
- {slug:"datastealth",name:"DataStealth",role:"Product Engineering Intern",tag:"Spreadsheets were cool. Building the thing was cooler.",desc:"Built product demos for sales and automated competitor research."},
- {slug:"sagard",name:"Sagard",role:"AI Engineer",tag:"Then I wanted to build things people use every day.",desc:"Built AI tools for legal and compliance that cut KYC prep from weeks to hours.",filmDesc:"Built AI tools for the legal and compliance team."},
- {slug:"openai",name:"OpenAI",role:"Founding Builder Lead",tag:"Then I found the best part: other people who build.",desc:"Finding the best student builders in North America and helping them ship."},
- {slug:"pear-vc",name:"Pear VC",role:"Fellow",tag:"And sometimes I get to back them early.",desc:"Scouting and supporting founders at their earliest stages."},
+ {slug:"alpen-capital",name:"Alpen Capital",role:"M&A Summer Analyst, Dubai",tag:"At sixteen I was in Dubai, building models for real M&A deals.",desc:"Modelled M&A deals in Dubai at sixteen.",filmDesc:"Modelled M&A deals in Dubai as the firm's youngest intern."},
+ {slug:"datastealth",name:"DataStealth",role:"Product Engineering Intern",tag:"Spreadsheets were cool. Building the thing was cooler.",desc:"Built sales demos and automated competitor research."},
+ {slug:"sagard",name:"Sagard",role:"AI Engineer",tag:"Then I wanted to build things people use every day.",desc:"Built AI tools that cut KYC prep to hours.",filmDesc:"Built AI tools for the legal and compliance team."},
+ {slug:"openai",name:"OpenAI",role:"Founding Builder Lead",tag:"Then I found the best part: other people who build.",desc:"Helping student builders ship with OpenAI."},
+ {slug:"pear-vc",name:"Pear VC",role:"Fellow",tag:"And sometimes I get to back them early.",desc:"Scouting and supporting early-stage founders."},
 ];
 export const PROJECT_COPY: readonly FilmCardCopy[] = [
- {slug:"backseat",name:"Backseat",role:"Creator",tag:"Some things I built because I wanted them to exist.",desc:"Character voices for Waze, installed in one tap."},
- {slug:"rocketship",name:"RocketShip",role:"Creator",tag:"Some I built to see if I could.",desc:"AI agents that write equity research, graded with honest evals."},
+ {slug:"backseat",name:"Backseat",role:"Creator",tag:"Some things I built because I wanted them to exist.",desc:"Character voices for Waze in one tap."},
+ {slug:"rocketship",name:"RocketShip",role:"Creator",tag:"Some I built to see if I could.",desc:"AI equity research, tested with honest evals."},
  {slug:"waterloo-venture",name:"Waterloo Venture Group",role:"Managing Director",tag:"But the best things I've built are made of people.",desc:"Running Waterloo's student venture community."},
- {slug:"waterloo-tech-week",name:"Waterloo Tech Week / Hack the North",role:"Organizer",tag:"Give Waterloo's builders a week and the whole city shows up.",desc:"Organized Tech Week and helped run Hack the North."},
+ {slug:"waterloo-tech-week",name:"Waterloo Tech Week / Hack the North",role:"Organizer",tag:"Give Waterloo's builders a week and the whole city shows up.",desc:"Organized Tech Week; helped run Hack the North."},
 ];
 export const SHORT_COPY = {
  bio: "CS and Finance at Waterloo.",
