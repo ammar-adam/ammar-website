@@ -326,8 +326,8 @@ export function introBeatAt(seconds: number) { return Math.max(0, INTRO_BEATS.fi
 export const EXPERIENCE_COPY: readonly FilmCardCopy[] = [
  {slug:"alpen-capital",name:"Alpen Capital",role:"M&A Summer Analyst, Dubai",tag:"At sixteen I was in Dubai, building models for real M&A deals.",desc:"Modelled M&A deals in Dubai at sixteen.",filmDesc:"Modelled M&A deals in Dubai as the firm's youngest intern."},
  {slug:"datastealth",name:"DataStealth",role:"Product Engineering Intern",tag:"Spreadsheets were cool. Building the thing was cooler.",desc:"Built sales demos and automated competitor research."},
- {slug:"sagard",name:"Sagard",role:"AI Engineer",tag:"Then I wanted to build things people use every day.",desc:"Built AI tools that cut KYC prep to hours.",filmDesc:"Built AI tools for the legal and compliance team."},
- {slug:"openai",name:"OpenAI",role:"Founding Builder Lead",tag:"Then I found the best part: other people who build.",desc:"Helping student builders ship with OpenAI."},
+ {slug:"sagard",name:"Sagard",role:"AI Engineer",tag:"Then I wanted to build things people use every day.",desc:"Built software as first technical hire on the legal team.",filmDesc:"Built AI tools for the legal and compliance team."},
+ {slug:"openai",name:"OpenAI",role:"Founding Builder Lead",tag:"Then I found the best part: other people who build.",desc:"Backing the most ambitious student projects in Waterloo."},
  {slug:"pear-vc",name:"Pear VC",role:"Fellow",tag:"And sometimes I get to back them early.",desc:"Scouting and supporting early-stage founders."},
 ];
 export const PROJECT_COPY: readonly FilmCardCopy[] = [
@@ -906,4 +906,4 @@ export const SHOP_COPY = [{code:"A02",city:"Karachi / Ridgeway",name:"Kitchen"},
 export const FLAP_COLUMNS = ["Route", "Destination", "Status"] as const;
 export const SCAN_CLEARANCE = ["Reading barcode", "Pass accepted", "Cleared for departure", "Two seconds to departure"] as const;
 
-export const SHORT_BIO_LINKS = [{word:"Waterloo",href:"https://uwaterloo.ca/",label:"University of Waterloo",image:"/art/waterloo-official.png",kind:"waterloo",width:164,height:189},{word:"eating",href:"https://beliapp.com/",label:"Beli",image:"/art/beli-official.png",kind:"beli",width:300,height:300},{word:"soccer",href:"https://www.liverpoolfc.com/",label:"Liverpool FC",image:"/art/liverpool-official.png",kind:"liverpool",width:136,height:244}] as const;
+export const SHORT_BIO_LINKS = [{word:"Waterloo",href:"https://uwaterloo.ca/computing-financial-management/",label:"Computing and Financial Management at Waterloo",image:"/art/waterloo-official.png",kind:"waterloo",width:164,height:189},{word:"eating",href:"https://beliapp.com/app/ammaradam",label:"Ammar on Beli",image:"/art/beli-official.png",kind:"beli",width:300,height:300},{word:"soccer",href:"https://www.fotmob.com/teams/8650/overview/liverpool",label:"Liverpool on FotMob",image:"/art/liverpool-official.png",kind:"liverpool",width:136,height:244}] as const;

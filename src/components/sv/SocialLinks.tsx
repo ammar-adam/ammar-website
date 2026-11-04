@@ -1,3 +1,4 @@
+import { PAINTED_COPY } from "@/data/copy";
 import { siteConfig } from "@/data/site";
 import "./social-links.css";
 
@@ -7,9 +8,9 @@ const icons = [
   { name: "GitHub", href: siteConfig.socialLinks.github, path: "M12 .8a11.2 11.2 0 0 0-3.5 21.8c.6.1.8-.2.8-.5v-2.1c-3.3.7-4-1.4-4-1.4-.5-1.3-1.3-1.6-1.3-1.6-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.2 1.8 1.2 1.1 1.9 2.8 1.3 3.5 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-5.6 0-1.2.4-2.2 1.2-3-.1-.3-.5-1.5.1-3 0 0 1-.3 3.1 1.2a10.7 10.7 0 0 1 5.7 0c2.1-1.5 3.1-1.2 3.1-1.2.6 1.5.2 2.7.1 3 .8.8 1.2 1.8 1.2 3 0 4.3-2.8 5.3-5.5 5.6.4.4.8 1.1.8 2.2v3.1c0 .3.2.7.8.5A11.2 11.2 0 0 0 12 .8Z" },
 ];
 
-export function SocialLinks() {
+export function SocialLinks({showLabels = false}:{showLabels?:boolean}) {
   return <div className="social-icons" role="group" aria-label="Social and contact links">
-    {icons.map(icon => <a key={icon.name} href={icon.href} aria-label={icon.name} title={icon.name} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={icon.path} /></svg></a>)}
-    <a href={siteConfig.socialLinks.email} aria-label="Email Ammar" title="Email Ammar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2" /><path d="m3 6 9 7 9-7" /></svg></a>
+    {icons.map(icon => <a key={icon.name} href={icon.href} aria-label={icon.name} title={icon.name} target="_blank" rel="noopener noreferrer"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d={icon.path} /></svg>{showLabels && <span>{icon.name}</span>}</a>)}
+    <a href={siteConfig.socialLinks.email} aria-label="Email Ammar" title="Email Ammar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2.5" y="4.5" width="19" height="15" rx="2" /><path d="m3 6 9 7 9-7" /></svg>{showLabels && <span>{PAINTED_COPY.email}</span>}</a>
   </div>;
 }

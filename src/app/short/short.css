@@ -232,3 +232,32 @@
 @media (max-width:900px), (max-width:1024px) and (hover:none) and (pointer:coarse) {
   .short-content { padding-top:max(56px,env(safe-area-inset-top)); }
 }
+
+/* Center the complete composition, including the return link, in the viewport. */
+@media (min-width:901px) {
+  .short-content { height:auto; min-height:100svh; justify-content:center; padding-block:clamp(28px,5svh,56px); }
+  .short-content::before { display:none; }
+}
+.short-page .short-entry h3 a,
+.short-page .short-entry-links a,
+.short-page .short-socials a,
+.short-page .short-footer a { text-decoration:underline; text-decoration-color:#e1e2dc70; text-underline-offset:4px; }
+.short-page :is(.short-entry h3 a,.short-entry-links a,.short-socials a,.short-footer a,.short-bio-link):hover { color:#f2cc74; text-decoration-color:currentColor; }
+.short-external-arrow { display:inline-block; flex:0 0 auto; margin-left:5px; vertical-align:baseline; opacity:.75; }
+.short-bio-link { display:inline-flex; gap:5px; align-items:center; vertical-align:middle; color:inherit; }
+.short-bio-link > span { text-decoration:underline; text-decoration-color:#e1e2dc90; text-underline-offset:4px; }
+.short-bio-link .short-brand { flex:none; height:22px; }
+.short-bio-link .short-brand-waterloo { height:24px; }
+.short-bio-link .short-external-arrow { margin-left:0; width:10px; height:10px; }
+.short-entry-links { display:flex; flex-wrap:wrap; gap:4px 16px; margin-top:5px; font-size:12px; line-height:1.5; color:#c9cfca; }
+.short-entry-links a { display:inline-flex; align-items:center; min-height:24px; }
+.short-title-divider { color:#a8ada7; }
+.short-socials .social-icons { gap:16px; flex-shrink:1; }
+.short-page .short-socials .social-icons a { display:inline-flex; align-items:center; justify-content:center; width:auto; gap:6px; font-size:13px; }
+.short-page .short-socials .social-icons svg { width:16px; height:16px; }
+@media(max-width:900px) {
+  .short-socials { justify-content:flex-start; column-gap:18px; }
+  .short-socials .social-icons { flex-wrap:wrap; gap:12px; }
+  .short-entry-links { font-size:13px; }
+  .short-entry-links a { min-height:36px; }
+}
