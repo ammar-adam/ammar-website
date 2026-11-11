@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Credits · Ammar Adam" };
 
 export default function CreditsPage() {
   return (
-    <main style={{ minHeight: "100svh", padding: "48px 20px 80px", background: "#0b1421", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif", color: "#f1eee4", lineHeight: 1.6 }}>
+    <main className="halftone-page" style={{ minHeight: "100svh", padding: "48px 20px 80px", background: "#0b1421", fontFamily: "var(--font-inter), Inter, system-ui, sans-serif", color: "#f1eee4", lineHeight: 1.6 }}>
       <div style={{ maxWidth: 760, margin: "0 auto" }}>
         <p style={{ fontFamily: "var(--font-jb), monospace", fontSize: 11, letterSpacing: "0.16em", textTransform: "uppercase", color: "#efb550", margin: 0 }}>
           <Link href="/" style={{ color: "inherit", display: "inline-block", padding: "10px 0" }}>← Back to the terminal</Link>

@@ -81,7 +81,7 @@ void main(){
  float dotInk=1.-smoothstep(radius-dotAA*.5,radius+dotAA*.5,length(fract(printGrid)-.5));
  vec3 printHue=c*vec3(.51,.53,.61);
  float printDepth=mix(1.,.15,smoothstep(8.,45.,distanceToCamera));
- c=mix(c,printHue,dotInk*transition*printDepth*.68*uIntensity*(1.-cleanScreen));
+ c=mix(c,printHue,dotInk*transition*printDepth*.96*uIntensity*(1.-cleanScreen));
 
  // The colour target's alpha is a registration mask. Characters and signage
  // write zero there; their ink remains intact but their R/B never separate.

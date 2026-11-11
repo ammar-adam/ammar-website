@@ -2,6 +2,31 @@
    globals.css and are no longer imported. */
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
+
+:root {
+  --halftone-dots: radial-gradient(circle at 25% 25%, #000 0.65px, transparent 1.25px),
+    radial-gradient(circle at 75% 75%, #000 0.65px, transparent 1.25px);
+  --halftone-tile: 7px 7px;
+}
+
+/* Put the print texture behind captions, navigation, and other HTML text. */
+.of-shade::after,
+.city-mural-background::before,
+.terminal-world[data-fallback="1"]::after,
+.halftone-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: var(--halftone-dots);
+  background-size: var(--halftone-tile);
+  mix-blend-mode: soft-light;
+  opacity: .32;
+}
+
+.city-mural-background { isolation: isolate; }
+.halftone-page { position: relative; isolation: isolate; background-color: #05040d; }
+.halftone-page::before { z-index: -1; opacity: .42; }
 body {
   margin: 0;
   min-width: 320px;
